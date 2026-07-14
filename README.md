@@ -18,3 +18,18 @@ Danach `http://localhost:4173` öffnen.
 - Build output directory: `/`
 
 Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deployment aus.
+
+## Sicherheit und Rechtliches
+
+- Keine extern eingebundenen Skripte, Bilder, Schriftarten, Tracker oder Formulare
+- Strenge Content Security Policy, HSTS, Frame-Schutz und eingeschränkte Browserberechtigungen
+- Automatische Website- und Sicherheitsprüfung bei jedem Pull Request
+- Sicherheitsmeldungen über `SECURITY.md` und `/.well-known/security.txt`
+- Impressum nach § 5 DDG und Datenschutzhinweise für Cloudflare Pages, E-Mail/Telefon und den freiwilligen Google-Profillink
+
+Vor dem produktiven Merge durch den Betreiber prüfen:
+
+- Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer ergänzen, falls vorhanden
+- Registereintrag und Registernummer ergänzen, falls vorhanden
+- Cloudflare Data Processing Addendum im Cloudflare-Konto bestätigen und dokumentieren
+- Rechtstexte bei Änderungen an Hosting, Tracking, Formularen, Karten, Terminbuchung oder weiteren Drittanbietern aktualisieren
