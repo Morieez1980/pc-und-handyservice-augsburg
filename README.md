@@ -26,6 +26,7 @@ Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deploym
 - Automatische Website- und Sicherheitsprüfung bei jedem Pull Request
 - Tastaturfreundliche Mobilnavigation und installierbare Web-App-Metadaten
 - Konsistente Deployments durch versionierte und revalidierte Assets
+- Tägliche automatische Produktionsüberwachung über GitHub Actions
 - Sicherheitsmeldungen über `SECURITY.md` und `/.well-known/security.txt`
 - Impressum nach § 5 DDG und Datenschutzhinweise für Cloudflare Pages, E-Mail/Telefon und den freiwilligen Google-Profillink
 - Trackerfreie Google-Bewertungsübersicht mit manuell gepflegter, datierter Gesamtbewertung
