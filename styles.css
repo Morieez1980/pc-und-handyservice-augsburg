@@ -77,3 +77,10 @@ html{background:var(--ink);scrollbar-color:#334669 #070c16}body{color:var(--text
 @media(max-width:760px){.social-grid{grid-template-columns:1fr}.social-card{min-height:0;padding:22px;grid-template-columns:auto 1fr}.social-arrow{display:none}.social-icon{width:54px;height:54px;border-radius:15px}.social-icon svg{width:27px;height:27px}}
 
 .social-facebook:hover .social-icon{color:#fff;background:linear-gradient(145deg,rgba(24,119,242,.72),rgba(75,139,255,.42))}.social-whatsapp:hover .social-icon{color:#fff;background:linear-gradient(145deg,rgba(37,211,102,.62),rgba(18,140,126,.45))}
+
+
+/* Touch- und Navigationsoptimierung */
+a,button,summary{touch-action:manipulation}
+.nav-toggle{min-width:44px;min-height:44px;padding:10px 6px;border-radius:10px;cursor:pointer}
+.nav-toggle:hover{background:rgba(255,255,255,.06)}
+@media(max-width:700px){.nav.open a{min-height:44px;display:flex;align-items:center}.nav.open .nav-cta{justify-content:center}}
