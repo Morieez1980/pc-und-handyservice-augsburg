@@ -7,7 +7,7 @@
   X-Permitted-Cross-Domain-Policies: none
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self'; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data:; manifest-src 'self'; object-src 'none'; script-src 'self' 'sha256-euEs90quYtn5dkvpTypsDFkmzGOPBe3rNo5ND6lkPSc='; style-src 'self'; worker-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; manifest-src 'self'; object-src 'none'; script-src 'self' 'sha256-df8gzV4pxqjsv7UYGXyfwT09+lP0cpEPBG/SRC1EiGA=' https://www.clarity.ms; style-src 'self'; worker-src 'none'; upgrade-insecure-requests
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
@@ -16,13 +16,13 @@
   Cache-Control: public, max-age=0, must-revalidate
 
 /styles.min.css
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: public, max-age=31536000, immutable
 
 /script.js
   Cache-Control: public, max-age=0, must-revalidate
 
 /script.min.js
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: public, max-age=31536000, immutable
 
 /favicon.svg
   Cache-Control: public, max-age=86400
@@ -31,4 +31,11 @@
   Cache-Control: public, max-age=0, must-revalidate
 
 /*.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/clarity-consent.min.js
   Cache-Control: public, max-age=31536000, immutable
+
+/404.html
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow

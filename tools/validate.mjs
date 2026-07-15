@@ -4,6 +4,7 @@ import { dirname, extname, join, normalize } from 'node:path';
 const requiredFiles = [
   'index.html', 'impressum.html', 'datenschutz.html', '404.html',
   'styles.css', 'styles.min.css', 'script.js', 'script.min.js',
+  'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
   '_headers', 'robots.txt', 'sitemap.xml', 'favicon.svg',
   'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'icon-maskable-512.png', 'og-image.png', 'site.webmanifest',
@@ -20,7 +21,7 @@ const htmlByFile = new Map();
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
   htmlByFile.set(file, html);
-  if (!html.includes('<html lang="de">')) errors.push(`${file}: lang="de" fehlt`);
+  if (!/<html\s+lang="de"(?:\s|>)/i.test(html)) errors.push(`${file}: lang="de" fehlt`);
   if (!/<meta\s+name="viewport"/i.test(html)) errors.push(`${file}: viewport-Metaangabe fehlt`);
   if (!/<title>[^<]+<\/title>/i.test(html)) errors.push(`${file}: Titel fehlt`);
   if (!/<meta\s+name="description"/i.test(html)) errors.push(`${file}: Meta-Beschreibung fehlt`);
@@ -28,6 +29,8 @@ for (const file of htmlFiles) {
   if (/<link[^>]+rel=["']stylesheet["'][^>]+href=["']https?:\/\//i.test(html)) errors.push(`${file}: externes Stylesheet gefunden`);
   if (!html.includes('styles.min.css?v=')) errors.push(`${file}: minifiziertes CSS wird nicht genutzt`);
   if (!html.includes('rel="apple-touch-icon"')) errors.push(`${file}: Apple-Touch-Icon fehlt`);
+  if (!html.includes('clarity-consent.min.js?v=')) errors.push(`${file}: vorbereitete Clarity-Consent-Integration fehlt`);
+  if (!html.includes('data-clarity-project=""') && !/data-clarity-project="[a-z0-9]{6,32}"/i.test(html)) errors.push(`${file}: Clarity-Projektkonfiguration fehlt`);
   const externalTabs = html.match(/<a\b[^>]*target=["']_blank["'][^>]*>/gi) ?? [];
   for (const anchor of externalTabs) {
     if (!/rel=["'][^"']*noopener[^"']*noreferrer[^"']*["']/i.test(anchor)) {
@@ -86,7 +89,7 @@ if (!jsonLdMatch) {
   try {
     const data = JSON.parse(jsonLdMatch[1]);
     const graph = Array.isArray(data['@graph']) ? data['@graph'] : [data];
-    if (!graph.some((item) => item['@type'] === 'LocalBusiness')) errors.push('index.html: Schema.org LocalBusiness fehlt');
+    if (!graph.some((item) => item['@type'] === 'LocalBusiness' || (Array.isArray(item['@type']) && item['@type'].includes('LocalBusiness')))) errors.push('index.html: Schema.org LocalBusiness fehlt');
     if (!graph.some((item) => item['@type'] === 'Service' && /RepairService/i.test(item.serviceType ?? ''))) {
       errors.push('index.html: valides RepairService-Service-Schema fehlt');
     }
@@ -108,11 +111,25 @@ const script = await readFile('script.js', 'utf8');
 if (!script.includes("'addEventListener' in desktopQuery") || !script.includes('addListener(handleDesktopChange)')) {
   errors.push('script.js: kompatibler MediaQuery-Fallback fehlt');
 }
-const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize] = await Promise.all([
-  stat('script.js'), stat('script.min.js'), stat('styles.css'), stat('styles.min.css')
+const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceClaritySize, minClaritySize] = await Promise.all([
+  stat('script.js'), stat('script.min.js'), stat('styles.css'), stat('styles.min.css'),
+  stat('clarity-consent.js'), stat('clarity-consent.min.js')
 ]);
 if (minScriptSize.size >= sourceScriptSize.size) errors.push('script.min.js: Datei ist nicht kleiner als die Quelle');
 if (minCssSize.size >= sourceCssSize.size) errors.push('styles.min.css: Datei ist nicht kleiner als die Quelle');
+if (minClaritySize.size >= sourceClaritySize.size) errors.push('clarity-consent.min.js: Datei ist nicht kleiner als die Quelle');
+
+const clarity = await readFile('clarity-consent.js', 'utf8');
+for (const marker of ["consentv2", "ad_Storage: 'denied'", "analytics_Storage: analyticsStorage", "data-clarity-banner"]) {
+  if (!clarity.includes(marker)) errors.push(`clarity-consent.js: Consent-Marker fehlt: ${marker}`);
+}
+if (clarity.indexOf('loadClarity()') < clarity.indexOf("choice === 'granted'")) {
+  errors.push('clarity-consent.js: Clarity darf nicht vor einer Einwilligung geladen werden');
+}
+const microsoftGuide = await readFile('MICROSOFT-INTEGRATIONS.md', 'utf8');
+if (!microsoftGuide.includes('msvalidate.01') || !microsoftGuide.includes('ECHTE_PROJEKT_ID')) {
+  errors.push('MICROSOFT-INTEGRATIONS.md: Clarity- oder Bing-Aktivierungsanleitung unvollständig');
+}
 
 const styles = await readFile('styles.css', 'utf8');
 if (!styles.includes('visibility:hidden') || !styles.includes('body.nav-open')) {
@@ -160,7 +177,9 @@ for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'P
   if (!headers.includes(header)) errors.push(`_headers: ${header} fehlt`);
 }
 if (!/script-src 'self' 'sha256-[A-Za-z0-9+/=]+'/.test(headers)) errors.push('_headers: CSP-Hash für JSON-LD fehlt');
-if (!headers.includes('max-age=31536000, immutable')) errors.push('_headers: unveränderliche Bildassets werden nicht langfristig gecacht');
+if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000, immutable')) errors.push('_headers: versionierte Produktionsassets werden nicht langfristig gecacht');
+if (!headers.includes('https://*.clarity.ms') || !headers.includes('https://www.clarity.ms')) errors.push('_headers: Clarity-CSP-Vorbereitung fehlt');
+if (!headers.includes('max-age=86400, stale-while-revalidate=604800')) errors.push('_headers: stabile Bildassets haben keine sichere Revalidierungsstrategie');
 
 if (errors.length) {
   console.error(errors.join('\n'));

@@ -27,6 +27,9 @@ Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deploym
 - Tastaturfreundliche Mobilnavigation und installierbare Web-App-Metadaten
 - Konsistente Deployments durch versionierte und revalidierte Assets
 - Tägliche automatische Produktionsüberwachung über GitHub Actions
+- Zustimmungsbasierte, standardmäßig deaktivierte Microsoft-Clarity-Vorbereitung
+- Bing-Webmaster-Tools-Aktivierungsanleitung ohne unsichere Platzhalter-Verifizierung
+- Kompositorische Animationen und optimierte Cache-Strategie für versionierte Assets
 - Sicherheitsmeldungen über `SECURITY.md` und `/.well-known/security.txt`
 - Impressum nach § 5 DDG und Datenschutzhinweise für Cloudflare Pages, E-Mail/Telefon und den freiwilligen Google-Profillink
 - Trackerfreie Google-Bewertungsübersicht mit manuell gepflegter, datierter Gesamtbewertung
