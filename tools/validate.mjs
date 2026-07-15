@@ -77,12 +77,14 @@ for (const link of [
   'https://share.google/2mQbAIfJoIab9YR3G',
   'https://www.instagram.com/pc_handyservice_maurice_keil/',
   'https://www.tiktok.com/@pcundhandyreparaturaugsb',
+  'https://www.facebook.com/profile.php?id=61588640742328',
+  'https://wa.me/4915254530080',
   'id="preise"',
   'id="social-media"'
 ]) {
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
-if ((index.match(/class="social-card/g) ?? []).length !== 2) errors.push('index.html: zwei sichtbare Social-Media-Karten fehlen');
+if ((index.match(/class="social-card/g) ?? []).length !== 4) errors.push('index.html: vier sichtbare Social- und Kontaktkarten fehlen');
 if (!index.includes('4,9') || !index.includes('81 öffentlich sichtbaren Google-Rezensionen')) {
   errors.push('index.html: Google-Bewertungskennzahl oder Quellenhinweis fehlt');
 }
