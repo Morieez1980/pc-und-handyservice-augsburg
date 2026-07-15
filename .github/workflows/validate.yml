@@ -23,4 +23,8 @@ jobs:
       - name: Check JavaScript syntax
         run: node --check script.js
       - name: Validate static website and security requirements
-        run: node tools/validate.mjs
+        id: validate
+        shell: bash
+        run: |
+          set -o pipefail
+          node tools/
