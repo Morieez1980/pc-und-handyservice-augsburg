@@ -20,11 +20,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
       - name: Check JavaScript syntax
         run: node --check script.js
+
       - name: Validate static website and security requirements
-        id: validate
-        shell: bash
-        run: |
-          set -o pipefail
-          node tools/
+        run: node tools/validate.mjs
