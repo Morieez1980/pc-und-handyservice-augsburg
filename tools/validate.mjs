@@ -31,6 +31,9 @@ for (const file of htmlFiles) {
 const index = await readFile('index.html', 'utf8');
 if (!index.includes('itemtype="https://schema.org/LocalBusiness"')) errors.push('index.html: strukturierte LocalBusiness-Daten fehlen');
 if (!index.includes('rel="manifest"')) errors.push('index.html: Web-App-Manifest fehlt');
+for (const asset of ['styles.css?v=', 'script.js?v=', 'site.webmanifest?v=']) {
+  if (!index.includes(asset)) errors.push(`index.html: Versionierung fehlt: ${asset}`);
+}
 for (const link of ['impressum.html', 'datenschutz.html', 'https://share.google/57mrs7jE79LUInKVg', 'https://share.google/2mQbAIfJoIab9YR3G']) {
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
@@ -54,6 +57,7 @@ if (manifest.id !== '/' || !Array.isArray(manifest.categories)) {
 }
 
 const headers = await readFile('_headers', 'utf8');
+if (headers.includes('max-age=3600')) errors.push('_headers: veränderliche Assets werden zu lange gecacht');
 for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'Permissions-Policy', 'X-Frame-Options', 'Cache-Control']) {
   if (!headers.includes(header)) errors.push(`_headers: ${header} fehlt`);
 }
