@@ -1,22 +1,21 @@
 # Microsoft Clarity und Bing Webmaster Tools
 
-Stand: 15. Juli 2026
+Stand: 16. Juli 2026
 
 ## Microsoft Clarity
 
-Die Website enthält eine zustimmungsbasierte Clarity-Integration. Sie bleibt vollständig inaktiv, solange in den HTML-Dateien keine echte Projekt-ID im Attribut `data-clarity-project` eingetragen ist. Ohne Projekt-ID erscheint kein Banner und es wird keine Verbindung zu Microsoft aufgebaut.
+Microsoft Clarity ist für die kanonische Domain `https://www.pc-und-handyservice-augsburg.com/` eingerichtet. Die aktive Projekt-ID lautet `xn1s7qrbvj`.
 
-Aktivierung:
+Die Website lädt Clarity ausschließlich nach einer ausdrücklichen Einwilligung über das lokale Skript `clarity-consent.min.js`. Vor der Zustimmung wird keine Verbindung zu Microsoft aufgebaut. Die Consent-V2-Konfiguration setzt `analytics_Storage` nur nach Zustimmung auf `granted`; `ad_Storage` bleibt `denied`. Eine Entscheidung kann jederzeit über „Analyse-Einstellungen“ im Seitenfuß geändert werden.
 
-1. Unter https://clarity.microsoft.com/ ein Projekt für `https://pc-und-handyservice-augsburg.pages.dev/` erstellen.
-2. In Clarity unter **Settings → Setup** die Cookie-Voreinstellung ausschalten und Consent Mode verwenden.
-3. Die echte Projekt-ID in allen HTML-Dateien eintragen:
-   `<html lang="de" data-clarity-project="ECHTE_PROJEKT_ID">`
-4. Deployment durchführen und im Browser prüfen, dass vor Zustimmung keine Anfrage an `clarity.ms` erfolgt.
-5. Nach Zustimmung prüfen, dass `consentv2` mit `analytics_Storage: granted` und `ad_Storage: denied` übermittelt wird.
-6. Die Datenschutzhinweise vor der Aktivierung nochmals rechtlich prüfen.
+Die CSP erlaubt nur die für Clarity benötigten Microsoft-Domains. Die Datenschutzerklärung beschreibt die aktive, einwilligungsbasierte Nutzung.
 
-Die CSP ist für die von Microsoft dokumentierten Clarity-Domains vorbereitet. Das lokale Skript `clarity-consent.min.js` lädt Clarity ausschließlich nach Zustimmung.
+Prüfpunkte nach Deployments:
+
+1. Ohne Zustimmung darf kein Clarity-Skript geladen werden.
+2. Nach Zustimmung muss die Analyse für Projekt `xn1s7qrbvj` starten.
+3. Nach Ablehnung darf kein Clarity-Skript geladen werden.
+4. Der Link „Analyse-Einstellungen“ muss die Auswahl erneut öffnen.
 
 ## Bing Webmaster Tools
 
@@ -24,10 +23,10 @@ Bing benötigt einen kontospezifischen Eigentumsnachweis. Es wird absichtlich ke
 
 Empfohlener Ablauf:
 
-1. https://www.bing.com/webmasters/ öffnen und die Website `https://pc-und-handyservice-augsburg.pages.dev/` hinzufügen.
-2. Wenn eine verifizierte Google-Search-Console-Property vorhanden ist, diese direkt importieren.
+1. https://www.bing.com/webmasters/ öffnen und `https://www.pc-und-handyservice-augsburg.com/` hinzufügen.
+2. Die bereits verifizierte Google-Search-Console-Property importieren.
 3. Alternativ die von Bing gelieferte XML-Datei, den echten `msvalidate.01`-Meta-Tag oder einen CNAME-DNS-Eintrag verwenden.
-4. Nach erfolgreicher Verifizierung `https://pc-und-handyservice-augsburg.pages.dev/sitemap.xml` in Bing einreichen.
-5. Die Eigentumsprüfung und Sitemap-Verarbeitung im Bing-Dashboard kontrollieren.
+4. Nach erfolgreicher Verifizierung `https://www.pc-und-handyservice-augsburg.com/sitemap.xml` einreichen.
+5. Eigentumsprüfung und Sitemap-Verarbeitung im Bing-Dashboard kontrollieren.
 
 Verifizierungscodes gehören nicht in Dokumentation, Issues oder Commit-Nachrichten.
