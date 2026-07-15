@@ -1,0 +1,19 @@
+{
+  "name": "PC & Handyservice Augsburg",
+  "short_name": "PC & Handyservice",
+  "description": "Persönlicher Reparaturservice für PC, Laptop, Smartphone und Konsole in Augsburg.",
+  "lang": "de-DE",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050914",
+  "theme_color": "#050914",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
