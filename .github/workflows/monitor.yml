@@ -24,7 +24,7 @@ jobs:
         run: |
           set -euo pipefail
           base="https://pc-und-handyservice-augsburg.pages.dev"
-          endpoints=("/" "/impressum.html" "/datenschutz.html" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png")
+          endpoints=("/" "/impressum.html" "/datenschutz.html" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js")
           for attempt in {1..18}; do
             all_ready=true
             for endpoint in "${endpoints[@]}"; do
@@ -57,14 +57,14 @@ jobs:
               exit 1
             fi
           done
-          asset_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/styles.min.css?v=20260715")"
-          if ! grep --ignore-case --quiet '^cache-control:.*max-age=0' <<< "$asset_headers"; then
-            echo "Mutable assets are not configured for immediate revalidation"
+          asset_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/styles.min.css?v=20260715-2")"
+          if ! grep --ignore-case --quiet '^cache-control:.*max-age=31536000.*immutable' <<< "$asset_headers"; then
+            echo "Versioned production assets are not cached immutably"
             exit 1
           fi
           image_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/og-image.png")"
-          if ! grep --ignore-case --quiet '^cache-control:.*immutable' <<< "$image_headers"; then
-            echo "Version-stable images are not cached immutably"
+          if ! grep --ignore-case --quiet '^cache-control:.*max-age=86400' <<< "$image_headers"; then
+            echo "Stable social and app images do not use the intended revalidation policy"
             exit 1
           fi
 
@@ -73,7 +73,7 @@ jobs:
         run: |
           set -euo pipefail
           page="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/")"
-          for marker in 'PC & Handyservice Augsburg' 'site.webmanifest?v=' 'script.min.js?v=' 'og:image' 'application/ld+json'; do
+          for marker in 'PC & Handyservice Augsburg' 'site.webmanifest?v=' 'script.min.js?v=' 'og:image' 'application/ld+json' 'clarity-consent.min.js?v='; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing production marker: ${marker}"
               exit 1
