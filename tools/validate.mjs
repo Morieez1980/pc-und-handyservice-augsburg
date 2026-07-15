@@ -139,8 +139,8 @@ if (!microsoftGuide.includes('msvalidate.01') || !microsoftGuide.includes('ECHTE
 }
 
 const styles = await readFile('styles.css', 'utf8');
-if (!styles.includes('visibility:hidden') || !styles.includes('body.nav-open')) {
-  errors.push('styles.css: Fokus- und Scrollschutz der Mobilnavigation fehlt');
+if (!styles.includes('visibility:hidden') || !styles.includes('body.nav-open') || !styles.includes('min-height:44px')) {
+  errors.push('styles.css: Fokus-, Scroll- oder Touchschutz der Mobilnavigation fehlt');
 }
 
 const manifest = JSON.parse(await readFile('site.webmanifest', 'utf8'));

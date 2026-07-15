@@ -34,7 +34,7 @@ Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deploym
 - Impressum nach § 5 DDG und Datenschutzhinweise für Cloudflare Pages, E-Mail/Telefon und den freiwilligen Google-Profillink
 - Trackerfreie Google-Bewertungsübersicht mit manuell gepflegter, datierter Gesamtbewertung
 - Aus Wix übernommene Service- und Diagnosepreise mit transparentem Kostenvorbehalt
-- Verifizierte Instagram- und TikTok-Profile als einfache, nicht eingebettete Links
+- Verifizierte Instagram-, TikTok- und Facebook-Profile sowie direkter WhatsApp-Kontakt als einfache, nicht eingebettete Links
 
 Vor dem produktiven Merge durch den Betreiber prüfen:
 
