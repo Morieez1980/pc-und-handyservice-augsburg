@@ -38,6 +38,21 @@ if (!index.includes('4,9') || !index.includes('81 öffentlich sichtbaren Google-
   errors.push('index.html: Google-Bewertungskennzahl oder Quellenhinweis fehlt');
 }
 
+const script = await readFile('script.js', 'utf8');
+if (!script.includes("'addEventListener' in desktopQuery") || !script.includes('addListener(handleDesktopChange)')) {
+  errors.push('script.js: kompatibler MediaQuery-Fallback fehlt');
+}
+
+const styles = await readFile('styles.css', 'utf8');
+if (!styles.includes('visibility:hidden') || !styles.includes('body.nav-open')) {
+  errors.push('styles.css: Fokus- und Scrollschutz der Mobilnavigation fehlt');
+}
+
+const manifest = JSON.parse(await readFile('site.webmanifest', 'utf8'));
+if (manifest.id !== '/' || !Array.isArray(manifest.categories)) {
+  errors.push('site.webmanifest: stabile App-ID oder Kategorien fehlen');
+}
+
 const headers = await readFile('_headers', 'utf8');
 for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'Permissions-Policy', 'X-Frame-Options', 'Cache-Control']) {
   if (!headers.includes(header)) errors.push(`_headers: ${header} fehlt`);
