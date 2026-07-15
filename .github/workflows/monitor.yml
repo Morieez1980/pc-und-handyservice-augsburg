@@ -3,10 +3,6 @@ name: Production monitor
 on:
   push:
     branches: [main]
-    paths: [".github/workflows/monitor.yml"]
-  pull_request:
-    branches: [main]
-    paths: [".github/workflows/monitor.yml"]
   schedule:
     - cron: "17 6 * * *"
   workflow_dispatch:
@@ -21,21 +17,33 @@ concurrency:
 jobs:
   monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
-      - name: Check production endpoints
+      - name: Wait for deployment and check endpoints
         shell: bash
         run: |
           set -euo pipefail
           base="https://pc-und-handyservice-augsburg.pages.dev"
-          endpoints=("/" "/impressum.html" "/datenschutz.html" "/robots.txt" "/sitemap.xml" "/site.webmanifest")
-          for endpoint in "${endpoints[@]}"; do
-            code="$(curl --silent --show-error --location --retry 3 --output /dev/null --write-out '%{http_code}' "${base}${endpoint}")"
-            if [[ "$code" != "200" ]]; then
-              echo "${endpoint} returned HTTP ${code}"
-              exit 1
+          endpoints=("/" "/impressum.html" "/datenschutz.html" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png")
+          for attempt in {1..18}; do
+            all_ready=true
+            for endpoint in "${endpoints[@]}"; do
+              code="$(curl --silent --show-error --location --retry 2 --output /dev/null --write-out '%{http_code}' "${base}${endpoint}" || true)"
+              if [[ "$code" != "200" ]]; then
+                all_ready=false
+                break
+              fi
+            done
+            page="$(curl --silent --show-error --location --retry 2 "${base}/" || true)"
+            if [[ "$all_ready" == "true" ]] && grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page"; then
+              echo "Deployment is ready after attempt ${attempt}."
+              exit 0
             fi
+            echo "Deployment not ready yet (attempt ${attempt}/18)."
+            sleep 10
           done
+          echo "Production deployment did not become ready in time."
+          exit 1
 
       - name: Check security and cache headers
         shell: bash
@@ -44,14 +52,19 @@ jobs:
           base="https://pc-und-handyservice-augsburg.pages.dev"
           headers="$(curl --silent --show-error --head --location --retry 3 "${base}/")"
           for header in strict-transport-security content-security-policy x-content-type-options referrer-policy permissions-policy; do
-            if ! printf '%s\n' "$headers" | grep --ignore-case --quiet "^${header}:"; then
+            if ! grep --ignore-case --quiet "^${header}:" <<< "$headers"; then
               echo "Missing security header: ${header}"
               exit 1
             fi
           done
-          asset_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/styles.css?v=9fb1746")"
-          if ! printf '%s\n' "$asset_headers" | grep --ignore-case --quiet '^cache-control:.*max-age=0'; then
+          asset_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/styles.min.css?v=20260715")"
+          if ! grep --ignore-case --quiet '^cache-control:.*max-age=0' <<< "$asset_headers"; then
             echo "Mutable assets are not configured for immediate revalidation"
+            exit 1
+          fi
+          image_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/og-image.png")"
+          if ! grep --ignore-case --quiet '^cache-control:.*immutable' <<< "$image_headers"; then
+            echo "Version-stable images are not cached immutably"
             exit 1
           fi
 
@@ -60,8 +73,8 @@ jobs:
         run: |
           set -euo pipefail
           page="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/")"
-          for marker in 'PC & Handyservice Augsburg' 'itemprop="sameAs"' 'site.webmanifest?v=' 'script.js?v='; do
-            if ! printf '%s\n' "$page" | grep --fixed-strings --quiet "$marker"; then
+          for marker in 'PC & Handyservice Augsburg' 'site.webmanifest?v=' 'script.min.js?v=' 'og:image' 'application/ld+json'; do
+            if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing production marker: ${marker}"
               exit 1
             fi
