@@ -59,3 +59,19 @@ html{background:var(--ink);scrollbar-color:#334669 #070c16}body{color:var(--text
 .pricing-note{max-width:900px;margin:28px 0 0;color:#526075;font-size:14px}
 @media(max-width:900px){.price-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){.price-grid{grid-template-columns:1fr}.price-card{min-height:0}}
+
+
+/* Dunkle Preis- und Social-Media-Bereiche */
+.pricing{background:radial-gradient(circle at 90% 15%,rgba(109,140,255,.1),transparent 27%),linear-gradient(180deg,#0a1220 0%,#080e19 100%);border-bottom:1px solid var(--line)}
+.price-card{background:linear-gradient(155deg,rgba(18,29,49,.98),rgba(10,18,32,.98));border-color:var(--line);box-shadow:inset 0 1px rgba(255,255,255,.035),0 14px 38px rgba(0,0,0,.16)}
+.price-card:hover{border-color:rgba(109,140,255,.46);box-shadow:0 24px 64px rgba(0,0,0,.34),0 0 36px rgba(76,105,245,.08)}
+.price-card h3{color:#f2f5fa}.price-card p{color:#9eacc0}.price-card>strong{color:#91a8ff}.pricing-note{color:#9eacc0}
+.social-section{background:radial-gradient(circle at 18% 32%,rgba(39,224,204,.08),transparent 27%),linear-gradient(180deg,#080e19,#0b1424);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.social-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.social-card{min-height:170px;padding:28px;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,rgba(18,29,49,.98),rgba(10,18,32,.98));box-shadow:inset 0 1px rgba(255,255,255,.04);transition:transform .25s,border-color .25s,box-shadow .25s}
+.social-card:hover{transform:translateY(-4px);border-color:rgba(109,140,255,.5);box-shadow:0 24px 65px rgba(0,0,0,.36)}
+.social-icon{width:64px;height:64px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(145deg,rgba(109,140,255,.22),rgba(39,224,204,.1));color:#a8b9ff;border:1px solid rgba(109,140,255,.23)}
+.social-icon svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.social-copy{min-width:0;display:flex;flex-direction:column;gap:5px}.social-copy small{color:#8d9bb0;text-transform:uppercase;letter-spacing:.13em;font-weight:700}.social-copy strong{color:#f2f5fa;font-family:var(--display);font-size:clamp(16px,2vw,21px);overflow-wrap:anywhere}.social-copy>span{color:#99a7ba;font-size:14px}.social-arrow{color:#91a8ff;font-size:27px}
+.social-instagram:hover .social-icon{color:#fff;background:linear-gradient(145deg,rgba(220,39,129,.55),rgba(245,133,41,.38))}.social-tiktok:hover .social-icon{color:#fff;background:linear-gradient(145deg,rgba(39,224,204,.32),rgba(238,29,82,.35))}
+@media(max-width:760px){.social-grid{grid-template-columns:1fr}.social-card{min-height:0;padding:22px;grid-template-columns:auto 1fr}.social-arrow{display:none}.social-icon{width:54px;height:54px;border-radius:15px}.social-icon svg{width:27px;height:27px}}
