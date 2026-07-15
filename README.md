@@ -26,6 +26,7 @@ Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deploym
 - Automatische Website- und Sicherheitsprüfung bei jedem Pull Request
 - Sicherheitsmeldungen über `SECURITY.md` und `/.well-known/security.txt`
 - Impressum nach § 5 DDG und Datenschutzhinweise für Cloudflare Pages, E-Mail/Telefon und den freiwilligen Google-Profillink
+- Trackerfreie Google-Bewertungsübersicht mit manuell gepflegter, datierter Gesamtbewertung
 
 Vor dem produktiven Merge durch den Betreiber prüfen:
 
@@ -33,3 +34,4 @@ Vor dem produktiven Merge durch den Betreiber prüfen:
 - Registereintrag und Registernummer ergänzen, falls vorhanden
 - Cloudflare Data Processing Addendum im Cloudflare-Konto bestätigen und dokumentieren
 - Rechtstexte bei Änderungen an Hosting, Tracking, Formularen, Karten, Terminbuchung oder weiteren Drittanbietern aktualisieren
+- Google-Gesamtbewertung, Anzahl und Stichtag regelmäßig mit dem öffentlichen Unternehmensprofil abgleichen

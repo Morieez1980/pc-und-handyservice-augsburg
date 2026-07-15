@@ -28,8 +28,11 @@ for (const file of htmlFiles) {
 }
 
 const index = await readFile('index.html', 'utf8');
-for (const link of ['impressum.html', 'datenschutz.html', 'https://share.google/57mrs7jE79LUInKVg']) {
+for (const link of ['impressum.html', 'datenschutz.html', 'https://share.google/57mrs7jE79LUInKVg', 'https://share.google/2mQbAIfJoIab9YR3G']) {
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
+}
+if (!index.includes('4,9') || !index.includes('81 öffentlich sichtbaren Google-Rezensionen')) {
+  errors.push('index.html: Google-Bewertungskennzahl oder Quellenhinweis fehlt');
 }
 
 const headers = await readFile('_headers', 'utf8');
