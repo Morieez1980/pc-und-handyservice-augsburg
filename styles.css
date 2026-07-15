@@ -39,3 +39,6 @@ html{background:var(--ink);scrollbar-color:#334669 #070c16}body{color:var(--text
 @media (max-width:960px){.quick-contact>div{border-bottom-color:var(--line)}}
 @media (max-width:700px){.nav{background:rgba(5,9,20,.98);border-bottom:1px solid var(--line);box-shadow:0 28px 55px rgba(0,0,0,.45)}.hero{padding-bottom:55px}.section{padding-top:72px;padding-bottom:72px}.reviews-summary{box-shadow:0 24px 55px rgba(0,0,0,.3)}}
 @media (prefers-reduced-motion:no-preference){.brand-mark{animation:brandGlow 4s ease-in-out infinite}.pulse{animation:pulseGlow 2s ease-in-out infinite}}@keyframes brandGlow{0%,100%{box-shadow:0 10px 34px rgba(85,116,255,.3),inset 0 1px rgba(255,255,255,.25)}50%{box-shadow:0 12px 42px rgba(39,224,204,.25),inset 0 1px rgba(255,255,255,.25)}}@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 5px rgba(39,224,204,.08)}50%{box-shadow:0 0 0 9px rgba(39,224,204,.13)}}
+
+/* Accessibility hardening for the mobile navigation */
+@media (max-width:700px){.nav{visibility:hidden;transition:transform .2s,opacity .2s,visibility 0s linear .2s}.nav.open{visibility:visible;transition-delay:0s}body.nav-open{overflow:hidden}}

@@ -5,6 +5,7 @@ const toggleLabel = toggle?.querySelector('.sr-only');
 
 const closeNav = () => {
   nav?.classList.remove('open');
+  document.body.classList.remove('nav-open');
   toggle?.setAttribute('aria-expanded', 'false');
   if (toggleLabel) toggleLabel.textContent = 'Menü öffnen';
 };
@@ -12,6 +13,7 @@ const closeNav = () => {
 toggle?.addEventListener('click', () => {
   const isOpen = nav.classList.toggle('open');
   toggle.setAttribute('aria-expanded', String(isOpen));
+  document.body.classList.toggle('nav-open', isOpen);
   if (toggleLabel) toggleLabel.textContent = isOpen ? 'Menü schließen' : 'Menü öffnen';
 });
 
@@ -22,9 +24,15 @@ document.addEventListener('keydown', (event) => {
     toggle?.focus();
   }
 });
-window.matchMedia('(min-width: 701px)').addEventListener('change', (event) => {
+const desktopQuery = window.matchMedia('(min-width: 701px)');
+const handleDesktopChange = (event) => {
   if (event.matches) closeNav();
-});
+};
+if ('addEventListener' in desktopQuery) {
+  desktopQuery.addEventListener('change', handleDesktopChange);
+} else {
+  desktopQuery.addListener(handleDesktopChange);
+}
 window.addEventListener('scroll', () => header?.classList.toggle('scrolled', window.scrollY > 20), { passive: true });
 
 document.querySelectorAll('[data-year]').forEach((node) => { node.textContent = new Date().getFullYear(); });
