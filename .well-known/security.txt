@@ -1,5 +1,5 @@
 Contact: mailto:maurice.keil1989@web.de
 Preferred-Languages: de, en
-Canonical: https://pc-und-handyservice-augsburg.pages.dev/.well-known/security.txt
-Policy: https://pc-und-handyservice-augsburg.pages.dev/datenschutz.html
+Canonical: https://www.pc-und-handyservice-augsburg.com/.well-known/security.txt
+Policy: https://www.pc-und-handyservice-augsburg.com/datenschutz.html
 Expires: 2027-07-15T00:00:00.000Z

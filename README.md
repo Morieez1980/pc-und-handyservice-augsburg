@@ -1,6 +1,6 @@
 # PC & Handyservice Augsburg
 
-Statische Website für PC & Handyservice Augsburg – optimiert für Cloudflare Pages.
+Statische Website für PC & Handyservice Augsburg – optimiert für Cloudflare Pages und erreichbar unter https://www.pc-und-handyservice-augsburg.com/.
 
 ## Lokal testen
 
@@ -33,6 +33,8 @@ Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deploym
 - Sicherheitsmeldungen über `SECURITY.md` und `/.well-known/security.txt`
 - Impressum nach § 5 DDG und Datenschutzhinweise für Cloudflare Pages, E-Mail/Telefon und den freiwilligen Google-Profillink
 - Trackerfreie Google-Bewertungsübersicht mit manuell gepflegter, datierter Gesamtbewertung
+- Aus Wix übernommene Service- und Diagnosepreise mit transparentem Kostenvorbehalt
+- Verifizierte Instagram- und TikTok-Profile als einfache, nicht eingebettete Links
 
 Vor dem produktiven Merge durch den Betreiber prüfen:
 

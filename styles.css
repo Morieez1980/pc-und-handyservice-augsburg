@@ -46,3 +46,16 @@ html{background:var(--ink);scrollbar-color:#334669 #070c16}body{color:var(--text
 /* Consent and error-page controls */
 .consent-banner{position:fixed;z-index:300;left:20px;right:20px;bottom:20px;max-width:980px;margin:auto;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:24px;background:#0b1425;border:1px solid rgba(109,140,255,.4);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.55);color:#f1f4fa}.consent-banner strong{font-family:var(--display);font-size:18px}.consent-banner p{margin:7px 0 0;color:#a8b4c5;max-width:650px}.consent-banner a{color:#8fa8ff;text-decoration:underline}.consent-actions,.legal-actions{display:flex;gap:12px;flex-wrap:wrap}.privacy-settings{padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}.privacy-settings:hover{color:var(--cyan)}.legal-actions{margin-top:28px}.legal-actions .button-outline{border-color:rgba(143,168,255,.45);color:#dbe4ff!important;text-decoration:none}
 @media (max-width:700px){.consent-banner{align-items:stretch;flex-direction:column;padding:18px}.consent-actions .button{flex:1}.legal-actions{flex-direction:column}.legal-actions .button{width:100%}}
+
+/* Servicepreise */
+.pricing{background:linear-gradient(180deg,#f5f3ed 0%,#eef3ff 100%)}
+.price-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.price-card{min-height:180px;padding:30px;background:#fff;border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;box-shadow:0 14px 38px rgba(7,17,31,.06);transition:.25s}
+.price-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.price-card h3{font-family:var(--display);font-size:21px;line-height:1.25;margin:0 0 9px}
+.price-card p{color:var(--muted);font-size:14px;margin:0}
+.price-card>strong{font-family:var(--display);font-size:30px;color:var(--blue)}
+.price-card>strong small{font-size:13px;color:var(--muted);margin-left:3px}
+.pricing-note{max-width:900px;margin:28px 0 0;color:#526075;font-size:14px}
+@media(max-width:900px){.price-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.price-grid{grid-template-columns:1fr}.price-card{min-height:0}}

@@ -7,7 +7,7 @@
   X-Permitted-Cross-Domain-Policies: none
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; manifest-src 'self'; object-src 'none'; script-src 'self' 'sha256-df8gzV4pxqjsv7UYGXyfwT09+lP0cpEPBG/SRC1EiGA=' https://www.clarity.ms; style-src 'self'; worker-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; manifest-src 'self'; object-src 'none'; script-src 'self' 'sha256-qCoaouVgTc1u/3fg2HrSsg0Tsh3xi69kZsnQsQXy5WM=' https://www.clarity.ms; style-src 'self'; worker-src 'none'; upgrade-insecure-requests
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate

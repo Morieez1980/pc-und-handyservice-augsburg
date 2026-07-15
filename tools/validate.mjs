@@ -74,7 +74,10 @@ for (const marker of [
 for (const link of [
   'impressum.html', 'datenschutz.html',
   'https://share.google/57mrs7jE79LUInKVg',
-  'https://share.google/2mQbAIfJoIab9YR3G'
+  'https://share.google/2mQbAIfJoIab9YR3G',
+  'https://www.instagram.com/pc_handyservice_maurice_keil/',
+  'https://www.tiktok.com/@pcundhandyreparaturaugsb',
+  'id="preise"'
 ]) {
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
@@ -99,9 +102,9 @@ if (!jsonLdMatch) {
 }
 
 const canonicals = {
-  'index.html': 'https://pc-und-handyservice-augsburg.pages.dev/',
-  'impressum.html': 'https://pc-und-handyservice-augsburg.pages.dev/impressum.html',
-  'datenschutz.html': 'https://pc-und-handyservice-augsburg.pages.dev/datenschutz.html'
+  'index.html': 'https://www.pc-und-handyservice-augsburg.com/',
+  'impressum.html': 'https://www.pc-und-handyservice-augsburg.com/impressum.html',
+  'datenschutz.html': 'https://www.pc-und-handyservice-augsburg.com/datenschutz.html'
 };
 for (const [file, url] of Object.entries(canonicals)) {
   if (!htmlByFile.get(file).includes(`<link rel="canonical" href="${url}">`)) errors.push(`${file}: Canonical URL fehlt oder ist falsch`);
@@ -163,11 +166,11 @@ for (const [file, [width, height]] of Object.entries(pngExpectations)) {
 }
 
 const robots = await readFile('robots.txt', 'utf8');
-if (!robots.includes('User-agent: *') || !robots.includes('Sitemap: https://pc-und-handyservice-augsburg.pages.dev/sitemap.xml')) {
+if (!robots.includes('User-agent: *') || !robots.includes('Sitemap: https://www.pc-und-handyservice-augsburg.com/sitemap.xml')) {
   errors.push('robots.txt: Crawling- oder Sitemap-Angabe fehlt');
 }
 const sitemap = await readFile('sitemap.xml', 'utf8');
-for (const url of [...Object.values(canonicals), 'https://pc-und-handyservice-augsburg.pages.dev/og-image.png']) {
+for (const url of [...Object.values(canonicals), 'https://www.pc-und-handyservice-augsburg.com/og-image.png']) {
   if (!sitemap.includes(url)) errors.push(`sitemap.xml: URL fehlt: ${url}`);
 }
 
