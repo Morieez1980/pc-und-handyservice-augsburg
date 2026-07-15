@@ -64,7 +64,7 @@ for (const [file, html] of htmlByFile) {
 
 const index = htmlByFile.get('index.html');
 for (const marker of [
-  'rel="canonical"', 'property="og:image"', 'og:image:width',
+  'rel="canonical"', 'hreflang="de-DE"', 'hreflang="x-default"', 'property="og:image"', 'og:image:width',
   'name="twitter:card" content="summary_large_image"', 'name="twitter:image"',
   'application/ld+json', 'styles.min.css?v=', 'script.min.js?v=',
   'site.webmanifest?v='
@@ -100,6 +100,9 @@ if (!jsonLdMatch) {
     if (!graph.some((item) => item['@type'] === 'Service' && /RepairService/i.test(item.serviceType ?? ''))) {
       errors.push('index.html: valides RepairService-Service-Schema fehlt');
     }
+    if (!graph.some((item) => item['@type'] === 'WebSite' && item.inLanguage === 'de-DE')) errors.push('index.html: WebSite-Schema fehlt');
+    const faq = graph.find((item) => item['@type'] === 'FAQPage');
+    if (!faq || !Array.isArray(faq.mainEntity) || faq.mainEntity.length !== 5) errors.push('index.html: vollständiges FAQPage-Schema fehlt');
   } catch (error) {
     errors.push(`index.html: JSON-LD ist ungültig: ${error.message}`);
   }
