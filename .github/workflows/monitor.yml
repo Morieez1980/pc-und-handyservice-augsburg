@@ -1,0 +1,62 @@
+name: Production monitor
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-monitor
+  cancel-in-progress: true
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check production endpoints
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://pc-und-handyservice-augsburg.pages.dev"
+          endpoints=("/" "/impressum.html" "/datenschutz.html" "/robots.txt" "/sitemap.xml" "/site.webmanifest")
+          for endpoint in "${endpoints[@]}"; do
+            code="$(curl --silent --show-error --location --retry 3 --output /dev/null --write-out '%{http_code}' "${base}${endpoint}")"
+            if [[ "$code" != "200" ]]; then
+              echo "${endpoint} returned HTTP ${code}"
+              exit 1
+            fi
+          done
+
+      - name: Check security and cache headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://pc-und-handyservice-augsburg.pages.dev"
+          headers="$(curl --silent --show-error --head --location --retry 3 "${base}/")"
+          for header in strict-transport-security content-security-policy x-content-type-options referrer-policy permissions-policy; do
+            if ! printf '%s\n' "$headers" | grep --ignore-case --quiet "^${header}:"; then
+              echo "Missing security header: ${header}"
+              exit 1
+            fi
+          done
+          asset_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/styles.css?v=9fb1746")"
+          if ! printf '%s\n' "$asset_headers" | grep --ignore-case --quiet '^cache-control:.*max-age=0'; then
+            echo "Mutable assets are not configured for immediate revalidation"
+            exit 1
+          fi
+
+      - name: Check production content
+        shell: bash
+        run: |
+          set -euo pipefail
+          page="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/")"
+          for marker in 'PC & Handyservice Augsburg' 'itemprop="sameAs"' 'site.webmanifest?v=' 'script.js?v='; do
+            if ! printf '%s\n' "$page" | grep --fixed-strings --quiet "$marker"; then
+              echo "Missing production marker: ${marker}"
+              exit 1
+            fi
+          done
