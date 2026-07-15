@@ -30,7 +30,7 @@ for (const file of htmlFiles) {
   if (!html.includes('styles.min.css?v=')) errors.push(`${file}: minifiziertes CSS wird nicht genutzt`);
   if (!html.includes('rel="apple-touch-icon"')) errors.push(`${file}: Apple-Touch-Icon fehlt`);
   if (!html.includes('clarity-consent.min.js?v=')) errors.push(`${file}: vorbereitete Clarity-Consent-Integration fehlt`);
-  if (!html.includes('data-clarity-project=""') && !/data-clarity-project="[a-z0-9]{6,32}"/i.test(html)) errors.push(`${file}: Clarity-Projektkonfiguration fehlt`);
+  if (!html.includes('data-clarity-project="xn1s7qrbvj"')) errors.push(`${file}: aktive Clarity-Projekt-ID fehlt oder ist falsch`);
   const externalTabs = html.match(/<a\b[^>]*target=["']_blank["'][^>]*>/gi) ?? [];
   for (const anchor of externalTabs) {
     if (!/rel=["'][^"']*noopener[^"']*noreferrer[^"']*["']/i.test(anchor)) {
@@ -137,7 +137,7 @@ if (clarity.indexOf('loadClarity()') < clarity.indexOf("choice === 'granted'")) 
   errors.push('clarity-consent.js: Clarity darf nicht vor einer Einwilligung geladen werden');
 }
 const microsoftGuide = await readFile('MICROSOFT-INTEGRATIONS.md', 'utf8');
-if (!microsoftGuide.includes('msvalidate.01') || !microsoftGuide.includes('ECHTE_PROJEKT_ID')) {
+if (!microsoftGuide.includes('msvalidate.01') || !microsoftGuide.includes('xn1s7qrbvj')) {
   errors.push('MICROSOFT-INTEGRATIONS.md: Clarity- oder Bing-Aktivierungsanleitung unvollständig');
 }
 
