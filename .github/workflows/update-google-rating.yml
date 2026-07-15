@@ -1,0 +1,22 @@
+name: Google-Bewertung aktualisieren
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-google-rating
+  cancel-in-progress: false
+
+jobs:
+  update-rating:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+       
