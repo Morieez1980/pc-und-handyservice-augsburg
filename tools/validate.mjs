@@ -2,8 +2,8 @@ import { access, readFile, stat } from 'node:fs/promises';
 import { dirname, extname, join, normalize } from 'node:path';
 
 const requiredFiles = [
-  'index.html', 'impressum.html', 'datenschutz.html', '404.html',
-  'styles.css', 'styles.min.css', 'script.js', 'script.min.js',
+  'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
+  'styles.css', 'styles.min.css', 'request.css', 'request.min.css', 'script.js', 'script.min.js',
   'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
   '_headers', 'robots.txt', 'sitemap.xml', 'favicon.svg',
   'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
@@ -16,7 +16,7 @@ for (const file of requiredFiles) {
   try { await access(file); } catch { errors.push(`Fehlende Datei: ${file}`); }
 }
 
-const htmlFiles = ['index.html', 'impressum.html', 'datenschutz.html', '404.html'];
+const htmlFiles = ['index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html'];
 const htmlByFile = new Map();
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
@@ -52,6 +52,10 @@ for (const [file, html] of htmlByFile) {
     if (target === '/') target = 'index.html';
     else if (target.startsWith('/')) target = target.slice(1);
     else if (rawPath) target = normalize(join(dirname(file), rawPath.split('?')[0]));
+    target = target.split('?')[0];
+    if (!extname(target)) {
+      try { await access(`${target}.html`); target = `${target}.html`; } catch {}
+    }
     try { await access(target); } catch { errors.push(`${file}: interner Link fehlt: ${href}`); continue; }
     if (fragment && extname(target).toLowerCase() === '.html') {
       const targetHtml = htmlByFile.get(target) ?? await readFile(target, 'utf8');
@@ -89,6 +93,23 @@ if (!index.includes('4,9') || !index.includes('81 öffentlich sichtbaren Google-
   errors.push('index.html: Google-Bewertungskennzahl oder Quellenhinweis fehlt');
 }
 
+if (!index.includes('href="/reparaturanfrage"') || !index.includes('mobile-contact-request')) {
+  errors.push('index.html: Reparaturanfrage-Verlinkung fehlt');
+}
+
+const requestPage = htmlByFile.get('reparaturanfrage.html');
+for (const marker of [
+  "id = 'webform991704000000876173'",
+  "name = 'xnQsjsdp'",
+  "name = 'xmIwtLD'",
+  'https://crm.zoho.eu/crm/WebToLeadForm',
+  'Bitte keine Passwörter, Entsperrcodes oder Zugangsdaten',
+  'href="/datenschutz"',
+  'request.min.css?v='
+]) {
+  if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Zoho-/Seitenmarker fehlt: ${marker}`);
+}
+
 const jsonLdMatch = index.match(/<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/i);
 if (!jsonLdMatch) {
   errors.push('index.html: JSON-LD fehlt');
@@ -111,7 +132,8 @@ if (!jsonLdMatch) {
 const canonicals = {
   'index.html': 'https://www.pc-und-handyservice-augsburg.com/',
   'impressum.html': 'https://www.pc-und-handyservice-augsburg.com/impressum.html',
-  'datenschutz.html': 'https://www.pc-und-handyservice-augsburg.com/datenschutz.html'
+  'datenschutz.html': 'https://www.pc-und-handyservice-augsburg.com/datenschutz.html',
+  'reparaturanfrage.html': 'https://www.pc-und-handyservice-augsburg.com/reparaturanfrage'
 };
 for (const [file, url] of Object.entries(canonicals)) {
   if (!htmlByFile.get(file).includes(`<link rel="canonical" href="${url}">`)) errors.push(`${file}: Canonical URL fehlt oder ist falsch`);
@@ -121,12 +143,13 @@ const script = await readFile('script.js', 'utf8');
 if (!script.includes("'addEventListener' in desktopQuery") || !script.includes('addListener(handleDesktopChange)')) {
   errors.push('script.js: kompatibler MediaQuery-Fallback fehlt');
 }
-const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceClaritySize, minClaritySize] = await Promise.all([
+const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceRequestCssSize, minRequestCssSize, sourceClaritySize, minClaritySize] = await Promise.all([
   stat('script.js'), stat('script.min.js'), stat('styles.css'), stat('styles.min.css'),
-  stat('clarity-consent.js'), stat('clarity-consent.min.js')
+  stat('request.css'), stat('request.min.css'), stat('clarity-consent.js'), stat('clarity-consent.min.js')
 ]);
 if (minScriptSize.size >= sourceScriptSize.size) errors.push('script.min.js: Datei ist nicht kleiner als die Quelle');
 if (minCssSize.size >= sourceCssSize.size) errors.push('styles.min.css: Datei ist nicht kleiner als die Quelle');
+if (minRequestCssSize.size >= sourceRequestCssSize.size) errors.push('request.min.css: Datei ist nicht kleiner als die Quelle');
 if (minClaritySize.size >= sourceClaritySize.size) errors.push('clarity-consent.min.js: Datei ist nicht kleiner als die Quelle');
 
 const clarity = await readFile('clarity-consent.js', 'utf8');
@@ -189,6 +212,8 @@ for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'P
 if (!/script-src 'self' 'sha256-[A-Za-z0-9+/=]+'/.test(headers)) errors.push('_headers: CSP-Hash für JSON-LD fehlt');
 if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000, immutable')) errors.push('_headers: versionierte Produktionsassets werden nicht langfristig gecacht');
 if (!headers.includes('https://*.clarity.ms') || !headers.includes('https://www.clarity.ms')) errors.push('_headers: Clarity-CSP-Vorbereitung fehlt');
+if (!headers.includes('https://crm.zoho.eu') || !headers.includes('sha256-q7hvDZ8BCcx+Ak8D3Sj4blQrl82w+bGc/WpiXASXjXA=')) errors.push('_headers: Zoho-CSP-Freigabe fehlt');
+if (!headers.includes('/request.min.css')) errors.push('_headers: Cache-Regel für das Reparaturanfrage-Stylesheet fehlt');
 if (!headers.includes('max-age=86400, stale-while-revalidate=604800')) errors.push('_headers: stabile Bildassets haben keine sichere Revalidierungsstrategie');
 
 if (errors.length) {

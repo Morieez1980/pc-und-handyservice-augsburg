@@ -7,7 +7,7 @@
   X-Permitted-Cross-Domain-Policies: none
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; manifest-src 'self'; object-src 'none'; script-src 'self' 'sha256-aUW8vvqTM2cfK0g/5xBB6gYOUbNgEP4ioDRK6pmrxdI=' https://www.clarity.ms; style-src 'self'; worker-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com https://crm.zoho.eu; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; manifest-src 'self'; object-src 'none'; script-src 'self' 'sha256-aUW8vvqTM2cfK0g/5xBB6gYOUbNgEP4ioDRK6pmrxdI=' 'sha256-q7hvDZ8BCcx+Ak8D3Sj4blQrl82w+bGc/WpiXASXjXA=' https://www.clarity.ms; style-src 'self' 'unsafe-inline'; worker-src 'none'; upgrade-insecure-requests
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
@@ -16,6 +16,12 @@
   Cache-Control: public, max-age=0, must-revalidate
 
 /styles.min.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/request.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/request.min.css
   Cache-Control: public, max-age=31536000, immutable
 
 /script.js
