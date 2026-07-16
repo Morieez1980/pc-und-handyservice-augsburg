@@ -52,6 +52,7 @@ for (const [file, html] of htmlByFile) {
     if (target === '/') target = 'index.html';
     else if (target.startsWith('/')) target = target.slice(1);
     else if (rawPath) target = normalize(join(dirname(file), rawPath.split('?')[0]));
+    target = target.split('?')[0];
     if (!extname(target)) {
       try { await access(`${target}.html`); target = `${target}.html`; } catch {}
     }
