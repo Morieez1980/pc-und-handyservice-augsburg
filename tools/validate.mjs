@@ -4,6 +4,8 @@ import { dirname, extname, join, normalize } from 'node:path';
 const requiredFiles = [
   'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
   'styles.css', 'styles.min.css', 'request.css', 'request.min.css', 'script.js', 'script.min.js',
+  'qr.min.css', 'qr-print.js', 'qr-reparaturanfrage.png', 'google-qr-reparaturanfrage.jpg',
+  'qr-schild-reparaturanfrage.html', 'google-qr-reparaturanfrage.html',
   'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
   '_headers', 'robots.txt', 'sitemap.xml', 'favicon.svg',
   'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
@@ -83,8 +85,11 @@ for (const link of [
   'https://www.tiktok.com/@pcundhandyreparaturaugsb',
   'https://www.facebook.com/profile.php?id=61588640742328',
   'https://wa.me/4915254530080',
+  'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen',
   'id="preise"',
-  'id="social-media"'
+  'id="social-media"',
+  'id="qr-reparaturanfrage"',
+  'src="/qr-reparaturanfrage.png"'
 ]) {
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
@@ -105,7 +110,10 @@ for (const marker of [
   'https://crm.zoho.eu/crm/WebToLeadForm',
   'Bitte keine Passwörter, Entsperrcodes oder Zugangsdaten',
   'href="/datenschutz"',
-  'request.min.css?v='
+  'request.min.css?v=',
+  'qr.min.css?v=',
+  'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen',
+  'src="/qr-reparaturanfrage.png"'
 ]) {
   if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Zoho-/Seitenmarker fehlt: ${marker}`);
 }
@@ -185,7 +193,8 @@ const pngExpectations = {
   'icon-192.png': [192, 192],
   'icon-512.png': [512, 512],
   'icon-maskable-512.png': [512, 512],
-  'og-image.png': [1200, 630]
+  'og-image.png': [1200, 630],
+  'qr-reparaturanfrage.png': [1000, 1000]
 };
 for (const [file, [width, height]] of Object.entries(pngExpectations)) {
   const bytes = await readFile(file);
@@ -193,6 +202,11 @@ for (const [file, [width, height]] of Object.entries(pngExpectations)) {
   if (!isPng || bytes.readUInt32BE(16) !== width || bytes.readUInt32BE(20) !== height) {
     errors.push(`${file}: PNG-Format oder Abmessungen sind falsch`);
   }
+}
+
+const googleQrImage = await readFile('google-qr-reparaturanfrage.jpg');
+if (googleQrImage.length < 50000 || googleQrImage[0] !== 0xff || googleQrImage[1] !== 0xd8) {
+  errors.push('google-qr-reparaturanfrage.jpg: JPEG-Format oder Dateigröße ist falsch');
 }
 
 const robots = await readFile('robots.txt', 'utf8');
@@ -214,6 +228,7 @@ if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000,
 if (!headers.includes('https://*.clarity.ms') || !headers.includes('https://www.clarity.ms')) errors.push('_headers: Clarity-CSP-Vorbereitung fehlt');
 if (!headers.includes('https://crm.zoho.eu') || !headers.includes('sha256-q7hvDZ8BCcx+Ak8D3Sj4blQrl82w+bGc/WpiXASXjXA=')) errors.push('_headers: Zoho-CSP-Freigabe fehlt');
 if (!headers.includes('/request.min.css')) errors.push('_headers: Cache-Regel für das Reparaturanfrage-Stylesheet fehlt');
+if (!headers.includes('/qr.min.css')) errors.push('_headers: Cache-Regel für das QR-Stylesheet fehlt');
 if (!headers.includes('max-age=86400, stale-while-revalidate=604800')) errors.push('_headers: stabile Bildassets haben keine sichere Revalidierungsstrategie');
 
 if (errors.length) {
