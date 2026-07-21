@@ -104,10 +104,8 @@ if (!index.includes('href="/reparaturanfrage"') || !index.includes('mobile-conta
 
 const requestPage = htmlByFile.get('reparaturanfrage.html');
 for (const marker of [
-  "id = 'webform991704000000876173'",
-  "name = 'xnQsjsdp'",
-  "name = 'xmIwtLD'",
-  'https://crm.zoho.eu/crm/WebToLeadForm',
+  'class="request-form-frame"',
+  'title="Reparatur online anfragen"',
   'Bitte keine Passwörter, Entsperrcodes oder Zugangsdaten',
   'href="/datenschutz"',
   'request.min.css?v=',
@@ -115,7 +113,10 @@ for (const marker of [
   'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen',
   'src="/qr-reparaturanfrage.png"'
 ]) {
-  if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Zoho-/Seitenmarker fehlt: ${marker}`);
+  if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Bigin-/Seitenmarker fehlt: ${marker}`);
+}
+if (requestPage.includes('crm.zoho.eu/crm/WebToLeadForm') || requestPage.includes('crmWebToEntityForm')) {
+  errors.push('reparaturanfrage.html: altes Zoho-CRM-Formular ist noch eingebunden');
 }
 
 const jsonLdMatch = index.match(/<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/i);
@@ -226,7 +227,7 @@ for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'P
 if (!/script-src 'self' 'sha256-[A-Za-z0-9+/=]+'/.test(headers)) errors.push('_headers: CSP-Hash für JSON-LD fehlt');
 if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000, immutable')) errors.push('_headers: versionierte Produktionsassets werden nicht langfristig gecacht');
 if (!headers.includes('https://*.clarity.ms') || !headers.includes('https://www.clarity.ms')) errors.push('_headers: Clarity-CSP-Vorbereitung fehlt');
-if (!headers.includes('https://crm.zoho.eu') || !headers.includes('sha256-q7hvDZ8BCcx+Ak8D3Sj4blQrl82w+bGc/WpiXASXjXA=')) errors.push('_headers: Zoho-CSP-Freigabe fehlt');
+if (!headers.includes('frame-src https://eu.bigin.online')) errors.push('_headers: Bigin-Frame-Freigabe fehlt');
 if (!headers.includes('/request.min.css')) errors.push('_headers: Cache-Regel für das Reparaturanfrage-Stylesheet fehlt');
 if (!headers.includes('/qr.min.css')) errors.push('_headers: Cache-Regel für das QR-Stylesheet fehlt');
 if (!headers.includes('max-age=86400, stale-while-revalidate=604800')) errors.push('_headers: stabile Bildassets haben keine sichere Revalidierungsstrategie');
