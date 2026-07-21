@@ -24,7 +24,7 @@ jobs:
         run: |
           set -euo pipefail
           base="https://pc-und-handyservice-augsburg.pages.dev"
-          endpoints=("/" "/impressum.html" "/datenschutz.html" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js")
+          endpoints=("/" "/reparaturanfrage" "/impressum.html" "/datenschutz.html" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js")
           for attempt in {1..18}; do
             all_ready=true
             for endpoint in "${endpoints[@]}"; do
@@ -79,3 +79,19 @@ jobs:
               exit 1
             fi
           done
+
+      - name: Check production repair form
+        shell: bash
+        run: |
+          set -euo pipefail
+          page="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/reparaturanfrage")"
+          for marker in 'class="request-form-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v='; do
+            if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
+              echo "Missing repair-form marker: ${marker}"
+              exit 1
+            fi
+          done
+          if grep --fixed-strings --quiet 'crmWebToEntityForm' <<< "$page"; then
+            echo "Legacy Zoho CRM form is still present in production"
+            exit 1
+          fi

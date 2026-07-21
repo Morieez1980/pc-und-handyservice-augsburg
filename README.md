@@ -21,7 +21,7 @@ Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deploym
 
 ## Sicherheit und Rechtliches
 
-- Keine extern eingebundenen Skripte, Bilder, Schriftarten, Tracker oder Formulare
+- Keine extern eingebundenen Schriftarten oder Bilder; das Bigin-Formular wird ausschließlich auf der Reparaturanfrage-Seite eingebettet
 - Strenge Content Security Policy, HSTS, Frame-Schutz und eingeschränkte Browserberechtigungen
 - Automatische Website- und Sicherheitsprüfung bei jedem Pull Request
 - Tastaturfreundliche Mobilnavigation und installierbare Web-App-Metadaten
