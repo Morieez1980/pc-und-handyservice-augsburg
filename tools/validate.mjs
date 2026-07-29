@@ -85,11 +85,11 @@ for (const link of [
   'https://www.tiktok.com/@pcundhandyreparaturaugsb',
   'https://www.facebook.com/profile.php?id=61588640742328',
   'https://wa.me/4915254530080',
-  'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen',
+  'href="/reparaturanfrage"',
   'id="preise"',
   'id="social-media"',
   'id="qr-reparaturanfrage"',
-  'src="/qr-reparaturanfrage.png"'
+  'src="/qr-reparaturanfrage.png'
 ]) {
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
@@ -111,7 +111,7 @@ for (const marker of [
   'request.min.css?v=',
   'qr.min.css?v=',
   'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen',
-  'src="/qr-reparaturanfrage.png"'
+  'src="/qr-reparaturanfrage.png'
 ]) {
   if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Bigin-/Seitenmarker fehlt: ${marker}`);
 }
