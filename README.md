@@ -32,7 +32,7 @@ Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deploym
 - Kompositorische Animationen und optimierte Cache-Strategie für versionierte Assets
 - Sicherheitsmeldungen über `SECURITY.md` und `/.well-known/security.txt`
 - Impressum nach § 5 DDG und Datenschutzhinweise für Cloudflare Pages, E-Mail/Telefon und den freiwilligen Google-Profillink
-- Trackerfreie Google-Bewertungsübersicht mit manuell gepflegter, datierter Gesamtbewertung
+- Datenschutzfreundliche Google-Bewertungsübersicht mit bedarfsgesteuerter serverseitiger Aktualisierung und statischem Fallback
 - Service- und Diagnosepreise mit transparentem Kostenvorbehalt
 - Verifizierte Instagram-, TikTok- und Facebook-Profile sowie direkter WhatsApp-Kontakt als einfache, nicht eingebettete Links
 
@@ -42,4 +42,5 @@ Vor dem produktiven Merge durch den Betreiber prüfen:
 - Registereintrag und Registernummer ergänzen, falls vorhanden
 - Cloudflare Data Processing Addendum im Cloudflare-Konto bestätigen und dokumentieren
 - Rechtstexte bei Änderungen an Hosting, Tracking, Formularen, Karten, Terminbuchung oder weiteren Drittanbietern aktualisieren
-- Google-Gesamtbewertung, Anzahl und Stichtag regelmäßig mit dem öffentlichen Unternehmensprofil abgleichen
+- In Cloudflare Pages die verschlüsselten Variablen `GOOGLE_MAPS_API_KEY` und `GOOGLE_PLACE_ID` für Produktion und Vorschau hinterlegen
+- Google Maps Platform-Budgetwarnungen und API-Kontingente regelmäßig kontrollieren

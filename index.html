@@ -268,6 +268,7 @@
   <link rel="stylesheet" href="request.min.css?v=20260721-1">
   <link rel="stylesheet" href="qr.min.css?v=20260719-1">
   <script defer src="script.min.js?v=20260716-3"></script>
+  <script defer src="google-rating.min.js?v=20260801-1"></script>
   <script defer src="clarity-consent.min.js?v=20260716-3"></script>
 </head>
 <body class="has-mobile-contact">
@@ -412,14 +413,14 @@
       </div>
     </section>
 
-    <section class="section reviews" id="bewertungen">
+    <section class="section reviews" id="bewertungen" data-google-rating-widget>
       <div class="reviews-summary reveal">
         <p class="eyebrow"><span></span> Google-Bewertungen</p>
         <h2>Bewertungen auf einen Blick</h2>
-        <div class="rating-line"><strong>4,9</strong><span><b aria-hidden="true">★★★★★</b><small>von 5 Sternen</small></span></div>
-        <p>Basierend auf 81 öffentlich sichtbaren Google-Rezensionen. Stand: 15. Juli 2026.</p>
-        <a class="button button-primary" href="https://share.google/2mQbAIfJoIab9YR3G" target="_blank" rel="noopener noreferrer external">Alle Google-Bewertungen ansehen ↗</a>
-        <small class="google-disclaimer">Google und das Google-Logo sind Marken von Google LLC. Die Bewertungszahl wird manuell und ohne Tracking eingebunden.</small>
+        <div class="rating-line"><strong data-google-rating>4,9</strong><span><b aria-hidden="true">★★★★★</b><small>von 5 Sternen</small></span></div>
+        <p>Basierend auf <span data-google-review-count>81</span> öffentlich sichtbaren Google-Rezensionen. <span data-google-rating-status aria-live="polite">Zuletzt manuell geprüft: 15. Juli 2026.</span></p>
+        <a class="button button-primary" href="https://share.google/2mQbAIfJoIab9YR3G" target="_blank" rel="noopener noreferrer external">Alle Google-Bewertungen bei Google Maps ansehen ↗</a>
+        <small class="google-disclaimer">Bewertung und Anzahl werden bei Bedarf serverseitig über die Google Maps Platform aktualisiert. Ihr Browser stellt dabei keine direkte Verbindung zu Google her. Google Maps ist eine Marke von Google LLC.</small>
       </div>
       <div class="review-themes" aria-label="Häufig genannte Themen in Google-Rezensionen">
         <article class="review-theme reveal"><span aria-hidden="true">⚡</span><div><h3>Schnelle Hilfe</h3><p>Kundinnen und Kunden heben besonders kurze Reaktions- und Bearbeitungszeiten hervor.</p></div></article>
