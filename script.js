@@ -37,6 +37,40 @@ window.addEventListener('scroll', () => header?.classList.toggle('scrolled', win
 
 document.querySelectorAll('[data-year]').forEach((node) => { node.textContent = new Date().getFullYear(); });
 
+const googleReviewCount = document.querySelector('[data-google-review-count]');
+const googleReviewRating = document.querySelector('[data-google-rating]');
+const googleReviewDate = document.querySelector('[data-google-review-date]');
+
+if (googleReviewCount && googleReviewRating && googleReviewDate) {
+  fetch('/api/google-reviews', { headers: { Accept: 'application/json' } })
+    .then((response) => {
+      if (!response.ok) throw new Error('Bewertungsdaten nicht verfügbar');
+      return response.json();
+    })
+    .then((data) => {
+      if (!Number.isInteger(data.reviewCount) || data.reviewCount < 0) return;
+      if (typeof data.rating !== 'number' || data.rating < 0 || data.rating > 5) return;
+
+      googleReviewCount.textContent = new Intl.NumberFormat('de-DE').format(data.reviewCount);
+      googleReviewRating.textContent = data.rating.toLocaleString('de-DE', {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+
+      const updatedAt = new Date(data.updatedAt);
+      if (!Number.isNaN(updatedAt.getTime())) {
+        googleReviewDate.textContent = new Intl.DateTimeFormat('de-DE', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        }).format(updatedAt);
+      }
+    })
+    .catch(() => {
+      // Der im HTML hinterlegte, zuletzt geprüfte Wert bleibt sichtbar.
+    });
+}
+
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (reduceMotion || !('IntersectionObserver' in window)) {
   document.querySelectorAll('.reveal').forEach((node) => node.classList.add('visible'));
