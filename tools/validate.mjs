@@ -7,6 +7,7 @@ const requiredFiles = [
   'qr.min.css', 'qr-print.js', 'qr-reparaturanfrage.png', 'google-qr-reparaturanfrage.jpg',
   'qr-schild-reparaturanfrage.html', 'google-qr-reparaturanfrage.html',
   'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
+  'functions/api/google-reviews.js',
   '_headers', 'robots.txt', 'sitemap.xml', 'favicon.svg',
   'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'icon-maskable-512.png', 'og-image.png', 'site.webmanifest',
@@ -94,7 +95,7 @@ for (const link of [
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
 if ((index.match(/class="social-card/g) ?? []).length !== 4) errors.push('index.html: vier sichtbare Social- und Kontaktkarten fehlen');
-if (!index.includes('4,9') || !index.includes('81 öffentlich sichtbaren Google-Rezensionen')) {
+if (!index.includes('4,9') || !index.includes('data-google-review-count>83</span>') || !index.includes('data-google-review-date')) {
   errors.push('index.html: Google-Bewertungskennzahl oder Quellenhinweis fehlt');
 }
 
@@ -151,6 +152,13 @@ for (const [file, url] of Object.entries(canonicals)) {
 const script = await readFile('script.js', 'utf8');
 if (!script.includes("'addEventListener' in desktopQuery") || !script.includes('addListener(handleDesktopChange)')) {
   errors.push('script.js: kompatibler MediaQuery-Fallback fehlt');
+}
+for (const marker of ["fetch('/api/google-reviews'", 'data.reviewCount', 'data.rating', 'data.updatedAt']) {
+  if (!script.includes(marker)) errors.push(`script.js: automatische Google-Bewertungsanzeige unvollständig: ${marker}`);
+}
+const googleReviewsFunction = await readFile('functions/api/google-reviews.js', 'utf8');
+for (const marker of ['GOOGLE_PLACES_API_KEY', 'GOOGLE_PLACE_ID', 'userRatingCount', 'Cache-Control']) {
+  if (!googleReviewsFunction.includes(marker)) errors.push(`functions/api/google-reviews.js: Marker fehlt: ${marker}`);
 }
 const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceRequestCssSize, minRequestCssSize, sourceClaritySize, minClaritySize] = await Promise.all([
   stat('script.js'), stat('script.min.js'), stat('styles.css'), stat('styles.min.css'),
