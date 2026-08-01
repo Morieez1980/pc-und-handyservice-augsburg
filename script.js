@@ -42,7 +42,7 @@ const googleReviewRating = document.querySelector('[data-google-rating]');
 const googleReviewDate = document.querySelector('[data-google-review-date]');
 
 if (googleReviewCount && googleReviewRating && googleReviewDate) {
-  fetch('/api/google-reviews', { headers: { Accept: 'application/json' } })
+  fetch('/api/review-summary', { headers: { Accept: 'application/json' } })
     .then((response) => {
       if (!response.ok) throw new Error('Bewertungsdaten nicht verfügbar');
       return response.json();
