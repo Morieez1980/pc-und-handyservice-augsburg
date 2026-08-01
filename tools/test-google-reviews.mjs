@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { onRequestGet } from '../functions/api/google-reviews.js';
+import { onRequestGet } from '../functions/api/review-summary.js';
 
 const response = await onRequestGet({ env: {} });
 const body = await response.json();
