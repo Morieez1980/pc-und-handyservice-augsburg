@@ -7,7 +7,7 @@ const requiredFiles = [
   'qr.min.css', 'qr-print.js', 'qr-reparaturanfrage.png', 'google-qr-reparaturanfrage.jpg',
   'qr-schild-reparaturanfrage.html', 'google-qr-reparaturanfrage.html',
   'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
-  'functions/api/google-reviews.js',
+  'functions/api/review-summary.js',
   '_headers', 'robots.txt', 'sitemap.xml', 'favicon.svg',
   'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'icon-maskable-512.png', 'og-image.png', 'site.webmanifest',
@@ -153,12 +153,12 @@ const script = await readFile('script.js', 'utf8');
 if (!script.includes("'addEventListener' in desktopQuery") || !script.includes('addListener(handleDesktopChange)')) {
   errors.push('script.js: kompatibler MediaQuery-Fallback fehlt');
 }
-for (const marker of ["fetch('/api/google-reviews'", 'data.reviewCount', 'data.rating', 'data.updatedAt']) {
+for (const marker of ["fetch('/api/review-summary'", 'data.reviewCount', 'data.rating', 'data.updatedAt']) {
   if (!script.includes(marker)) errors.push(`script.js: automatische Google-Bewertungsanzeige unvollständig: ${marker}`);
 }
-const googleReviewsFunction = await readFile('functions/api/google-reviews.js', 'utf8');
+const googleReviewsFunction = await readFile('functions/api/review-summary.js', 'utf8');
 for (const marker of ['GOOGLE_PLACES_API_KEY', 'GOOGLE_PLACE_ID', 'userRatingCount', 'Cache-Control']) {
-  if (!googleReviewsFunction.includes(marker)) errors.push(`functions/api/google-reviews.js: Marker fehlt: ${marker}`);
+  if (!googleReviewsFunction.includes(marker)) errors.push(`functions/api/review-summary.js: Marker fehlt: ${marker}`);
 }
 const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceRequestCssSize, minRequestCssSize, sourceClaritySize, minClaritySize] = await Promise.all([
   stat('script.js'), stat('script.min.js'), stat('styles.css'), stat('styles.min.css'),
