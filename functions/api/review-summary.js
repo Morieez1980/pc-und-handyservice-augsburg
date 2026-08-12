@@ -1,7 +1,7 @@
 const FALLBACK = Object.freeze({
   rating: 4.9,
-  reviewCount: 83,
-  updatedAt: '2026-08-01T00:00:00+02:00'
+  reviewCount: 86,
+  updatedAt: '2026-08-12T00:00:00+02:00'
 });
 
 const responseHeaders = {
