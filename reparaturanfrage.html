@@ -33,10 +33,10 @@
   <link rel="alternate" hreflang="de-DE" href="https://www.pc-und-handyservice-augsburg.com/reparaturanfrage">
   <link rel="alternate" hreflang="x-default" href="https://www.pc-und-handyservice-augsburg.com/reparaturanfrage">
   <link rel="stylesheet" href="/styles.min.css?v=20260729-1">
-  <link rel="stylesheet" href="/request.min.css?v=20260721-1">
-  <link rel="stylesheet" href="/qr.min.css?v=20260719-1">
+  <link rel="stylesheet" href="/request.min.css?v=20260902-1">
   <script defer src="/script.min.js?v=20260801-1"></script>
   <script defer src="/clarity-consent.min.js?v=20260716-3"></script>
+  <script defer src="/repair-form.min.js?v=20260902-1"></script>
 </head>
 <body class="request-page has-mobile-contact">
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -59,41 +59,124 @@
   </header>
   <main id="main" class="request-main">
     <section class="request-intro" aria-labelledby="request-title">
-      <p class="eyebrow"><span></span> Direkte Anfrage</p>
-      <h1 id="request-title">Reparatur online <em>anfragen</em></h1>
-      <p class="hero-lead">Beschreiben Sie kurz Ihr Gerät und den Fehler. Ihre Anfrage wird direkt an PC & Handyservice Augsburg übermittelt. Wir melden uns schnellstmöglich bei Ihnen.</p>
-      <p class="request-notice"><strong>Wichtiger Hinweis:</strong> Bitte keine Passwörter, Entsperrcodes oder Zugangsdaten in das Formular eintragen.</p>
-      <p class="request-privacy">Informationen zur Verarbeitung Ihrer Daten finden Sie in unserer <a href="/datenschutz">Datenschutzerklärung</a>.</p>
-    </section>
-    <aside class="request-qr-access" aria-label="Reparaturanfrage per QR-Code">
-      <img src="/qr-reparaturanfrage.png?v=20260729-1" width="1000" height="1000" decoding="async" alt="QR-Code zum mobilen Bigin-Reparaturformular">
       <div>
-        <p class="eyebrow"><span></span> Auf einem anderen Gerät fortsetzen</p>
-        <h2>QR-Code scannen</h2>
-        <p>Öffnen Sie damit unser mobiles Reparaturformular direkt auf Ihrem Smartphone.</p>
-        <a class="button button-primary" href="https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen" target="_blank" rel="noopener noreferrer external">Mobiles Formular öffnen ↗</a>
+        <p class="eyebrow"><span></span> Direkte Reparaturanfrage</p>
+        <h1 id="request-title">In wenigen Schritten <em>erledigt.</em></h1>
+        <p class="hero-lead">Gerät und Fehler kurz beschreiben, Kontaktdaten ergänzen und absenden. Die Anfrage wird direkt als Reparaturauftrag in unserem Bigin-System erfasst.</p>
       </div>
-    </aside>
-    <section class="request-form-shell" aria-labelledby="request-form-title">
-      <div class="request-form-heading">
-        <p class="eyebrow"><span></span> Sichere Online-Anfrage</p>
-        <h2 id="request-form-title">Reparaturanfrage ausfüllen</h2>
-        <p>Ihre Angaben werden direkt und übersichtlich in unserem Reparaturprozess erfasst.</p>
+      <div class="request-trust" aria-label="Vorteile">
+        <span>Schnell ausgefüllt</span><span>Direkt übermittelt</span><span>Persönliche Rückmeldung</span>
       </div>
-      <iframe
-        class="request-form-frame"
-        src="https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen"
-        title="Reparatur online anfragen"
-        loading="eager"
-        referrerpolicy="strict-origin-when-cross-origin"
-      ></iframe>
-      <p class="request-form-fallback">Falls das Formular nicht angezeigt wird, <a href="https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen" target="_blank" rel="noopener noreferrer">öffnen Sie es hier in einem neuen Fenster</a>.</p>
     </section>
+
+    <div class="request-layout">
+      <section class="request-form-shell" aria-labelledby="request-form-title">
+        <div class="request-form-heading">
+          <div><p class="eyebrow"><span></span> Online-Anfrage</p><h2 id="request-form-title">Was dürfen wir reparieren?</h2></div>
+          <div class="form-progress" aria-label="Formularfortschritt"><span class="is-active" data-progress-step="1">1</span><i></i><span data-progress-step="2">2</span></div>
+        </div>
+
+        <div class="form-success" data-form-success hidden tabindex="-1">
+          <span class="success-icon" aria-hidden="true">✓</span>
+          <h2>Vielen Dank!</h2>
+          <p>Ihre Reparaturanfrage wurde übermittelt. Wir melden uns schnellstmöglich bei Ihnen.</p>
+          <a class="button button-outline" href="/">Zur Startseite</a>
+        </div>
+
+        <form id="repair-request" class="repair-form" action="https://bigin.zoho.eu/crm/WebForm" method="post" enctype="multipart/form-data" target="bigin-response" accept-charset="UTF-8" novalidate>
+          <input type="hidden" name="xnQsjsdp" value="ade1016d76bde6a0032e5bcbd1ad26df01cdb844ab2d2d1e6e665394df18ed98">
+          <input type="hidden" name="xmIwtLD" value="abbbafdd36abf653dfa68ad8021e33105d5d4a2067430a983958c004eebee1db98c6afd119fcbab18e6a4330460d8dc0">
+          <input type="hidden" name="zc_gad" value="">
+          <input type="hidden" name="actionType" value="UG90ZW50aWFscw==">
+          <input type="hidden" name="returnURL" value="null">
+          <input type="hidden" name="rmsg" value="true">
+          <input type="hidden" name="Pipeline" value="Reparaturaufträge">
+          <input type="hidden" name="Stage" value="Anfrage eingegangen">
+          <input type="hidden" name="Potential Name" value="Neue Reparaturanfrage">
+          <input type="hidden" name="Contacts.Mailing Country" value="Deutschland">
+          <input type="hidden" name="Contacts.Mailing State" value="Bayern">
+          <input id="website-url" class="form-honeypot" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <fieldset class="form-step is-active" data-form-step="1">
+            <legend class="sr-only">Schritt 1: Gerät und Fehler</legend>
+            <div class="field-group">
+              <label for="device-type">Gerätetyp <span aria-hidden="true">*</span></label>
+              <select id="device-type" name="POTENTIALCF1" required>
+                <option value="">Bitte auswählen</option>
+                <option value="Desktop-PC">Desktop-PC</option>
+                <option value="Laptop">Laptop / Notebook</option>
+                <option value="Smartphone">Smartphone</option>
+                <option value="Tablet">Tablet</option>
+                <option value="Konsole">Spielekonsole</option>
+                <option value="Sonstiges">Sonstiges / Datenrettung</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="device-model">Hersteller und Modell <span aria-hidden="true">*</span></label>
+              <input id="device-model" name="POTENTIALCF2" type="text" maxlength="255" placeholder="z. B. Apple iPhone 14 oder Lenovo ThinkPad" required>
+            </div>
+            <div class="field-group field-wide">
+              <label for="description">Was funktioniert nicht? <span aria-hidden="true">*</span></label>
+              <textarea id="description" name="Description" rows="5" maxlength="32000" placeholder="Beschreiben Sie kurz den Fehler und seit wann er auftritt." required></textarea>
+              <p class="field-hint">Bitte keine Passwörter, PINs oder Entsperrcodes eintragen.</p>
+            </div>
+            <div class="form-grid compact-fields">
+              <div class="field-group">
+                <label for="serial-number">Seriennummer <span aria-hidden="true">*</span></label>
+                <input id="serial-number" name="POTENTIALCF3" type="text" maxlength="255" required>
+                <label class="check-row"><input id="serial-unknown" type="checkbox"> <span>Nicht zur Hand</span></label>
+              </div>
+              <div class="field-group" data-imei-field hidden>
+                <label for="imei">IMEI <small>(optional)</small></label>
+                <input id="imei" name="POTENTIALCF17" type="text" inputmode="numeric" maxlength="255">
+              </div>
+            </div>
+            <div class="form-actions form-actions-end"><button class="button button-primary" type="button" data-next-step>Weiter zu Kontaktdaten <span aria-hidden="true">→</span></button></div>
+          </fieldset>
+
+          <fieldset class="form-step" data-form-step="2" hidden>
+            <legend class="sr-only">Schritt 2: Kontakt und Anschrift</legend>
+            <div class="step-copy"><strong>Fast geschafft.</strong><span>Wie können wir Sie zur Reparatur erreichen?</span></div>
+            <div class="form-grid">
+              <div class="field-group"><label for="first-name">Vorname</label><input id="first-name" name="Contacts.First Name" type="text" maxlength="40" autocomplete="given-name"></div>
+              <div class="field-group"><label for="last-name">Nachname <span aria-hidden="true">*</span></label><input id="last-name" name="Contacts.Last Name" type="text" maxlength="80" autocomplete="family-name" required></div>
+              <div class="field-group"><label for="email">E-Mail <span aria-hidden="true">*</span></label><input id="email" name="Contacts.Email" type="email" maxlength="100" autocomplete="email" required></div>
+              <div class="field-group"><label for="phone">Telefonnummer <span aria-hidden="true">*</span></label><input id="phone" name="Contacts.Mobile" type="tel" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="z. B. 0152 12345678" required></div>
+              <div class="field-group field-wide"><label for="company">Firma <small>(optional)</small></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization"></div>
+              <div class="field-group field-wide"><label for="street">Straße und Hausnummer <span aria-hidden="true">*</span></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address" required></div>
+              <div class="field-group field-postcode"><label for="postcode">PLZ <span aria-hidden="true">*</span></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" required></div>
+              <div class="field-group field-city"><label for="city">Ort <span aria-hidden="true">*</span></label><input id="city" name="Contacts.Mailing City" type="text" maxlength="100" autocomplete="address-level2" required></div>
+            </div>
+            <label class="privacy-check"><input id="privacy-acknowledged" type="checkbox" required><span>Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> gelesen und stimme der Übermittlung meiner Angaben zur Bearbeitung der Anfrage zu. <b aria-hidden="true">*</b></span></label>
+            <p class="form-error-summary" data-error-summary role="alert" hidden>Bitte prüfen Sie die markierten Felder.</p>
+            <div class="form-actions">
+              <button class="button button-outline" type="button" data-prev-step><span aria-hidden="true">←</span> Zurück</button>
+              <button class="button button-primary" type="submit" data-submit>Reparaturanfrage senden</button>
+            </div>
+          </fieldset>
+        </form>
+        <iframe class="bigin-response-frame" name="bigin-response" title="Antwort der Formularübermittlung" aria-hidden="true" tabindex="-1"></iframe>
+        <noscript><p class="request-form-fallback">Für das komfortable Formular ist JavaScript erforderlich. Alternativ können Sie das <a href="https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen" target="_blank" rel="noopener noreferrer">Bigin-Formular öffnen</a>.</p></noscript>
+      </section>
+
+      <aside class="request-side" aria-label="Kontakt und QR-Code">
+        <div class="side-card qr-compact">
+          <img src="/qr-reparaturanfrage.png?v=20260902-1" width="1000" height="1000" decoding="async" alt="QR-Code zu dieser Reparaturanfrage">
+          <div><strong>Am Smartphone ausfüllen</strong><p>QR-Code scannen und dieselbe Reparaturanfrage mobil öffnen.</p></div>
+        </div>
+        <div class="side-card contact-card">
+          <p class="eyebrow"><span></span> Lieber persönlich?</p><h2>Wir helfen direkt.</h2>
+          <a href="tel:+4915254530080">0152 54530080</a>
+          <a href="https://wa.me/4915254530080?text=Hallo%2C%20ich%20habe%20eine%20Reparaturanfrage." target="_blank" rel="noopener noreferrer external">Per WhatsApp schreiben ↗</a>
+          <small>In der Regel schnelle persönliche Rückmeldung.</small>
+        </div>
+      </aside>
+    </div>
   </main>
   <aside class="mobile-contact-bar" aria-label="Schnellkontakt">
     <a href="tel:+4915254530080">Anrufen</a>
     <a href="https://wa.me/4915254530080?text=Hallo%2C%20ich%20habe%20eine%20Reparaturanfrage." target="_blank" rel="noopener noreferrer external">WhatsApp</a>
-    <a class="mobile-contact-request" href="/reparaturanfrage">Anfrage starten</a>
+    <a class="mobile-contact-request" href="#repair-request">Anfrage starten</a>
   </aside>
   <footer class="footer">
     <div class="footer-main">

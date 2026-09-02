@@ -4,6 +4,7 @@ import { dirname, extname, join, normalize } from 'node:path';
 const requiredFiles = [
   'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
   'styles.css', 'styles.min.css', 'request.css', 'request.min.css', 'script.js', 'script.min.js',
+  'repair-form.js', 'repair-form.min.js',
   'qr.min.css', 'qr-print.js', 'qr-reparaturanfrage.png', 'google-qr-reparaturanfrage.jpg',
   'qr-schild-reparaturanfrage.html', 'google-qr-reparaturanfrage.html',
   'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
@@ -105,14 +106,16 @@ if (!index.includes('href="/reparaturanfrage"') || !index.includes('mobile-conta
 
 const requestPage = htmlByFile.get('reparaturanfrage.html');
 for (const marker of [
-  'class="request-form-frame"',
-  'title="Reparatur online anfragen"',
-  'Bitte keine Passwörter, Entsperrcodes oder Zugangsdaten',
+  'id="repair-request"',
+  'action="https://bigin.zoho.eu/crm/WebForm"',
+  'Bitte keine Passwörter, PINs oder Entsperrcodes',
   'href="/datenschutz"',
   'request.min.css?v=',
-  'qr.min.css?v=',
+  'repair-form.min.js?v=',
   'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen',
-  'src="/qr-reparaturanfrage.png'
+  'src="/qr-reparaturanfrage.png',
+  'name="Pipeline" value="Reparaturaufträge"',
+  'name="Stage" value="Anfrage eingegangen"'
 ]) {
   if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Bigin-/Seitenmarker fehlt: ${marker}`);
 }
@@ -160,13 +163,15 @@ const googleReviewsFunction = await readFile('functions/api/review-summary.js', 
 for (const marker of ['GOOGLE_PLACES_API_KEY', 'GOOGLE_PLACE_ID', 'userRatingCount', 'Cache-Control']) {
   if (!googleReviewsFunction.includes(marker)) errors.push(`functions/api/review-summary.js: Marker fehlt: ${marker}`);
 }
-const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceRequestCssSize, minRequestCssSize, sourceClaritySize, minClaritySize] = await Promise.all([
+const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceRequestCssSize, minRequestCssSize, sourceRepairScriptSize, minRepairScriptSize, sourceClaritySize, minClaritySize] = await Promise.all([
   stat('script.js'), stat('script.min.js'), stat('styles.css'), stat('styles.min.css'),
-  stat('request.css'), stat('request.min.css'), stat('clarity-consent.js'), stat('clarity-consent.min.js')
+  stat('request.css'), stat('request.min.css'), stat('repair-form.js'), stat('repair-form.min.js'),
+  stat('clarity-consent.js'), stat('clarity-consent.min.js')
 ]);
 if (minScriptSize.size >= sourceScriptSize.size) errors.push('script.min.js: Datei ist nicht kleiner als die Quelle');
 if (minCssSize.size >= sourceCssSize.size) errors.push('styles.min.css: Datei ist nicht kleiner als die Quelle');
 if (minRequestCssSize.size >= sourceRequestCssSize.size) errors.push('request.min.css: Datei ist nicht kleiner als die Quelle');
+if (minRepairScriptSize.size >= sourceRepairScriptSize.size) errors.push('repair-form.min.js: Datei ist nicht kleiner als die Quelle');
 if (minClaritySize.size >= sourceClaritySize.size) errors.push('clarity-consent.min.js: Datei ist nicht kleiner als die Quelle');
 
 const clarity = await readFile('clarity-consent.js', 'utf8');
@@ -235,8 +240,10 @@ for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'P
 if (!/script-src 'self' 'sha256-[A-Za-z0-9+/=]+'/.test(headers)) errors.push('_headers: CSP-Hash für JSON-LD fehlt');
 if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000, immutable')) errors.push('_headers: versionierte Produktionsassets werden nicht langfristig gecacht');
 if (!headers.includes('https://*.clarity.ms') || !headers.includes('https://www.clarity.ms')) errors.push('_headers: Clarity-CSP-Vorbereitung fehlt');
-if (!headers.includes('frame-src https://eu.bigin.online')) errors.push('_headers: Bigin-Frame-Freigabe fehlt');
+if (!headers.includes("form-action 'self' https://bigin.zoho.eu")) errors.push('_headers: Bigin-Formularziel fehlt');
+if (!headers.includes('frame-src https://bigin.zoho.eu https://eu.bigin.online')) errors.push('_headers: Bigin-Frame-Freigabe fehlt');
 if (!headers.includes('/request.min.css')) errors.push('_headers: Cache-Regel für das Reparaturanfrage-Stylesheet fehlt');
+if (!headers.includes('/repair-form.min.js')) errors.push('_headers: Cache-Regel für das Reparaturanfrage-Script fehlt');
 if (!headers.includes('/qr.min.css')) errors.push('_headers: Cache-Regel für das QR-Stylesheet fehlt');
 if (!headers.includes('max-age=86400, stale-while-revalidate=604800')) errors.push('_headers: stabile Bildassets haben keine sichere Revalidierungsstrategie');
 
