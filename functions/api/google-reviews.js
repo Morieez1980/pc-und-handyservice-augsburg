@@ -47,15 +47,15 @@ const authorizedJson = (url, accessToken) => fetchJson(url, {
   }
 });
 
-const selectLocation = (locations, env) => {
+const selectLocation = (candidates, env) => {
   const wantedId = resourceId(env.GOOGLE_BUSINESS_LOCATION_ID);
   const wantedStoreCode = (env.GOOGLE_BUSINESS_STORE_CODE || 'MUC 00052702').trim().toLowerCase();
   const wantedTitle = (env.GOOGLE_BUSINESS_LOCATION_TITLE || 'PC & Handyservice Augsburg').trim().toLowerCase();
 
-  return locations.find((location) => wantedId && resourceId(location.name) === wantedId)
-    ?? locations.find((location) => location.storeCode?.trim().toLowerCase() === wantedStoreCode)
-    ?? locations.find((location) => location.title?.trim().toLowerCase().includes(wantedTitle))
-    ?? (locations.length === 1 ? locations[0] : null);
+  return candidates.find(({ location }) => wantedId && resourceId(location.name) === wantedId)
+    ?? candidates.find(({ location }) => location.storeCode?.trim().toLowerCase() === wantedStoreCode)
+    ?? candidates.find(({ location }) => location.title?.trim().toLowerCase().includes(wantedTitle))
+    ?? (candidates.length === 1 ? candidates[0] : null);
 };
 
 const discoverReviewParent = async (accessToken, env) => {
@@ -72,6 +72,7 @@ const discoverReviewParent = async (accessToken, env) => {
     !wantedAccountId || resourceId(account.name) === wantedAccountId
   ));
 
+  const candidates = [];
   for (const account of accounts) {
     try {
       const url = new URL(`https://mybusinessbusinessinformation.googleapis.com/v1/${account.name}/locations`);
@@ -79,12 +80,17 @@ const discoverReviewParent = async (accessToken, env) => {
       url.searchParams.set('readMask', 'name,title,storeCode');
 
       const locationResponse = await authorizedJson(url.toString(), accessToken);
-      const location = selectLocation(locationResponse.locations ?? [], env);
-      if (location) return `${account.name}/${location.name}`;
+      candidates.push(...(locationResponse.locations ?? []).map((location) => ({
+        accountName: account.name,
+        location
+      })));
     } catch {
       // Manche Kontotypen enthalten keine direkt abrufbaren Standorte.
     }
   }
+
+  const selected = selectLocation(candidates, env);
+  if (selected) return `${selected.accountName}/${selected.location.name}`;
 
   throw new Error('Kein passender Google-Unternehmensstandort gefunden');
 };
