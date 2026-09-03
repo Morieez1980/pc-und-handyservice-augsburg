@@ -40,23 +40,20 @@ document.querySelectorAll('[data-year]').forEach((node) => { node.textContent = 
 const googleReviewCount = document.querySelector('[data-google-review-count]');
 const googleReviewRating = document.querySelector('[data-google-rating]');
 const googleReviewDate = document.querySelector('[data-google-review-date]');
+const googleReviews = document.querySelector('[data-google-reviews]');
 
-if (googleReviewCount && googleReviewRating && googleReviewDate) {
-  fetch('/api/review-summary', { headers: { Accept: 'application/json' } })
-    .then((response) => {
-      if (!response.ok) throw new Error('Bewertungsdaten nicht verfügbar');
-      return response.json();
-    })
-    .then((data) => {
-      if (!Number.isInteger(data.reviewCount) || data.reviewCount < 0) return;
-      if (typeof data.rating !== 'number' || data.rating < 0 || data.rating > 5) return;
-
+const updateGoogleReviewSummary = (data) => {
+  if (googleReviewCount && Number.isInteger(data.reviewCount) && data.reviewCount >= 0) {
       googleReviewCount.textContent = new Intl.NumberFormat('de-DE').format(data.reviewCount);
+  }
+  if (googleReviewRating && typeof data.rating === 'number' && data.rating >= 0 && data.rating <= 5) {
       googleReviewRating.textContent = data.rating.toLocaleString('de-DE', {
         minimumFractionDigits: 1,
         maximumFractionDigits: 1
       });
+  }
 
+  if (googleReviewDate && data.updatedAt) {
       const updatedAt = new Date(data.updatedAt);
       if (!Number.isNaN(updatedAt.getTime())) {
         googleReviewDate.textContent = new Intl.DateTimeFormat('de-DE', {
@@ -65,9 +62,83 @@ if (googleReviewCount && googleReviewRating && googleReviewDate) {
           year: 'numeric'
         }).format(updatedAt);
       }
+  }
+};
+
+if (googleReviewCount && googleReviewRating && googleReviewDate) {
+  fetch('/api/review-summary', { headers: { Accept: 'application/json' } })
+    .then((response) => {
+      if (!response.ok) throw new Error('Bewertungsdaten nicht verfügbar');
+      return response.json();
     })
+    .then(updateGoogleReviewSummary)
     .catch(() => {
       // Der im HTML hinterlegte, zuletzt geprüfte Wert bleibt sichtbar.
+    });
+}
+
+if (googleReviews) {
+  fetch('/api/google-reviews', { headers: { Accept: 'application/json' } })
+    .then((response) => {
+      if (!response.ok) throw new Error('Google-Rezensionen nicht verfügbar');
+      return response.json();
+    })
+    .then((data) => {
+      if (!Array.isArray(data.reviews) || data.reviews.length === 0) return;
+
+      const fragment = document.createDocumentFragment();
+      data.reviews.forEach((review) => {
+        if (!Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5) return;
+
+        const article = document.createElement('article');
+        article.className = 'google-review';
+
+        const header = document.createElement('div');
+        header.className = 'google-review-header';
+
+        const avatar = document.createElement('span');
+        avatar.className = 'google-review-avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.textContent = (review.author || 'G').trim().charAt(0).toLocaleUpperCase('de-DE');
+
+        const identity = document.createElement('div');
+        const author = document.createElement('h3');
+        author.textContent = review.author || 'Google-Nutzer';
+        const date = document.createElement('time');
+        const publishedAt = review.publishedAt ? new Date(review.publishedAt) : null;
+        if (publishedAt && !Number.isNaN(publishedAt.getTime())) {
+          date.dateTime = publishedAt.toISOString();
+          date.textContent = new Intl.DateTimeFormat('de-DE', {
+            month: 'long',
+            year: 'numeric'
+          }).format(publishedAt);
+        }
+        identity.append(author, date);
+        header.append(avatar, identity);
+
+        const stars = document.createElement('p');
+        stars.className = 'google-review-stars';
+        stars.setAttribute('aria-label', `${review.rating} von 5 Sternen`);
+        stars.textContent = `${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}`;
+
+        const comment = document.createElement('p');
+        comment.className = 'google-review-text';
+        comment.textContent = review.text || 'Bewertung ohne Text.';
+
+        article.append(header, stars, comment);
+        fragment.append(article);
+      });
+
+      if (!fragment.childNodes.length) return;
+      const source = document.createElement('p');
+      source.className = 'review-source';
+      source.textContent = 'Aktuelle öffentlich sichtbare Rezensionen aus dem Google-Unternehmensprofil.';
+      fragment.append(source);
+      googleReviews.replaceChildren(fragment);
+      updateGoogleReviewSummary(data);
+    })
+    .catch(() => {
+      // Die im HTML hinterlegte Zusammenfassung bleibt als datensparsame Rückfallebene sichtbar.
     });
 }
 

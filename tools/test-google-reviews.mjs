@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { onRequestGet } from '../functions/api/review-summary.js';
+import { onRequestGet as getGoogleReviews } from '../functions/api/google-reviews.js';
 
 const response = await onRequestGet({ env: {} });
 const body = await response.json();
@@ -11,3 +12,67 @@ assert.equal(body.source, 'verified-fallback');
 assert.match(response.headers.get('Cache-Control'), /s-maxage=86400/);
 
 console.log('Google-Bewertungsfunktion: geprüfter Ausfallwert 4,9 / 88 ist gültig.');
+
+const unconfiguredResponse = await getGoogleReviews({ env: {} });
+const unconfiguredBody = await unconfiguredResponse.json();
+assert.equal(unconfiguredResponse.status, 200);
+assert.equal(unconfiguredBody.source, 'not-configured');
+assert.deepEqual(unconfiguredBody.reviews, []);
+assert.equal(unconfiguredResponse.headers.get('Cache-Control'), 'no-store');
+
+const originalFetch = globalThis.fetch;
+const requestedUrls = [];
+globalThis.fetch = async (input) => {
+  const url = String(input);
+  requestedUrls.push(url);
+  if (url === 'https://oauth2.googleapis.com/token') {
+    return new Response(JSON.stringify({ access_token: 'temporary-access-token' }), { status: 200 });
+  }
+  if (url.includes('mybusinessaccountmanagement.googleapis.com')) {
+    return new Response(JSON.stringify({ accounts: [{ name: 'accounts/123' }] }), { status: 200 });
+  }
+  if (url.includes('mybusinessbusinessinformation.googleapis.com')) {
+    return new Response(JSON.stringify({ locations: [{ name: 'locations/456', title: 'PC & Handyservice Augsburg', storeCode: 'MUC 00052702' }] }), { status: 200 });
+  }
+  if (url.includes('mybusiness.googleapis.com')) {
+    return new Response(JSON.stringify({
+      averageRating: 4.9,
+      totalReviewCount: 88,
+      reviews: [{
+        reviewer: { displayName: 'Max Mustermann', profilePhotoUrl: 'https://example.invalid/photo.jpg' },
+        starRating: 'FIVE',
+        comment: 'Schnelle und freundliche Hilfe.',
+        createTime: '2026-09-01T12:00:00Z',
+        updateTime: '2026-09-01T12:00:00Z'
+      }]
+    }), { status: 200 });
+  }
+  return new Response('{}', { status: 404 });
+};
+
+try {
+  const liveResponse = await getGoogleReviews({
+    env: {
+      GOOGLE_OAUTH_CLIENT_ID: 'client-id',
+      GOOGLE_OAUTH_CLIENT_SECRET: 'client-secret',
+      GOOGLE_OAUTH_REFRESH_TOKEN: 'refresh-token'
+    }
+  });
+  const liveBody = await liveResponse.json();
+  assert.equal(liveBody.source, 'google-business-profile');
+  assert.equal(liveBody.rating, 4.9);
+  assert.equal(liveBody.reviewCount, 88);
+  assert.deepEqual(liveBody.reviews[0], {
+    author: 'Max Mustermann',
+    rating: 5,
+    text: 'Schnelle und freundliche Hilfe.',
+    publishedAt: '2026-09-01T12:00:00Z',
+    updatedAt: '2026-09-01T12:00:00Z'
+  });
+  assert.equal('profilePhotoUrl' in liveBody.reviews[0], false);
+  assert(requestedUrls.some((url) => url.includes('orderBy=updateTime+desc')));
+} finally {
+  globalThis.fetch = originalFetch;
+}
+
+console.log('Google-Rezensionsfunktion: OAuth, Standort-Erkennung und datensparsame Ausgabe sind gültig.');
