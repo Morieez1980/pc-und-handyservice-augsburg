@@ -65,26 +65,23 @@ const updateGoogleReviewSummary = (data) => {
   }
 };
 
-if (googleReviewCount && googleReviewRating && googleReviewDate) {
-  fetch('/api/review-summary', { headers: { Accept: 'application/json' } })
+const reviewSummaryRequest = googleReviewCount && googleReviewRating && googleReviewDate
+  ? fetch('/api/review-summary', { headers: { Accept: 'application/json' } })
     .then((response) => {
       if (!response.ok) throw new Error('Bewertungsdaten nicht verfügbar');
       return response.json();
     })
-    .then(updateGoogleReviewSummary)
-    .catch(() => {
-      // Der im HTML hinterlegte, zuletzt geprüfte Wert bleibt sichtbar.
-    });
-}
+    .catch(() => null)
+  : Promise.resolve(null);
 
-if (googleReviews) {
-  fetch('/api/google-reviews', { headers: { Accept: 'application/json' } })
+const googleReviewsRequest = googleReviews
+  ? fetch('/api/google-reviews', { headers: { Accept: 'application/json' } })
     .then((response) => {
       if (!response.ok) throw new Error('Google-Rezensionen nicht verfügbar');
       return response.json();
     })
     .then((data) => {
-      if (!Array.isArray(data.reviews) || data.reviews.length === 0) return;
+      if (!Array.isArray(data.reviews) || data.reviews.length === 0) return data;
 
       const fragment = document.createDocumentFragment();
       data.reviews.forEach((review) => {
@@ -129,18 +126,21 @@ if (googleReviews) {
         fragment.append(article);
       });
 
-      if (!fragment.childNodes.length) return;
+      if (!fragment.childNodes.length) return data;
       const source = document.createElement('p');
       source.className = 'review-source';
       source.textContent = 'Aktuelle öffentlich sichtbare Rezensionen aus dem Google-Unternehmensprofil.';
       fragment.append(source);
       googleReviews.replaceChildren(fragment);
-      updateGoogleReviewSummary(data);
+      return data;
     })
-    .catch(() => {
-      // Die im HTML hinterlegte Zusammenfassung bleibt als datensparsame Rückfallebene sichtbar.
-    });
-}
+    .catch(() => null)
+  : Promise.resolve(null);
+
+Promise.all([reviewSummaryRequest, googleReviewsRequest]).then(([fallbackData, googleData]) => {
+  const summaryData = googleData?.source === 'google-business-profile' ? googleData : fallbackData;
+  if (summaryData) updateGoogleReviewSummary(summaryData);
+});
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (reduceMotion || !('IntersectionObserver' in window)) {
