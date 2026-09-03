@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { onRequestGet } from '../functions/api/review-summary.js';
 import { onRequestGet as getGoogleReviews } from '../functions/api/google-reviews.js';
 
@@ -29,10 +30,13 @@ globalThis.fetch = async (input) => {
     return new Response(JSON.stringify({ access_token: 'temporary-access-token' }), { status: 200 });
   }
   if (url.includes('mybusinessaccountmanagement.googleapis.com')) {
-    return new Response(JSON.stringify({ accounts: [{ name: 'accounts/123' }] }), { status: 200 });
+    return new Response(JSON.stringify({ accounts: [{ name: 'accounts/123' }, { name: 'accounts/999' }] }), { status: 200 });
   }
   if (url.includes('mybusinessbusinessinformation.googleapis.com')) {
-    return new Response(JSON.stringify({ locations: [{ name: 'locations/456', title: 'PC & Handyservice Augsburg', storeCode: 'MUC 00052702' }] }), { status: 200 });
+    const locations = url.includes('accounts/123')
+      ? [{ name: 'locations/111', title: 'Anderes Unternehmen', storeCode: 'OTHER 001' }]
+      : [{ name: 'locations/456', title: 'PC & Handyservice Augsburg', storeCode: 'MUC 00052702' }];
+    return new Response(JSON.stringify({ locations }), { status: 200 });
   }
   if (url.includes('mybusiness.googleapis.com')) {
     return new Response(JSON.stringify({
@@ -71,8 +75,14 @@ try {
   });
   assert.equal('profilePhotoUrl' in liveBody.reviews[0], false);
   assert(requestedUrls.some((url) => url.includes('orderBy=updateTime+desc')));
+  assert(requestedUrls.some((url) => url.includes('accounts/999/locations/456/reviews')));
 } finally {
   globalThis.fetch = originalFetch;
 }
 
 console.log('Google-Rezensionsfunktion: OAuth, Standort-Erkennung und datensparsame Ausgabe sind gültig.');
+
+const browserScript = await readFile(new URL('../script.js', import.meta.url), 'utf8');
+assert.match(browserScript, /Promise\.all\(\[reviewSummaryRequest, googleReviewsRequest\]\)/);
+assert.match(browserScript, /googleData\?\.source === 'google-business-profile' \? googleData : fallbackData/);
+console.log('Google-Bewertungsanzeige: Live-Daten haben eine feste Priorität vor dem Ausfallwert.');
