@@ -85,7 +85,7 @@ jobs:
         run: |
           set -euo pipefail
           page="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/reparaturanfrage")"
-          for marker in 'class="request-form-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v='; do
+          for marker in 'id="repair-request"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v='; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing repair-form marker: ${marker}"
               exit 1
