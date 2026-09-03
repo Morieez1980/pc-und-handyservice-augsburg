@@ -32,7 +32,7 @@ Jeder Push auf `main` löst nach der GitHub-Verknüpfung automatisch ein Deploym
 - Kompositorische Animationen und optimierte Cache-Strategie für versionierte Assets
 - Sicherheitsmeldungen über `SECURITY.md` und `/.well-known/security.txt`
 - Impressum nach § 5 DDG und Datenschutzhinweise für Cloudflare Pages, E-Mail/Telefon und den freiwilligen Google-Profillink
-- Trackerfreie Google-Bewertungsübersicht mit serverseitiger Google-Places-Abfrage, Tagescache und geprüftem Ausfallwert
+- Trackerfreie Google-Bewertungsübersicht mit serverseitiger Google-Places-Abfrage, aktuellen Einzelrezensionen aus dem Google-Unternehmensprofil, Cache und geprüftem Ausfallwert
 - Service- und Diagnosepreise mit transparentem Kostenvorbehalt
 - Verifizierte Instagram-, TikTok- und Facebook-Profile sowie direkter WhatsApp-Kontakt als einfache, nicht eingebettete Links
 
@@ -43,3 +43,4 @@ Vor dem produktiven Merge durch den Betreiber prüfen:
 - Cloudflare Data Processing Addendum im Cloudflare-Konto bestätigen und dokumentieren
 - Rechtstexte bei Änderungen an Hosting, Tracking, Formularen, Karten, Terminbuchung oder weiteren Drittanbietern aktualisieren
 - Für die automatische Google-Bewertungsaktualisierung in Cloudflare Pages die verschlüsselte Variable `GOOGLE_PLACES_API_KEY` und die Variable `GOOGLE_PLACE_ID` hinterlegen; bis dahin bleibt der zuletzt geprüfte Stand sichtbar
+- Für aktuelle Einzelrezensionen zusätzlich die verschlüsselten Variablen `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` und `GOOGLE_OAUTH_REFRESH_TOKEN` hinterlegen. Konto und Standort werden automatisch erkannt; optional lassen sie sich mit `GOOGLE_BUSINESS_ACCOUNT_ID`, `GOOGLE_BUSINESS_LOCATION_ID` oder `GOOGLE_BUSINESS_STORE_CODE` eindeutig festlegen.
