@@ -107,7 +107,7 @@ if (!index.includes('href="/reparaturanfrage"') || !index.includes('mobile-conta
 const requestPage = htmlByFile.get('reparaturanfrage.html');
 for (const marker of [
   'id="repair-request"',
-  'action="https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen"',
+  'action="https://bigin.zoho.eu/crm/WebForm"',
   'Bitte keine Passwörter, PINs oder Entsperrcodes',
   'href="/datenschutz"',
   'request.min.css?v=',
@@ -121,8 +121,7 @@ for (const marker of [
 }
 if (
   requestPage.includes('crm.zoho.eu/crm/WebToLeadForm') ||
-  requestPage.includes('crmWebToEntityForm') ||
-  requestPage.includes('bigin.zoho.eu/crm/WebForm')
+  requestPage.includes('crmWebToEntityForm')
 ) {
   errors.push('reparaturanfrage.html: altes Zoho-CRM-Formular ist noch eingebunden');
 }
