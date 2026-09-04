@@ -85,12 +85,17 @@ jobs:
         run: |
           set -euo pipefail
           page="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/reparaturanfrage")"
-          for marker in 'id="repair-request"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v=' 'repair-form.min.js?v='; do
+          for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="Email"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v=' 'repair-form.min.js?v='; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing repair-form marker: ${marker}"
               exit 1
             fi
           done
+          script="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/repair-form.min.js")"
+          if ! grep --fixed-strings --quiet 'pipeline-email' <<< "$script"; then
+            echo "Repair form no longer synchronizes the workflow email field"
+            exit 1
+          fi
           if grep --fixed-strings --quiet 'crmWebToEntityForm' <<< "$page"; then
             echo "Legacy Zoho CRM form is still present in production"
             exit 1
