@@ -15,7 +15,7 @@
   const submit = form.querySelector('[data-submit]');
   const errorSummary = form.querySelector('[data-error-summary]');
   const success = document.querySelector('[data-form-success]');
-  const responseFrame = document.querySelector('.bigin-response-frame');
+  const responseFrame = document.querySelector('.bigin-response-frame');\n  const pipelineEmail = form.querySelector('#pipeline-email');\n  const contactEmail = form.querySelector('#email');
   const started = Date.now();
   let sending = false;
 
@@ -110,7 +110,7 @@
       return;
     }
 
-    const phone = form.querySelector('#phone');
+    pipelineEmail.value = contactEmail.value.trim();\n\n    const phone = form.querySelector('#phone');
     let value = phone.value.replace(/[()\s/.-]/g, '');
     if (value.startsWith('00')) value = '+' + value.slice(2);
     else if (value.startsWith('0')) value = '+49' + value.slice(1);
