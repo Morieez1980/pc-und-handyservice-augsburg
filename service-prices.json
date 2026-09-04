@@ -1,0 +1,29 @@
+{
+  "currency": "EUR",
+  "updatedAt": "2026-08-07",
+  "notes": "Ersatzteile und zusätzlicher Aufwand können hinzukommen. Kostenpflichtige Zusatzarbeiten erfolgen erst nach Zustimmung.",
+  "services": [
+    {"category":"PC & Laptop","name":"Windows Installation","price":75,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"PC & Laptop","name":"Treiber Installation","price":50,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"PC & Laptop","name":"Software Installation","price":50,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"PC & Laptop","name":"SSD-Einbau inkl. Klonen","price":85,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"PC & Laptop","name":"RAM-Aufrüstung","price":55,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"PC & Laptop","name":"Reinigung & Wartung","price":65,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"PC & Laptop","name":"Fehlerdiagnose","price":55,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"PC & Laptop","name":"System-Check","price":50,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"PC & Laptop","name":"Daten-Backup","price":55,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"Handy & Tablet","name":"Displaywechsel","price":69,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"Handy & Tablet","name":"Akkutausch","price":49,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"Handy & Tablet","name":"Ladeanschluss Reparatur","price":49,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"Handy & Tablet","name":"Rückglas Reparatur","price":59,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"Handy & Tablet","name":"Software / Systemfehler","price":39,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"Datenrettung","name":"Analyse des Speichermediums","price":60,"priceType":"fixed","homepage":true,"googleSync":true},
+    {"category":"Datenrettung","name":"Softwarebasierte Datenrettung","price":250,"priceType":"fixed","homepage":true,"googleSync":true},
+    {"category":"Konsolen","name":"PlayStation Reinigung","price":39,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"Konsolen","name":"PlayStation Reparatur","price":59,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"Konsolen","name":"Xbox Reinigung","price":39,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"Konsolen","name":"Xbox Reparatur","price":59,"priceType":"from","homepage":true,"googleSync":true},
+    {"category":"Konsolen","name":"Wärmeleitpaste erneuern","price":29,"priceType":"from","homepage":false,"googleSync":true},
+    {"category":"Konsolen","name":"HDMI-Anschluss Reparatur","price":59,"priceType":"from","homepage":true,"googleSync":true}
+  ]
+}
