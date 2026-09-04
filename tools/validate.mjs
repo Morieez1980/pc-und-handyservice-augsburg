@@ -107,7 +107,7 @@ if (!index.includes('href="/reparaturanfrage"') || !index.includes('mobile-conta
 const requestPage = htmlByFile.get('reparaturanfrage.html');
 for (const marker of [
   'id="repair-request"',
-  'action="https://bigin.zoho.eu/crm/WebForm"',
+  'action="https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen"',
   'Bitte keine Passwörter, PINs oder Entsperrcodes',
   'href="/datenschutz"',
   'request.min.css?v=',
@@ -119,7 +119,11 @@ for (const marker of [
 ]) {
   if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Bigin-/Seitenmarker fehlt: ${marker}`);
 }
-if (requestPage.includes('crm.zoho.eu/crm/WebToLeadForm') || requestPage.includes('crmWebToEntityForm')) {
+if (
+  requestPage.includes('crm.zoho.eu/crm/WebToLeadForm') ||
+  requestPage.includes('crmWebToEntityForm') ||
+  requestPage.includes('bigin.zoho.eu/crm/WebForm')
+) {
   errors.push('reparaturanfrage.html: altes Zoho-CRM-Formular ist noch eingebunden');
 }
 
