@@ -182,10 +182,21 @@ if (
 if (/id="serial-number"[^>]*\brequired\b/.test(requestPage)) {
   errors.push('reparaturanfrage.html: Seriennummer darf bei der Erstanfrage nicht verpflichtend sein');
 }
-for (const id of ['street', 'postcode', 'city']) {
-  if (new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) {
-    errors.push(`reparaturanfrage.html: freiwilliges Adressfeld #${id} ist noch verpflichtend`);
+if (/id="imei"[^>]*\brequired\b/.test(requestPage)) {
+  errors.push('reparaturanfrage.html: IMEI darf bei der Erstanfrage nicht verpflichtend sein');
+}
+for (const id of ['device-type', 'device-model', 'description', 'first-name', 'last-name', 'email', 'phone', 'street', 'postcode', 'city', 'privacy-acknowledged']) {
+  if (!new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) {
+    errors.push(`reparaturanfrage.html: Pflichtfeld #${id} ist nicht als erforderlich markiert`);
   }
+}
+for (const marker of [
+  'Gerätename, Hersteller und genaues Modell',
+  'genaue Modellbezeichnung beziehungsweise Modellnummer',
+  'Kontaktdaten und Rechnungsanschrift vollständig eintragen',
+  'Für Rückfragen und die spätere Rechnung erforderlich:'
+]) {
+  if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Pflichtfeld-Hinweis fehlt (${marker})`);
 }
 if (requestPage.includes('Contacts.Mailing Country') || requestPage.includes('Contacts.Mailing State')) {
   errors.push('reparaturanfrage.html: nicht eingegebene Adressdaten werden weiterhin automatisch ergänzt');
