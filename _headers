@@ -30,6 +30,9 @@
 /repair-form.min.js
   Cache-Control: public, max-age=31536000, immutable
 
+/vendor/intl-tel-input/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /qr.min.css
   Cache-Control: public, max-age=31536000, immutable
 

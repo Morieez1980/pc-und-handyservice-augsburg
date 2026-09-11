@@ -5,6 +5,10 @@ const requiredFiles = [
   'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
   'styles.css', 'styles.min.css', 'request.css', 'request.min.css', 'script.js', 'script.min.js',
   'repair-form.js', 'repair-form.min.js',
+  'vendor/intl-tel-input/css/intlTelInput.min.css',
+  'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js',
+  'vendor/intl-tel-input/img/flags.webp', 'vendor/intl-tel-input/img/flags@2x.webp',
+  'vendor/intl-tel-input/LICENSE',
   'qr.min.css', 'qr-print.js', 'qr-reparaturanfrage.png', 'google-qr-reparaturanfrage.jpg',
   'qr-schild-reparaturanfrage.html', 'google-qr-reparaturanfrage.html',
   'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
@@ -111,6 +115,10 @@ for (const marker of [
   'href="/datenschutz"',
   'request.min.css?v=',
   'repair-form.min.js?v=',
+  'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3',
+  'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3',
+  'class="phone-control"',
+  'name="Contacts.Mobile"',
   'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen',
   'src="/qr-reparaturanfrage.png',
   'name="Pipeline" value="Reparaturaufträge"',
@@ -161,6 +169,16 @@ if (!script.includes("'addEventListener' in desktopQuery") || !script.includes('
 for (const marker of ["fetch('/api/review-summary'", "fetch('/api/google-reviews'", 'data.reviewCount', 'data.rating', 'data.updatedAt']) {
   if (!script.includes(marker)) errors.push(`script.js: automatische Google-Bewertungsanzeige unvollständig: ${marker}`);
 }
+const repairScript = await readFile('repair-form.js', 'utf8');
+for (const marker of ['window.intlTelInput', "initialCountry: 'de'", 'countrySearch: true', 'isValidNumber()', 'getNumber()']) {
+  if (!repairScript.includes(marker)) errors.push(`repair-form.js: internationale Telefonprüfung unvollständig: ${marker}`);
+}
+const phoneLibraryCss = await readFile('vendor/intl-tel-input/css/intlTelInput.min.css', 'utf8');
+for (const marker of ['../img/flags.webp', '../img/flags@2x.webp']) {
+  if (!phoneLibraryCss.includes(marker)) errors.push(`intlTelInput.min.css: Flaggen-Pfad fehlt: ${marker}`);
+}
+const phoneLibraryLicense = await readFile('vendor/intl-tel-input/LICENSE', 'utf8');
+if (!phoneLibraryLicense.includes('MIT License')) errors.push('intl-tel-input: MIT-Lizenzdatei fehlt oder ist ungültig');
 const googleReviewsFunction = await readFile('functions/api/review-summary.js', 'utf8');
 for (const marker of ['GOOGLE_PLACES_API_KEY', 'GOOGLE_PLACE_ID', 'userRatingCount', 'Cache-Control']) {
   if (!googleReviewsFunction.includes(marker)) errors.push(`functions/api/review-summary.js: Marker fehlt: ${marker}`);
@@ -250,6 +268,7 @@ if (!headers.includes("form-action 'self' https://bigin.zoho.eu")) errors.push('
 if (!headers.includes('frame-src https://bigin.zoho.eu https://eu.bigin.online')) errors.push('_headers: Bigin-Frame-Freigabe fehlt');
 if (!headers.includes('/request.min.css')) errors.push('_headers: Cache-Regel für das Reparaturanfrage-Stylesheet fehlt');
 if (!headers.includes('/repair-form.min.js')) errors.push('_headers: Cache-Regel für das Reparaturanfrage-Script fehlt');
+if (!headers.includes('/vendor/intl-tel-input/*')) errors.push('_headers: Cache-Regel für die lokale Telefon-Länderauswahl fehlt');
 if (!headers.includes('/qr.min.css')) errors.push('_headers: Cache-Regel für das QR-Stylesheet fehlt');
 if (!headers.includes('max-age=86400, stale-while-revalidate=604800')) errors.push('_headers: stabile Bildassets haben keine sichere Revalidierungsstrategie');
 
