@@ -97,6 +97,7 @@ for (const link of [
   'https://share.google/2mQbAIfJoIab9YR3G',
   'https://www.instagram.com/pc_handyservice_maurice_keil/',
   'https://www.facebook.com/profile.php?id=61588640742328',
+  'https://www.youtube.com/channel/UClSdWj7xui8E9e75IYGmHQw',
   'https://wa.me/4915254530080',
   'href="/reparaturanfrage"',
   'id="preise"',
@@ -107,8 +108,34 @@ for (const link of [
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
 if ((index.match(/class="social-card/g) ?? []).length !== 3) errors.push('index.html: drei sichtbare Social- und Kontaktkarten fehlen');
-if (!index.includes('4,9') || !index.includes('data-google-review-count>88</span>') || !index.includes('data-google-review-date')) {
+if (!index.includes('4,9') || !index.includes('data-google-review-count>90</span>') || !index.includes('data-google-review-date')) {
   errors.push('index.html: Google-Bewertungskennzahl oder Quellenhinweis fehlt');
+}
+for (const marker of [
+  '"name": "PC & Handyservice Augsburg – Maurice Keil"',
+  '"openingHoursSpecification"',
+  '"priceRange": "30 €–250 €"',
+  'Augsburg-Lechhausen',
+  'Mo–Sa 09:00–20:00'
+]) {
+  if (!index.includes(marker)) errors.push(`index.html: lokale Unternehmensangabe fehlt: ${marker}`);
+}
+
+const privacyPage = htmlByFile.get('datenschutz.html');
+for (const marker of [
+  'Microsoft 365 beziehungsweise Exchange Online',
+  'Microsoft Ireland Operations Limited',
+  'Microsoft Data Protection Addendum',
+  'Cloudflare Pages',
+  'Bigin und Zoho Flow',
+  'Stand: 12. September 2026'
+]) {
+  if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Datenschutzhinweis fehlt: ${marker}`);
+}
+
+const legalPage = htmlByFile.get('impressum.html');
+for (const marker of ['Angaben gemäß § 5 DDG', 'Inhaber: Maurice Keil', 'DE424041749', 'Verbraucherstreitbeilegung']) {
+  if (!legalPage.includes(marker)) errors.push(`impressum.html: Pflichtangabe fehlt: ${marker}`);
 }
 
 if (!index.includes('href="/reparaturanfrage"') || !index.includes('mobile-contact-request')) {
