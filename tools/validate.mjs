@@ -1,9 +1,13 @@
 import { access, readFile, stat } from 'node:fs/promises';
 import { dirname, extname, join, normalize } from 'node:path';
+import { createHash } from 'node:crypto';
 
 const requiredFiles = [
   'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
-  'styles.css', 'styles.min.css', 'request.css', 'request.min.css', 'script.js', 'script.min.js',
+  'pc-reparatur-augsburg.html', 'handyreparatur-augsburg.html',
+  'datenrettung-augsburg.html', 'konsolenreparatur-augsburg.html',
+  'styles.css', 'styles.min.css', 'request.css', 'request.min.css',
+  'service.css', 'service.min.css', 'script.js', 'script.min.js',
   'repair-form.js', 'repair-form.min.js',
   'vendor/intl-tel-input/css/intlTelInput.min.css',
   'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js',
@@ -24,7 +28,11 @@ for (const file of requiredFiles) {
   try { await access(file); } catch { errors.push(`Fehlende Datei: ${file}`); }
 }
 
-const htmlFiles = ['index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html'];
+const htmlFiles = [
+  'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
+  'pc-reparatur-augsburg.html', 'handyreparatur-augsburg.html',
+  'datenrettung-augsburg.html', 'konsolenreparatur-augsburg.html'
+];
 const htmlByFile = new Map();
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
@@ -84,7 +92,7 @@ for (const marker of [
   if (!index.includes(marker)) errors.push(`index.html: SEO-/Asset-Marker fehlt: ${marker}`);
 }
 for (const link of [
-  'impressum.html', 'datenschutz.html',
+  'href="/impressum"', 'href="/datenschutz"',
   'https://share.google/57mrs7jE79LUInKVg',
   'https://share.google/2mQbAIfJoIab9YR3G',
   'https://www.instagram.com/pc_handyservice_maurice_keil/',
@@ -132,6 +140,20 @@ if (
 ) {
   errors.push('reparaturanfrage.html: altes Zoho-CRM-Formular ist noch eingebunden');
 }
+if (/id="serial-number"[^>]*\brequired\b/.test(requestPage)) {
+  errors.push('reparaturanfrage.html: Seriennummer darf bei der Erstanfrage nicht verpflichtend sein');
+}
+for (const id of ['street', 'postcode', 'city']) {
+  if (new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) {
+    errors.push(`reparaturanfrage.html: freiwilliges Adressfeld #${id} ist noch verpflichtend`);
+  }
+}
+if (requestPage.includes('Contacts.Mailing Country') || requestPage.includes('Contacts.Mailing State')) {
+  errors.push('reparaturanfrage.html: nicht eingegebene Adressdaten werden weiterhin automatisch ergänzt');
+}
+if (!requestPage.includes('Ein kostenpflichtiger Auftrag entsteht erst nach Ihrer Freigabe')) {
+  errors.push('reparaturanfrage.html: Hinweis auf die unverbindliche Anfrage fehlt');
+}
 
 const jsonLdMatch = index.match(/<script type="application\/ld\+json">\s*([\s\S]*?)\s*<\/script>/i);
 if (!jsonLdMatch) {
@@ -154,9 +176,13 @@ if (!jsonLdMatch) {
 
 const canonicals = {
   'index.html': 'https://www.pc-und-handyservice-augsburg.com/',
-  'impressum.html': 'https://www.pc-und-handyservice-augsburg.com/impressum.html',
-  'datenschutz.html': 'https://www.pc-und-handyservice-augsburg.com/datenschutz.html',
-  'reparaturanfrage.html': 'https://www.pc-und-handyservice-augsburg.com/reparaturanfrage'
+  'impressum.html': 'https://www.pc-und-handyservice-augsburg.com/impressum',
+  'datenschutz.html': 'https://www.pc-und-handyservice-augsburg.com/datenschutz',
+  'reparaturanfrage.html': 'https://www.pc-und-handyservice-augsburg.com/reparaturanfrage',
+  'pc-reparatur-augsburg.html': 'https://www.pc-und-handyservice-augsburg.com/pc-reparatur-augsburg',
+  'handyreparatur-augsburg.html': 'https://www.pc-und-handyservice-augsburg.com/handyreparatur-augsburg',
+  'datenrettung-augsburg.html': 'https://www.pc-und-handyservice-augsburg.com/datenrettung-augsburg',
+  'konsolenreparatur-augsburg.html': 'https://www.pc-und-handyservice-augsburg.com/konsolenreparatur-augsburg'
 };
 for (const [file, url] of Object.entries(canonicals)) {
   if (!htmlByFile.get(file).includes(`<link rel="canonical" href="${url}">`)) errors.push(`${file}: Canonical URL fehlt oder ist falsch`);
@@ -187,14 +213,16 @@ const googleReviewListFunction = await readFile('functions/api/google-reviews.js
 for (const marker of ['GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_OAUTH_CLIENT_SECRET', 'GOOGLE_OAUTH_REFRESH_TOKEN', 'mybusinessaccountmanagement.googleapis.com', 'updateTime desc']) {
   if (!googleReviewListFunction.includes(marker)) errors.push(`functions/api/google-reviews.js: Marker fehlt: ${marker}`);
 }
-const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceRequestCssSize, minRequestCssSize, sourceRepairScriptSize, minRepairScriptSize, sourceClaritySize, minClaritySize] = await Promise.all([
+const [sourceScriptSize, minScriptSize, sourceCssSize, minCssSize, sourceRequestCssSize, minRequestCssSize, sourceServiceCssSize, minServiceCssSize, sourceRepairScriptSize, minRepairScriptSize, sourceClaritySize, minClaritySize] = await Promise.all([
   stat('script.js'), stat('script.min.js'), stat('styles.css'), stat('styles.min.css'),
-  stat('request.css'), stat('request.min.css'), stat('repair-form.js'), stat('repair-form.min.js'),
+  stat('request.css'), stat('request.min.css'), stat('service.css'), stat('service.min.css'),
+  stat('repair-form.js'), stat('repair-form.min.js'),
   stat('clarity-consent.js'), stat('clarity-consent.min.js')
 ]);
 if (minScriptSize.size >= sourceScriptSize.size) errors.push('script.min.js: Datei ist nicht kleiner als die Quelle');
 if (minCssSize.size >= sourceCssSize.size) errors.push('styles.min.css: Datei ist nicht kleiner als die Quelle');
 if (minRequestCssSize.size >= sourceRequestCssSize.size) errors.push('request.min.css: Datei ist nicht kleiner als die Quelle');
+if (minServiceCssSize.size >= sourceServiceCssSize.size) errors.push('service.min.css: Datei ist nicht kleiner als die Quelle');
 if (minRepairScriptSize.size >= sourceRepairScriptSize.size) errors.push('repair-form.min.js: Datei ist nicht kleiner als die Quelle');
 if (minClaritySize.size >= sourceClaritySize.size) errors.push('clarity-consent.min.js: Datei ist nicht kleiner als die Quelle');
 
@@ -262,6 +290,11 @@ for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'P
   if (!headers.includes(header)) errors.push(`_headers: ${header} fehlt`);
 }
 if (!/script-src 'self' 'sha256-[A-Za-z0-9+/=]+'/.test(headers)) errors.push('_headers: CSP-Hash für JSON-LD fehlt');
+const rawJsonLd = index.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i)?.[1];
+if (rawJsonLd) {
+  const jsonLdHash = `sha256-${createHash('sha256').update(rawJsonLd).digest('base64')}`;
+  if (!headers.includes(`'${jsonLdHash}'`)) errors.push('_headers: CSP-Hash stimmt nicht mit dem JSON-LD der Startseite überein');
+}
 if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000, immutable')) errors.push('_headers: versionierte Produktionsassets werden nicht langfristig gecacht');
 if (!headers.includes('https://*.clarity.ms') || !headers.includes('https://www.clarity.ms')) errors.push('_headers: Clarity-CSP-Vorbereitung fehlt');
 if (!headers.includes("form-action 'self' https://bigin.zoho.eu")) errors.push('_headers: Bigin-Formularziel fehlt');
