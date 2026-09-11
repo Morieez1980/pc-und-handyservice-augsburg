@@ -115,8 +115,9 @@
               </select>
             </div>
             <div class="field-group">
-              <label for="device-model">Hersteller und Modell <span aria-hidden="true">*</span></label>
-              <input id="device-model" name="POTENTIALCF2" type="text" maxlength="255" placeholder="z. B. Apple iPhone 14 oder Lenovo ThinkPad" required>
+              <label for="device-model">Gerätename, Hersteller und genaues Modell <span aria-hidden="true">*</span></label>
+              <input id="device-model" name="POTENTIALCF2" type="text" maxlength="255" placeholder="z. B. Apple iPhone 14 A2882 oder Lenovo ThinkPad T14 Gen 3" aria-describedby="device-model-hint" required>
+              <p class="field-hint" id="device-model-hint">Bitte Gerätename und genaue Modellbezeichnung beziehungsweise Modellnummer eintragen – nicht nur „Handy“, „Laptop“ oder „Konsole“.</p>
             </div>
             <div class="field-group field-wide">
               <label for="description">Was funktioniert nicht? <span aria-hidden="true">*</span></label>
@@ -125,11 +126,11 @@
             </div>
             <div class="form-grid compact-fields">
               <div class="field-group">
-                <label for="serial-number">Seriennummer <small>(optional)</small></label>
+                <label for="serial-number">Seriennummer <small>(freiwillig)</small></label>
                 <input id="serial-number" name="POTENTIALCF3" type="text" maxlength="255" autocomplete="off">
               </div>
               <div class="field-group" data-imei-field hidden>
-                <label for="imei">IMEI <small>(optional)</small></label>
+                <label for="imei">IMEI <small>(freiwillig)</small></label>
                 <input id="imei" name="POTENTIALCF17" type="text" inputmode="numeric" maxlength="255">
               </div>
             </div>
@@ -138,9 +139,9 @@
 
           <fieldset class="form-step" data-form-step="2" hidden>
             <legend class="sr-only">Schritt 2: Kontakt</legend>
-            <div class="step-copy"><strong>Fast geschafft.</strong><span>Wie können wir Sie zur Reparatur erreichen?</span></div>
+            <div class="step-copy"><strong>Fast geschafft.</strong><span>Bitte Kontaktdaten und Rechnungsanschrift vollständig eintragen.</span></div>
             <div class="form-grid">
-              <div class="field-group"><label for="first-name">Vorname</label><input id="first-name" name="Contacts.First Name" type="text" maxlength="40" autocomplete="given-name"></div>
+              <div class="field-group"><label for="first-name">Vorname <span aria-hidden="true">*</span></label><input id="first-name" name="Contacts.First Name" type="text" maxlength="40" autocomplete="given-name" required></div>
               <div class="field-group"><label for="last-name">Nachname <span aria-hidden="true">*</span></label><input id="last-name" name="Contacts.Last Name" type="text" maxlength="80" autocomplete="family-name" required></div>
               <div class="field-group"><label for="email">E-Mail <span aria-hidden="true">*</span></label><input id="email" name="Contacts.Email" type="email" maxlength="100" autocomplete="email" required></div>
               <div class="field-group phone-field">
@@ -150,12 +151,12 @@
                 </div>
                 <p class="field-hint" id="phone-hint">Land auswählen; die Nummer wird international gespeichert.</p>
               </div>
-              <div class="field-group field-wide"><label for="company">Firma <small>(optional)</small></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization"></div>
-              <div class="field-group field-wide"><label for="street">Straße und Hausnummer <small>(optional)</small></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address"></div>
-              <div class="field-group field-postcode"><label for="postcode">PLZ <small>(optional)</small></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"></div>
-              <div class="field-group field-city"><label for="city">Ort <small>(optional)</small></label><input id="city" name="Contacts.Mailing City" type="text" maxlength="100" autocomplete="address-level2"></div>
+              <div class="field-group field-wide"><label for="company">Firma <small>(nur bei Firmenrechnung)</small></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization"></div>
+              <div class="field-group field-wide"><label for="street">Straße und Hausnummer <span aria-hidden="true">*</span></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address" required></div>
+              <div class="field-group field-postcode"><label for="postcode">PLZ <span aria-hidden="true">*</span></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" required></div>
+              <div class="field-group field-city"><label for="city">Ort <span aria-hidden="true">*</span></label><input id="city" name="Contacts.Mailing City" type="text" maxlength="100" autocomplete="address-level2" required></div>
             </div>
-            <p class="field-hint">Die Anschrift ist für die erste Anfrage nicht erforderlich und kann später ergänzt werden.</p>
+            <p class="field-hint"><strong>Für Rückfragen und die spätere Rechnung erforderlich:</strong> vollständiger Name, E-Mail-Adresse, Telefonnummer sowie Straße, Hausnummer, PLZ und Ort.</p>
             <label class="privacy-check"><input id="privacy-acknowledged" type="checkbox" required><span>Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zur Kenntnis genommen. <b aria-hidden="true">*</b></span></label>
             <p class="field-hint"><strong>Unverbindlich:</strong> Sie senden zunächst nur eine Anfrage. Reparaturen und kostenpflichtige Zusatzarbeiten beginnen erst nach Ihrer Freigabe.</p>
             <p class="form-error-summary" data-error-summary role="alert" hidden>Bitte prüfen Sie die markierten Felder.</p>
