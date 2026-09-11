@@ -15,7 +15,11 @@
   const submit = form.querySelector('[data-submit]');
   const errorSummary = form.querySelector('[data-error-summary]');
   const success = document.querySelector('[data-form-success]');
-  const responseFrame = document.querySelector('.bigin-response-frame');\n  const pipelineEmail = form.querySelector('#pipeline-email');\n  const contactEmail = form.querySelector('#email');
+  const responseFrame = document.querySelector('.bigin-response-frame');
+  const pipelineEmail = form.querySelector('#pipeline-email');
+  const pipelinePhone = form.querySelector('#pipeline-phone');
+  const pipelineAddress = form.querySelector('#pipeline-address');
+  const contactEmail = form.querySelector('#email');
   const started = Date.now();
   let sending = false;
 
@@ -110,11 +114,24 @@
       return;
     }
 
-    pipelineEmail.value = contactEmail.value.trim();\n\n    const phone = form.querySelector('#phone');
+    const phone = form.querySelector('#phone');
     let value = phone.value.replace(/[()\s/.-]/g, '');
     if (value.startsWith('00')) value = '+' + value.slice(2);
     else if (value.startsWith('0')) value = '+49' + value.slice(1);
     phone.value = value;
+
+    pipelineEmail.value = contactEmail.value.trim();
+    pipelinePhone.value = value;
+
+    const street = form.querySelector('#street').value.trim();
+    const postcode = form.querySelector('#postcode').value.trim();
+    const city = form.querySelector('#city').value.trim();
+    pipelineAddress.value = [
+      street,
+      [postcode, city].filter(Boolean).join(' '),
+      'Bayern',
+      'Deutschland'
+    ].filter(Boolean).join(', ');
 
     sending = true;
     submit.disabled = true;

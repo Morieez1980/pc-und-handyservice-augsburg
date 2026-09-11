@@ -84,7 +84,6 @@ for (const link of [
   'https://share.google/57mrs7jE79LUInKVg',
   'https://share.google/2mQbAIfJoIab9YR3G',
   'https://www.instagram.com/pc_handyservice_maurice_keil/',
-  'https://www.tiktok.com/@pcundhandyreparaturaugsb',
   'https://www.facebook.com/profile.php?id=61588640742328',
   'https://wa.me/4915254530080',
   'href="/reparaturanfrage"',
@@ -95,7 +94,7 @@ for (const link of [
 ]) {
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
-if ((index.match(/class="social-card/g) ?? []).length !== 4) errors.push('index.html: vier sichtbare Social- und Kontaktkarten fehlen');
+if ((index.match(/class="social-card/g) ?? []).length !== 3) errors.push('index.html: drei sichtbare Social- und Kontaktkarten fehlen');
 if (!index.includes('4,9') || !index.includes('data-google-review-count>88</span>') || !index.includes('data-google-review-date')) {
   errors.push('index.html: Google-Bewertungskennzahl oder Quellenhinweis fehlt');
 }
