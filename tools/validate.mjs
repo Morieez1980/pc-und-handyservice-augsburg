@@ -6,7 +6,7 @@ const requiredFiles = [
   'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
   'pc-reparatur-augsburg.html', 'handyreparatur-augsburg.html',
   'datenrettung-augsburg.html', 'konsolenreparatur-augsburg.html',
-  'styles.css', 'styles.min.css', 'request.css', 'request.min.css',
+  'styles.css', 'styles.min.css', 'enhancements.min.css', 'request.css', 'request.min.css',
   'service.css', 'service.min.css', 'script.js', 'script.min.js',
   'repair-form.js', 'repair-form.min.js',
   'vendor/intl-tel-input/css/intlTelInput.min.css',
@@ -116,9 +116,21 @@ for (const marker of [
   '"openingHoursSpecification"',
   '"priceRange": "30 €–250 €"',
   'Augsburg-Lechhausen',
-  'Mo–Sa 09:00–20:00'
+  'Mo–Sa 09:00–20:00',
+  'Maurice Keil – Ihr Ansprechpartner.',
+  'id="preise-pc"',
+  'id="preise-handy"',
+  'id="preise-daten"',
+  'id="preise-konsole"',
+  'Thematische Zusammenfassung öffentlich sichtbarer Rückmeldungen'
 ]) {
   if (!index.includes(marker)) errors.push(`index.html: lokale Unternehmensangabe fehlt: ${marker}`);
+}
+if ((index.match(/class="service-card reveal/g) ?? []).length !== 4) {
+  errors.push('index.html: vier getrennte Leistungsbereiche fehlen');
+}
+if (index.includes('Bis die automatische Verbindung eingerichtet ist')) {
+  errors.push('index.html: technischer Platzhaltertext im Bewertungsbereich ist noch sichtbar');
 }
 
 const privacyPage = htmlByFile.get('datenschutz.html');
@@ -323,6 +335,7 @@ if (rawJsonLd) {
   if (!headers.includes(`'${jsonLdHash}'`)) errors.push('_headers: CSP-Hash stimmt nicht mit dem JSON-LD der Startseite überein');
 }
 if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000, immutable')) errors.push('_headers: versionierte Produktionsassets werden nicht langfristig gecacht');
+if (!headers.includes('/enhancements.min.css')) errors.push('_headers: Cache-Regel für das Verbesserungs-Stylesheet fehlt');
 if (!headers.includes('https://*.clarity.ms') || !headers.includes('https://www.clarity.ms')) errors.push('_headers: Clarity-CSP-Vorbereitung fehlt');
 if (!headers.includes("form-action 'self' https://bigin.zoho.eu")) errors.push('_headers: Bigin-Formularziel fehlt');
 if (!headers.includes('frame-src https://bigin.zoho.eu https://eu.bigin.online')) errors.push('_headers: Bigin-Frame-Freigabe fehlt');
