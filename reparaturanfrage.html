@@ -33,10 +33,12 @@
   <link rel="alternate" hreflang="de-DE" href="https://www.pc-und-handyservice-augsburg.com/reparaturanfrage">
   <link rel="alternate" hreflang="x-default" href="https://www.pc-und-handyservice-augsburg.com/reparaturanfrage">
   <link rel="stylesheet" href="/styles.min.css?v=20260903-1">
-  <link rel="stylesheet" href="/request.min.css?v=20260902-1">
+  <link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3">
+  <link rel="stylesheet" href="/request.min.css?v=20260911-1">
   <script defer src="/script.min.js?v=20260903-1"></script>
   <script defer src="/clarity-consent.min.js?v=20260716-3"></script>
-  <script defer src="/repair-form.min.js?v=20260910-2"></script>
+  <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
+  <script defer src="/repair-form.min.js?v=20260911-1"></script>
 </head>
 <body class="request-page has-mobile-contact">
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -144,7 +146,13 @@
               <div class="field-group"><label for="first-name">Vorname</label><input id="first-name" name="Contacts.First Name" type="text" maxlength="40" autocomplete="given-name"></div>
               <div class="field-group"><label for="last-name">Nachname <span aria-hidden="true">*</span></label><input id="last-name" name="Contacts.Last Name" type="text" maxlength="80" autocomplete="family-name" required></div>
               <div class="field-group"><label for="email">E-Mail <span aria-hidden="true">*</span></label><input id="email" name="Contacts.Email" type="email" maxlength="100" autocomplete="email" required></div>
-              <div class="field-group"><label for="phone">Telefonnummer <span aria-hidden="true">*</span></label><input id="phone" name="Contacts.Mobile" type="tel" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="z. B. 0152 12345678" required></div>
+              <div class="field-group phone-field">
+                <label for="phone">Telefonnummer <span aria-hidden="true">*</span></label>
+                <div class="phone-control">
+                  <input id="phone" name="Contacts.Mobile" type="tel" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="z. B. 0152 12345678" required aria-describedby="phone-hint">
+                </div>
+                <p class="field-hint" id="phone-hint">Land auswählen; die Nummer wird international gespeichert.</p>
+              </div>
               <div class="field-group field-wide"><label for="company">Firma <small>(optional)</small></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization"></div>
               <div class="field-group field-wide"><label for="street">Straße und Hausnummer <span aria-hidden="true">*</span></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address" required></div>
               <div class="field-group field-postcode"><label for="postcode">PLZ <span aria-hidden="true">*</span></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" required></div>

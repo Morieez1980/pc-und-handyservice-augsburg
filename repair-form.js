@@ -20,8 +20,40 @@
   const pipelinePhone = form.querySelector('#pipeline-phone');
   const pipelineAddress = form.querySelector('#pipeline-address');
   const contactEmail = form.querySelector('#email');
+  const phone = form.querySelector('#phone');
   const started = Date.now();
   let sending = false;
+
+  const phoneInput = window.intlTelInput ? window.intlTelInput(phone, {
+    initialCountry: 'de',
+    countryOrder: ['de', 'at', 'ch', 'tr', 'ua'],
+    countrySearch: true,
+    separateDialCode: true,
+    countryNameLocale: 'de',
+    strictMode: true,
+    formatAsYouType: true,
+    uiTranslations: {
+      selectedCountryAriaLabel: 'Land der Telefonnummer ändern, ausgewählt ${countryName} (${dialCode})',
+      noCountrySelected: 'Land der Telefonnummer auswählen',
+      countryListAriaLabel: 'Liste der Länder',
+      searchPlaceholder: 'Land suchen',
+      clearSearchAriaLabel: 'Suche löschen',
+      searchEmptyState: 'Keine Suchergebnisse',
+      searchSummaryAria(count) {
+        if (count === 0) return 'Keine Suchergebnisse';
+        if (count === 1) return 'Ein Suchergebnis';
+        return `${count} Suchergebnisse`;
+      }
+    }
+  }) : null;
+
+  const clearPhoneError = () => {
+    phone.setCustomValidity('');
+    phone.removeAttribute('aria-invalid');
+  };
+
+  phone.addEventListener('input', clearPhoneError);
+  phone.addEventListener('countrychange', clearPhoneError);
 
   const showStep = (number) => {
     steps.forEach((step, index) => {
@@ -114,10 +146,34 @@
       return;
     }
 
-    const phone = form.querySelector('#phone');
-    let value = phone.value.replace(/[()\s/.-]/g, '');
-    if (value.startsWith('00')) value = '+' + value.slice(2);
-    else if (value.startsWith('0')) value = '+49' + value.slice(1);
+    let value;
+    if (phoneInput) {
+      if (!phoneInput.isValidNumber()) {
+        event.preventDefault();
+        phone.setCustomValidity('Bitte gib eine gültige Telefonnummer für das ausgewählte Land ein.');
+        phone.setAttribute('aria-invalid', 'true');
+        errorSummary.textContent = 'Bitte prüfe die markierte Telefonnummer und versuche es erneut.';
+        errorSummary.hidden = false;
+        phone.focus();
+        phone.reportValidity();
+        return;
+      }
+      value = phoneInput.getNumber();
+    } else {
+      value = phone.value.replace(/[()\s/.-]/g, '');
+      if (value.startsWith('00')) value = '+' + value.slice(2);
+      else if (value.startsWith('0')) value = '+49' + value.slice(1);
+      if (!/^\+[1-9]\d{6,14}$/.test(value)) {
+        event.preventDefault();
+        phone.setCustomValidity('Bitte gib eine gültige Telefonnummer mit Ländervorwahl ein.');
+        phone.setAttribute('aria-invalid', 'true');
+        errorSummary.textContent = 'Bitte prüfe die markierte Telefonnummer und versuche es erneut.';
+        errorSummary.hidden = false;
+        phone.focus();
+        phone.reportValidity();
+        return;
+      }
+    }
     phone.value = value;
 
     pipelineEmail.value = contactEmail.value.trim();
