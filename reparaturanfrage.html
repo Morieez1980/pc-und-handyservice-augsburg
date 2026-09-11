@@ -34,11 +34,11 @@
   <link rel="alternate" hreflang="x-default" href="https://www.pc-und-handyservice-augsburg.com/reparaturanfrage">
   <link rel="stylesheet" href="/styles.min.css?v=20260903-1">
   <link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3">
-  <link rel="stylesheet" href="/request.min.css?v=20260911-1">
+  <link rel="stylesheet" href="/request.min.css?v=20260911-2">
   <script defer src="/script.min.js?v=20260903-1"></script>
-  <script defer src="/clarity-consent.min.js?v=20260716-3"></script>
+  <script defer src="/clarity-consent.min.js?v=20260911-2"></script>
   <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
-  <script defer src="/repair-form.min.js?v=20260911-1"></script>
+  <script defer src="/repair-form.min.js?v=20260911-2"></script>
 </head>
 <body class="request-page has-mobile-contact">
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -64,7 +64,7 @@
       <div>
         <p class="eyebrow"><span></span> Direkte Reparaturanfrage</p>
         <h1 id="request-title">In wenigen Schritten <em>erledigt.</em></h1>
-        <p class="hero-lead">Gerät und Fehler kurz beschreiben, Kontaktdaten ergänzen und absenden. Die Anfrage wird direkt als Reparaturauftrag in unserem Bigin-System erfasst.</p>
+        <p class="hero-lead">Gerät und Fehler kurz beschreiben, Kontaktdaten ergänzen und unverbindlich absenden. Die Anfrage wird sicher an unser Bigin-System übermittelt. Ein kostenpflichtiger Auftrag entsteht erst nach Ihrer Freigabe.</p>
       </div>
       <div class="request-trust" aria-label="Vorteile">
         <span>Schnell ausgefüllt</span><span>Direkt übermittelt</span><span>Persönliche Rückmeldung</span>
@@ -98,8 +98,6 @@
           <input id="pipeline-email" type="hidden" name="POTENTIALCF5" value="">
           <input id="pipeline-phone" type="hidden" name="POTENTIALCF6" value="">
           <input id="pipeline-address" type="hidden" name="POTENTIALCF7" value="">
-          <input type="hidden" name="Contacts.Mailing Country" value="Deutschland">
-          <input type="hidden" name="Contacts.Mailing State" value="Bayern">
           <input id="website-url" class="form-honeypot" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
 
           <fieldset class="form-step is-active" data-form-step="1">
@@ -127,9 +125,8 @@
             </div>
             <div class="form-grid compact-fields">
               <div class="field-group">
-                <label for="serial-number">Seriennummer <span aria-hidden="true">*</span></label>
-                <input id="serial-number" name="POTENTIALCF3" type="text" maxlength="255" required>
-                <label class="check-row"><input id="serial-unknown" type="checkbox"> <span>Nicht zur Hand</span></label>
+                <label for="serial-number">Seriennummer <small>(optional)</small></label>
+                <input id="serial-number" name="POTENTIALCF3" type="text" maxlength="255" autocomplete="off">
               </div>
               <div class="field-group" data-imei-field hidden>
                 <label for="imei">IMEI <small>(optional)</small></label>
@@ -140,7 +137,7 @@
           </fieldset>
 
           <fieldset class="form-step" data-form-step="2" hidden>
-            <legend class="sr-only">Schritt 2: Kontakt und Anschrift</legend>
+            <legend class="sr-only">Schritt 2: Kontakt</legend>
             <div class="step-copy"><strong>Fast geschafft.</strong><span>Wie können wir Sie zur Reparatur erreichen?</span></div>
             <div class="form-grid">
               <div class="field-group"><label for="first-name">Vorname</label><input id="first-name" name="Contacts.First Name" type="text" maxlength="40" autocomplete="given-name"></div>
@@ -154,11 +151,13 @@
                 <p class="field-hint" id="phone-hint">Land auswählen; die Nummer wird international gespeichert.</p>
               </div>
               <div class="field-group field-wide"><label for="company">Firma <small>(optional)</small></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization"></div>
-              <div class="field-group field-wide"><label for="street">Straße und Hausnummer <span aria-hidden="true">*</span></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address" required></div>
-              <div class="field-group field-postcode"><label for="postcode">PLZ <span aria-hidden="true">*</span></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" required></div>
-              <div class="field-group field-city"><label for="city">Ort <span aria-hidden="true">*</span></label><input id="city" name="Contacts.Mailing City" type="text" maxlength="100" autocomplete="address-level2" required></div>
+              <div class="field-group field-wide"><label for="street">Straße und Hausnummer <small>(optional)</small></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address"></div>
+              <div class="field-group field-postcode"><label for="postcode">PLZ <small>(optional)</small></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"></div>
+              <div class="field-group field-city"><label for="city">Ort <small>(optional)</small></label><input id="city" name="Contacts.Mailing City" type="text" maxlength="100" autocomplete="address-level2"></div>
             </div>
-            <label class="privacy-check"><input id="privacy-acknowledged" type="checkbox" required><span>Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> gelesen und stimme der Übermittlung meiner Angaben zur Bearbeitung der Anfrage zu. <b aria-hidden="true">*</b></span></label>
+            <p class="field-hint">Die Anschrift ist für die erste Anfrage nicht erforderlich und kann später ergänzt werden.</p>
+            <label class="privacy-check"><input id="privacy-acknowledged" type="checkbox" required><span>Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zur Kenntnis genommen. <b aria-hidden="true">*</b></span></label>
+            <p class="field-hint"><strong>Unverbindlich:</strong> Sie senden zunächst nur eine Anfrage. Reparaturen und kostenpflichtige Zusatzarbeiten beginnen erst nach Ihrer Freigabe.</p>
             <p class="form-error-summary" data-error-summary role="alert" hidden>Bitte prüfen Sie die markierten Felder.</p>
             <div class="form-actions">
               <button class="button button-outline" type="button" data-prev-step><span aria-hidden="true">←</span> Zurück</button>
@@ -193,9 +192,9 @@
     <div class="footer-main">
       <div class="footer-brand"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">MK</span><span><strong>PC & Handyservice</strong><small>Augsburg · Maurice Keil</small></span></a><p>Persönlicher Reparaturservice für Computer, Smartphones und Konsolen in Augsburg.</p></div>
       <div id="business-contact"><h3>Kontakt</h3><a href="tel:+4915254530080">+49 (0) 152 54530080</a><a href="mailto:MauriceKeil@pc-und-handyservice-augsburg.com">MauriceKeil@pc-und-handyservice-augsburg.com</a><p>Stätzlinger Straße 99<br>86165 Augsburg</p><a href="https://www.google.com/maps/dir/?api=1&amp;destination=St%C3%A4tzlinger+Stra%C3%9Fe+99%2C+86165+Augsburg" target="_blank" rel="noopener noreferrer external">Route planen ↗</a></div>
-      <div><h3>Navigation</h3><a href="/">Startseite</a><a href="/#leistungen">Leistungen</a><a href="/#preise">Preise</a><a href="/reparaturanfrage">Reparatur anfragen</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></div>
+      <div><h3>Navigation</h3><a href="/">Startseite</a><a href="/#leistungen">Leistungen</a><a href="/#preise">Preise</a><a href="/reparaturanfrage">Reparatur anfragen</a><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a></div>
     </div>
-    <div class="footer-bottom"><span>© <span data-year></span> Maurice Keil</span><span><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a><button type="button" class="privacy-settings" data-clarity-settings hidden>Analyse-Einstellungen</button></span></div>
+    <div class="footer-bottom"><span>© <span data-year></span> Maurice Keil</span><span><a href="/impressum">Impressum</a><a href="/datenschutz">Datenschutz</a><button type="button" class="privacy-settings" data-clarity-settings hidden>Analyse-Einstellungen</button></span></div>
   </footer>
 </body>
 </html>

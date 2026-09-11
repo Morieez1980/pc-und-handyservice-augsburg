@@ -10,8 +10,6 @@
   const previous = form.querySelector('[data-prev-step]');
   const device = form.querySelector('#device-type');
   const imeiWrap = form.querySelector('[data-imei-field]');
-  const serial = form.querySelector('#serial-number');
-  const serialUnknown = form.querySelector('#serial-unknown');
   const submit = form.querySelector('[data-submit]');
   const errorSummary = form.querySelector('[data-error-summary]');
   const success = document.querySelector('[data-form-success]');
@@ -98,19 +96,6 @@
   device.addEventListener('change', updateDeviceFields);
   updateDeviceFields();
 
-  serialUnknown.addEventListener('change', () => {
-    if (serialUnknown.checked) {
-      serial.dataset.previous = serial.value;
-      serial.value = 'Nicht angegeben';
-      serial.readOnly = true;
-      serial.setAttribute('aria-invalid', 'false');
-      return;
-    }
-    serial.value = serial.dataset.previous || '';
-    serial.readOnly = false;
-    serial.focus();
-  });
-
   form.addEventListener('input', (event) => {
     if (event.target.matches('input, select, textarea')) {
       event.target.removeAttribute('aria-invalid');
@@ -184,9 +169,7 @@
     const city = form.querySelector('#city').value.trim();
     pipelineAddress.value = [
       street,
-      [postcode, city].filter(Boolean).join(' '),
-      'Bayern',
-      'Deutschland'
+      [postcode, city].filter(Boolean).join(' ')
     ].filter(Boolean).join(', ');
 
     sending = true;

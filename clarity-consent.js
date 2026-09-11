@@ -52,7 +52,7 @@
     banner.innerHTML = `
       <div>
         <strong>Optionale Nutzungsanalyse</strong>
-        <p>Mit Ihrer Einwilligung hilft Microsoft Clarity dabei, die Bedienbarkeit dieser Website zu verbessern. Ohne Zustimmung wird Clarity nicht geladen. <a href="/datenschutz.html">Datenschutz</a></p>
+        <p>Mit Ihrer Einwilligung hilft Microsoft Clarity dabei, die Bedienbarkeit dieser Website zu verbessern. Ohne Zustimmung wird Clarity nicht geladen. <a href="/datenschutz">Datenschutz</a></p>
       </div>
       <div class="consent-actions">
         <button type="button" class="button button-outline" data-clarity-choice="denied">Ablehnen</button>
