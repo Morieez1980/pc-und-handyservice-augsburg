@@ -198,6 +198,17 @@ for (const marker of [
 ]) {
   if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Pflichtfeld-Hinweis fehlt (${marker})`);
 }
+for (const marker of [
+  'vollständige Anschrift',
+  'Modell beziehungsweise Modellnummer',
+  'Seriennummer und gegebenenfalls IMEI können freiwillig angegeben werden',
+  'Kontakt- und Adressdaten dem zugehörigen Vorgang'
+]) {
+  if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Formular-Datenschutzhinweis fehlt (${marker})`);
+}
+if (privacyPage.includes('Freiwillig können Sie außerdem Ihre Anschrift')) {
+  errors.push('datenschutz.html: Anschrift wird fälschlich noch als freiwillig bezeichnet');
+}
 if (requestPage.includes('Contacts.Mailing Country') || requestPage.includes('Contacts.Mailing State')) {
   errors.push('reparaturanfrage.html: nicht eingegebene Adressdaten werden weiterhin automatisch ergänzt');
 }
