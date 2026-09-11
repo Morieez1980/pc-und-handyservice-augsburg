@@ -227,6 +227,19 @@ for (const [file, url] of Object.entries(canonicals)) {
   if (!htmlByFile.get(file).includes(`<link rel="canonical" href="${url}">`)) errors.push(`${file}: Canonical URL fehlt oder ist falsch`);
 }
 
+const dataRecoveryHtml = htmlByFile.get('datenrettung-augsburg.html');
+for (const marker of [
+  'Auch nach weiteren Schreibvorgängen können',
+  'jeder Fall individuell analysiert',
+  'tatsächlich vollständig mit neuen Daten belegt',
+  'Teilweise ja:'
+]) {
+  if (!dataRecoveryHtml.includes(marker)) errors.push(`datenrettung-augsburg.html: präziser Datenrettungshinweis fehlt (${marker})`);
+}
+if (dataRecoveryHtml.includes('Bereits überschriebene Daten sind softwarebasiert in der Regel nicht wiederherstellbar.')) {
+  errors.push('datenrettung-augsburg.html: zu pauschale Überschreibungs-Aussage noch vorhanden');
+}
+
 const script = await readFile('script.js', 'utf8');
 if (!script.includes("'addEventListener' in desktopQuery") || !script.includes('addListener(handleDesktopChange)')) {
   errors.push('script.js: kompatibler MediaQuery-Fallback fehlt');
