@@ -5,6 +5,7 @@ import { renderDetail, renderIndex } from "../functions/_shared/reports-page.js"
 import { requireAccess } from "../functions/_shared/access.js";
 import { onRequest as submitQuestion } from "../functions/api/reparaturberichte/frage.js";
 import { onRequest as adminRequest } from "../functions/reparaturberichte-admin/api/[action].js";
+import { onRequestGet as getReportImage } from "../functions/api/reparaturberichte/bild/[id].js";
 
 const b64url = (value) => Buffer.from(value).toString("base64url");
 
@@ -17,11 +18,16 @@ test("Texte und Kurzadressen werden sicher ausgegeben", () => {
 });
 
 test("Detailseite zeigt nur übergebene freigegebene Fragen und schützt private Seiten vor Analyse", () => {
-  const report = { id: "r1", slug: "bericht", title: "Bericht", category: "PC", summary: "Kurzbeschreibung", problem: "Fehler", diagnosis: "Diagnose", solution: "Lösung" };
-  const html = renderDetail(report, [], [{ display_name: "A & B", body: "Wie ging das?", answer: "Vorsichtig." }]);
+  const report = { id: "r1", slug: "bericht", title: "Bericht", category: "PC", summary: "Kurzbeschreibung", problem: "Fehler", diagnosis: "Diagnose", solution: "Lösung", device_model: "iPhone SE", repair_type: "Akkutausch", tested_functions: "Start und Laden" };
+  const html = renderDetail(report, [{ id: "img1", alt_text: "Gerät vor der Reparatur", stage: "before" }], [{ display_name: "A & B", body: "Wie ging das?", answer: "Vorsichtig." }]);
   assert.ok(html.includes("A &amp; B"));
   assert.ok(html.includes("data-private-page=\"true\""));
   assert.ok(html.includes("Die Frage wird geprüft und erscheint erst nach Freigabe."));
+  assert.ok(html.includes("Gerät vor der Reparatur"));
+  assert.ok(html.includes("stage-before"));
+  assert.ok(html.includes("iPhone SE"));
+  assert.ok(html.includes("Reparaturanfrage starten"));
+  assert.ok(html.includes("gallery-dialog"));
 });
 
 test("Cloudflare Access JWT wird kryptografisch geprüft", async () => {
@@ -82,4 +88,14 @@ test("Besucherfragen werden nur mit Einwilligung als wartend gespeichert und ged
 test("Verwaltungs-API bleibt ohne vollständig konfigurierten Zugriffsschutz geschlossen", async () => {
   const response = await adminRequest({ request: new Request("https://example.com/reparaturberichte-admin/api/data"), env: { DB: new FakeDb() }, params: { action: "data" } });
   assert.equal(response.status, 503);
+});
+
+test("D1-Bilddaten werden als echte Binärdatei ausgeliefert", async () => {
+  const bytes = [137, 80, 78, 71, 13, 10, 26, 10];
+  const env = { DB: { prepare: () => ({ bind: () => ({ first: async () => ({ mime_type: "image/png", image_data: bytes }) }) }) } };
+  const response = await getReportImage({ env, params: { id: "bild-1" }, request: new Request("https://example.com/api/reparaturberichte/bild/bild-1") });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("content-type"), "image/png");
+  assert.equal(response.headers.get("content-length"), String(bytes.length));
+  assert.deepEqual([...new Uint8Array(await response.arrayBuffer())], bytes);
 });

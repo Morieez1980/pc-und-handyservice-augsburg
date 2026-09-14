@@ -1,5 +1,6 @@
 import { requireAccess } from "../../_shared/access.js";
 import { json, methodNotAllowed, readJson, slugify, text } from "../../_shared/http.js";
+import { ensureReportEnhancements } from "../../_shared/report-enhancements.js";
 
 function parseImage(image) {
   if (!image || typeof image.data !== "string") throw new Error("INVALID_IMAGE");
@@ -8,18 +9,21 @@ function parseImage(image) {
   const binary = atob(match[2]);
   if (binary.length > 900_000) throw new Error("IMAGE_TOO_LARGE");
   const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
-  return { mime: match[1], data: bytes.buffer, alt: text(image.alt, 160) || "Dokumentierte Reparatur" };
+  return { mime: match[1], data: bytes.buffer, alt: text(image.alt, 160) || "Dokumentierte Reparatur", stage: ["before", "repair", "result"].includes(image.stage) ? image.stage : "repair" };
 }
 
 async function listData(env) {
+  await ensureReportEnhancements(env);
   const now = Date.now();
   await env.DB.batch([
     env.DB.prepare("DELETE FROM report_questions WHERE status = 'hidden' AND moderated_at < ?").bind(new Date(now - 30 * 24 * 60 * 60 * 1000).toISOString()),
     env.DB.prepare("DELETE FROM report_questions WHERE status = 'pending' AND created_at < ?").bind(new Date(now - 90 * 24 * 60 * 60 * 1000).toISOString()),
   ]);
   const [reports, images, questions] = await Promise.all([
-    env.DB.prepare("SELECT id, slug, title, category, summary, problem, diagnosis, solution, status, published_at, created_at, updated_at FROM reports WHERE status != 'archived' ORDER BY updated_at DESC").all(),
-    env.DB.prepare("SELECT id, report_id, alt_text, sort_order FROM report_images ORDER BY report_id, sort_order").all(),
+    env.DB.prepare(`SELECT r.id, r.slug, r.title, r.category, r.summary, r.problem, r.diagnosis, r.solution, r.status, r.published_at, r.created_at, r.updated_at,
+      COALESCE(m.device_model, '') AS device_model, COALESCE(m.repair_type, '') AS repair_type, COALESCE(m.tested_functions, '') AS tested_functions
+      FROM reports r LEFT JOIN report_meta m ON m.report_id = r.id WHERE r.status != 'archived' ORDER BY r.updated_at DESC`).all(),
+    env.DB.prepare("SELECT i.id, i.report_id, i.alt_text, i.sort_order, COALESCE(m.stage, 'repair') AS stage FROM report_images i LEFT JOIN report_image_meta m ON m.image_id = i.id ORDER BY i.report_id, i.sort_order").all(),
     env.DB.prepare("SELECT q.id, q.report_id, q.display_name, q.body, q.status, q.answer, q.created_at, r.title AS report_title FROM report_questions q JOIN reports r ON r.id = q.report_id WHERE q.status != 'hidden' ORDER BY q.created_at DESC LIMIT 200").all(),
   ]);
   return json({ reports: reports.results || [], images: images.results || [], questions: questions.results || [] });
@@ -27,6 +31,7 @@ async function listData(env) {
 
 async function saveReport(request, env) {
   const data = await readJson(request, 13_000_000);
+  await ensureReportEnhancements(env);
   const id = text(data.id, 80) || crypto.randomUUID();
   const title = text(data.title, 120);
   const category = text(data.category, 60);
@@ -34,19 +39,49 @@ async function saveReport(request, env) {
   const problem = text(data.problem, 3000);
   const diagnosis = text(data.diagnosis, 3000);
   const solution = text(data.solution, 3000);
+  const deviceModel = text(data.device_model, 120);
+  const repairType = text(data.repair_type, 120);
+  const testedFunctions = text(data.tested_functions, 500);
   const slug = slugify(data.slug || title);
   if (!title || !category || summary.length < 20 || problem.length < 20 || diagnosis.length < 20 || solution.length < 20 || !slug) return json({ error: "Bitte alle Textfelder vollständig ausfüllen." }, 400);
   if (Array.isArray(data.images) && data.images.length > 10) return json({ error: "Bitte maximal zehn Fotos auswählen." }, 400);
-  const images = Array.isArray(data.images) ? data.images.map(parseImage) : [];
+  const imageItems = Array.isArray(data.images) ? data.images : null;
   const now = new Date().toISOString();
   const existing = await env.DB.prepare("SELECT status, created_at, published_at FROM reports WHERE id = ? LIMIT 1").bind(id).first();
+  const storedImages = imageItems ? await env.DB.prepare("SELECT id FROM report_images WHERE report_id = ?").bind(id).all() : { results: [] };
+  const storedImageIds = new Set((storedImages.results || []).map((image) => image.id));
+  if (imageItems?.some((item) => text(item?.id, 80) && !storedImageIds.has(text(item.id, 80)))) return json({ error: "Mindestens ein gespeichertes Foto gehört nicht zu diesem Bericht. Bitte die Seite neu laden." }, 400);
   const statements = [env.DB.prepare(`INSERT INTO reports (id, slug, title, category, summary, problem, diagnosis, solution, status, published_at, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET slug=excluded.slug, title=excluded.title, category=excluded.category, summary=excluded.summary, problem=excluded.problem, diagnosis=excluded.diagnosis, solution=excluded.solution, updated_at=excluded.updated_at`)
-    .bind(id, slug, title, category, summary, problem, diagnosis, solution, existing?.status || "draft", existing?.published_at || null, existing?.created_at || now, now)];
-  if (Array.isArray(data.images)) {
-    statements.push(env.DB.prepare("DELETE FROM report_images WHERE report_id = ?").bind(id));
-    images.forEach((image, index) => statements.push(env.DB.prepare("INSERT INTO report_images (id, report_id, mime_type, alt_text, image_data, sort_order, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)").bind(crypto.randomUUID(), id, image.mime, image.alt, image.data, index, now)));
+    .bind(id, slug, title, category, summary, problem, diagnosis, solution, existing?.status || "draft", existing?.published_at || null, existing?.created_at || now, now),
+    env.DB.prepare(`INSERT INTO report_meta (report_id, device_model, repair_type, tested_functions) VALUES (?, ?, ?, ?)
+      ON CONFLICT(report_id) DO UPDATE SET device_model=excluded.device_model, repair_type=excluded.repair_type, tested_functions=excluded.tested_functions`).bind(id, deviceModel, repairType, testedFunctions)];
+  if (imageItems) {
+    const existingItems = imageItems.filter((item) => storedImageIds.has(text(item?.id, 80)));
+    const keepIds = existingItems.map((item) => text(item.id, 80));
+    if (keepIds.length) {
+      const placeholders = keepIds.map(() => "?").join(",");
+      statements.push(env.DB.prepare(`DELETE FROM report_image_meta WHERE image_id IN (SELECT id FROM report_images WHERE report_id = ? AND id NOT IN (${placeholders}))`).bind(id, ...keepIds));
+      statements.push(env.DB.prepare(`DELETE FROM report_images WHERE report_id = ? AND id NOT IN (${placeholders})`).bind(id, ...keepIds));
+    } else {
+      statements.push(env.DB.prepare("DELETE FROM report_image_meta WHERE image_id IN (SELECT id FROM report_images WHERE report_id = ?)").bind(id));
+      statements.push(env.DB.prepare("DELETE FROM report_images WHERE report_id = ?").bind(id));
+    }
+    imageItems.forEach((item, index) => {
+      const existingId = text(item?.id, 80);
+      const stage = ["before", "repair", "result"].includes(item?.stage) ? item.stage : "repair";
+      if (existingId) {
+        const alt = text(item.alt, 160) || "Dokumentierte Reparatur";
+        statements.push(env.DB.prepare("UPDATE report_images SET alt_text = ?, sort_order = ? WHERE id = ? AND report_id = ?").bind(alt, index, existingId, id));
+        statements.push(env.DB.prepare("INSERT INTO report_image_meta (image_id, stage) VALUES (?, ?) ON CONFLICT(image_id) DO UPDATE SET stage=excluded.stage").bind(existingId, stage));
+      } else {
+        const image = parseImage(item);
+        const imageId = crypto.randomUUID();
+        statements.push(env.DB.prepare("INSERT INTO report_images (id, report_id, mime_type, alt_text, image_data, sort_order, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)").bind(imageId, id, image.mime, image.alt, image.data, index, now));
+        statements.push(env.DB.prepare("INSERT INTO report_image_meta (image_id, stage) VALUES (?, ?)").bind(imageId, image.stage));
+      }
+    });
   }
   await env.DB.batch(statements);
   return json({ ok: true, id, slug });

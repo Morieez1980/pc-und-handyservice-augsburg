@@ -1,4 +1,17 @@
 (() => {
+  const galleryDialog = document.querySelector(".gallery-dialog");
+  if (galleryDialog) {
+    const dialogImage = galleryDialog.querySelector("img");
+    const dialogCaption = galleryDialog.querySelector("p");
+    document.querySelectorAll("[data-gallery-src]").forEach((button) => button.addEventListener("click", () => {
+      dialogImage.src = button.dataset.gallerySrc;
+      dialogImage.alt = button.dataset.galleryAlt;
+      dialogCaption.textContent = button.dataset.galleryAlt;
+      galleryDialog.showModal();
+    }));
+    galleryDialog.querySelector(".gallery-close").addEventListener("click", () => galleryDialog.close());
+    galleryDialog.addEventListener("click", (event) => { if (event.target === galleryDialog) galleryDialog.close(); });
+  }
   const form = document.querySelector("#question-form");
   if (!form) return;
   const result = form.querySelector(".form-result");

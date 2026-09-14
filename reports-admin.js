@@ -1,5 +1,5 @@
 (() => {
-  const state = { reports: [], images: [], questions: [], selectedFiles: [], previewUrls: [] };
+  const state = { reports: [], images: [], questions: [], imageItems: [], previewUrls: [] };
   const reportList = document.querySelector("#report-list");
   const questionList = document.querySelector("#question-list");
   const editor = document.querySelector("#editor");
@@ -10,6 +10,12 @@
   const imagesInput = document.querySelector("#images");
   const imagePreview = document.querySelector("#image-preview");
   const imageCount = document.querySelector("#image-count");
+  const livePreview = document.querySelector("#live-preview");
+  const autosaveStatus = document.querySelector("#autosave-status");
+  const reportFields = ["id", "title", "slug", "category", "device_model", "repair_type", "tested_functions", "summary", "problem", "diagnosis", "solution"];
+  const draftKey = "repair-report-autosave-v1";
+  let autosaveTimer;
+  let draggedImage = -1;
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
 
   async function api(action, options) {
@@ -29,15 +35,44 @@
     state.previewUrls = [];
   }
 
-  function syncSelectedFiles(files) {
-    state.selectedFiles = files.slice(0, 10);
+  function syncImageItems(items) {
+    state.imageItems = items.slice(0, 10);
     const transfer = new DataTransfer();
-    state.selectedFiles.forEach((file) => transfer.items.add(file));
+    state.imageItems.filter((item) => item.file).forEach((item) => transfer.items.add(item.file));
     imagesInput.files = transfer.files;
     clearPreviewUrls();
-    state.previewUrls = state.selectedFiles.map((file) => URL.createObjectURL(file));
-    imageCount.textContent = `${state.selectedFiles.length} / 10`;
-    imagePreview.innerHTML = state.selectedFiles.map((file, index) => `<article class="image-card"><div class="image-frame"><img src="${state.previewUrls[index]}" alt="Vorschau für ${esc(file.name)}"><span>${index + 1}</span><button type="button" class="image-remove" data-image-remove="${index}" aria-label="${esc(file.name)} entfernen">×</button></div><strong>Bild ${index + 1}</strong><small title="${esc(file.name)}">${esc(file.name)}</small><div class="image-order"><button type="button" data-image-move="up" data-image-index="${index}" ${index === 0 ? "disabled" : ""} aria-label="Bild ${index + 1} nach vorne verschieben">←</button><button type="button" data-image-move="down" data-image-index="${index}" ${index === state.selectedFiles.length - 1 ? "disabled" : ""} aria-label="Bild ${index + 1} nach hinten verschieben">→</button></div></article>`).join("");
+    state.previewUrls = state.imageItems.map((item) => item.file ? URL.createObjectURL(item.file) : `/api/reparaturberichte/bild/${encodeURIComponent(item.id)}`);
+    imageCount.textContent = `${state.imageItems.length} / 10`;
+    imagePreview.innerHTML = state.imageItems.map((item, index) => `<article class="image-card" draggable="true" data-image-card="${index}"><div class="image-frame"><img src="${state.previewUrls[index]}" alt="Vorschau für ${esc(item.alt)}"><span>${index + 1}</span><button type="button" class="image-remove" data-image-remove="${index}" aria-label="Bild ${index + 1} entfernen">×</button></div><label class="image-field">Bildbeschreibung<input value="${esc(item.alt)}" maxlength="160" data-image-caption="${index}" placeholder="Was ist auf diesem Bild zu sehen?"></label><label class="image-field">Abschnitt<select data-image-stage="${index}"><option value="before" ${item.stage === "before" ? "selected" : ""}>Vorher</option><option value="repair" ${item.stage === "repair" ? "selected" : ""}>Reparatur</option><option value="result" ${item.stage === "result" ? "selected" : ""}>Ergebnis</option></select></label><div class="image-order"><button type="button" data-image-move="up" data-image-index="${index}" ${index === 0 ? "disabled" : ""} aria-label="Bild ${index + 1} nach vorne verschieben">←</button><button type="button" data-image-move="down" data-image-index="${index}" ${index === state.imageItems.length - 1 ? "disabled" : ""} aria-label="Bild ${index + 1} nach hinten verschieben">→</button></div></article>`).join("");
+  }
+
+  function updateLivePreview() {
+    const values = Object.fromEntries(reportFields.map((field) => [field, reportForm.elements[field]?.value.trim() || ""]));
+    livePreview.querySelector("h3").textContent = values.title || "Vorschau des Kundentitels";
+    livePreview.querySelector("p").textContent = values.summary || "Hier erscheint die Kurzbeschreibung.";
+    const details = livePreview.querySelectorAll("em");
+    details[0].textContent = values.device_model || "noch nicht angegeben";
+    details[1].textContent = values.repair_type || "noch nicht angegeben";
+  }
+
+  function restoreAutosave() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(draftKey) || "null");
+      if (!saved || Date.now() - saved.savedAt > 7 * 24 * 60 * 60 * 1000) return;
+      reportFields.filter((field) => field !== "id").forEach((field) => { if (typeof saved[field] === "string") reportForm.elements[field].value = saved[field]; });
+      autosaveStatus.textContent = "Automatisch gespeicherte Texte wurden wiederhergestellt.";
+    } catch {}
+  }
+
+  function scheduleAutosave() {
+    updateLivePreview();
+    if (reportForm.elements.id.value) return;
+    clearTimeout(autosaveTimer);
+    autosaveStatus.textContent = "Änderungen werden zwischengespeichert …";
+    autosaveTimer = setTimeout(() => {
+      const draft = Object.fromEntries(reportFields.filter((field) => field !== "id").map((field) => [field, reportForm.elements[field].value]));
+      try { localStorage.setItem(draftKey, JSON.stringify({ ...draft, savedAt: Date.now() })); autosaveStatus.textContent = "Texte lokal zwischengespeichert."; } catch { autosaveStatus.textContent = "Lokale Zwischenspeicherung ist nicht verfügbar."; }
+    }, 500);
   }
 
   function render() {
@@ -61,18 +96,21 @@
 
   function openReport(report = null) {
     reportForm.reset();
-    syncSelectedFiles([]);
+    syncImageItems([]);
     document.querySelector("#editor-title").textContent = report ? "Reparaturbericht bearbeiten" : "Neuer Reparaturbericht";
-    for (const field of ["id", "title", "slug", "category", "summary", "problem", "diagnosis", "solution"]) reportForm.elements[field].value = report?.[field] || "";
+    for (const field of reportFields) reportForm.elements[field].value = report?.[field] || "";
+    if (!report && !reportForm.elements.category.value) reportForm.elements.category.value = "Smartphone & Tablet";
+    autosaveStatus.textContent = report ? "Gespeicherten Bericht bearbeiten." : "Texte werden auf diesem Gerät automatisch zwischengespeichert.";
+    if (!report) restoreAutosave();
     if (report) {
-      const images = state.images.filter((image) => image.report_id === report.id);
-      imagePreview.innerHTML = images.map((image, index) => `<article class="image-card existing"><div class="image-frame"><img src="/api/reparaturberichte/bild/${encodeURIComponent(image.id)}" alt="${esc(image.alt_text)}"><span>${index + 1}</span></div><strong>Gespeichertes Bild ${index + 1}</strong><small>${esc(image.alt_text)}</small></article>`).join("");
-      imageCount.textContent = `${images.length} gespeichert`;
+      syncImageItems(state.images.filter((image) => image.report_id === report.id).map((image) => ({ id: image.id, alt: image.alt_text, stage: image.stage || "repair" })));
     }
+    updateLivePreview();
     editor.showModal();
   }
 
-  async function compress(file) {
+  async function compress(item) {
+    const file = item.file;
     if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > 12_000_000) throw new Error("Bitte nur JPG-, PNG- oder WebP-Bilder bis 12 MB auswählen.");
     const bitmap = await createImageBitmap(file);
     const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
@@ -88,7 +126,7 @@
       quality -= 0.08;
     } while (blob && blob.size > 850_000 && quality >= 0.52);
     if (!blob || blob.size > 900_000) throw new Error("Das Bild konnte nicht ausreichend verkleinert werden.");
-    return await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve({ data: reader.result, alt: file.name.replace(/\.[^.]+$/, "") }); reader.onerror = reject; reader.readAsDataURL(blob); });
+    return await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve({ data: reader.result, alt: item.alt, stage: item.stage }); reader.onerror = reject; reader.readAsDataURL(blob); });
   }
 
   reportForm.addEventListener("submit", async (event) => {
@@ -98,10 +136,10 @@
     try {
       const form = new FormData(reportForm);
       const payload = Object.fromEntries([...form.entries()].filter(([key]) => key !== "images"));
-      const files = state.selectedFiles;
-      if (files.length > 10) throw new Error("Bitte maximal zehn Fotos auswählen.");
-      if (files.length || !payload.id) payload.images = await Promise.all(files.map(compress));
+      if (state.imageItems.length > 10) throw new Error("Bitte maximal zehn Fotos auswählen.");
+      payload.images = await Promise.all(state.imageItems.map((item) => item.file ? compress(item) : { id: item.id, alt: item.alt, stage: item.stage }));
       await api("report", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      if (!payload.id) try { localStorage.removeItem(draftKey); } catch {}
       editor.close();
       showMessage("Entwurf gespeichert.");
       await load();
@@ -111,27 +149,56 @@
   imagesInput.addEventListener("change", (event) => {
     const additions = [...event.target.files];
     const seen = new Set();
-    const files = [...state.selectedFiles, ...additions].filter((file) => {
-      const key = `${file.name}:${file.size}:${file.lastModified}`;
+    const existing = state.imageItems.map((item) => ({ ...item }));
+    const added = additions.map((file, index) => ({ file, alt: file.name.replace(/\.[^.]+$/, ""), stage: !existing.length && index === 0 ? "before" : "repair" }));
+    if (!existing.length && added.length > 1) added[added.length - 1].stage = "result";
+    const items = [...existing, ...added].filter((item) => {
+      const key = item.file ? `${item.file.name}:${item.file.size}:${item.file.lastModified}` : `id:${item.id}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     });
-    if (files.length > 10) showMessage("Es wurden nur die ersten zehn unterschiedlichen Fotos übernommen.", true);
-    syncSelectedFiles(files);
+    if (items.length > 10) showMessage("Es wurden nur die ersten zehn unterschiedlichen Fotos übernommen.", true);
+    syncImageItems(items);
   });
   imagePreview.addEventListener("click", (event) => {
     const remove = event.target.closest("[data-image-remove]");
-    if (remove) return syncSelectedFiles(state.selectedFiles.filter((_, index) => index !== Number(remove.dataset.imageRemove)));
+    if (remove) return syncImageItems(state.imageItems.filter((_, index) => index !== Number(remove.dataset.imageRemove)));
     const move = event.target.closest("[data-image-move]");
     if (!move) return;
     const from = Number(move.dataset.imageIndex);
     const to = move.dataset.imageMove === "up" ? from - 1 : from + 1;
-    if (to < 0 || to >= state.selectedFiles.length) return;
-    const files = [...state.selectedFiles];
-    [files[from], files[to]] = [files[to], files[from]];
-    syncSelectedFiles(files);
+    if (to < 0 || to >= state.imageItems.length) return;
+    const items = [...state.imageItems];
+    [items[from], items[to]] = [items[to], items[from]];
+    syncImageItems(items);
   });
+  imagePreview.addEventListener("input", (event) => {
+    if (event.target.matches("[data-image-caption]")) state.imageItems[Number(event.target.dataset.imageCaption)].alt = event.target.value;
+  });
+  imagePreview.addEventListener("change", (event) => {
+    if (event.target.matches("[data-image-stage]")) state.imageItems[Number(event.target.dataset.imageStage)].stage = event.target.value;
+  });
+  imagePreview.addEventListener("dragstart", (event) => {
+    const card = event.target.closest("[data-image-card]");
+    if (!card) return;
+    draggedImage = Number(card.dataset.imageCard);
+    card.classList.add("dragging");
+  });
+  imagePreview.addEventListener("dragover", (event) => event.preventDefault());
+  imagePreview.addEventListener("drop", (event) => {
+    event.preventDefault();
+    const card = event.target.closest("[data-image-card]");
+    const target = card ? Number(card.dataset.imageCard) : -1;
+    if (draggedImage < 0 || target < 0 || draggedImage === target) return;
+    const items = [...state.imageItems];
+    const [moved] = items.splice(draggedImage, 1);
+    items.splice(target, 0, moved);
+    draggedImage = -1;
+    syncImageItems(items);
+  });
+  imagePreview.addEventListener("dragend", () => { draggedImage = -1; imagePreview.querySelectorAll(".dragging").forEach((card) => card.classList.remove("dragging")); });
+  reportForm.addEventListener("input", scheduleAutosave);
   document.querySelector("#new-report").addEventListener("click", () => openReport());
   document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", () => editor.close()));
   document.querySelectorAll("[data-question-close]").forEach((button) => button.addEventListener("click", () => questionEditor.close()));
