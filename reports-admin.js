@@ -79,7 +79,7 @@
       const form = new FormData(reportForm);
       const payload = Object.fromEntries([...form.entries()].filter(([key]) => key !== "images"));
       const files = [...document.querySelector("#images").files];
-      if (files.length > 3) throw new Error("Bitte maximal drei Fotos auswählen.");
+      if (files.length > 10) throw new Error("Bitte maximal zehn Fotos auswählen.");
       if (files.length || !payload.id) payload.images = await Promise.all(files.map(compress));
       await api("report", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       editor.close();
@@ -89,7 +89,7 @@
   });
 
   document.querySelector("#images").addEventListener("change", (event) => {
-    document.querySelector("#image-preview").innerHTML = [...event.target.files].slice(0, 3).map((file) => `<span>${esc(file.name)}</span>`).join("");
+    document.querySelector("#image-preview").innerHTML = [...event.target.files].slice(0, 10).map((file) => `<span>${esc(file.name)}</span>`).join("");
   });
   document.querySelector("#new-report").addEventListener("click", () => openReport());
   document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", () => editor.close()));

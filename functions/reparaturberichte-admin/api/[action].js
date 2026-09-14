@@ -26,7 +26,7 @@ async function listData(env) {
 }
 
 async function saveReport(request, env) {
-  const data = await readJson(request, 4_500_000);
+  const data = await readJson(request, 13_000_000);
   const id = text(data.id, 80) || crypto.randomUUID();
   const title = text(data.title, 120);
   const category = text(data.category, 60);
@@ -36,7 +36,8 @@ async function saveReport(request, env) {
   const solution = text(data.solution, 3000);
   const slug = slugify(data.slug || title);
   if (!title || !category || summary.length < 20 || problem.length < 20 || diagnosis.length < 20 || solution.length < 20 || !slug) return json({ error: "Bitte alle Textfelder vollständig ausfüllen." }, 400);
-  const images = Array.isArray(data.images) ? data.images.slice(0, 3).map(parseImage) : [];
+  if (Array.isArray(data.images) && data.images.length > 10) return json({ error: "Bitte maximal zehn Fotos auswählen." }, 400);
+  const images = Array.isArray(data.images) ? data.images.map(parseImage) : [];
   const now = new Date().toISOString();
   const existing = await env.DB.prepare("SELECT status, created_at, published_at FROM reports WHERE id = ? LIMIT 1").bind(id).first();
   const statements = [env.DB.prepare(`INSERT INTO reports (id, slug, title, category, summary, problem, diagnosis, solution, status, published_at, created_at, updated_at)
