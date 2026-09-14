@@ -35,7 +35,8 @@ jobs:
               fi
             done
             page="$(curl --silent --show-error --location --retry 2 "${base}/" || true)"
-            if [[ "$all_ready" == "true" ]] && grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page"; then
+            request_page="$(curl --silent --show-error --location --retry 2 "${base}/reparaturanfrage" || true)"
+            if [[ "$all_ready" == "true" ]] && grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page" && grep --fixed-strings --quiet 'repair-form.min.js?v=20260914-1' <<< "$request_page"; then
               echo "Deployment is ready after attempt ${attempt}."
               exit 0
             fi
