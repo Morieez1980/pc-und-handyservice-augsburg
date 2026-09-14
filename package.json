@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tools/test-repair-reports.mjs",
+    "validate": "node tools/validate.mjs"
+  }
+}

@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /reparaturberichte-admin
 
 Sitemap: https://www.pc-und-handyservice-augsburg.com/sitemap.xml

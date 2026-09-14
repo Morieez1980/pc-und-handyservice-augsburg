@@ -1,0 +1,17 @@
+{
+  "name": "pc-und-handyservice-augsburg",
+  "compatibility_date": "2026-09-14",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": ".",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "repair-journal",
+      "database_id": "57921c68-671c-4bbc-bf81-78327428c636",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "TEAM_DOMAIN": "https://autumn-waterfall-58de.cloudflareaccess.com"
+  }
+}

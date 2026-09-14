@@ -17,6 +17,12 @@ const requiredFiles = [
   'qr-schild-reparaturanfrage.html', 'google-qr-reparaturanfrage.html',
   'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
   'functions/api/review-summary.js', 'functions/api/google-reviews.js',
+  'functions/_shared/access.js', 'functions/_shared/http.js', 'functions/_shared/reports-page.js',
+  'functions/reparaturberichte/index.js', 'functions/reparaturberichte/[slug].js',
+  'functions/api/reparaturberichte/bild/[id].js', 'functions/api/reparaturberichte/frage.js',
+  'functions/reparaturberichte-admin/api/[action].js', 'migrations/0001_repair_reports.sql',
+  'reparaturberichte-admin.html', 'reports.css', 'reports.js', 'reports-admin.css', 'reports-admin.js', 'wrangler.jsonc',
+  'package.json', 'tools/test-repair-reports.mjs',
   '_headers', 'robots.txt', 'sitemap.xml', 'favicon.svg',
   'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'icon-maskable-512.png', 'og-image.png', 'site.webmanifest',
@@ -34,6 +40,7 @@ const htmlFiles = [
   'datenrettung-augsburg.html', 'konsolenreparatur-augsburg.html'
 ];
 const htmlByFile = new Map();
+const dynamicRoutes = new Set(['reparaturberichte']);
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
   htmlByFile.set(file, html);
@@ -72,7 +79,10 @@ for (const [file, html] of htmlByFile) {
     if (!extname(target)) {
       try { await access(`${target}.html`); target = `${target}.html`; } catch {}
     }
-    try { await access(target); } catch { errors.push(`${file}: interner Link fehlt: ${href}`); continue; }
+    try { await access(target); } catch {
+      if (dynamicRoutes.has(target)) continue;
+      errors.push(`${file}: interner Link fehlt: ${href}`); continue;
+    }
     if (fragment && extname(target).toLowerCase() === '.html') {
       const targetHtml = htmlByFile.get(target) ?? await readFile(target, 'utf8');
       if (!targetHtml.includes(`id="${fragment}"`) && !targetHtml.includes(`id='${fragment}'`)) {
@@ -93,6 +103,7 @@ for (const marker of [
 }
 for (const link of [
   'href="/impressum"', 'href="/datenschutz"',
+  'href="/reparaturberichte"',
   'https://share.google/57mrs7jE79LUInKVg',
   'https://share.google/2mQbAIfJoIab9YR3G',
   'https://www.instagram.com/pc_handyservice_maurice_keil/',
@@ -140,6 +151,9 @@ for (const marker of [
   'Microsoft Data Protection Addendum',
   'Cloudflare Pages',
   'Bigin und Zoho Flow',
+  'Reparaturberichte, Fotos und Besucherfragen',
+  'spätestens nach 30 Tagen',
+  'spätestens nach 90 Tagen',
   'Stand: 14. September 2026'
 ]) {
   if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Datenschutzhinweis fehlt: ${marker}`);
@@ -353,8 +367,9 @@ const robots = await readFile('robots.txt', 'utf8');
 if (!robots.includes('User-agent: *') || !robots.includes('Sitemap: https://www.pc-und-handyservice-augsburg.com/sitemap.xml')) {
   errors.push('robots.txt: Crawling- oder Sitemap-Angabe fehlt');
 }
+if (!robots.includes('Disallow: /reparaturberichte-admin')) errors.push('robots.txt: geschützter Verwaltungsbereich ist nicht ausgeschlossen');
 const sitemap = await readFile('sitemap.xml', 'utf8');
-for (const url of [...Object.values(canonicals), 'https://www.pc-und-handyservice-augsburg.com/og-image.png']) {
+for (const url of [...Object.values(canonicals), 'https://www.pc-und-handyservice-augsburg.com/reparaturberichte', 'https://www.pc-und-handyservice-augsburg.com/og-image.png']) {
   if (!sitemap.includes(url)) errors.push(`sitemap.xml: URL fehlt: ${url}`);
 }
 
@@ -366,7 +381,7 @@ for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'P
 if (!/script-src 'self' 'sha256-[A-Za-z0-9+/=]+'/.test(headers)) errors.push('_headers: CSP-Hash für JSON-LD fehlt');
 const rawJsonLd = index.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i)?.[1];
 if (rawJsonLd) {
-  const jsonLdHash = `sha256-${createHash('sha256').update(rawJsonLd).digest('base64')}`;
+  const jsonLdHash = `sha256-${createHash('sha256').update(rawJsonLd.replace(/\r\n/g, '\n')).digest('base64')}`;
   if (!headers.includes(`'${jsonLdHash}'`)) errors.push('_headers: CSP-Hash stimmt nicht mit dem JSON-LD der Startseite überein');
 }
 if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000, immutable')) errors.push('_headers: versionierte Produktionsassets werden nicht langfristig gecacht');
@@ -378,7 +393,21 @@ if (!headers.includes('/request.min.css')) errors.push('_headers: Cache-Regel f�
 if (!headers.includes('/repair-form.min.js')) errors.push('_headers: Cache-Regel für das Reparaturanfrage-Script fehlt');
 if (!headers.includes('/vendor/intl-tel-input/*')) errors.push('_headers: Cache-Regel für die lokale Telefon-Länderauswahl fehlt');
 if (!headers.includes('/qr.min.css')) errors.push('_headers: Cache-Regel für das QR-Stylesheet fehlt');
+if (!headers.includes('/reparaturberichte-admin*') || !headers.includes('X-Robots-Tag: noindex, nofollow')) errors.push('_headers: Verwaltungsbereich ist nicht ausreichend vor Indexierung geschützt');
 if (!headers.includes('max-age=86400, stale-while-revalidate=604800')) errors.push('_headers: stabile Bildassets haben keine sichere Revalidierungsstrategie');
+
+const adminPage = await readFile('reparaturberichte-admin.html', 'utf8');
+for (const marker of ['data-private-page="true"', 'noindex,nofollow', 'id="report-form"', 'id="question-form"', 'reports-admin.js?v=']) {
+  if (!adminPage.includes(marker)) errors.push(`reparaturberichte-admin.html: Verwaltungsmarker fehlt: ${marker}`);
+}
+const migration = await readFile('migrations/0001_repair_reports.sql', 'utf8');
+for (const table of ['reports', 'report_images', 'report_questions', 'question_rate_limits']) {
+  if (!migration.includes(`CREATE TABLE IF NOT EXISTS ${table}`)) errors.push(`D1-Migration: Tabelle ${table} fehlt`);
+}
+const accessFunction = await readFile('functions/_shared/access.js', 'utf8');
+for (const marker of ['Cf-Access-Jwt-Assertion'.toLowerCase(), 'POLICY_AUD', 'RS256', 'crypto.subtle.verify']) {
+  if (!accessFunction.toLowerCase().includes(marker.toLowerCase())) errors.push(`Access-Prüfung unvollständig: ${marker}`);
+}
 
 if (errors.length) {
   console.error(errors.join('\n'));
