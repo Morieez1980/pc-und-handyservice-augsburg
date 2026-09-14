@@ -1,5 +1,5 @@
 (() => {
-  const state = { reports: [], images: [], questions: [] };
+  const state = { reports: [], images: [], questions: [], selectedFiles: [], previewUrls: [] };
   const reportList = document.querySelector("#report-list");
   const questionList = document.querySelector("#question-list");
   const editor = document.querySelector("#editor");
@@ -7,6 +7,9 @@
   const questionEditor = document.querySelector("#question-editor");
   const questionForm = document.querySelector("#question-form");
   const message = document.querySelector("#message");
+  const imagesInput = document.querySelector("#images");
+  const imagePreview = document.querySelector("#image-preview");
+  const imageCount = document.querySelector("#image-count");
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
 
   async function api(action, options) {
@@ -19,6 +22,22 @@
   function showMessage(value, error = false) {
     message.textContent = value;
     message.style.color = error ? "#ff9c95" : "#27e0cc";
+  }
+
+  function clearPreviewUrls() {
+    state.previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    state.previewUrls = [];
+  }
+
+  function syncSelectedFiles(files) {
+    state.selectedFiles = files.slice(0, 10);
+    const transfer = new DataTransfer();
+    state.selectedFiles.forEach((file) => transfer.items.add(file));
+    imagesInput.files = transfer.files;
+    clearPreviewUrls();
+    state.previewUrls = state.selectedFiles.map((file) => URL.createObjectURL(file));
+    imageCount.textContent = `${state.selectedFiles.length} / 10`;
+    imagePreview.innerHTML = state.selectedFiles.map((file, index) => `<article class="image-card"><div class="image-frame"><img src="${state.previewUrls[index]}" alt="Vorschau für ${esc(file.name)}"><span>${index + 1}</span><button type="button" class="image-remove" data-image-remove="${index}" aria-label="${esc(file.name)} entfernen">×</button></div><strong>Bild ${index + 1}</strong><small title="${esc(file.name)}">${esc(file.name)}</small><div class="image-order"><button type="button" data-image-move="up" data-image-index="${index}" ${index === 0 ? "disabled" : ""} aria-label="Bild ${index + 1} nach vorne verschieben">←</button><button type="button" data-image-move="down" data-image-index="${index}" ${index === state.selectedFiles.length - 1 ? "disabled" : ""} aria-label="Bild ${index + 1} nach hinten verschieben">→</button></div></article>`).join("");
   }
 
   function render() {
@@ -42,12 +61,13 @@
 
   function openReport(report = null) {
     reportForm.reset();
-    document.querySelector("#image-preview").innerHTML = "";
+    syncSelectedFiles([]);
     document.querySelector("#editor-title").textContent = report ? "Reparaturbericht bearbeiten" : "Neuer Reparaturbericht";
     for (const field of ["id", "title", "slug", "category", "summary", "problem", "diagnosis", "solution"]) reportForm.elements[field].value = report?.[field] || "";
     if (report) {
       const images = state.images.filter((image) => image.report_id === report.id);
-      document.querySelector("#image-preview").innerHTML = images.map((image) => `<img src="/api/reparaturberichte/bild/${encodeURIComponent(image.id)}" alt="${esc(image.alt_text)}">`).join("");
+      imagePreview.innerHTML = images.map((image, index) => `<article class="image-card existing"><div class="image-frame"><img src="/api/reparaturberichte/bild/${encodeURIComponent(image.id)}" alt="${esc(image.alt_text)}"><span>${index + 1}</span></div><strong>Gespeichertes Bild ${index + 1}</strong><small>${esc(image.alt_text)}</small></article>`).join("");
+      imageCount.textContent = `${images.length} gespeichert`;
     }
     editor.showModal();
   }
@@ -78,7 +98,7 @@
     try {
       const form = new FormData(reportForm);
       const payload = Object.fromEntries([...form.entries()].filter(([key]) => key !== "images"));
-      const files = [...document.querySelector("#images").files];
+      const files = state.selectedFiles;
       if (files.length > 10) throw new Error("Bitte maximal zehn Fotos auswählen.");
       if (files.length || !payload.id) payload.images = await Promise.all(files.map(compress));
       await api("report", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -88,8 +108,29 @@
     } catch (error) { showMessage(error.message, true); } finally { button.disabled = false; }
   });
 
-  document.querySelector("#images").addEventListener("change", (event) => {
-    document.querySelector("#image-preview").innerHTML = [...event.target.files].slice(0, 10).map((file) => `<span>${esc(file.name)}</span>`).join("");
+  imagesInput.addEventListener("change", (event) => {
+    const additions = [...event.target.files];
+    const seen = new Set();
+    const files = [...state.selectedFiles, ...additions].filter((file) => {
+      const key = `${file.name}:${file.size}:${file.lastModified}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    if (files.length > 10) showMessage("Es wurden nur die ersten zehn unterschiedlichen Fotos übernommen.", true);
+    syncSelectedFiles(files);
+  });
+  imagePreview.addEventListener("click", (event) => {
+    const remove = event.target.closest("[data-image-remove]");
+    if (remove) return syncSelectedFiles(state.selectedFiles.filter((_, index) => index !== Number(remove.dataset.imageRemove)));
+    const move = event.target.closest("[data-image-move]");
+    if (!move) return;
+    const from = Number(move.dataset.imageIndex);
+    const to = move.dataset.imageMove === "up" ? from - 1 : from + 1;
+    if (to < 0 || to >= state.selectedFiles.length) return;
+    const files = [...state.selectedFiles];
+    [files[from], files[to]] = [files[to], files[from]];
+    syncSelectedFiles(files);
   });
   document.querySelector("#new-report").addEventListener("click", () => openReport());
   document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", () => editor.close()));
