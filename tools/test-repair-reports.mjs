@@ -25,6 +25,7 @@ test("Detailseite zeigt nur übergebene freigegebene Fragen und schützt private
   assert.ok(html.includes("Die Frage wird geprüft und erscheint erst nach Freigabe."));
   assert.ok(html.includes("Gerät vor der Reparatur"));
   assert.ok(html.includes("stage-before"));
+  assert.ok(html.includes("/api/reparaturberichte/bild/img1?v=20260914-2"));
   assert.ok(html.includes("iPhone SE"));
   assert.ok(html.includes("Reparaturanfrage starten"));
   assert.ok(html.includes("gallery-dialog"));
@@ -97,5 +98,6 @@ test("D1-Bilddaten werden als echte Binärdatei ausgeliefert", async () => {
   assert.equal(response.status, 200);
   assert.equal(response.headers.get("content-type"), "image/png");
   assert.equal(response.headers.get("content-length"), String(bytes.length));
+  assert.equal(response.headers.get("cache-control"), "public, max-age=86400, must-revalidate");
   assert.deepEqual([...new Uint8Array(await response.arrayBuffer())], bytes);
 });

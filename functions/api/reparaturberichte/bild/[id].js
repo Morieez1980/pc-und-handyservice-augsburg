@@ -12,5 +12,5 @@ export async function onRequestGet({ env, params, request }) {
         ? Uint8Array.from(image.image_data)
         : null;
   if (!bytes) return new Response(null, { status: 500 });
-  return new Response(bytes, { headers: { "Content-Type": image.mime_type, "Content-Length": String(bytes.byteLength), "Cache-Control": "public, max-age=31536000, immutable", "X-Content-Type-Options": "nosniff", ETag: etag } });
+  return new Response(bytes, { headers: { "Content-Type": image.mime_type, "Content-Length": String(bytes.byteLength), "Cache-Control": "public, max-age=86400, must-revalidate", "X-Content-Type-Options": "nosniff", ETag: etag } });
 }
