@@ -21,6 +21,17 @@
   const phone = form.querySelector('#phone');
   const started = Date.now();
   let sending = false;
+  let responseTimer;
+  let confirmationNonce;
+  const showUnconfirmed = () => {
+    if (!sending) return;
+    errorSummary.textContent = 'Die Übermittlung konnte noch nicht bestätigt werden. Bitte prüfen Sie Ihr E-Mail-Postfach und die Antwort unten. Senden Sie die Anfrage nicht mehrfach. Falls keine Bestätigung ankommt, rufen Sie uns bitte an: 0152 54530080.';
+    errorSummary.hidden = false;
+    responseFrame.removeAttribute('aria-hidden');
+    responseFrame.removeAttribute('tabindex');
+    responseFrame.classList.add('response-visible');
+    submit.textContent = 'Bestätigung ausstehend';
+  };
 
   const phoneInput = window.intlTelInput ? window.intlTelInput(phone, {
     initialCountry: 'de',
@@ -109,14 +120,29 @@
 
   responseFrame.addEventListener('load', () => {
     if (!sending) return;
+    try {
+      const result = new URL(responseFrame.contentWindow.location.href);
+      if (result.origin !== location.origin || result.pathname !== '/anfrage-bestaetigt' || result.searchParams.get('ref') !== confirmationNonce) return showUnconfirmed();
+    } catch { return showUnconfirmed(); }
+    clearTimeout(responseTimer);
+    sending = false;
     form.hidden = true;
+    responseFrame.classList.remove('response-visible');
+    responseFrame.setAttribute('aria-hidden', 'true');
     document.querySelector('.request-form-heading').hidden = true;
     success.hidden = false;
     success.focus();
   });
 
   form.addEventListener('submit', (event) => {
+    if (sending) { event.preventDefault(); return; }
     errorSummary.hidden = true;
+    if (!validateArea(steps[0])) {
+      event.preventDefault();
+      showStep(1);
+      validateArea(steps[0]);
+      return;
+    }
     if (!validateArea(steps[1])) {
       event.preventDefault();
       errorSummary.hidden = false;
@@ -135,9 +161,9 @@
     if (phoneInput) {
       if (!phoneInput.isValidNumber()) {
         event.preventDefault();
-        phone.setCustomValidity('Bitte gib eine gültige Telefonnummer für das ausgewählte Land ein.');
+        phone.setCustomValidity('Bitte geben Sie eine gültige Telefonnummer für das ausgewählte Land ein.');
         phone.setAttribute('aria-invalid', 'true');
-        errorSummary.textContent = 'Bitte prüfe die markierte Telefonnummer und versuche es erneut.';
+        errorSummary.textContent = 'Bitte prüfen Sie die markierte Telefonnummer und versuchen Sie es erneut.';
         errorSummary.hidden = false;
         phone.focus();
         phone.reportValidity();
@@ -150,9 +176,9 @@
       else if (value.startsWith('0')) value = '+49' + value.slice(1);
       if (!/^\+[1-9]\d{6,14}$/.test(value)) {
         event.preventDefault();
-        phone.setCustomValidity('Bitte gib eine gültige Telefonnummer mit Ländervorwahl ein.');
+        phone.setCustomValidity('Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein.');
         phone.setAttribute('aria-invalid', 'true');
-        errorSummary.textContent = 'Bitte prüfe die markierte Telefonnummer und versuche es erneut.';
+        errorSummary.textContent = 'Bitte prüfen Sie die markierte Telefonnummer und versuchen Sie es erneut.';
         errorSummary.hidden = false;
         phone.focus();
         phone.reportValidity();
@@ -172,7 +198,12 @@
       [postcode, city].filter(Boolean).join(' ')
     ].filter(Boolean).join(', ');
 
+    confirmationNonce = crypto.randomUUID();
+    form.querySelector('[name="returnURL"]').value = location.origin + '/anfrage-bestaetigt?ref=' + encodeURIComponent(confirmationNonce);
+    const model = form.querySelector('#device-model').value.trim();
+    form.querySelector('[name="Potential Name"]').value = ('Reparatur · ' + model + ' · ' + new Date().toLocaleDateString('de-DE')).slice(0, 100);
     sending = true;
+    responseTimer = setTimeout(showUnconfirmed, 30000);
     submit.disabled = true;
     submit.textContent = 'Wird sicher übermittelt …';
   });

@@ -108,7 +108,7 @@ for (const link of [
   if (!index.includes(link)) errors.push(`index.html: Pflichtlink fehlt: ${link}`);
 }
 if ((index.match(/class="social-card/g) ?? []).length !== 3) errors.push('index.html: drei sichtbare Social- und Kontaktkarten fehlen');
-if (!index.includes('4,9') || !index.includes('data-google-review-count>90</span>') || !index.includes('data-google-review-date')) {
+if (!index.includes('4,9') || !index.includes('data-google-review-count>91</span>') || !index.includes('data-google-review-date')) {
   errors.push('index.html: Google-Bewertungskennzahl oder Quellenhinweis fehlt');
 }
 for (const marker of [
@@ -140,7 +140,7 @@ for (const marker of [
   'Microsoft Data Protection Addendum',
   'Cloudflare Pages',
   'Bigin und Zoho Flow',
-  'Stand: 12. September 2026'
+  'Stand: 14. September 2026'
 ]) {
   if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Datenschutzhinweis fehlt: ${marker}`);
 }

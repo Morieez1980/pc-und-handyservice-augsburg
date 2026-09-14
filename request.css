@@ -607,3 +607,5 @@
     transition: none;
   }
 }
+
+.bigin-response-frame.response-visible{display:block!important;width:100%!important;height:340px!important;position:static!important;left:auto!important;opacity:1!important;visibility:visible;border:1px solid #64748b;background:white;margin-top:20px}

@@ -2,6 +2,8 @@
   const projectId = document.documentElement.dataset.clarityProject?.trim();
   if (!projectId || !/^[a-z0-9]{6,32}$/i.test(projectId)) return;
 
+  if (document.documentElement.dataset.privatePage === 'true') return;
+
   const storageKey = 'pc-service-clarity-consent-v1';
   const settingsButtons = document.querySelectorAll('[data-clarity-settings]');
 
@@ -67,6 +69,7 @@
         else if (window.clarity) {
           configureClarity('denied');
           window.clarity('consent', false);
+          location.reload();
         }
         removeBanner();
       });
@@ -76,7 +79,6 @@
   settingsButtons.forEach((button) => {
     button.hidden = false;
     button.addEventListener('click', () => {
-      setChoice('');
       showBanner();
     });
   });
