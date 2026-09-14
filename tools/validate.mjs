@@ -381,7 +381,7 @@ for (const header of ['Content-Security-Policy', 'Strict-Transport-Security', 'P
 if (!/script-src 'self' 'sha256-[A-Za-z0-9+/=]+'/.test(headers)) errors.push('_headers: CSP-Hash für JSON-LD fehlt');
 const rawJsonLd = index.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i)?.[1];
 if (rawJsonLd) {
-  const jsonLdHash = `sha256-${createHash('sha256').update(rawJsonLd).digest('base64')}`;
+  const jsonLdHash = `sha256-${createHash('sha256').update(rawJsonLd.replace(/\r\n/g, '\n')).digest('base64')}`;
   if (!headers.includes(`'${jsonLdHash}'`)) errors.push('_headers: CSP-Hash stimmt nicht mit dem JSON-LD der Startseite überein');
 }
 if (!headers.includes('/styles.min.css') || !headers.includes('max-age=31536000, immutable')) errors.push('_headers: versionierte Produktionsassets werden nicht langfristig gecacht');
