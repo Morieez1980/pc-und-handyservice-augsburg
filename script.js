@@ -152,6 +152,7 @@ const googleReviewsRequest = googleReviewPreview
         reviews.forEach((review) => dialogFragment.append(createGoogleReview(review, true)));
         reviewDialogList.replaceChildren(dialogFragment);
         reviewDialogOpen.hidden = false;
+        reviewDialogOpen.disabled = false;
         const total = Number.isInteger(data.reviewCount) ? data.reviewCount : reviews.length;
         reviewDialogOpen.textContent = `Alle ${new Intl.NumberFormat('de-DE').format(total)} Bewertungen direkt lesen`;
         if (reviewDialogCount) reviewDialogCount.textContent = `${new Intl.NumberFormat('de-DE').format(total)} Rezensionen`;
@@ -173,7 +174,13 @@ Promise.all([reviewSummaryRequest, googleReviewsRequest]).then(([fallbackData, g
 });
 
 reviewDialogOpen?.addEventListener('click', () => {
-  if (!reviewDialog || typeof reviewDialog.showModal !== 'function') return;
+  if (
+    reviewDialogOpen.hidden ||
+    reviewDialogOpen.disabled ||
+    !reviewDialogList?.children.length ||
+    !reviewDialog ||
+    typeof reviewDialog.showModal !== 'function'
+  ) return;
   reviewDialog.showModal();
   document.body.classList.add('review-dialog-open');
 });

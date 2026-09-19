@@ -100,6 +100,13 @@ try {
 console.log('Google-Rezensionsfunktion: OAuth, Standort-Erkennung und datensparsame Ausgabe sind gültig.');
 
 const browserScript = await readFile(new URL('../script.js', import.meta.url), 'utf8');
+const pageMarkup = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+const pageStyles = await readFile(new URL('../styles.css', import.meta.url), 'utf8');
 assert.match(browserScript, /Promise\.all\(\[reviewSummaryRequest, googleReviewsRequest\]\)/);
 assert.match(browserScript, /googleData\?\.source === 'google-business-profile' \? googleData : fallbackData/);
+assert.match(pageMarkup, /data-review-dialog-open hidden disabled/);
+assert.match(pageStyles, /\.review-dialog-trigger\[hidden\]\{display:none!important\}/);
+assert.match(browserScript, /reviewDialogOpen\.disabled = false/);
+assert.match(browserScript, /!reviewDialogList\?\.children\.length/);
 console.log('Google-Bewertungsanzeige: Live-Daten haben eine feste Priorität vor dem Ausfallwert.');
+console.log('Google-Bewertungsfenster: Ohne geladene Rezensionen bleibt der Auslöser sicher verborgen.');
