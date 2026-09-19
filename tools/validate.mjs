@@ -105,7 +105,6 @@ for (const link of [
   'href="/impressum"', 'href="/datenschutz"',
   'href="/reparaturberichte"',
   'https://share.google/57mrs7jE79LUInKVg',
-  'https://share.google/2mQbAIfJoIab9YR3G',
   'https://www.instagram.com/pc_handyservice_maurice_keil/',
   'https://www.facebook.com/profile.php?id=61588640742328',
   'https://www.youtube.com/channel/UClSdWj7xui8E9e75IYGmHQw',

@@ -105,12 +105,16 @@ const pageStyles = await readFile(new URL('../styles.css', import.meta.url), 'ut
 const qrStyles = await readFile(new URL('../qr.css', import.meta.url), 'utf8');
 assert.match(browserScript, /Promise\.all\(\[reviewSummaryRequest, googleReviewsRequest\]\)/);
 assert.match(browserScript, /googleData\?\.source === 'google-business-profile' \? googleData : fallbackData/);
-assert.match(pageMarkup, /data-review-dialog-open hidden disabled/);
+const reviewMarkup = pageMarkup.slice(pageMarkup.indexOf('<section class="section reviews"'), pageMarkup.indexOf('<section class="section faq"'));
+assert.match(reviewMarkup, /data-review-dialog-open>Kundenstimmen direkt hier lesen/);
+assert.doesNotMatch(reviewMarkup, /Google-Profil öffnen|Bei Google öffnen|target="_blank"/);
 assert.match(pageStyles, /\.review-dialog-trigger\[hidden\]\{display:none!important\}/);
+assert.match(browserScript, /const verifiedReviewFallback =/);
+assert.match(browserScript, /renderGoogleReviews\(verifiedReviewFallback\)/);
 assert.match(browserScript, /reviewDialogOpen\.disabled = false/);
 assert.match(browserScript, /!reviewDialogList\?\.children\.length/);
 assert.match(qrStyles, /\.qr-card > span[\s\S]*background: linear-gradient\(135deg, var\(--blue\), var\(--cyan\)\)/);
 assert.match(qrStyles, /\.qr-security-note[\s\S]*border-left: 3px solid #ff6b61/);
 console.log('Google-Bewertungsanzeige: Live-Daten haben eine feste Priorität vor dem Ausfallwert.');
-console.log('Google-Bewertungsfenster: Ohne geladene Rezensionen bleibt der Auslöser sicher verborgen.');
+console.log('Google-Bewertungsfenster: Kundenstimmen öffnen ohne externe Weiterleitung direkt auf der Webseite.');
 console.log('Farbsystem: Blau/Cyan bleibt der Markenakzent; Rot ist auf den Sicherheitshinweis begrenzt.');

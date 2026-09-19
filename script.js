@@ -89,6 +89,26 @@ const formatReviewDate = (value) => {
   }).format(publishedAt);
 };
 
+const verifiedReviewFallback = {
+  rating: 4.9,
+  reviewCount: 91,
+  source: 'verified-public-summary',
+  reviews: [
+    { author: 'Seba', rating: 5, dateLabel: 'vor einer Woche', isSummary: true, text: 'Seba berichtet von einer sehr schnellen PC-Reparatur und einer reibungslosen Kommunikation.' },
+    { author: 'aTOMteilchen', rating: 5, dateLabel: 'vor einem Monat', isSummary: true, text: 'Der Bildfehler am Gaming-PC wurde innerhalb weniger Stunden erkannt und anschließend zügig behoben.' },
+    { author: 'Peter Bender', rating: 1, dateLabel: 'vor 3 Monaten', isSummary: true, text: 'Peter Bender beschreibt seine Erfahrung kritisch und bemängelt Zuverlässigkeit und Kompetenz bei einem PC-Problem.' },
+    { author: 'Katja Obermaier', rating: 5, dateLabel: 'vor 3 Monaten', isSummary: true, text: 'Ein abgestürzter Gaming-PC wurde sogar über das Wochenende schnell und zur vollen Zufriedenheit wiederhergestellt.' },
+    { author: 'Anna Oko', rating: 5, dateLabel: 'vor 4 Monaten', isSummary: true, text: 'Der Laptop konnte noch am selben Tag und innerhalb kurzer Zeit repariert werden.' },
+    { author: 'charlie S', rating: 5, dateLabel: 'vor 4 Monaten', isSummary: true, text: 'Trotz Anfrage am Sonntag wurde das Smartphone am Montag angenommen und noch am selben Tag repariert.' },
+    { author: 'Fritz Allar', rating: 5, dateLabel: 'vor 4 Monaten', isSummary: true, text: 'Der Fehler am ausgefallenen Laptop wurde schnell gefunden und die weitere Lösung persönlich begleitet.' },
+    { author: 'Arda Aytac', rating: 5, dateLabel: 'vor 5 Monaten', isSummary: true, text: 'Der Gaming-PC wurde professionell, preislich fair und vollständig zusammengebaut.' },
+    { author: 'I. Huber', rating: 5, dateLabel: 'vor 4 Monaten', isSummary: true, text: 'Kompetente Beratung und ein schneller, tadelloser Displaytausch am Laptop werden besonders hervorgehoben.' },
+    { author: 'Daniela Scholz', rating: 5, dateLabel: 'vor 5 Monaten', isSummary: true, text: 'Ein nicht mehr ladendes Smartphone wurde innerhalb kurzer Zeit wieder einsatzbereit gemacht.' },
+    { author: 'Renate Weber', rating: 5, dateLabel: 'vor 3 Monaten', isSummary: true, text: 'Die Handyrettung wurde schnell, unkompliziert und auch am Wochenende zuverlässig durchgeführt.' },
+    { author: 'Ebru Coskun', rating: 5, dateLabel: 'vor 7 Monaten', isSummary: true, text: 'Freundliche Beratung und eine schnelle Laptop-Reparatur mit einwandfreiem Ergebnis.' }
+  ]
+};
+
 const createGoogleReview = (review, inDialog = false) => {
   const article = document.createElement('article');
   article.className = inDialog ? 'google-review google-review-dialog-item' : 'google-review';
@@ -106,7 +126,9 @@ const createGoogleReview = (review, inDialog = false) => {
   author.textContent = review.author || 'Google-Nutzer';
   const date = document.createElement('time');
   const formattedDate = formatReviewDate(review.publishedAt);
-  if (formattedDate) {
+  if (review.dateLabel) {
+    date.textContent = review.dateLabel;
+  } else if (formattedDate) {
     date.dateTime = new Date(review.publishedAt).toISOString();
     date.textContent = formattedDate;
   }
@@ -123,8 +145,57 @@ const createGoogleReview = (review, inDialog = false) => {
   comment.textContent = review.text || 'Bewertung ohne zusätzlichen Text.';
 
   article.append(header, stars, comment);
+  if (review.isSummary) {
+    const summaryNote = document.createElement('small');
+    summaryNote.className = 'google-review-summary-note';
+    summaryNote.textContent = 'Inhaltlich zusammengefasst';
+    article.append(summaryNote);
+  }
   return article;
 };
+
+const renderGoogleReviews = (data) => {
+  if (!Array.isArray(data.reviews) || data.reviews.length === 0) return false;
+  const reviews = data.reviews.filter((review) => (
+    Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5
+  ));
+  if (!reviews.length) return false;
+
+  const isLive = data.source === 'google-business-profile';
+  const previewFragment = document.createDocumentFragment();
+  reviews.slice(0, 3).forEach((review) => previewFragment.append(createGoogleReview(review)));
+  const source = document.createElement('p');
+  source.className = 'review-source';
+  source.textContent = isLive
+    ? 'Aktuelle öffentlich sichtbare Rezensionen. Weitere Kundenstimmen öffnen sich direkt auf dieser Seite.'
+    : 'Ausgewählte öffentlich sichtbare Rezensionen, inhaltlich zusammengefasst. Weitere Kundenstimmen öffnen sich direkt auf dieser Seite.';
+  previewFragment.append(source);
+  googleReviewPreview?.replaceChildren(previewFragment);
+
+  if (reviewDialogList && reviewDialogOpen) {
+    const dialogFragment = document.createDocumentFragment();
+    reviews.forEach((review) => dialogFragment.append(createGoogleReview(review, true)));
+    reviewDialogList.replaceChildren(dialogFragment);
+    reviewDialogOpen.hidden = false;
+    reviewDialogOpen.disabled = false;
+    reviewDialogOpen.textContent = 'Kundenstimmen direkt hier lesen';
+    const total = Number.isInteger(data.reviewCount) ? data.reviewCount : reviews.length;
+    if (reviewDialogCount) {
+      reviewDialogCount.textContent = isLive
+        ? `${new Intl.NumberFormat('de-DE').format(total)} Rezensionen`
+        : `${reviews.length} ausgewählte Stimmen`;
+    }
+    if (reviewDialogRating && typeof data.rating === 'number') {
+      reviewDialogRating.textContent = data.rating.toLocaleString('de-DE', {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+    }
+  }
+  return true;
+};
+
+renderGoogleReviews(verifiedReviewFallback);
 
 const googleReviewsRequest = googleReviewPreview
   ? fetch('/api/google-reviews', { headers: { Accept: 'application/json' } })
@@ -133,36 +204,7 @@ const googleReviewsRequest = googleReviewPreview
       return response.json();
     })
     .then((data) => {
-      if (!Array.isArray(data.reviews) || data.reviews.length === 0) return data;
-      const reviews = data.reviews.filter((review) => (
-        Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5
-      ));
-      if (!reviews.length) return data;
-
-      const previewFragment = document.createDocumentFragment();
-      reviews.slice(0, 3).forEach((review) => previewFragment.append(createGoogleReview(review)));
-      const source = document.createElement('p');
-      source.className = 'review-source';
-      source.textContent = 'Aktuelle öffentlich sichtbare Rezensionen aus dem Google-Unternehmensprofil. Weitere Bewertungen öffnen sich direkt auf dieser Seite.';
-      previewFragment.append(source);
-      googleReviewPreview.replaceChildren(previewFragment);
-
-      if (reviewDialogList && reviewDialogOpen) {
-        const dialogFragment = document.createDocumentFragment();
-        reviews.forEach((review) => dialogFragment.append(createGoogleReview(review, true)));
-        reviewDialogList.replaceChildren(dialogFragment);
-        reviewDialogOpen.hidden = false;
-        reviewDialogOpen.disabled = false;
-        const total = Number.isInteger(data.reviewCount) ? data.reviewCount : reviews.length;
-        reviewDialogOpen.textContent = `Alle ${new Intl.NumberFormat('de-DE').format(total)} Bewertungen direkt lesen`;
-        if (reviewDialogCount) reviewDialogCount.textContent = `${new Intl.NumberFormat('de-DE').format(total)} Rezensionen`;
-        if (reviewDialogRating && typeof data.rating === 'number') {
-          reviewDialogRating.textContent = data.rating.toLocaleString('de-DE', {
-            minimumFractionDigits: 1,
-            maximumFractionDigits: 1
-          });
-        }
-      }
+      renderGoogleReviews(data);
       return data;
     })
     .catch(() => null)
