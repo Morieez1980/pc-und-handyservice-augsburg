@@ -112,12 +112,29 @@ assert.match(pageStyles, /\.review-dialog-trigger\[hidden\]\{display:none!import
 assert.match(pageStyles, /\.review-dialog-list\{flex:1 1 auto;min-height:0;display:flex;flex-direction:column/);
 assert.match(pageStyles, /\.google-review-dialog-item\{flex:0 0 auto;width:100%;height:auto\}/);
 assert.doesNotMatch(pageStyles, /\.google-review-dialog-item\{min-height:0\}/);
-assert.match(browserScript, /const verifiedReviewFallback =/);
-assert.match(browserScript, /renderGoogleReviews\(verifiedReviewFallback\)/);
+assert.match(browserScript, /const verifiedOriginalReviewFallback =/);
+assert.match(browserScript, /source: 'verified-public-originals'/);
+assert.match(browserScript, /renderGoogleReviews\(verifiedOriginalReviewFallback\)/);
+assert.match(browserScript, /Unzuverlässig und Inkompetent\./);
+assert.match(browserScript, /Ich habe meinen PC hier reparieren lassen und bin super zufrieden\./);
+assert.doesNotMatch(browserScript, /isSummary|Inhaltlich zusammengefasst|inhaltlich zusammengefasst/);
+const originalFallbackBlock = browserScript.slice(
+  browserScript.indexOf('const verifiedOriginalReviewFallback ='),
+  browserScript.indexOf('const createGoogleReview =')
+);
+assert.equal((originalFallbackBlock.match(/\{ author:/g) ?? []).length, 12);
+for (const author of [
+  'Seba', 'aTOMteilchen', 'Peter Bender', 'Katja Obermaier', 'Anna Oko', 'charlie S',
+  'Fritz Allar', 'Arda Aytac', 'I. Huber', 'Daniela Scholz', 'Renate Weber', 'Ebru Coskun'
+]) {
+  assert.match(originalFallbackBlock, new RegExp(`author: '${author.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}'`));
+}
+assert.match(reviewMarkup, /Ausgewählte öffentlich sichtbare Originalrezensionen/);
 assert.match(browserScript, /reviewDialogOpen\.disabled = false/);
 assert.match(browserScript, /!reviewDialogList\?\.children\.length/);
 assert.match(qrStyles, /\.qr-card > span[\s\S]*background: linear-gradient\(135deg, var\(--blue\), var\(--cyan\)\)/);
 assert.match(qrStyles, /\.qr-security-note[\s\S]*border-left: 3px solid #ff6b61/);
-console.log('Google-Bewertungsanzeige: Live-Daten haben eine feste Priorität vor dem Ausfallwert.');
+console.log('Google-Bewertungsanzeige: Live-Daten haben eine feste Priorität vor den geprüften Originaltexten.');
+console.log('Google-Bewertungsanzeige: Ausfallanzeige enthält Originalrezensionen ohne Zusammenfassung.');
 console.log('Google-Bewertungsfenster: Kundenstimmen öffnen ohne externe Weiterleitung direkt auf der Webseite.');
 console.log('Farbsystem: Blau/Cyan bleibt der Markenakzent; Rot ist auf den Sicherheitshinweis begrenzt.');

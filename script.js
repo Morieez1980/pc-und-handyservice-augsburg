@@ -89,23 +89,23 @@ const formatReviewDate = (value) => {
   }).format(publishedAt);
 };
 
-const verifiedReviewFallback = {
+const verifiedOriginalReviewFallback = {
   rating: 4.9,
   reviewCount: 91,
-  source: 'verified-public-summary',
+  source: 'verified-public-originals',
   reviews: [
-    { author: 'Seba', rating: 5, dateLabel: 'vor einer Woche', isSummary: true, text: 'Seba berichtet von einer sehr schnellen PC-Reparatur und einer reibungslosen Kommunikation.' },
-    { author: 'aTOMteilchen', rating: 5, dateLabel: 'vor einem Monat', isSummary: true, text: 'Der Bildfehler am Gaming-PC wurde innerhalb weniger Stunden erkannt und anschließend zügig behoben.' },
-    { author: 'Peter Bender', rating: 1, dateLabel: 'vor 3 Monaten', isSummary: true, text: 'Peter Bender beschreibt seine Erfahrung kritisch und bemängelt Zuverlässigkeit und Kompetenz bei einem PC-Problem.' },
-    { author: 'Katja Obermaier', rating: 5, dateLabel: 'vor 3 Monaten', isSummary: true, text: 'Ein abgestürzter Gaming-PC wurde sogar über das Wochenende schnell und zur vollen Zufriedenheit wiederhergestellt.' },
-    { author: 'Anna Oko', rating: 5, dateLabel: 'vor 4 Monaten', isSummary: true, text: 'Der Laptop konnte noch am selben Tag und innerhalb kurzer Zeit repariert werden.' },
-    { author: 'charlie S', rating: 5, dateLabel: 'vor 4 Monaten', isSummary: true, text: 'Trotz Anfrage am Sonntag wurde das Smartphone am Montag angenommen und noch am selben Tag repariert.' },
-    { author: 'Fritz Allar', rating: 5, dateLabel: 'vor 4 Monaten', isSummary: true, text: 'Der Fehler am ausgefallenen Laptop wurde schnell gefunden und die weitere Lösung persönlich begleitet.' },
-    { author: 'Arda Aytac', rating: 5, dateLabel: 'vor 5 Monaten', isSummary: true, text: 'Der Gaming-PC wurde professionell, preislich fair und vollständig zusammengebaut.' },
-    { author: 'I. Huber', rating: 5, dateLabel: 'vor 4 Monaten', isSummary: true, text: 'Kompetente Beratung und ein schneller, tadelloser Displaytausch am Laptop werden besonders hervorgehoben.' },
-    { author: 'Daniela Scholz', rating: 5, dateLabel: 'vor 5 Monaten', isSummary: true, text: 'Ein nicht mehr ladendes Smartphone wurde innerhalb kurzer Zeit wieder einsatzbereit gemacht.' },
-    { author: 'Renate Weber', rating: 5, dateLabel: 'vor 3 Monaten', isSummary: true, text: 'Die Handyrettung wurde schnell, unkompliziert und auch am Wochenende zuverlässig durchgeführt.' },
-    { author: 'Ebru Coskun', rating: 5, dateLabel: 'vor 7 Monaten', isSummary: true, text: 'Freundliche Beratung und eine schnelle Laptop-Reparatur mit einwandfreiem Ergebnis.' }
+    { author: 'Seba', rating: 5, dateLabel: 'vor einer Woche', text: 'Ich habe meinen PC hier reparieren lassen und bin super zufrieden. Die Reparatur ging extrem schnell und auch die Kommunikation verlief absolut reibungslos. Sehr freundlich und kompetent\n\nkann ich definitiv nur weiterempfehlen!' },
+    { author: 'aTOMteilchen', rating: 5, dateLabel: 'vor einem Monat', text: 'Ich habe meinen Gaming Rechner zu Herrn Keil gebracht weil ich kein Bild hatte, nach wenigen Stunden konnte er bereits eine Diagnose stellen. Die Grafikkarte war Kaputt, schon am nächsten Tag hatte er eine neue und konnte sie direkt verbauen inkl. Treiberupdates, aufspielen von Windows 11. Läuft wunderbar, unkompliziert, schnell und faire Preise. Kann ich weiterempfehlen.' },
+    { author: 'Peter Bender', rating: 1, dateLabel: 'vor 3 Monaten', text: 'Unzuverlässig und Inkompetent.\nIch hatte ein Problem, dass mein PC die Maus nicht mehr erkannte, vermutlich ein beschädigter Treiber. Ich brachte den PC zu Herrn Keil und wollte ihn zwei Tage später am Mittag wieder abholen. Laut Herrn Keil wäre es machbar. Als ich ihn abholen wollte, hatte Herr Keil ihn noch nicht mal angeschaut. Da ich den PC dringend für einen Vortrag brauchte bat ich ihn bitte sofort zu reparieren. Am Abend kam der Anruf, dass ich ihn abholen kann, es sei ihm nicht möglich den Maustreiber zu reparieren. Bei der Abholung durfte ich noch 30 Euro Diagnosegebühr bezahlen, für ein Ergebnis das ich schon wusste. Sein Ratschlag ich sollte ChatGPT fragen und die Anweisungen Schritt für Schritt befolgen. Habe mich als Laie durch die Windowseinstellungen gearbeitet und dort eine Lösung gefunden. Eine Stunde und die Maus funktioniert wieder. Als Laie eine Stunde Arbeit, ein Profi hätte nur Minuten gebraucht, Herr Keil hat es nicht geschafft. Suche mir das nächste mal einen Profi auf dem Gebiet.' },
+    { author: 'Katja Obermaier', rating: 5, dateLabel: 'vor 3 Monaten', text: 'Aufgrund eines Absturzes unseres Gaming-PC hat sich Hr. Keil super schnell dem Problem angenommen und konnte es übers Wochenende zu unserer vollsten Zufriedenheit lösen. PC läuft wieder einwandfrei. Preis-Leistungs-Verhältnis wirklich top. Jederzeit wieder gerne!' },
+    { author: 'Anna Oko', rating: 5, dateLabel: 'vor 4 Monaten', text: 'Ich habe Herrn Keil angerufen und durfte sofort vorbeikommen. Er hat meinen Laptop nicht nur am selben Tag repariert, sondern sogar innerhalb von nur drei Stunden! Dabei hat er mich auf dem Laufenden gehalten.\n\nDie Kommunikation war super angenehm und entspannt, und der Preis wurde vorab klar kommuniziert.\nHerr Keil ist sehr professionell und außerdem super nett!\n\nAuf jeden Fall 5 Sterne und absolut weiterzuempfehlen!' },
+    { author: 'charlie S', rating: 5, dateLabel: 'vor 4 Monaten', text: 'super schnelle Bearbeitung obwohl ich Sonntag Abend erst angerufen habe. Konnte mein Handy direkt um 9 am Montag abgeben und um 17 Uhr wieder repariert abholen. Und einfach sehr liebe und nette Menschen am Telefon wie auch vor Ort :) Sehr sympathisch!' },
+    { author: 'Fritz Allar', rating: 5, dateLabel: 'vor 4 Monaten', text: 'Nachdem mein Laptop keinen Mucks mehr machte, fand Herr Keil sehr schnell den Fehler. So beschloss ich mir einen neuen PC zuzulegen, Herr Keil besorgte mir ein Spitzengerät zu einem sensationellen Preis und überspielte in Rekordzeit alle meine Daten und half mir bei der Einrichtung. Und alles schnell zu einem fairen Preis, ich kann Herrn Keil nur weiterempfehlen.' },
+    { author: 'Arda Aytac', rating: 5, dateLabel: 'vor 5 Monaten', text: 'Maurice Keil hat meinen Gaming-PC professionell und zu einem günstigen Preis zusammengebaut. Ich gebe ihm 10 von 10 Punkten. Vielen Dank an ihn und ich empfehle ihn jedem weiter.' },
+    { author: 'I. Huber', rating: 5, dateLabel: 'vor 4 Monaten', text: 'TOP Service! Zu allererst sehr netter Kontakt und kompetente Beratung. Display Tausch meines Laptops war innerhalb kürzester Zeit tadellos erledigt. Kann Herrn Keil nur weiterempfehlen!' },
+    { author: 'Daniela Scholz', rating: 5, dateLabel: 'vor 5 Monaten', text: 'Mein Handy ging aus und ließ sich nicht mehr laden 😔 Dank dem super netten Team von Computer und Handyservice Keil konnte ich mein Handy In zwei Tagen mit einem neuen Akku und sie haben auch noch die Ansteckbuchse ausgetauscht🤗 wieder voll funktionsfähig abholen.\nSuper Team danke euch kann ich nur empfehlen Preis-Leistungsverhältnis sehr sehr gut 🥰' },
+    { author: 'Renate Weber', rating: 5, dateLabel: 'vor 3 Monaten', text: 'Bin mega zufrieden. Handyrettung erfolgte super schnell, kompetent und unkompliziert. Absolut vertrauenswürdiger Service am Wochenende!!! Danke Maurice!!' },
+    { author: 'Ebru Coskun', rating: 5, dateLabel: 'vor 7 Monaten', text: 'Sehr freundlicher Kontakt, schnelle Reparatur und hohe Kompetenz. Ich habe mich gut beraten gefühlt und mein Laptop läuft wieder einwandfrei. Vielen Dank! Klare Empfehlung' }
   ]
 };
 
@@ -145,12 +145,6 @@ const createGoogleReview = (review, inDialog = false) => {
   comment.textContent = review.text || 'Bewertung ohne zusätzlichen Text.';
 
   article.append(header, stars, comment);
-  if (review.isSummary) {
-    const summaryNote = document.createElement('small');
-    summaryNote.className = 'google-review-summary-note';
-    summaryNote.textContent = 'Inhaltlich zusammengefasst';
-    article.append(summaryNote);
-  }
   return article;
 };
 
@@ -168,7 +162,7 @@ const renderGoogleReviews = (data) => {
   source.className = 'review-source';
   source.textContent = isLive
     ? 'Aktuelle öffentlich sichtbare Rezensionen. Weitere Kundenstimmen öffnen sich direkt auf dieser Seite.'
-    : 'Ausgewählte öffentlich sichtbare Rezensionen, inhaltlich zusammengefasst. Weitere Kundenstimmen öffnen sich direkt auf dieser Seite.';
+    : 'Ausgewählte öffentlich sichtbare Originalrezensionen. Weitere Kundenstimmen öffnen sich direkt auf dieser Seite.';
   previewFragment.append(source);
   googleReviewPreview?.replaceChildren(previewFragment);
 
@@ -183,7 +177,7 @@ const renderGoogleReviews = (data) => {
     if (reviewDialogCount) {
       reviewDialogCount.textContent = isLive
         ? `${new Intl.NumberFormat('de-DE').format(total)} Rezensionen`
-        : `${reviews.length} ausgewählte Stimmen`;
+        : `${reviews.length} Originalrezensionen`;
     }
     if (reviewDialogRating && typeof data.rating === 'number') {
       reviewDialogRating.textContent = data.rating.toLocaleString('de-DE', {
@@ -195,7 +189,7 @@ const renderGoogleReviews = (data) => {
   return true;
 };
 
-renderGoogleReviews(verifiedReviewFallback);
+renderGoogleReviews(verifiedOriginalReviewFallback);
 
 const googleReviewsRequest = googleReviewPreview
   ? fetch('/api/google-reviews', { headers: { Accept: 'application/json' } })

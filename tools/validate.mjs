@@ -132,7 +132,7 @@ for (const marker of [
   'id="preise-handy"',
   'id="preise-daten"',
   'id="preise-konsole"',
-  'Thematische Zusammenfassung öffentlich sichtbarer Rückmeldungen'
+  'Ausgewählte öffentlich sichtbare Originalrezensionen'
 ]) {
   if (!index.includes(marker)) errors.push(`index.html: lokale Unternehmensangabe fehlt: ${marker}`);
 }
