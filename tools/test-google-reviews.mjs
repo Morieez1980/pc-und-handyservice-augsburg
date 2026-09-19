@@ -39,9 +39,23 @@ globalThis.fetch = async (input) => {
     return new Response(JSON.stringify({ locations }), { status: 200 });
   }
   if (url.includes('mybusiness.googleapis.com')) {
+    if (url.includes('pageToken=next-reviews-page')) {
+      return new Response(JSON.stringify({
+        averageRating: 4.9,
+        totalReviewCount: 88,
+        reviews: [{
+          reviewer: { displayName: 'Erika Beispiel' },
+          starRating: 'FIVE',
+          comment: 'Sehr gute und transparente Beratung.',
+          createTime: '2026-08-10T08:00:00Z',
+          updateTime: '2026-08-10T08:00:00Z'
+        }]
+      }), { status: 200 });
+    }
     return new Response(JSON.stringify({
       averageRating: 4.9,
       totalReviewCount: 88,
+      nextPageToken: 'next-reviews-page',
       reviews: [{
         reviewer: { displayName: 'Max Mustermann', profilePhotoUrl: 'https://example.invalid/photo.jpg' },
         starRating: 'FIVE',
@@ -66,6 +80,7 @@ try {
   assert.equal(liveBody.source, 'google-business-profile');
   assert.equal(liveBody.rating, 4.9);
   assert.equal(liveBody.reviewCount, 88);
+  assert.equal(liveBody.reviews.length, 2);
   assert.deepEqual(liveBody.reviews[0], {
     author: 'Max Mustermann',
     rating: 5,
@@ -75,6 +90,8 @@ try {
   });
   assert.equal('profilePhotoUrl' in liveBody.reviews[0], false);
   assert(requestedUrls.some((url) => url.includes('orderBy=updateTime+desc')));
+  assert(requestedUrls.some((url) => url.includes('pageSize=50')));
+  assert(requestedUrls.some((url) => url.includes('pageToken=next-reviews-page')));
   assert(requestedUrls.some((url) => url.includes('accounts/999/locations/456/reviews')));
 } finally {
   globalThis.fetch = originalFetch;

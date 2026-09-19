@@ -119,20 +119,34 @@ export async function onRequestGet({ env }) {
   try {
     const accessToken = await getAccessToken(env);
     const parent = await discoverReviewParent(accessToken, env);
-    const url = new URL(`https://mybusiness.googleapis.com/v4/${parent}/reviews`);
-    url.searchParams.set('pageSize', '5');
-    url.searchParams.set('orderBy', 'updateTime desc');
+    const reviews = [];
+    let pageToken = '';
+    let averageRating = null;
+    let totalReviewCount = null;
 
-    const data = await authorizedJson(url.toString(), accessToken);
-    const reviews = (data.reviews ?? [])
+    for (let page = 0; page < 5; page += 1) {
+      const url = new URL(`https://mybusiness.googleapis.com/v4/${parent}/reviews`);
+      url.searchParams.set('pageSize', '50');
+      url.searchParams.set('orderBy', 'updateTime desc');
+      if (pageToken) url.searchParams.set('pageToken', pageToken);
+
+      const data = await authorizedJson(url.toString(), accessToken);
+      if (typeof data.averageRating === 'number') averageRating = data.averageRating;
+      if (Number.isInteger(data.totalReviewCount)) totalReviewCount = data.totalReviewCount;
+      reviews.push(...(data.reviews ?? []));
+      pageToken = data.nextPageToken || '';
+      if (!pageToken) break;
+    }
+
+    const publicReviews = reviews
       .map(publicReview)
       .filter((review) => review.rating >= 1 && review.rating <= 5)
-      .slice(0, 5);
+      .slice(0, 250);
 
     return json({
-      rating: typeof data.averageRating === 'number' ? data.averageRating : null,
-      reviewCount: Number.isInteger(data.totalReviewCount) ? data.totalReviewCount : null,
-      reviews,
+      rating: averageRating,
+      reviewCount: totalReviewCount,
+      reviews: publicReviews,
       updatedAt: new Date().toISOString(),
       source: 'google-business-profile'
     });

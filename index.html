@@ -268,11 +268,11 @@
   <link rel="canonical" href="https://www.pc-und-handyservice-augsburg.com/">
   <link rel="alternate" hreflang="de-DE" href="https://www.pc-und-handyservice-augsburg.com/">
   <link rel="alternate" hreflang="x-default" href="https://www.pc-und-handyservice-augsburg.com/">
-  <link rel="stylesheet" href="styles.min.css?v=20260903-1">
+  <link rel="stylesheet" href="styles.min.css?v=20260919-2">
   <link rel="stylesheet" href="enhancements.min.css?v=20260912-1">
   <link rel="stylesheet" href="request.min.css?v=20260914-1">
   <link rel="stylesheet" href="qr.min.css?v=20260719-1">
-  <script defer src="script.min.js?v=20260903-1"></script>
+  <script defer src="script.min.js?v=20260919-2"></script>
   <script defer src="clarity-consent.min.js?v=20260914-1"></script>
 </head>
 <body class="has-mobile-contact">
@@ -470,19 +470,40 @@
     <section class="section reviews" id="bewertungen">
       <div class="reviews-summary reveal">
         <p class="eyebrow"><span></span> Google-Bewertungen</p>
-        <h2>Bewertungen auf einen Blick</h2>
+        <h2>Was Kundinnen und Kunden sagen</h2>
         <div class="rating-line"><strong data-google-rating>4,9</strong><span><b aria-hidden="true">★★★★★</b><small>von 5 Sternen</small></span></div>
         <p>Basierend auf <span data-google-review-count>91</span> öffentlich sichtbaren Google-Rezensionen. Stand: <span data-google-review-date>14. September 2026</span>.</p>
-        <a class="button button-primary" href="https://share.google/2mQbAIfJoIab9YR3G" target="_blank" rel="noopener noreferrer external">Alle Google-Bewertungen ansehen ↗</a>
-        <small class="google-disclaimer">Google und das Google-Logo sind Marken von Google LLC. Die Anzeige wird ohne Google-Tracking geladen; bei einer nicht erreichbaren Schnittstelle bleibt der letzte geprüfte Stand sichtbar.</small>
+        <button class="button button-primary review-dialog-trigger" type="button" data-review-dialog-open hidden>Alle Bewertungen direkt lesen</button>
+        <a class="review-google-link" href="https://share.google/2mQbAIfJoIab9YR3G" target="_blank" rel="noopener noreferrer external">Google-Profil öffnen ↗</a>
+        <small class="google-disclaimer">Die Bewertungen werden datensparsam über den Server geladen. Im Browser werden keine Google-Skripte oder Google-Tracker eingebunden. Bei einer nicht erreichbaren Schnittstelle bleibt der letzte geprüfte Gesamtstand sichtbar.</small>
       </div>
-      <div class="review-themes" data-google-reviews aria-live="polite" aria-label="Aktuelle Google-Rezensionen">
-        <article class="review-theme reveal"><span aria-hidden="true">⚡</span><div><h3>Schnelle Hilfe</h3><p>Kundinnen und Kunden heben besonders kurze Reaktions- und Bearbeitungszeiten hervor.</p></div></article>
-        <article class="review-theme reveal"><span aria-hidden="true">◎</span><div><h3>Klare Kommunikation</h3><p>Verständliche Erklärungen und eine transparente Abstimmung werden wiederholt positiv genannt.</p></div></article>
-        <article class="review-theme reveal"><span aria-hidden="true">✓</span><div><h3>Zuverlässiger Service</h3><p>Die sorgfältige Fehlersuche und persönliche Betreuung prägen viele Erfahrungsberichte.</p></div></article>
-        <p class="review-source">Thematische Zusammenfassung öffentlich sichtbarer Rückmeldungen. Einzelne Rezensionen können Sie direkt im Google-Unternehmensprofil lesen.</p>
+      <div class="review-themes" data-google-review-preview aria-live="polite" aria-label="Aktuelle Google-Rezensionen">
+        <div data-review-fallback>
+          <article class="review-theme reveal"><span aria-hidden="true">⚡</span><div><h3>Schnelle Hilfe</h3><p>Kundinnen und Kunden heben besonders kurze Reaktions- und Bearbeitungszeiten hervor.</p></div></article>
+          <article class="review-theme reveal"><span aria-hidden="true">◎</span><div><h3>Klare Kommunikation</h3><p>Verständliche Erklärungen und eine transparente Abstimmung werden wiederholt positiv genannt.</p></div></article>
+          <article class="review-theme reveal"><span aria-hidden="true">✓</span><div><h3>Zuverlässiger Service</h3><p>Die sorgfältige Fehlersuche und persönliche Betreuung prägen viele Erfahrungsberichte.</p></div></article>
+          <p class="review-source">Thematische Zusammenfassung öffentlich sichtbarer Rückmeldungen.</p>
+        </div>
       </div>
     </section>
+
+    <dialog class="review-dialog" data-review-dialog aria-labelledby="review-dialog-title">
+      <div class="review-dialog-shell">
+        <header class="review-dialog-header">
+          <div>
+            <p class="eyebrow"><span></span> Google-Bewertungen</p>
+            <h2 id="review-dialog-title">Alle Bewertungen direkt lesen</h2>
+            <p><strong data-review-dialog-rating>4,9</strong> <span class="review-dialog-stars" aria-hidden="true">★★★★★</span> · <span data-review-dialog-count>91 Rezensionen</span></p>
+          </div>
+          <button class="review-dialog-close" type="button" data-review-dialog-close aria-label="Bewertungsfenster schließen">×</button>
+        </header>
+        <div class="review-dialog-list" data-review-dialog-list aria-live="polite"></div>
+        <footer class="review-dialog-footer">
+          <span>Quelle: öffentlich sichtbare Google-Rezensionen</span>
+          <a href="https://share.google/2mQbAIfJoIab9YR3G" target="_blank" rel="noopener noreferrer external">Bei Google öffnen ↗</a>
+        </footer>
+      </div>
+    </dialog>
 
     <section class="section faq" id="faq">
       <div class="section-heading compact reveal"><p class="eyebrow"><span></span> Gut zu wissen</p><h2>Häufige Fragen</h2></div>

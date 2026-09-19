@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tools/test-repair-reports.mjs",
+    "test": "node --test tools/test-repair-reports.mjs tools/test-google-reviews.mjs",
     "validate": "node tools/validate.mjs"
   }
 }

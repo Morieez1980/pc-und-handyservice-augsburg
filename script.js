@@ -40,7 +40,13 @@ document.querySelectorAll('[data-year]').forEach((node) => { node.textContent = 
 const googleReviewCount = document.querySelector('[data-google-review-count]');
 const googleReviewRating = document.querySelector('[data-google-rating]');
 const googleReviewDate = document.querySelector('[data-google-review-date]');
-const googleReviews = document.querySelector('[data-google-reviews]');
+const googleReviewPreview = document.querySelector('[data-google-review-preview]');
+const reviewDialog = document.querySelector('[data-review-dialog]');
+const reviewDialogOpen = document.querySelector('[data-review-dialog-open]');
+const reviewDialogClose = document.querySelector('[data-review-dialog-close]');
+const reviewDialogList = document.querySelector('[data-review-dialog-list]');
+const reviewDialogRating = document.querySelector('[data-review-dialog-rating]');
+const reviewDialogCount = document.querySelector('[data-review-dialog-count]');
 
 const updateGoogleReviewSummary = (data) => {
   if (googleReviewCount && Number.isInteger(data.reviewCount) && data.reviewCount >= 0) {
@@ -74,7 +80,53 @@ const reviewSummaryRequest = googleReviewCount && googleReviewRating && googleRe
     .catch(() => null)
   : Promise.resolve(null);
 
-const googleReviewsRequest = googleReviews
+const formatReviewDate = (value) => {
+  const publishedAt = value ? new Date(value) : null;
+  if (!publishedAt || Number.isNaN(publishedAt.getTime())) return '';
+  return new Intl.DateTimeFormat('de-DE', {
+    month: 'long',
+    year: 'numeric'
+  }).format(publishedAt);
+};
+
+const createGoogleReview = (review, inDialog = false) => {
+  const article = document.createElement('article');
+  article.className = inDialog ? 'google-review google-review-dialog-item' : 'google-review';
+
+  const header = document.createElement('div');
+  header.className = 'google-review-header';
+
+  const avatar = document.createElement('span');
+  avatar.className = 'google-review-avatar';
+  avatar.setAttribute('aria-hidden', 'true');
+  avatar.textContent = (review.author || 'G').trim().charAt(0).toLocaleUpperCase('de-DE');
+
+  const identity = document.createElement('div');
+  const author = document.createElement('h3');
+  author.textContent = review.author || 'Google-Nutzer';
+  const date = document.createElement('time');
+  const formattedDate = formatReviewDate(review.publishedAt);
+  if (formattedDate) {
+    date.dateTime = new Date(review.publishedAt).toISOString();
+    date.textContent = formattedDate;
+  }
+  identity.append(author, date);
+  header.append(avatar, identity);
+
+  const stars = document.createElement('p');
+  stars.className = 'google-review-stars';
+  stars.setAttribute('aria-label', `${review.rating} von 5 Sternen`);
+  stars.textContent = `${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}`;
+
+  const comment = document.createElement('p');
+  comment.className = 'google-review-text';
+  comment.textContent = review.text || 'Bewertung ohne zusätzlichen Text.';
+
+  article.append(header, stars, comment);
+  return article;
+};
+
+const googleReviewsRequest = googleReviewPreview
   ? fetch('/api/google-reviews', { headers: { Accept: 'application/json' } })
     .then((response) => {
       if (!response.ok) throw new Error('Google-Rezensionen nicht verfügbar');
@@ -82,56 +134,34 @@ const googleReviewsRequest = googleReviews
     })
     .then((data) => {
       if (!Array.isArray(data.reviews) || data.reviews.length === 0) return data;
+      const reviews = data.reviews.filter((review) => (
+        Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5
+      ));
+      if (!reviews.length) return data;
 
-      const fragment = document.createDocumentFragment();
-      data.reviews.forEach((review) => {
-        if (!Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5) return;
-
-        const article = document.createElement('article');
-        article.className = 'google-review';
-
-        const header = document.createElement('div');
-        header.className = 'google-review-header';
-
-        const avatar = document.createElement('span');
-        avatar.className = 'google-review-avatar';
-        avatar.setAttribute('aria-hidden', 'true');
-        avatar.textContent = (review.author || 'G').trim().charAt(0).toLocaleUpperCase('de-DE');
-
-        const identity = document.createElement('div');
-        const author = document.createElement('h3');
-        author.textContent = review.author || 'Google-Nutzer';
-        const date = document.createElement('time');
-        const publishedAt = review.publishedAt ? new Date(review.publishedAt) : null;
-        if (publishedAt && !Number.isNaN(publishedAt.getTime())) {
-          date.dateTime = publishedAt.toISOString();
-          date.textContent = new Intl.DateTimeFormat('de-DE', {
-            month: 'long',
-            year: 'numeric'
-          }).format(publishedAt);
-        }
-        identity.append(author, date);
-        header.append(avatar, identity);
-
-        const stars = document.createElement('p');
-        stars.className = 'google-review-stars';
-        stars.setAttribute('aria-label', `${review.rating} von 5 Sternen`);
-        stars.textContent = `${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}`;
-
-        const comment = document.createElement('p');
-        comment.className = 'google-review-text';
-        comment.textContent = review.text || 'Bewertung ohne Text.';
-
-        article.append(header, stars, comment);
-        fragment.append(article);
-      });
-
-      if (!fragment.childNodes.length) return data;
+      const previewFragment = document.createDocumentFragment();
+      reviews.slice(0, 3).forEach((review) => previewFragment.append(createGoogleReview(review)));
       const source = document.createElement('p');
       source.className = 'review-source';
-      source.textContent = 'Aktuelle öffentlich sichtbare Rezensionen aus dem Google-Unternehmensprofil.';
-      fragment.append(source);
-      googleReviews.replaceChildren(fragment);
+      source.textContent = 'Aktuelle öffentlich sichtbare Rezensionen aus dem Google-Unternehmensprofil. Weitere Bewertungen öffnen sich direkt auf dieser Seite.';
+      previewFragment.append(source);
+      googleReviewPreview.replaceChildren(previewFragment);
+
+      if (reviewDialogList && reviewDialogOpen) {
+        const dialogFragment = document.createDocumentFragment();
+        reviews.forEach((review) => dialogFragment.append(createGoogleReview(review, true)));
+        reviewDialogList.replaceChildren(dialogFragment);
+        reviewDialogOpen.hidden = false;
+        const total = Number.isInteger(data.reviewCount) ? data.reviewCount : reviews.length;
+        reviewDialogOpen.textContent = `Alle ${new Intl.NumberFormat('de-DE').format(total)} Bewertungen direkt lesen`;
+        if (reviewDialogCount) reviewDialogCount.textContent = `${new Intl.NumberFormat('de-DE').format(total)} Rezensionen`;
+        if (reviewDialogRating && typeof data.rating === 'number') {
+          reviewDialogRating.textContent = data.rating.toLocaleString('de-DE', {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+          });
+        }
+      }
       return data;
     })
     .catch(() => null)
@@ -140,6 +170,21 @@ const googleReviewsRequest = googleReviews
 Promise.all([reviewSummaryRequest, googleReviewsRequest]).then(([fallbackData, googleData]) => {
   const summaryData = googleData?.source === 'google-business-profile' ? googleData : fallbackData;
   if (summaryData) updateGoogleReviewSummary(summaryData);
+});
+
+reviewDialogOpen?.addEventListener('click', () => {
+  if (!reviewDialog || typeof reviewDialog.showModal !== 'function') return;
+  reviewDialog.showModal();
+  document.body.classList.add('review-dialog-open');
+});
+
+reviewDialogClose?.addEventListener('click', () => reviewDialog?.close());
+reviewDialog?.addEventListener('click', (event) => {
+  if (event.target === reviewDialog) reviewDialog.close();
+});
+reviewDialog?.addEventListener('close', () => {
+  document.body.classList.remove('review-dialog-open');
+  reviewDialogOpen?.focus();
 });
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
