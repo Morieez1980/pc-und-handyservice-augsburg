@@ -16,7 +16,8 @@ const requiredFiles = [
   'qr.min.css', 'qr-print.js', 'qr-reparaturanfrage.png', 'google-qr-reparaturanfrage.jpg',
   'qr-schild-reparaturanfrage.html', 'google-qr-reparaturanfrage.html',
   'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
-  'functions/api/review-summary.js', 'functions/api/google-reviews.js',
+  'functions/api/review-summary.js', 'functions/api/google-reviews.js', 'functions/api/repair-confirmation.js',
+  'functions/_middleware.js', 'functions/_shared/repair-confirmation.js',
   'functions/_shared/access.js', 'functions/_shared/http.js', 'functions/_shared/reports-page.js',
   'functions/reparaturberichte/index.js', 'functions/reparaturberichte/[slug].js',
   'functions/api/reparaturberichte/bild/[id].js', 'functions/api/reparaturberichte/frage.js',
@@ -174,7 +175,7 @@ for (const marker of [
   'Bitte keine Passwörter, PINs oder Entsperrcodes',
   'href="/datenschutz"',
   'request.min.css?v=',
-  'repair-form.min.js?v=',
+  'repair-form.js?v=',
   'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3',
   'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3',
   'class="phone-control"',
@@ -285,6 +286,17 @@ for (const marker of ["fetch('/api/review-summary'", "fetch('/api/google-reviews
 const repairScript = await readFile('repair-form.js', 'utf8');
 for (const marker of ['window.intlTelInput', "initialCountry: 'de'", 'countrySearch: true', 'isValidNumber()', 'getNumber()']) {
   if (!repairScript.includes(marker)) errors.push(`repair-form.js: internationale Telefonprüfung unvollständig: ${marker}`);
+}
+for (const marker of ["fetch('/api/repair-confirmation'", "confirmation !== 'valid'", 'HTMLFormElement.prototype.submit.call(form)']) {
+  if (!repairScript.includes(marker)) errors.push(`repair-form.js: serverseitige Übermittlungsbestätigung unvollständig: ${marker}`);
+}
+const confirmationFunction = await readFile('functions/anfrage-bestaetigt.js', 'utf8');
+for (const marker of ['consumeConfirmationToken', "status: valid ? 200 : 400", 'data-confirmation']) {
+  if (!confirmationFunction.includes(marker)) errors.push(`functions/anfrage-bestaetigt.js: Prüfnummernvalidierung unvollständig: ${marker}`);
+}
+const functionMiddleware = await readFile('functions/_middleware.js', 'utf8');
+for (const marker of ['Strict-Transport-Security', 'Permissions-Policy', 'X-Frame-Options', 'Content-Security-Policy']) {
+  if (!functionMiddleware.includes(marker)) errors.push(`functions/_middleware.js: Security-Header fehlt: ${marker}`);
 }
 const phoneLibraryCss = await readFile('vendor/intl-tel-input/css/intlTelInput.min.css', 'utf8');
 for (const marker of ['../img/flags.webp', '../img/flags@2x.webp']) {

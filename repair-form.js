@@ -33,6 +33,18 @@
     submit.textContent = 'Bestätigung ausstehend';
   };
 
+  const requestConfirmationReference = async () => {
+    const response = await fetch('/api/repair-confirmation', {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      credentials: 'same-origin'
+    });
+    if (!response.ok) throw new Error('Bestätigungsdienst nicht verfügbar');
+    const result = await response.json();
+    if (!/^[0-9a-f-]{36}$/i.test(result.ref || '')) throw new Error('Ungültige Bestätigungsnummer');
+    return result.ref;
+  };
+
   const phoneInput = window.intlTelInput ? window.intlTelInput(phone, {
     initialCountry: 'de',
     countryOrder: ['de', 'at', 'ch', 'tr', 'ua'],
@@ -122,7 +134,8 @@
     if (!sending) return;
     try {
       const result = new URL(responseFrame.contentWindow.location.href);
-      if (result.origin !== location.origin || result.pathname !== '/anfrage-bestaetigt' || result.searchParams.get('ref') !== confirmationNonce) return showUnconfirmed();
+      const confirmation = responseFrame.contentDocument?.documentElement?.dataset.confirmation;
+      if (result.origin !== location.origin || result.pathname !== '/anfrage-bestaetigt' || result.searchParams.get('ref') !== confirmationNonce || confirmation !== 'valid') return showUnconfirmed();
     } catch { return showUnconfirmed(); }
     clearTimeout(responseTimer);
     sending = false;
@@ -134,24 +147,22 @@
     success.focus();
   });
 
-  form.addEventListener('submit', (event) => {
-    if (sending) { event.preventDefault(); return; }
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (sending) return;
     errorSummary.hidden = true;
     if (!validateArea(steps[0])) {
-      event.preventDefault();
       showStep(1);
       validateArea(steps[0]);
       return;
     }
     if (!validateArea(steps[1])) {
-      event.preventDefault();
       errorSummary.hidden = false;
       return;
     }
 
     const honeypot = form.querySelector('#website-url');
     if (honeypot.value || Date.now() - started < 2500) {
-      event.preventDefault();
       errorSummary.textContent = 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.';
       errorSummary.hidden = false;
       return;
@@ -160,7 +171,6 @@
     let value;
     if (phoneInput) {
       if (!phoneInput.isValidNumber()) {
-        event.preventDefault();
         phone.setCustomValidity('Bitte geben Sie eine gültige Telefonnummer für das ausgewählte Land ein.');
         phone.setAttribute('aria-invalid', 'true');
         errorSummary.textContent = 'Bitte prüfen Sie die markierte Telefonnummer und versuchen Sie es erneut.';
@@ -175,7 +185,6 @@
       if (value.startsWith('00')) value = '+' + value.slice(2);
       else if (value.startsWith('0')) value = '+49' + value.slice(1);
       if (!/^\+[1-9]\d{6,14}$/.test(value)) {
-        event.preventDefault();
         phone.setCustomValidity('Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein.');
         phone.setAttribute('aria-invalid', 'true');
         errorSummary.textContent = 'Bitte prüfen Sie die markierte Telefonnummer und versuchen Sie es erneut.';
@@ -198,13 +207,24 @@
       [postcode, city].filter(Boolean).join(' ')
     ].filter(Boolean).join(', ');
 
-    confirmationNonce = crypto.randomUUID();
+    submit.disabled = true;
+    submit.textContent = 'Bestätigung wird vorbereitet …';
+    try {
+      confirmationNonce = await requestConfirmationReference();
+    } catch {
+      submit.disabled = false;
+      submit.textContent = 'Reparaturanfrage senden';
+      errorSummary.textContent = 'Die sichere Bestätigungsnummer konnte nicht erstellt werden. Bitte versuchen Sie es erneut.';
+      errorSummary.hidden = false;
+      return;
+    }
+
     form.querySelector('[name="returnURL"]').value = location.origin + '/anfrage-bestaetigt?ref=' + encodeURIComponent(confirmationNonce);
     const model = form.querySelector('#device-model').value.trim();
     form.querySelector('[name="Potential Name"]').value = ('Reparatur · ' + model + ' · ' + new Date().toLocaleDateString('de-DE')).slice(0, 100);
     sending = true;
     responseTimer = setTimeout(showUnconfirmed, 30000);
-    submit.disabled = true;
     submit.textContent = 'Wird sicher übermittelt …';
+    HTMLFormElement.prototype.submit.call(form);
   });
 })();
