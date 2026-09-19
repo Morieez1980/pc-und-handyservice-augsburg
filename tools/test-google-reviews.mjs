@@ -112,9 +112,13 @@ assert.match(pageStyles, /\.review-dialog-trigger\[hidden\]\{display:none!import
 assert.match(pageStyles, /\.review-dialog-list\{flex:1 1 auto;min-height:0;display:flex;flex-direction:column/);
 assert.match(pageStyles, /\.google-review-dialog-item\{flex:0 0 auto;width:100%;height:auto\}/);
 assert.doesNotMatch(pageStyles, /\.google-review-dialog-item\{min-height:0\}/);
+assert.match(pageStyles, /\.review-dialog-more\[hidden\]\{display:none!important\}/);
 assert.match(browserScript, /const verifiedOriginalReviewFallback =/);
 assert.match(browserScript, /source: 'verified-public-originals'/);
 assert.match(browserScript, /renderGoogleReviews\(verifiedOriginalReviewFallback\)/);
+assert.match(browserScript, /const REVIEW_BATCH_SIZE = 6/);
+assert.match(browserScript, /const sortReviewsNewestFirst =/);
+assert.match(browserScript, /reviewDialogMore\?\.addEventListener\('click', appendReviewDialogBatch\)/);
 assert.match(browserScript, /Unzuverlässig und Inkompetent\./);
 assert.match(browserScript, /Ich habe meinen PC hier reparieren lassen und bin super zufrieden\./);
 assert.doesNotMatch(browserScript, /isSummary|Inhaltlich zusammengefasst|inhaltlich zusammengefasst/);
@@ -130,6 +134,8 @@ for (const author of [
   assert.match(originalFallbackBlock, new RegExp(`author: '${author.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}'`));
 }
 assert.match(reviewMarkup, /Ausgewählte öffentlich sichtbare Originalrezensionen/);
+assert.match(reviewMarkup, /data-review-dialog-more hidden>Weitere Rezensionen anzeigen/);
+assert.match(reviewMarkup, /Originalrezensionen · Neueste zuerst/);
 assert.match(browserScript, /reviewDialogOpen\.disabled = false/);
 assert.match(browserScript, /!reviewDialogList\?\.children\.length/);
 assert.match(qrStyles, /\.qr-card > span[\s\S]*background: linear-gradient\(135deg, var\(--blue\), var\(--cyan\)\)/);

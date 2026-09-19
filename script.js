@@ -47,6 +47,10 @@ const reviewDialogClose = document.querySelector('[data-review-dialog-close]');
 const reviewDialogList = document.querySelector('[data-review-dialog-list]');
 const reviewDialogRating = document.querySelector('[data-review-dialog-rating]');
 const reviewDialogCount = document.querySelector('[data-review-dialog-count]');
+const reviewDialogMore = document.querySelector('[data-review-dialog-more]');
+const REVIEW_BATCH_SIZE = 6;
+let dialogReviews = [];
+let visibleDialogReviewCount = 0;
 
 const updateGoogleReviewSummary = (data) => {
   if (googleReviewCount && Number.isInteger(data.reviewCount) && data.reviewCount >= 0) {
@@ -89,6 +93,17 @@ const formatReviewDate = (value) => {
   }).format(publishedAt);
 };
 
+const sortReviewsNewestFirst = (reviews) => reviews
+  .map((review, index) => ({ review, index }))
+  .sort((left, right) => {
+    const leftTime = Date.parse(left.review.publishedAt || left.review.updatedAt || '');
+    const rightTime = Date.parse(right.review.publishedAt || right.review.updatedAt || '');
+    const normalizedLeft = Number.isNaN(leftTime) ? Number.NEGATIVE_INFINITY : leftTime;
+    const normalizedRight = Number.isNaN(rightTime) ? Number.NEGATIVE_INFINITY : rightTime;
+    return normalizedRight - normalizedLeft || left.index - right.index;
+  })
+  .map(({ review }) => review);
+
 const verifiedOriginalReviewFallback = {
   rating: 4.9,
   reviewCount: 91,
@@ -96,15 +111,15 @@ const verifiedOriginalReviewFallback = {
   reviews: [
     { author: 'Seba', rating: 5, dateLabel: 'vor einer Woche', text: 'Ich habe meinen PC hier reparieren lassen und bin super zufrieden. Die Reparatur ging extrem schnell und auch die Kommunikation verlief absolut reibungslos. Sehr freundlich und kompetent\n\nkann ich definitiv nur weiterempfehlen!' },
     { author: 'aTOMteilchen', rating: 5, dateLabel: 'vor einem Monat', text: 'Ich habe meinen Gaming Rechner zu Herrn Keil gebracht weil ich kein Bild hatte, nach wenigen Stunden konnte er bereits eine Diagnose stellen. Die Grafikkarte war Kaputt, schon am nächsten Tag hatte er eine neue und konnte sie direkt verbauen inkl. Treiberupdates, aufspielen von Windows 11. Läuft wunderbar, unkompliziert, schnell und faire Preise. Kann ich weiterempfehlen.' },
-    { author: 'Peter Bender', rating: 1, dateLabel: 'vor 3 Monaten', text: 'Unzuverlässig und Inkompetent.\nIch hatte ein Problem, dass mein PC die Maus nicht mehr erkannte, vermutlich ein beschädigter Treiber. Ich brachte den PC zu Herrn Keil und wollte ihn zwei Tage später am Mittag wieder abholen. Laut Herrn Keil wäre es machbar. Als ich ihn abholen wollte, hatte Herr Keil ihn noch nicht mal angeschaut. Da ich den PC dringend für einen Vortrag brauchte bat ich ihn bitte sofort zu reparieren. Am Abend kam der Anruf, dass ich ihn abholen kann, es sei ihm nicht möglich den Maustreiber zu reparieren. Bei der Abholung durfte ich noch 30 Euro Diagnosegebühr bezahlen, für ein Ergebnis das ich schon wusste. Sein Ratschlag ich sollte ChatGPT fragen und die Anweisungen Schritt für Schritt befolgen. Habe mich als Laie durch die Windowseinstellungen gearbeitet und dort eine Lösung gefunden. Eine Stunde und die Maus funktioniert wieder. Als Laie eine Stunde Arbeit, ein Profi hätte nur Minuten gebraucht, Herr Keil hat es nicht geschafft. Suche mir das nächste mal einen Profi auf dem Gebiet.' },
     { author: 'Katja Obermaier', rating: 5, dateLabel: 'vor 3 Monaten', text: 'Aufgrund eines Absturzes unseres Gaming-PC hat sich Hr. Keil super schnell dem Problem angenommen und konnte es übers Wochenende zu unserer vollsten Zufriedenheit lösen. PC läuft wieder einwandfrei. Preis-Leistungs-Verhältnis wirklich top. Jederzeit wieder gerne!' },
+    { author: 'Peter Bender', rating: 1, dateLabel: 'vor 3 Monaten', text: 'Unzuverlässig und Inkompetent.\nIch hatte ein Problem, dass mein PC die Maus nicht mehr erkannte, vermutlich ein beschädigter Treiber. Ich brachte den PC zu Herrn Keil und wollte ihn zwei Tage später am Mittag wieder abholen. Laut Herrn Keil wäre es machbar. Als ich ihn abholen wollte, hatte Herr Keil ihn noch nicht mal angeschaut. Da ich den PC dringend für einen Vortrag brauchte bat ich ihn bitte sofort zu reparieren. Am Abend kam der Anruf, dass ich ihn abholen kann, es sei ihm nicht möglich den Maustreiber zu reparieren. Bei der Abholung durfte ich noch 30 Euro Diagnosegebühr bezahlen, für ein Ergebnis das ich schon wusste. Sein Ratschlag ich sollte ChatGPT fragen und die Anweisungen Schritt für Schritt befolgen. Habe mich als Laie durch die Windowseinstellungen gearbeitet und dort eine Lösung gefunden. Eine Stunde und die Maus funktioniert wieder. Als Laie eine Stunde Arbeit, ein Profi hätte nur Minuten gebraucht, Herr Keil hat es nicht geschafft. Suche mir das nächste mal einen Profi auf dem Gebiet.' },
+    { author: 'Renate Weber', rating: 5, dateLabel: 'vor 3 Monaten', text: 'Bin mega zufrieden. Handyrettung erfolgte super schnell, kompetent und unkompliziert. Absolut vertrauenswürdiger Service am Wochenende!!! Danke Maurice!!' },
     { author: 'Anna Oko', rating: 5, dateLabel: 'vor 4 Monaten', text: 'Ich habe Herrn Keil angerufen und durfte sofort vorbeikommen. Er hat meinen Laptop nicht nur am selben Tag repariert, sondern sogar innerhalb von nur drei Stunden! Dabei hat er mich auf dem Laufenden gehalten.\n\nDie Kommunikation war super angenehm und entspannt, und der Preis wurde vorab klar kommuniziert.\nHerr Keil ist sehr professionell und außerdem super nett!\n\nAuf jeden Fall 5 Sterne und absolut weiterzuempfehlen!' },
     { author: 'charlie S', rating: 5, dateLabel: 'vor 4 Monaten', text: 'super schnelle Bearbeitung obwohl ich Sonntag Abend erst angerufen habe. Konnte mein Handy direkt um 9 am Montag abgeben und um 17 Uhr wieder repariert abholen. Und einfach sehr liebe und nette Menschen am Telefon wie auch vor Ort :) Sehr sympathisch!' },
     { author: 'Fritz Allar', rating: 5, dateLabel: 'vor 4 Monaten', text: 'Nachdem mein Laptop keinen Mucks mehr machte, fand Herr Keil sehr schnell den Fehler. So beschloss ich mir einen neuen PC zuzulegen, Herr Keil besorgte mir ein Spitzengerät zu einem sensationellen Preis und überspielte in Rekordzeit alle meine Daten und half mir bei der Einrichtung. Und alles schnell zu einem fairen Preis, ich kann Herrn Keil nur weiterempfehlen.' },
-    { author: 'Arda Aytac', rating: 5, dateLabel: 'vor 5 Monaten', text: 'Maurice Keil hat meinen Gaming-PC professionell und zu einem günstigen Preis zusammengebaut. Ich gebe ihm 10 von 10 Punkten. Vielen Dank an ihn und ich empfehle ihn jedem weiter.' },
     { author: 'I. Huber', rating: 5, dateLabel: 'vor 4 Monaten', text: 'TOP Service! Zu allererst sehr netter Kontakt und kompetente Beratung. Display Tausch meines Laptops war innerhalb kürzester Zeit tadellos erledigt. Kann Herrn Keil nur weiterempfehlen!' },
+    { author: 'Arda Aytac', rating: 5, dateLabel: 'vor 5 Monaten', text: 'Maurice Keil hat meinen Gaming-PC professionell und zu einem günstigen Preis zusammengebaut. Ich gebe ihm 10 von 10 Punkten. Vielen Dank an ihn und ich empfehle ihn jedem weiter.' },
     { author: 'Daniela Scholz', rating: 5, dateLabel: 'vor 5 Monaten', text: 'Mein Handy ging aus und ließ sich nicht mehr laden 😔 Dank dem super netten Team von Computer und Handyservice Keil konnte ich mein Handy In zwei Tagen mit einem neuen Akku und sie haben auch noch die Ansteckbuchse ausgetauscht🤗 wieder voll funktionsfähig abholen.\nSuper Team danke euch kann ich nur empfehlen Preis-Leistungsverhältnis sehr sehr gut 🥰' },
-    { author: 'Renate Weber', rating: 5, dateLabel: 'vor 3 Monaten', text: 'Bin mega zufrieden. Handyrettung erfolgte super schnell, kompetent und unkompliziert. Absolut vertrauenswürdiger Service am Wochenende!!! Danke Maurice!!' },
     { author: 'Ebru Coskun', rating: 5, dateLabel: 'vor 7 Monaten', text: 'Sehr freundlicher Kontakt, schnelle Reparatur und hohe Kompetenz. Ich habe mich gut beraten gefühlt und mein Laptop läuft wieder einwandfrei. Vielen Dank! Klare Empfehlung' }
   ]
 };
@@ -148,11 +163,34 @@ const createGoogleReview = (review, inDialog = false) => {
   return article;
 };
 
+const updateReviewDialogMoreButton = () => {
+  if (!reviewDialogMore) return;
+  const remaining = dialogReviews.length - visibleDialogReviewCount;
+  reviewDialogMore.hidden = remaining <= 0;
+  if (remaining > 0) {
+    reviewDialogMore.textContent = `Weitere ${Math.min(REVIEW_BATCH_SIZE, remaining)} anzeigen`;
+    reviewDialogMore.setAttribute('aria-label', `${Math.min(REVIEW_BATCH_SIZE, remaining)} weitere Rezensionen anzeigen`);
+  }
+};
+
+const appendReviewDialogBatch = () => {
+  if (!reviewDialogList) return;
+  const nextReviews = dialogReviews.slice(
+    visibleDialogReviewCount,
+    visibleDialogReviewCount + REVIEW_BATCH_SIZE
+  );
+  const fragment = document.createDocumentFragment();
+  nextReviews.forEach((review) => fragment.append(createGoogleReview(review, true)));
+  reviewDialogList.append(fragment);
+  visibleDialogReviewCount += nextReviews.length;
+  updateReviewDialogMoreButton();
+};
+
 const renderGoogleReviews = (data) => {
   if (!Array.isArray(data.reviews) || data.reviews.length === 0) return false;
-  const reviews = data.reviews.filter((review) => (
+  const reviews = sortReviewsNewestFirst(data.reviews.filter((review) => (
     Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5
-  ));
+  )));
   if (!reviews.length) return false;
 
   const isLive = data.source === 'google-business-profile';
@@ -167,13 +205,16 @@ const renderGoogleReviews = (data) => {
   googleReviewPreview?.replaceChildren(previewFragment);
 
   if (reviewDialogList && reviewDialogOpen) {
-    const dialogFragment = document.createDocumentFragment();
-    reviews.forEach((review) => dialogFragment.append(createGoogleReview(review, true)));
-    reviewDialogList.replaceChildren(dialogFragment);
+    dialogReviews = reviews;
+    visibleDialogReviewCount = 0;
+    reviewDialogList.replaceChildren();
+    appendReviewDialogBatch();
     reviewDialogOpen.hidden = false;
     reviewDialogOpen.disabled = false;
-    reviewDialogOpen.textContent = 'Kundenstimmen direkt hier lesen';
     const total = Number.isInteger(data.reviewCount) ? data.reviewCount : reviews.length;
+    reviewDialogOpen.textContent = isLive
+      ? `Alle ${new Intl.NumberFormat('de-DE').format(total)} Rezensionen öffnen`
+      : 'Kundenstimmen direkt hier lesen';
     if (reviewDialogCount) {
       reviewDialogCount.textContent = isLive
         ? `${new Intl.NumberFormat('de-DE').format(total)} Rezensionen`
@@ -222,6 +263,7 @@ reviewDialogOpen?.addEventListener('click', () => {
 });
 
 reviewDialogClose?.addEventListener('click', () => reviewDialog?.close());
+reviewDialogMore?.addEventListener('click', appendReviewDialogBatch);
 reviewDialog?.addEventListener('click', (event) => {
   if (event.target === reviewDialog) reviewDialog.close();
 });
