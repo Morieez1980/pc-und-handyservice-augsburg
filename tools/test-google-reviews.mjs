@@ -109,6 +109,9 @@ const reviewMarkup = pageMarkup.slice(pageMarkup.indexOf('<section class="sectio
 assert.match(reviewMarkup, /data-review-dialog-open>Kundenstimmen direkt hier lesen/);
 assert.doesNotMatch(reviewMarkup, /Google-Profil öffnen|Bei Google öffnen|target="_blank"/);
 assert.match(pageStyles, /\.review-dialog-trigger\[hidden\]\{display:none!important\}/);
+assert.match(pageStyles, /\.review-dialog-list\{flex:1 1 auto;min-height:0;display:flex;flex-direction:column/);
+assert.match(pageStyles, /\.google-review-dialog-item\{flex:0 0 auto;width:100%;height:auto\}/);
+assert.doesNotMatch(pageStyles, /\.google-review-dialog-item\{min-height:0\}/);
 assert.match(browserScript, /const verifiedReviewFallback =/);
 assert.match(browserScript, /renderGoogleReviews\(verifiedReviewFallback\)/);
 assert.match(browserScript, /reviewDialogOpen\.disabled = false/);
