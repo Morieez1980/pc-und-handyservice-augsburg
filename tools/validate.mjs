@@ -153,10 +153,12 @@ for (const marker of [
   'Bigin und Zoho Flow',
   'Reparaturberichte, Fotos und Besucherfragen',
   'spätestens nach 30 Tagen',
-  'spätestens nach 90 Tagen',
-  'Stand: 14. September 2026'
+  'spätestens nach 90 Tagen'
 ]) {
   if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Datenschutzhinweis fehlt: ${marker}`);
+}
+if (!/Stand: \d{1,2}\. [A-ZÄÖÜ][a-zäöüß]+ 20\d{2}/.test(privacyPage)) {
+  errors.push('datenschutz.html: gültiger Aktualisierungsstand fehlt');
 }
 
 const legalPage = htmlByFile.get('impressum.html');
