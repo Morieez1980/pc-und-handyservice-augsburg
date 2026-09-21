@@ -4,8 +4,9 @@ import { escapeHtml, slugify } from "../functions/_shared/http.js";
 import { renderDetail, renderIndex } from "../functions/_shared/reports-page.js";
 import { requireAccess } from "../functions/_shared/access.js";
 import { onRequest as submitQuestion } from "../functions/api/reparaturberichte/frage.js";
-import { onRequest as adminRequest } from "../functions/reparaturberichte-admin/api/[action].js";
+import { onRequest as adminRequest, setStatus } from "../functions/reparaturberichte-admin/api/[action].js";
 import { onRequestGet as getReportImage } from "../functions/api/reparaturberichte/bild/[id].js";
+import { buildPublicationDrafts, detectSensitiveContent } from "../publication-copy.js";
 
 const b64url = (value) => Buffer.from(value).toString("base64url");
 
@@ -17,8 +18,8 @@ test("Texte und Kurzadressen werden sicher ausgegeben", () => {
   assert.ok(!html.includes("<img>"));
 });
 
-test("Detailseite zeigt nur übergebene freigegebene Fragen und schützt private Seiten vor Analyse", () => {
-  const report = { id: "r1", slug: "bericht", title: "Bericht", category: "PC", summary: "Kurzbeschreibung", problem: "Fehler", diagnosis: "Diagnose", solution: "Lösung", device_model: "iPhone SE", repair_type: "Akkutausch", tested_functions: "Start und Laden" };
+test("Detailseite zeigt getrennte Reparatur und Ergebnis sowie nur freigegebene Fragen", () => {
+  const report = { id: "r1", slug: "bericht", title: "Bericht", category: "PC", summary: "Kurzbeschreibung", problem: "Fehler", diagnosis: "Diagnose", solution: "Alte Gesamtlösung", repair: "Akku ersetzt", result: "Start und Laden erfolgreich getestet", device_model: "iPhone SE", repair_type: "Akkutausch", tested_functions: "Start und Laden" };
   const html = renderDetail(report, [{ id: "img1", alt_text: "Gerät vor der Reparatur", stage: "before" }], [{ display_name: "A & B", body: "Wie ging das?", answer: "Vorsichtig." }]);
   assert.ok(html.includes("A &amp; B"));
   assert.ok(html.includes("data-private-page=\"true\""));
@@ -27,8 +28,38 @@ test("Detailseite zeigt nur übergebene freigegebene Fragen und schützt private
   assert.ok(html.includes("stage-before"));
   assert.ok(html.includes("/api/reparaturberichte/bild/img1?v=20260914-2"));
   assert.ok(html.includes("iPhone SE"));
+  assert.ok(html.includes("Durchgeführte Reparatur"));
+  assert.ok(html.includes("Akku ersetzt"));
+  assert.ok(html.includes("Ergebnis"));
+  assert.ok(html.includes("Start und Laden erfolgreich getestet"));
   assert.ok(html.includes("Reparaturanfrage starten"));
   assert.ok(html.includes("gallery-dialog"));
+});
+
+test("Veröffentlichungstexte entstehen deterministisch aus einem Reparaturfall", () => {
+  const drafts = buildPublicationDrafts({
+    device_model: "iPhone 13",
+    problem: "Akku entlädt sich sehr schnell",
+    diagnosis: "Akku deutlich verschlissen",
+    repair: "Akku ersetzt und Gerät gereinigt",
+    result: "Gerät startet ordnungsgemäß; Laden, Display und Touch wurden erfolgreich getestet",
+  });
+  assert.equal(drafts.category, "Smartphone & Tablet");
+  assert.equal(drafts.slug, "iphone-13-akku-ersetzt-und-gerat-gereinigt");
+  assert.ok(drafts.title.startsWith("iPhone 13:"));
+  assert.ok(drafts.facebook_text.includes("PC & Handyservice Augsburg"));
+  assert.ok(drafts.instagram_text.includes("#AugsburgLechhausen"));
+  assert.ok(drafts.instagram_text.includes("#Akkutausch"));
+  assert.ok(drafts.google_text.length <= 1500);
+  assert.ok((drafts.instagram_text.match(/#[\p{L}\d]+/gu) || []).length <= 9);
+});
+
+test("Datenschutzprüfung markiert typische Kundendaten, ohne unauffällige Texte zu sperren", () => {
+  assert.deepEqual(detectSensitiveContent({ problem: "Akku entlädt sich schnell", result: "Laden geprüft" }), []);
+  const issues = detectSensitiveContent({ diagnosis: "IMEI 123456789012345, Rückfrage an kunde@example.de" });
+  assert.ok(issues.includes("mögliche E-Mail-Adresse"));
+  assert.ok(issues.includes("lange Ziffernfolge oder Gerätekennung"));
+  assert.ok(issues.includes("Hinweis auf Zugangsdaten oder Kennungen"));
 });
 
 test("Cloudflare Access JWT wird kryptografisch geprüft", async () => {
@@ -89,6 +120,23 @@ test("Besucherfragen werden nur mit Einwilligung als wartend gespeichert und ged
 test("Verwaltungs-API bleibt ohne vollständig konfigurierten Zugriffsschutz geschlossen", async () => {
   const response = await adminRequest({ request: new Request("https://example.com/reparaturberichte-admin/api/data"), env: { DB: new FakeDb() }, params: { action: "data" } });
   assert.equal(response.status, 503);
+});
+
+test("Veröffentlichung bleibt ohne gespeicherte Datenschutzbestätigung gesperrt", async () => {
+  const db = {
+    prepare(sql) {
+      return {
+        args: [],
+        bind(...args) { this.args = args; return this; },
+        async first() { return sql.includes("privacy_confirmed_at") ? { privacy_confirmed_at: null } : null; },
+        async run() { throw new Error("Ein gesperrter Bericht darf nicht aktualisiert werden."); },
+      };
+    },
+  };
+  const request = new Request("https://example.com/reparaturberichte-admin/api/status", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: "r1", status: "published" }) });
+  const response = await setStatus(request, { DB: db });
+  assert.equal(response.status, 409);
+  assert.ok((await response.json()).error.includes("Text-, Foto- und Faktenprüfung"));
 });
 
 test("D1-Bilddaten werden als echte Binärdatei ausgeliefert", async () => {

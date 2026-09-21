@@ -1,6 +1,72 @@
 <!doctype html>
-<html lang="de" data-private-page="true"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Reparaturberichte verwalten</title><meta name="theme-color" content="#050914"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/reports-admin.css?v=20260914-2"></head>
-<body><header><a href="/" class="brand"><span>MK</span><strong>Reparaturberichte verwalten</strong></a><a href="/reparaturberichte" target="_blank" rel="noopener">Öffentliche Ansicht ↗</a></header><main><section class="admin-intro"><div><p class="eyebrow">Geschützter Inhaberbereich</p><h1>Berichte und Fragen</h1><p>Beiträge bleiben als Entwurf privat, bis du sie ausdrücklich veröffentlichst. Besucherfragen sind ebenfalls erst nach Freigabe sichtbar.</p></div><button id="new-report" class="primary">Neuer Bericht</button></section><div id="message" role="status" aria-live="polite"></div><section class="admin-grid"><div><h2>Beiträge</h2><div id="report-list" class="stack"><p>Lädt …</p></div></div><div><h2>Wartende Fragen</h2><div id="question-list" class="stack"><p>Lädt …</p></div></div></section></main>
-<dialog id="editor"><form id="report-form"><div class="dialog-head"><div><p class="eyebrow">Beitrag</p><h2 id="editor-title">Neuer Reparaturbericht</h2><small id="autosave-status">Texte werden auf diesem Gerät automatisch zwischengespeichert.</small></div><button type="button" class="icon" data-close aria-label="Schließen">×</button></div><input type="hidden" name="id"><aside class="form-guide"><strong>Ein guter Bericht zeigt den Ablauf auf einen Blick.</strong><span>1. Fehler verständlich beschreiben</span><span>2. Diagnose und Arbeit erklären</span><span>3. Ergebnis mit geordneten Fotos belegen</span></aside><label>Titel<input name="title" maxlength="120" placeholder="z. B. iPhone SE (2020): Akku ausgetauscht" required></label><label>Kurzadresse<input name="slug" maxlength="70" placeholder="wird automatisch aus dem Titel erzeugt"></label><label>Kategorie<select name="category" required><option>PC &amp; Laptop</option><option>Smartphone &amp; Tablet</option><option>Konsole</option><option>Datenrettung</option><option>Sonstiges</option></select></label><div class="field-grid"><label>Gerätemodell<input name="device_model" maxlength="120" placeholder="z. B. iPhone SE (2020)"></label><label>Reparaturart<input name="repair_type" maxlength="120" placeholder="z. B. Akkutausch"></label></div><label>Geprüfte Funktionen<input name="tested_functions" maxlength="500" placeholder="z. B. Start, Display, Touch, Laden"></label><label>Kurzbeschreibung<textarea name="summary" maxlength="300" placeholder="Problem, Reparatur und Ergebnis kurz zusammenfassen" required></textarea></label><label>Fehlerbild<textarea name="problem" maxlength="3000" placeholder="Was war am Gerät fehlerhaft oder auffällig?" required></textarea></label><label>Diagnose<textarea name="diagnosis" maxlength="3000" placeholder="Welche Ursache wurde festgestellt?" required></textarea></label><label>Reparatur und Ergebnis<textarea name="solution" maxlength="3000" placeholder="Welche Arbeiten wurden durchgeführt und was ergab der Funktionstest?" required></textarea></label><aside id="live-preview" class="live-preview" aria-live="polite"><span>LIVE-VORSCHAU</span><h3>Vorschau des Kundentitels</h3><p>Hier erscheint die Kurzbeschreibung.</p><div><b>Gerät</b><em>noch nicht angegeben</em><b>Reparatur</b><em>noch nicht angegeben</em></div></aside><section class="photo-field" aria-labelledby="photo-title"><div class="photo-heading"><div><strong id="photo-title">Fotos</strong><small>Bis zu 10 Bilder. Die sichtbaren Nummern bestimmen die Reihenfolge im öffentlichen Bericht.</small></div><span id="image-count">0 / 10</span></div><label class="file-picker">Bilder hinzufügen<input id="images" name="images" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><small>Du kannst Bilder einzeln oder in mehreren Schritten hinzufügen. Mit den Pfeilen oder per Ziehen sortierst du sie; mit × entfernst du einzelne Bilder. Jede Bildbeschreibung wird öffentlich angezeigt.</small><div id="image-preview" class="image-preview"></div></section><div class="privacy-reminder"><strong>Vor dem Speichern prüfen:</strong> Keine Namen, Adressen, Seriennummern, IMEI, E-Mails, Gesichter, Kennzeichen, Benachrichtigungen, Passwörter oder PINs zeigen.</div><div class="dialog-actions"><button type="button" data-close>Abbrechen</button><button type="submit" class="primary">Als privaten Entwurf speichern</button></div></form></dialog>
+<html lang="de" data-private-page="true">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Reparaturberichte verwalten</title>
+  <meta name="theme-color" content="#050914">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/reports-admin.css?v=20260920-1">
+</head>
+<body>
+<header><a href="/" class="brand"><span>MK</span><strong>Reparaturberichte verwalten</strong></a><a href="/reparaturberichte" target="_blank" rel="noopener">Öffentliche Ansicht ↗</a></header>
+<main>
+  <section class="admin-intro"><div><p class="eyebrow">Geschützter Inhaberbereich</p><h1>Berichte und Fragen</h1><p>Ein Reparaturfall wird einmal erfasst. Daraus entstehen der Website-Bericht und vorbereitete Texte für Facebook, Instagram und Google.</p></div><button id="new-report" class="primary">Neuer Bericht</button></section>
+  <div id="message" role="status" aria-live="polite"></div>
+  <section class="admin-grid"><div><h2>Beiträge</h2><div id="report-list" class="stack"><p>Lädt …</p></div></div><div><h2>Wartende Fragen</h2><div id="question-list" class="stack"><p>Lädt …</p></div></div></section>
+</main>
+
+<dialog id="editor"><form id="report-form">
+  <div class="dialog-head"><div><p class="eyebrow">Beitrag</p><h2 id="editor-title">Neuer Reparaturbericht</h2><small id="autosave-status">Texte werden auf diesem Gerät automatisch zwischengespeichert.</small></div><button type="button" class="icon" data-close aria-label="Schließen">×</button></div>
+  <input type="hidden" name="id">
+  <aside class="form-guide"><strong>Nur diese fünf Angaben sind nötig.</strong><span>1. Gerät und Fehlerbild</span><span>2. Diagnose und Reparatur</span><span>3. Ergebnis und Fotos</span></aside>
+
+  <section class="input-section" aria-labelledby="case-title">
+    <h3 id="case-title">Reparaturfall</h3>
+    <label>Gerät<input name="device_model" maxlength="120" placeholder="z. B. iPhone 13" required></label>
+    <label>Fehlerbild<textarea name="problem" maxlength="3000" placeholder="Was war am Gerät fehlerhaft oder auffällig?" required></textarea></label>
+    <label>Diagnose<textarea name="diagnosis" maxlength="3000" placeholder="Welche Ursache wurde tatsächlich festgestellt?" required></textarea></label>
+    <label>Durchgeführte Reparatur<textarea name="repair" maxlength="3000" placeholder="Welche Arbeiten wurden durchgeführt?" required></textarea></label>
+    <label>Ergebnis<textarea name="result" maxlength="3000" placeholder="Was wurde anschließend geprüft und mit welchem Ergebnis?" required></textarea></label>
+  </section>
+
+  <section class="photo-field" aria-labelledby="photo-title"><div class="photo-heading"><div><strong id="photo-title">Fotos</strong><small>Bis zu 10 Bilder. Die sichtbaren Nummern bestimmen die Reihenfolge im öffentlichen Bericht.</small></div><span id="image-count">0 / 10</span></div><label class="file-picker">Bilder hinzufügen<input id="images" name="images" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><small>Prüfe jedes Foto auf Kundendaten. Die Bildbeschreibung wird öffentlich angezeigt.</small><div id="image-preview" class="image-preview"></div></section>
+
+  <details class="generated-fields">
+    <summary>Automatisch erzeugte Website-Angaben prüfen und bearbeiten</summary>
+    <div class="generated-toolbar"><p>Die Vorschläge entstehen ohne externen KI-Dienst direkt im Browser.</p><button type="button" id="regenerate">Vorschläge neu erzeugen</button></div>
+    <label>Titel<input name="title" maxlength="120" required></label>
+    <label>Kurzadresse<input name="slug" maxlength="70"></label>
+    <label>Kategorie<select name="category" required><option>PC &amp; Laptop</option><option>Smartphone &amp; Tablet</option><option>Konsole</option><option>Datenrettung</option><option>Sonstiges</option></select></label>
+    <div class="field-grid"><label>Reparaturart<input name="repair_type" maxlength="120"></label><label>Geprüfte Funktionen<input name="tested_functions" maxlength="500" placeholder="optional"></label></div>
+    <label>Kurzbeschreibung<textarea name="summary" maxlength="300" required></textarea></label>
+  </details>
+
+  <aside id="live-preview" class="live-preview" aria-live="polite"><span>WEBSITE-VORSCHAU</span><h3>Vorschau des Kundentitels</h3><p>Hier erscheint die Kurzbeschreibung.</p><div class="preview-facts"><b>Gerät</b><em>noch nicht angegeben</em><b>Reparatur</b><em>noch nicht angegeben</em></div><div class="preview-sections"><section><b>Fehlerbild</b><p data-preview="problem">noch nicht angegeben</p></section><section><b>Diagnose</b><p data-preview="diagnosis">noch nicht angegeben</p></section><section><b>Durchgeführte Reparatur</b><p data-preview="repair">noch nicht angegeben</p></section><section><b>Ergebnis</b><p data-preview="result">noch nicht angegeben</p></section></div></aside>
+
+  <section class="publication-package" aria-labelledby="package-title">
+    <div class="section-heading"><div><p class="eyebrow">Copy &amp; Paste</p><h3 id="package-title">Veröffentlichungspaket</h3></div><p>Alle Texte bleiben vor dem Kopieren bearbeitbar.</p></div>
+    <article class="publication-card"><h4>Website</h4><p>Der ausführliche Bericht nutzt die fünf Angaben und das bestehende Design.</p><div class="publication-actions"><button type="button" data-open="website">Öffentliche Seite öffnen</button></div></article>
+    <article class="publication-card"><label>Facebook<textarea name="facebook_text" maxlength="5000"></textarea></label><div class="publication-actions"><button type="button" data-copy="facebook_text">Text kopieren</button><button type="button" data-open="facebook">Facebook öffnen ↗</button></div></article>
+    <article class="publication-card"><label>Instagram<textarea name="instagram_text" maxlength="2200"></textarea></label><div class="publication-actions"><button type="button" data-copy="instagram_text">Text kopieren</button><button type="button" data-open="instagram">Instagram öffnen ↗</button></div></article>
+    <article class="publication-card"><label>Google Business Profile<textarea name="google_text" maxlength="1500"></textarea></label><div class="publication-actions"><button type="button" data-copy="google_text">Text kopieren</button><button type="button" data-open="google">Google Unternehmensprofil öffnen ↗</button></div></article>
+  </section>
+
+  <section class="privacy-review" aria-labelledby="privacy-title">
+    <p class="eyebrow">Pflichtprüfung</p><h3 id="privacy-title">Datenschutz und Tatsachen</h3>
+    <div id="privacy-flags" class="privacy-flags" aria-live="polite"><p>Automatische Textprüfung läuft während der Eingabe.</p></div>
+    <label id="sensitive-review-wrap" class="check-row" hidden><input type="checkbox" name="sensitive_reviewed"><span>Die markierten Stellen habe ich manuell geprüft; sie enthalten keine zu schützenden Kundendaten.</span></label>
+    <label class="check-row"><input type="checkbox" name="privacy_text"><span>Texte enthalten keine Namen, Kontaktdaten, Adressen, Seriennummern, IMEI, Zugangsdaten oder andere Kundendaten.</span></label>
+    <label class="check-row"><input type="checkbox" name="privacy_photos"><span>Fotos enthalten keine Gesichter, Kennzeichen, Benachrichtigungen, Dokumente, Etiketten oder andere identifizierende Angaben.</span></label>
+    <label class="check-row"><input type="checkbox" name="privacy_facts"><span>Technische Angaben und Ergebnis sind wahrheitsgemäß; es wurde nichts ergänzt oder übertrieben.</span></label>
+    <label class="check-row"><input type="checkbox" name="privacy_social"><span>Auch die Texte für Facebook, Instagram und Google wurden geprüft.</span></label>
+    <p class="privacy-note">Ein privater Entwurf kann vorher gespeichert werden. Veröffentlichen ist erst möglich, nachdem alle vier Punkte beim Speichern bestätigt wurden.</p>
+  </section>
+
+  <div class="dialog-actions"><button type="button" data-close>Abbrechen</button><button type="submit" class="primary">Als privaten Entwurf speichern</button></div>
+</form></dialog>
+
 <dialog id="question-editor"><form id="question-form"><div class="dialog-head"><h2>Frage beantworten</h2><button type="button" class="icon" data-question-close aria-label="Schließen">×</button></div><input type="hidden" name="id"><p id="question-copy"></p><label>Öffentliche Antwort<textarea name="answer" maxlength="1500"></textarea></label><div class="dialog-actions"><button type="button" data-question-close>Abbrechen</button><button type="submit" class="primary">Antwort freigeben</button></div></form></dialog>
-<script src="/reports-admin.js?v=20260914-2" defer></script></body></html>
+<script type="module" src="/reports-admin.js?v=20260920-1"></script>
+</body></html>

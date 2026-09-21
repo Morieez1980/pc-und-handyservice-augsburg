@@ -21,7 +21,8 @@ const requiredFiles = [
   'functions/_shared/access.js', 'functions/_shared/http.js', 'functions/_shared/reports-page.js',
   'functions/reparaturberichte/index.js', 'functions/reparaturberichte/[slug].js',
   'functions/api/reparaturberichte/bild/[id].js', 'functions/api/reparaturberichte/frage.js',
-  'functions/reparaturberichte-admin/api/[action].js', 'migrations/0001_repair_reports.sql',
+  'functions/reparaturberichte-admin/api/[action].js', 'migrations/0001_repair_reports.sql', 'migrations/0003_report_publications.sql',
+  'publication-copy.js',
   'reparaturberichte-admin.html', 'reports.css', 'reports.js', 'reports-admin.css', 'reports-admin.js', 'wrangler.jsonc',
   'package.json', 'tools/test-repair-reports.mjs',
   '_headers', 'robots.txt', 'sitemap.xml', 'favicon.svg',
@@ -410,12 +411,20 @@ if (!headers.includes('/reparaturberichte-admin*') || !headers.includes('X-Robot
 if (!headers.includes('max-age=86400, stale-while-revalidate=604800')) errors.push('_headers: stabile Bildassets haben keine sichere Revalidierungsstrategie');
 
 const adminPage = await readFile('reparaturberichte-admin.html', 'utf8');
-for (const marker of ['data-private-page="true"', 'noindex,nofollow', 'id="report-form"', 'id="question-form"', 'reports-admin.js?v=']) {
+for (const marker of ['data-private-page="true"', 'noindex,nofollow', 'id="report-form"', 'id="question-form"', 'reports-admin.js?v=', 'name="repair"', 'name="result"', 'name="facebook_text"', 'name="instagram_text"', 'name="google_text"', 'data-copy="facebook_text"', 'name="privacy_photos"']) {
   if (!adminPage.includes(marker)) errors.push(`reparaturberichte-admin.html: Verwaltungsmarker fehlt: ${marker}`);
 }
 const migration = await readFile('migrations/0001_repair_reports.sql', 'utf8');
 for (const table of ['reports', 'report_images', 'report_questions', 'question_rate_limits']) {
   if (!migration.includes(`CREATE TABLE IF NOT EXISTS ${table}`)) errors.push(`D1-Migration: Tabelle ${table} fehlt`);
+}
+const publicationMigration = await readFile('migrations/0003_report_publications.sql', 'utf8');
+for (const marker of ['CREATE TABLE IF NOT EXISTS report_publications', 'facebook_text', 'instagram_text', 'google_text', 'privacy_confirmed_at']) {
+  if (!publicationMigration.includes(marker)) errors.push(`D1-Veröffentlichungsmigration unvollständig: ${marker}`);
+}
+const publicationCopy = await readFile('publication-copy.js', 'utf8');
+for (const marker of ['buildPublicationDrafts', 'buildHashtags', 'detectSensitiveContent', '#AugsburgLechhausen']) {
+  if (!publicationCopy.includes(marker)) errors.push(`Textvorlagen-Modul unvollständig: ${marker}`);
 }
 const accessFunction = await readFile('functions/_shared/access.js', 'utf8');
 for (const marker of ['Cf-Access-Jwt-Assertion'.toLowerCase(), 'POLICY_AUD', 'RS256', 'crypto.subtle.verify']) {
