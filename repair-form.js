@@ -25,12 +25,12 @@
   let confirmationNonce;
   const showUnconfirmed = () => {
     if (!sending) return;
-    errorSummary.textContent = 'Die Übermittlung konnte noch nicht bestätigt werden. Bitte prüfen Sie Ihr E-Mail-Postfach und die Antwort unten. Senden Sie die Anfrage nicht mehrfach. Falls keine Bestätigung ankommt, rufen Sie uns bitte an: 0152 54530080.';
+    errorSummary.textContent = 'Bitte prüfen Sie die Antwort von Bigin unten: Steht dort „Vielen Dank für Ihre Reparaturanfrage“, ist Ihre Anfrage eingegangen. Die Website kann diese externe Antwort nicht automatisch auslesen. Bitte nicht erneut senden. Fehlt die Dankesmeldung, rufen Sie uns an: 0152 54530080.';
     errorSummary.hidden = false;
     responseFrame.removeAttribute('aria-hidden');
     responseFrame.removeAttribute('tabindex');
     responseFrame.classList.add('response-visible');
-    submit.textContent = 'Bestätigung ausstehend';
+    submit.textContent = 'Antwort von Bigin prüfen';
   };
 
   const requestConfirmationReference = async () => {
