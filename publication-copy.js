@@ -99,6 +99,7 @@ export function detectSensitiveContent(values) {
     ["möglicher Personen- oder Herkunftshinweis", /\b(?:herr|frau)\s+[A-ZÄÖÜ][a-zäöüß-]+|\bkunde(?:in)?\s+aus\b/],
     ["mögliche Anschrift", /\b[A-ZÄÖÜ][\p{L}.-]*(?:straße|strasse|weg|platz|allee|gasse)\s+\d+[a-z]?\b/iu],
     ["möglicher privater Datei- oder Kontolink", /https?:\/\/(?:drive\.google\.com|docs\.google\.com|dropbox\.com|icloud\.com|onedrive\.live\.com)\b/i],
+    ["möglicher unveränderter Fotodateiname", /(?:^|\n)\s*(?:whatsapp image|img[_ -]?\d{6,}|dsc[_ -]?\d{4,}|pxl[_ -]?\d{6,})/im],
   ];
   return checks.filter(([, pattern]) => pattern.test(text)).map(([label]) => label);
 }

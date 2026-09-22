@@ -70,7 +70,11 @@ function clearPreviewUrls() {
   state.previewUrls = [];
 }
 
-function syncImageItems(items) {
+function syncImageItems(items, changed = true) {
+  if (changed) {
+    reportForm.elements.privacy_photos.checked = false;
+    reportForm.elements.sensitive_reviewed.checked = false;
+  }
   state.imageItems = items.slice(0, 10);
   const transfer = new DataTransfer();
   state.imageItems.filter((item) => item.file).forEach((item) => transfer.items.add(item.file));
@@ -79,6 +83,7 @@ function syncImageItems(items) {
   state.previewUrls = state.imageItems.map((item) => item.file ? URL.createObjectURL(item.file) : `/api/reparaturberichte/bild/${encodeURIComponent(item.id)}?v=20260920-1`);
   imageCount.textContent = `${state.imageItems.length} / 10`;
   imagePreview.innerHTML = state.imageItems.map((item, index) => `<article class="image-card" draggable="true" data-image-card="${index}"><div class="image-frame"><img src="${state.previewUrls[index]}" alt="Vorschau für ${esc(item.alt)}"><span>${index + 1}</span><button type="button" class="image-remove" data-image-remove="${index}" aria-label="Bild ${index + 1} entfernen">×</button></div><label class="image-field">Bildbeschreibung<input value="${esc(item.alt)}" maxlength="160" data-image-caption="${index}" placeholder="Was ist auf diesem Bild zu sehen?"></label><label class="image-field">Abschnitt<select data-image-stage="${index}"><option value="before" ${item.stage === "before" ? "selected" : ""}>Vorher</option><option value="repair" ${item.stage === "repair" ? "selected" : ""}>Reparatur</option><option value="result" ${item.stage === "result" ? "selected" : ""}>Ergebnis</option></select></label><div class="image-order"><button type="button" data-image-move="up" data-image-index="${index}" ${index === 0 ? "disabled" : ""} aria-label="Bild ${index + 1} nach vorne verschieben">←</button><button type="button" data-image-move="down" data-image-index="${index}" ${index === state.imageItems.length - 1 ? "disabled" : ""} aria-label="Bild ${index + 1} nach hinten verschieben">→</button></div></article>`).join("");
+  updatePreviewAndPrivacy();
 }
 
 function updatePreviewAndPrivacy() {
@@ -92,7 +97,7 @@ function updatePreviewAndPrivacy() {
     livePreview.querySelector(`[data-preview="${field}"]`).textContent = values[field] || "noch nicht angegeben";
   }
 
-  const issues = detectSensitiveContent(values);
+  const issues = detectSensitiveContent({ ...values, imageDescriptions: state.imageItems.map((item) => item.alt).join("\n") });
   sensitiveReviewWrap.hidden = issues.length === 0;
   if (!issues.length) {
     reportForm.elements.sensitive_reviewed.checked = false;
@@ -107,7 +112,11 @@ function updatePreviewAndPrivacy() {
 function restoreAutosave() {
   try {
     const saved = JSON.parse(localStorage.getItem(draftKey) || "null");
-    if (!saved || Date.now() - saved.savedAt > 7 * 24 * 60 * 60 * 1000) return;
+    if (!saved) return;
+    if (!Number.isFinite(saved.savedAt) || Date.now() - saved.savedAt > 7 * 24 * 60 * 60 * 1000) {
+      localStorage.removeItem(draftKey);
+      return;
+    }
     reportFields.filter((field) => field !== "id").forEach((field) => {
       if (typeof saved[field] === "string" && reportForm.elements[field]) {
         reportForm.elements[field].value = saved[field];
@@ -119,6 +128,10 @@ function restoreAutosave() {
 }
 
 function scheduleAutosave(event) {
+  if (event?.target?.name && !privacyFields.includes(event.target.name) && event.target.name !== "sensitive_reviewed") {
+    for (const field of ["privacy_text", "privacy_facts", "privacy_social"]) reportForm.elements[field].checked = false;
+    reportForm.elements.sensitive_reviewed.checked = false;
+  }
   if (!applyingSuggestions && event?.target?.name && generatedFields.includes(event.target.name)) event.target.dataset.auto = "manual";
   if (!applyingSuggestions && event?.target?.name && baseFields.includes(event.target.name)) applySuggestions(false);
   else updatePreviewAndPrivacy();
@@ -169,7 +182,7 @@ function openReport(report = null) {
     }
     generatedFields.forEach((field) => { if (reportForm.elements[field].value) reportForm.elements[field].dataset.auto = "manual"; });
     privacyFields.forEach((field) => { reportForm.elements[field].checked = Boolean(report.privacy_confirmed_at); });
-    syncImageItems(state.images.filter((image) => image.report_id === report.id).map((image) => ({ id: image.id, alt: image.alt_text, stage: image.stage || "repair" })));
+    syncImageItems(state.images.filter((image) => image.report_id === report.id).map((image) => ({ id: image.id, alt: image.alt_text, stage: image.stage || "repair" })), false);
   } else {
     restoreAutosave();
     if (!baseFields.some((field) => reportForm.elements[field].value.trim())) applySuggestions(true);
@@ -204,7 +217,8 @@ reportForm.addEventListener("submit", async (event) => {
   const button = reportForm.querySelector("button[type=submit]");
   button.disabled = true;
   try {
-    const issues = detectSensitiveContent(valuesFromForm());
+    if (state.imageItems.some((item) => !item.alt.trim())) throw new Error("Bitte für jedes Foto eine geprüfte Bildbeschreibung eingeben.");
+    const issues = detectSensitiveContent({ ...valuesFromForm(), imageDescriptions: state.imageItems.map((item) => item.alt).join("\n") });
     if (issues.length && !reportForm.elements.sensitive_reviewed.checked) throw new Error("Bitte die markierten Datenschutzauffälligkeiten prüfen und bestätigen.");
     const form = new FormData(reportForm);
     const payload = Object.fromEntries([...form.entries()].filter(([key]) => key !== "images"));
@@ -224,7 +238,7 @@ imagesInput.addEventListener("change", (event) => {
   const additions = [...event.target.files];
   const seen = new Set();
   const existing = state.imageItems.map((item) => ({ ...item }));
-  const added = additions.map((file, index) => ({ file, alt: file.name.replace(/\.[^.]+$/, ""), stage: !existing.length && index === 0 ? "before" : "repair" }));
+  const added = additions.map((file, index) => ({ file, alt: "", stage: !existing.length && index === 0 ? "before" : "repair" }));
   if (!existing.length && added.length > 1) added[added.length - 1].stage = "result";
   const items = [...existing, ...added].filter((item) => {
     const key = item.file ? `${item.file.name}:${item.file.size}:${item.file.lastModified}` : `id:${item.id}`;
@@ -249,10 +263,18 @@ imagePreview.addEventListener("click", (event) => {
   syncImageItems(items);
 });
 imagePreview.addEventListener("input", (event) => {
-  if (event.target.matches("[data-image-caption]")) state.imageItems[Number(event.target.dataset.imageCaption)].alt = event.target.value;
+  if (event.target.matches("[data-image-caption]")) {
+    state.imageItems[Number(event.target.dataset.imageCaption)].alt = event.target.value;
+    reportForm.elements.privacy_photos.checked = false;
+    reportForm.elements.sensitive_reviewed.checked = false;
+    updatePreviewAndPrivacy();
+  }
 });
 imagePreview.addEventListener("change", (event) => {
-  if (event.target.matches("[data-image-stage]")) state.imageItems[Number(event.target.dataset.imageStage)].stage = event.target.value;
+  if (event.target.matches("[data-image-stage]")) {
+    state.imageItems[Number(event.target.dataset.imageStage)].stage = event.target.value;
+    reportForm.elements.privacy_photos.checked = false;
+  }
 });
 imagePreview.addEventListener("dragstart", (event) => {
   const card = event.target.closest("[data-image-card]");
@@ -275,7 +297,10 @@ imagePreview.addEventListener("drop", (event) => {
 imagePreview.addEventListener("dragend", () => { draggedImage = -1; imagePreview.querySelectorAll(".dragging").forEach((card) => card.classList.remove("dragging")); });
 
 reportForm.addEventListener("input", scheduleAutosave);
-document.querySelector("#regenerate").addEventListener("click", () => applySuggestions(true));
+document.querySelector("#regenerate").addEventListener("click", () => {
+  for (const field of ["privacy_text", "privacy_facts", "privacy_social", "sensitive_reviewed"]) reportForm.elements[field].checked = false;
+  applySuggestions(true);
+});
 document.querySelector("#new-report").addEventListener("click", () => openReport());
 document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", () => editor.close()));
 document.querySelectorAll("[data-question-close]").forEach((button) => button.addEventListener("click", () => questionEditor.close()));

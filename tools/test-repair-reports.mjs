@@ -60,6 +60,8 @@ test("Datenschutzprüfung markiert typische Kundendaten, ohne unauffällige Text
   assert.ok(issues.includes("mögliche E-Mail-Adresse"));
   assert.ok(issues.includes("lange Ziffernfolge oder Gerätekennung"));
   assert.ok(issues.includes("Hinweis auf Zugangsdaten oder Kennungen"));
+  assert.ok(detectSensitiveContent({ imageDescriptions: "Gerät mit IMEI 123456789012345" }).includes("Hinweis auf Zugangsdaten oder Kennungen"));
+  assert.ok(detectSensitiveContent({ imageDescriptions: "WhatsApp Image 2026-09-14 at 08.14.30" }).includes("möglicher unveränderter Fotodateiname"));
 });
 
 test("Cloudflare Access JWT wird kryptografisch geprüft", async () => {

@@ -153,8 +153,10 @@ for (const marker of [
   'Cloudflare Pages',
   'Bigin und Zoho Flow',
   'Reparaturberichte, Fotos und Besucherfragen',
-  'spätestens nach 30 Tagen',
-  'spätestens nach 90 Tagen'
+  'älter als 30 Tage',
+  'älter als 90 Tage',
+  'beim nächsten Aufruf der geschützten Verwaltung',
+  'noch nicht gespeicherte Berichtstexte zusätzlich lokal'
 ]) {
   if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Datenschutzhinweis fehlt: ${marker}`);
 }

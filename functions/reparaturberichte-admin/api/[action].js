@@ -55,10 +55,11 @@ async function saveReport(request, env) {
   const slug = slugify(data.slug || title);
   if (!title || !category || !deviceModel || summary.length < 20 || problem.length < 10 || diagnosis.length < 10 || repair.length < 10 || result.length < 10 || !slug) return json({ error: "Bitte Gerät, Fehlerbild, Diagnose, Reparatur und Ergebnis vollständig ausfüllen." }, 400);
   if (!facebookText || !instagramText || !googleText) return json({ error: "Bitte alle Veröffentlichungstexte prüfen und vollständig ausfüllen." }, 400);
-  const privacyIssues = detectSensitiveContent({ deviceModel, title, summary, problem, diagnosis, repair, result, facebookText, instagramText, googleText });
-  if (privacyIssues.length && data.sensitive_reviewed !== true) return json({ error: `Bitte erkannte Datenschutzauffälligkeiten bewusst prüfen: ${privacyIssues.join(", ")}.` }, 400);
   if (Array.isArray(data.images) && data.images.length > 10) return json({ error: "Bitte maximal zehn Fotos auswählen." }, 400);
   const imageItems = Array.isArray(data.images) ? data.images : null;
+  if (imageItems?.some((item) => !text(item?.alt, 160))) return json({ error: "Bitte für jedes Foto eine geprüfte Bildbeschreibung eingeben." }, 400);
+  const privacyIssues = detectSensitiveContent({ deviceModel, title, summary, problem, diagnosis, repair, result, facebookText, instagramText, googleText, imageDescriptions: imageItems?.map((item) => text(item.alt, 160)).join("\n") || "" });
+  if (privacyIssues.length && data.sensitive_reviewed !== true) return json({ error: `Bitte erkannte Datenschutzauffälligkeiten bewusst prüfen: ${privacyIssues.join(", ")}.` }, 400);
   const now = new Date().toISOString();
   const existing = await env.DB.prepare("SELECT status, created_at, published_at FROM reports WHERE id = ? LIMIT 1").bind(id).first();
   const storedImages = imageItems ? await env.DB.prepare("SELECT id FROM report_images WHERE report_id = ?").bind(id).all() : { results: [] };
