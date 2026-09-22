@@ -180,7 +180,7 @@ for (const marker of [
   'name="rmsg" value="false"',
   'Bitte keine Passwörter, PINs oder Entsperrcodes',
   'href="/datenschutz"',
-  'request.min.css?v=',
+  'request.css?v=',
   'repair-form.js?v=',
   'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3',
   'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3',
