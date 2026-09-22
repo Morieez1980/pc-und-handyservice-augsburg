@@ -111,6 +111,22 @@ const publicReview = (review) => ({
   updatedAt: review.updateTime || review.createTime || null
 });
 
+export async function fetchGoogleReviewSummary(env) {
+  if (!env.GOOGLE_OAUTH_CLIENT_ID || !env.GOOGLE_OAUTH_CLIENT_SECRET || !env.GOOGLE_OAUTH_REFRESH_TOKEN) {
+    return null;
+  }
+
+  const accessToken = await getAccessToken(env);
+  const parent = await discoverReviewParent(accessToken, env);
+  const url = new URL(`https://mybusiness.googleapis.com/v4/${parent}/reviews`);
+  url.searchParams.set('pageSize', '1');
+  const data = await authorizedJson(url.toString(), accessToken);
+  if (typeof data.averageRating !== 'number' || !Number.isInteger(data.totalReviewCount)) {
+    throw new Error('Google lieferte unvollständige Bewertungskennzahlen');
+  }
+  return { rating: data.averageRating, reviewCount: data.totalReviewCount };
+}
+
 export async function onRequestGet({ env }) {
   if (!env.GOOGLE_OAUTH_CLIENT_ID || !env.GOOGLE_OAUTH_CLIENT_SECRET || !env.GOOGLE_OAUTH_REFRESH_TOKEN) {
     return json({ reviews: [], source: 'not-configured' }, FALLBACK_HEADERS);

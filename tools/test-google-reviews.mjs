@@ -69,6 +69,19 @@ globalThis.fetch = async (input) => {
 };
 
 try {
+  const summaryResponse = await onRequestGet({
+    env: {
+      GOOGLE_OAUTH_CLIENT_ID: 'client-id',
+      GOOGLE_OAUTH_CLIENT_SECRET: 'client-secret',
+      GOOGLE_OAUTH_REFRESH_TOKEN: 'refresh-token'
+    }
+  });
+  const summaryBody = await summaryResponse.json();
+  assert.equal(summaryBody.source, 'google-business-profile');
+  assert.equal(summaryBody.rating, 4.9);
+  assert.equal(summaryBody.reviewCount, 88);
+  assert(requestedUrls.some((url) => url.includes('pageSize=1')));
+
   const liveResponse = await getGoogleReviews({
     env: {
       GOOGLE_OAUTH_CLIENT_ID: 'client-id',

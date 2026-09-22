@@ -1,3 +1,5 @@
+import { fetchGoogleReviewSummary } from './google-reviews.js';
+
 const FALLBACK = Object.freeze({
   rating: 4.9,
   reviewCount: 91,
@@ -16,6 +18,15 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), {
 });
 
 export async function onRequestGet({ env }) {
+  try {
+    const summary = await fetchGoogleReviewSummary(env);
+    if (summary) {
+      return json({ ...summary, updatedAt: new Date().toISOString(), source: 'google-business-profile' });
+    }
+  } catch {
+    // Bei einem Google-Fehler bleiben Places und der geprüfte Ersatzwert verfügbar.
+  }
+
   const apiKey = env.GOOGLE_PLACES_API_KEY;
   const placeId = env.GOOGLE_PLACE_ID;
 
