@@ -27,20 +27,26 @@ jobs:
           endpoints=("/" "/api/google-reviews" "/api/review-summary" "/reparaturanfrage" "/reparaturberichte" "/datenschutz" "/impressum.html" "/qr-reparaturanfrage.png?v=20260902-1" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js" "/repair-form.js" "/vendor/intl-tel-input/css/intlTelInput.min.css" "/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js" "/vendor/intl-tel-input/img/flags.webp" "/vendor/intl-tel-input/img/flags@2x.webp")
           for attempt in {1..18}; do
             all_ready=true
+            failed_endpoint=""
             for endpoint in "${endpoints[@]}"; do
               code="$(curl --silent --show-error --location --retry 2 --output /dev/null --write-out '%{http_code}' "${base}${endpoint}" || true)"
               if [[ "$code" != "200" ]]; then
                 all_ready=false
+                failed_endpoint="${endpoint} (HTTP ${code})"
                 break
               fi
             done
             page="$(curl --silent --show-error --location --retry 2 "${base}/" || true)"
             request_page="$(curl --silent --show-error --location --retry 2 "${base}/reparaturanfrage" || true)"
-            if [[ "$all_ready" == "true" ]] && grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page" && grep --fixed-strings --quiet 'repair-form.js?v=20260919-2' <<< "$request_page"; then
+            home_marker=false
+            request_marker=false
+            if grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page"; then home_marker=true; fi
+            if grep --fixed-strings --quiet 'repair-form.js?v=20260919-2' <<< "$request_page"; then request_marker=true; fi
+            if [[ "$all_ready" == "true" && "$home_marker" == "true" && "$request_marker" == "true" ]]; then
               echo "Deployment is ready after attempt ${attempt}."
               exit 0
             fi
-            echo "Deployment not ready yet (attempt ${attempt}/18)."
+            echo "Deployment not ready yet (attempt ${attempt}/18): failed endpoint=${failed_endpoint:-none}; home marker=${home_marker}; repair form marker=${request_marker}."
             sleep 10
           done
           echo "Production deployment did not become ready in time."
@@ -124,3 +130,4 @@ jobs:
             echo "Invalid confirmation reference was not rejected with HTTP 400"
             exit 1
           fi
+
