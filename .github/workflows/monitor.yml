@@ -1,4 +1,4 @@
-name: Production monitor
+name: Pages deployment monitor
 
 on:
   push:
@@ -9,6 +9,11 @@ on:
 
 permissions:
   contents: read
+
+# GitHub-hosted runners are challenged by Bot Fight Mode on the custom domain.
+# The Cloudflare cron Worker checks the public domain separately.
+env:
+  MONITOR_BASE: https://pc-und-handyservice-augsburg.pages.dev
 
 concurrency:
   group: production-monitor
@@ -23,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base="https://www.pc-und-handyservice-augsburg.com"
+          base="${MONITOR_BASE}"
           endpoints=("/" "/api/google-reviews" "/api/review-summary" "/reparaturanfrage" "/reparaturberichte" "/datenschutz" "/impressum.html" "/qr-reparaturanfrage.png?v=20260902-1" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js" "/repair-form.js" "/vendor/intl-tel-input/css/intlTelInput.min.css" "/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js" "/vendor/intl-tel-input/img/flags.webp" "/vendor/intl-tel-input/img/flags@2x.webp")
           for attempt in {1..18}; do
             all_ready=true
@@ -56,7 +61,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base="https://www.pc-und-handyservice-augsburg.com"
+          base="${MONITOR_BASE}"
           headers="$(curl --silent --show-error --head --location --retry 3 "${base}/")"
           for header in strict-transport-security content-security-policy x-content-type-options referrer-policy permissions-policy; do
             if ! grep --ignore-case --quiet "^${header}:" <<< "$headers"; then
@@ -79,7 +84,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          page="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/")"
+          page="$(curl --silent --show-error --location --retry 3 "${MONITOR_BASE}/")"
           for marker in 'PC & Handyservice Augsburg' 'site.webmanifest?v=' 'script.min.js?v=' 'og:image' 'application/ld+json' 'clarity-consent.min.js?v='; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing production marker: ${marker}"
@@ -91,14 +96,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          page="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/reparaturanfrage")"
+          page="$(curl --silent --show-error --location --retry 3 "${MONITOR_BASE}/reparaturanfrage")"
           for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="POTENTIALCF5"' 'name="POTENTIALCF6"' 'name="POTENTIALCF7"' 'name="Contacts.Mobile"' 'class="phone-control"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v=20260914-1' 'repair-form.js?v=20260919-2' 'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3' 'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3'; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing repair-form marker: ${marker}"
               exit 1
             fi
           done
-          script="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/repair-form.js")"
+          script="$(curl --silent --show-error --location --retry 3 "${MONITOR_BASE}/repair-form.js")"
           for marker in 'pipeline-email' 'intlTelInput' 'isValidNumber' 'getNumber'; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$script"; then
               echo "Repair form script is missing marker: ${marker}"
@@ -114,7 +119,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base="https://www.pc-und-handyservice-augsburg.com"
+          base="${MONITOR_BASE}"
           reviews="$(curl --silent --show-error --location --retry 3 "${base}/api/google-reviews")"
           summary="$(curl --silent --show-error --location --retry 3 "${base}/api/review-summary")"
           if ! grep --extended-regexp --quiet '"source":"(google-business-profile|temporarily-unavailable)"' <<< "$reviews"; then
