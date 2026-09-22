@@ -23,8 +23,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base="https://pc-und-handyservice-augsburg.pages.dev"
-          endpoints=("/" "/reparaturanfrage" "/impressum.html" "/datenschutz.html" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js" "/repair-form.min.js" "/vendor/intl-tel-input/css/intlTelInput.min.css" "/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js" "/vendor/intl-tel-input/img/flags.webp" "/vendor/intl-tel-input/img/flags@2x.webp")
+          base="https://www.pc-und-handyservice-augsburg.com"
+          endpoints=("/" "/api/google-reviews" "/api/review-summary" "/reparaturanfrage" "/reparaturberichte" "/datenschutz" "/impressum.html" "/qr-reparaturanfrage.png?v=20260902-1" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js" "/repair-form.js" "/vendor/intl-tel-input/css/intlTelInput.min.css" "/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js" "/vendor/intl-tel-input/img/flags.webp" "/vendor/intl-tel-input/img/flags@2x.webp")
           for attempt in {1..18}; do
             all_ready=true
             for endpoint in "${endpoints[@]}"; do
@@ -36,7 +36,7 @@ jobs:
             done
             page="$(curl --silent --show-error --location --retry 2 "${base}/" || true)"
             request_page="$(curl --silent --show-error --location --retry 2 "${base}/reparaturanfrage" || true)"
-            if [[ "$all_ready" == "true" ]] && grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page" && grep --fixed-strings --quiet 'repair-form.min.js?v=20260914-1' <<< "$request_page"; then
+            if [[ "$all_ready" == "true" ]] && grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page" && grep --fixed-strings --quiet 'repair-form.js?v=20260919-2' <<< "$request_page"; then
               echo "Deployment is ready after attempt ${attempt}."
               exit 0
             fi
@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base="https://pc-und-handyservice-augsburg.pages.dev"
+          base="https://www.pc-und-handyservice-augsburg.com"
           headers="$(curl --silent --show-error --head --location --retry 3 "${base}/")"
           for header in strict-transport-security content-security-policy x-content-type-options referrer-policy permissions-policy; do
             if ! grep --ignore-case --quiet "^${header}:" <<< "$headers"; then
@@ -73,7 +73,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          page="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/")"
+          page="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/")"
           for marker in 'PC & Handyservice Augsburg' 'site.webmanifest?v=' 'script.min.js?v=' 'og:image' 'application/ld+json' 'clarity-consent.min.js?v='; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing production marker: ${marker}"
@@ -85,14 +85,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          page="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/reparaturanfrage")"
-          for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="POTENTIALCF5"' 'name="POTENTIALCF6"' 'name="POTENTIALCF7"' 'name="Contacts.Mobile"' 'class="phone-control"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v=20260914-1' 'repair-form.min.js?v=20260914-1' 'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3' 'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3'; do
+          page="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/reparaturanfrage")"
+          for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="POTENTIALCF5"' 'name="POTENTIALCF6"' 'name="POTENTIALCF7"' 'name="Contacts.Mobile"' 'class="phone-control"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v=20260914-1' 'repair-form.js?v=20260919-2' 'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3' 'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3'; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing repair-form marker: ${marker}"
               exit 1
             fi
           done
-          script="$(curl --silent --show-error --location --retry 3 "https://pc-und-handyservice-augsburg.pages.dev/repair-form.min.js")"
+          script="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/repair-form.js")"
           for marker in 'pipeline-email' 'intlTelInput' 'isValidNumber' 'getNumber'; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$script"; then
               echo "Repair form script is missing marker: ${marker}"
@@ -101,5 +101,26 @@ jobs:
           done
           if grep --fixed-strings --quiet 'crmWebToEntityForm' <<< "$page"; then
             echo "Legacy Zoho CRM form is still present in production"
+            exit 1
+          fi
+
+      - name: Check APIs and invalid confirmation
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://www.pc-und-handyservice-augsburg.com"
+          reviews="$(curl --silent --show-error --location --retry 3 "${base}/api/google-reviews")"
+          summary="$(curl --silent --show-error --location --retry 3 "${base}/api/review-summary")"
+          if ! grep --extended-regexp --quiet '"source":"(google-business-profile|temporarily-unavailable)"' <<< "$reviews"; then
+            echo "Google reviews API returned an unexpected source"
+            exit 1
+          fi
+          if ! grep --extended-regexp --quiet '"source":"(google-places|verified-fallback)"' <<< "$summary"; then
+            echo "Review summary returned an unexpected source"
+            exit 1
+          fi
+          invalid_code="$(curl --silent --show-error --location --retry 3 --output /dev/null --write-out '%{http_code}' "${base}/anfrage-bestaetigt?ref=ungueltig")"
+          if [[ "$invalid_code" != "400" ]]; then
+            echo "Invalid confirmation reference was not rejected with HTTP 400"
             exit 1
           fi
