@@ -177,6 +177,7 @@ const requestPage = htmlByFile.get('reparaturanfrage.html');
 for (const marker of [
   'id="repair-request"',
   'action="https://bigin.zoho.eu/crm/WebForm"',
+  'name="rmsg" value="false"',
   'Bitte keine Passwörter, PINs oder Entsperrcodes',
   'href="/datenschutz"',
   'request.min.css?v=',
