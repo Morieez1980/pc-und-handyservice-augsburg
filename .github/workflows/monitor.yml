@@ -1,0 +1,133 @@
+name: Production monitor
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-monitor
+  cancel-in-progress: true
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Wait for deployment and check endpoints
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://www.pc-und-handyservice-augsburg.com"
+          endpoints=("/" "/api/google-reviews" "/api/review-summary" "/reparaturanfrage" "/reparaturberichte" "/datenschutz" "/impressum.html" "/qr-reparaturanfrage.png?v=20260902-1" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js" "/repair-form.js" "/vendor/intl-tel-input/css/intlTelInput.min.css" "/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js" "/vendor/intl-tel-input/img/flags.webp" "/vendor/intl-tel-input/img/flags@2x.webp")
+          for attempt in {1..18}; do
+            all_ready=true
+            failed_endpoint=""
+            for endpoint in "${endpoints[@]}"; do
+              code="$(curl --silent --show-error --location --retry 2 --output /dev/null --write-out '%{http_code}' "${base}${endpoint}" || true)"
+              if [[ "$code" != "200" ]]; then
+                all_ready=false
+                failed_endpoint="${endpoint} (HTTP ${code})"
+                break
+              fi
+            done
+            page="$(curl --silent --show-error --location --retry 2 "${base}/" || true)"
+            request_page="$(curl --silent --show-error --location --retry 2 "${base}/reparaturanfrage" || true)"
+            home_marker=false
+            request_marker=false
+            if grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page"; then home_marker=true; fi
+            if grep --fixed-strings --quiet 'repair-form.js?v=20260919-2' <<< "$request_page"; then request_marker=true; fi
+            if [[ "$all_ready" == "true" && "$home_marker" == "true" && "$request_marker" == "true" ]]; then
+              echo "Deployment is ready after attempt ${attempt}."
+              exit 0
+            fi
+            echo "Deployment not ready yet (attempt ${attempt}/18): failed endpoint=${failed_endpoint:-none}; home marker=${home_marker}; repair form marker=${request_marker}."
+            sleep 10
+          done
+          echo "Production deployment did not become ready in time."
+          exit 1
+
+      - name: Check security and cache headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://www.pc-und-handyservice-augsburg.com"
+          headers="$(curl --silent --show-error --head --location --retry 3 "${base}/")"
+          for header in strict-transport-security content-security-policy x-content-type-options referrer-policy permissions-policy; do
+            if ! grep --ignore-case --quiet "^${header}:" <<< "$headers"; then
+              echo "Missing security header: ${header}"
+              exit 1
+            fi
+          done
+          asset_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/styles.min.css?v=20260715-2")"
+          if ! grep --ignore-case --quiet '^cache-control:.*max-age=31536000.*immutable' <<< "$asset_headers"; then
+            echo "Versioned production assets are not cached immutably"
+            exit 1
+          fi
+          image_headers="$(curl --silent --show-error --head --location --retry 3 "${base}/og-image.png")"
+          if ! grep --ignore-case --quiet '^cache-control:.*max-age=86400' <<< "$image_headers"; then
+            echo "Stable social and app images do not use the intended revalidation policy"
+            exit 1
+          fi
+
+      - name: Check production content
+        shell: bash
+        run: |
+          set -euo pipefail
+          page="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/")"
+          for marker in 'PC & Handyservice Augsburg' 'site.webmanifest?v=' 'script.min.js?v=' 'og:image' 'application/ld+json' 'clarity-consent.min.js?v='; do
+            if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
+              echo "Missing production marker: ${marker}"
+              exit 1
+            fi
+          done
+
+      - name: Check production repair form
+        shell: bash
+        run: |
+          set -euo pipefail
+          page="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/reparaturanfrage")"
+          for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="POTENTIALCF5"' 'name="POTENTIALCF6"' 'name="POTENTIALCF7"' 'name="Contacts.Mobile"' 'class="phone-control"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v=20260914-1' 'repair-form.js?v=20260919-2' 'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3' 'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3'; do
+            if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
+              echo "Missing repair-form marker: ${marker}"
+              exit 1
+            fi
+          done
+          script="$(curl --silent --show-error --location --retry 3 "https://www.pc-und-handyservice-augsburg.com/repair-form.js")"
+          for marker in 'pipeline-email' 'intlTelInput' 'isValidNumber' 'getNumber'; do
+            if ! grep --fixed-strings --quiet "$marker" <<< "$script"; then
+              echo "Repair form script is missing marker: ${marker}"
+              exit 1
+            fi
+          done
+          if grep --fixed-strings --quiet 'crmWebToEntityForm' <<< "$page"; then
+            echo "Legacy Zoho CRM form is still present in production"
+            exit 1
+          fi
+
+      - name: Check APIs and invalid confirmation
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://www.pc-und-handyservice-augsburg.com"
+          reviews="$(curl --silent --show-error --location --retry 3 "${base}/api/google-reviews")"
+          summary="$(curl --silent --show-error --location --retry 3 "${base}/api/review-summary")"
+          if ! grep --extended-regexp --quiet '"source":"(google-business-profile|temporarily-unavailable)"' <<< "$reviews"; then
+            echo "Google reviews API returned an unexpected source"
+            exit 1
+          fi
+          if ! grep --extended-regexp --quiet '"source":"(google-places|verified-fallback)"' <<< "$summary"; then
+            echo "Review summary returned an unexpected source"
+            exit 1
+          fi
+          invalid_code="$(curl --silent --show-error --location --retry 3 --output /dev/null --write-out '%{http_code}' "${base}/anfrage-bestaetigt?ref=ungueltig")"
+          if [[ "$invalid_code" != "400" ]]; then
+            echo "Invalid confirmation reference was not rejected with HTTP 400"
+            exit 1
+          fi
+
