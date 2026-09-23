@@ -126,7 +126,7 @@ jobs:
             echo "Google reviews API returned an unexpected source"
             exit 1
           fi
-          if ! grep --extended-regexp --quiet '"source":"(google-places|verified-fallback)"' <<< "$summary"; then
+          if ! grep --extended-regexp --quiet '"source":"(google-business-profile|google-places|verified-fallback)"' <<< "$summary"; then
             echo "Review summary returned an unexpected source"
             exit 1
           fi
