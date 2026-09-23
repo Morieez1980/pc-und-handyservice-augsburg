@@ -34,11 +34,11 @@
   <link rel="alternate" hreflang="x-default" href="https://www.pc-und-handyservice-augsburg.com/reparaturanfrage">
   <link rel="stylesheet" href="/styles.min.css?v=20260903-1">
   <link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3">
-  <link rel="stylesheet" href="/request.css?v=20260923-3">
+  <link rel="stylesheet" href="/request.css?v=20260924-1">
   <script defer src="/script.min.js?v=20260903-1"></script>
   <script defer src="/clarity-consent.min.js?v=20260914-1"></script>
   <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
-  <script defer src="/repair-form.js?v=20260923-2"></script>
+  <script defer src="/repair-form.js?v=20260924-1"></script>
 </head>
 <body class="request-page has-mobile-contact">
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -116,24 +116,46 @@
               </select>
             </div>
             <div class="field-group">
-              <label for="device-model">Gerätename, Hersteller und genaues Modell <span aria-hidden="true">*</span></label>
-              <input id="device-model" name="POTENTIALCF2" type="text" maxlength="255" placeholder="z. B. Apple iPhone 14 A2882 oder Lenovo ThinkPad T14 Gen 3" aria-describedby="device-model-hint" required>
-              <p class="field-hint" id="device-model-hint">Bitte Gerätename und genaue Modellbezeichnung beziehungsweise Modellnummer eintragen – nicht nur „Handy“, „Laptop“ oder „Konsole“.</p>
+              <label for="device-name">Gerätename <span aria-hidden="true">*</span></label>
+              <input id="device-name" type="text" maxlength="80" placeholder="z. B. iPhone 14 oder ThinkPad T14" required>
             </div>
+            <div class="form-grid">
+              <div class="field-group">
+                <label for="device-manufacturer">Hersteller <span aria-hidden="true">*</span></label>
+                <input id="device-manufacturer" type="text" maxlength="80" placeholder="z. B. Apple oder Lenovo" required>
+              </div>
+              <div class="field-group">
+                <label for="device-model">Genaue Modellnummer <span aria-hidden="true">*</span></label>
+                <input id="device-model" type="text" maxlength="80" placeholder="z. B. A2882 oder 21AH" aria-describedby="device-model-hint" required>
+              </div>
+            </div>
+            <p class="field-hint" id="device-model-hint">Bitte die genaue Modellbezeichnung beziehungsweise Modellnummer vom Gerät ablesen – nicht nur „Handy“, „Laptop“ oder „Konsole“.</p>
+            <input id="bigin-device-model" name="POTENTIALCF2" type="hidden" value="">
             <div class="field-group field-wide">
               <label for="description">Was funktioniert nicht? <span aria-hidden="true">*</span></label>
-              <textarea id="description" name="Description" rows="5" maxlength="32000" placeholder="Beschreiben Sie kurz den Fehler und seit wann er auftritt." required></textarea>
+              <textarea id="description" rows="5" maxlength="30000" placeholder="Beschreiben Sie kurz den Fehler und seit wann er auftritt." required></textarea>
               <p class="field-hint">Bitte keine Passwörter, PINs oder Entsperrcodes eintragen.</p>
             </div>
+            <input id="bigin-description" name="Description" type="hidden" value="">
             <div class="form-grid compact-fields">
               <div class="field-group">
-                <label for="serial-number">Seriennummer <small>(freiwillig)</small></label>
+                <label for="serial-number">Seriennummer <span aria-hidden="true">*</span></label>
                 <input id="serial-number" name="POTENTIALCF3" type="text" maxlength="255" autocomplete="off">
               </div>
               <div class="field-group" data-imei-field hidden>
-                <label for="imei">IMEI <small>(freiwillig)</small></label>
-                <input id="imei" name="POTENTIALCF17" type="text" inputmode="numeric" maxlength="255">
+                <label for="imei">IMEI <small>(Alternative zur Seriennummer)</small></label>
+                <input id="imei" name="POTENTIALCF17" type="text" inputmode="numeric" maxlength="30" autocomplete="off">
               </div>
+            </div>
+            <p class="field-hint" id="device-identifier-hint">Für die Registrierung und eindeutige Zuordnung Ihres Geräts bitte die Seriennummer oder bei Smartphone und Tablet die IMEI vom Gerät ablesen. Wenn wirklich keine Kennung vorhanden oder lesbar ist, markieren Sie die Ausnahme; die Zuordnung prüfen wir dann bei der Geräteannahme.</p>
+            <label class="check-row"><input id="identifier-unavailable" type="checkbox"> Keine Seriennummer oder IMEI vorhanden beziehungsweise lesbar</label>
+            <div class="form-grid" data-computer-fields hidden>
+              <div class="field-group"><label for="computer-cpu">Prozessor <span aria-hidden="true">*</span></label><input id="computer-cpu" type="text" maxlength="120" placeholder="z. B. Intel Core i5 oder unbekannt"></div>
+              <div class="field-group"><label for="computer-ram">RAM-Speicher <span aria-hidden="true">*</span></label><input id="computer-ram" type="text" maxlength="120" placeholder="z. B. 16 GB oder unbekannt"></div>
+              <div class="field-group"><label for="computer-gpu">Grafikkarte <span aria-hidden="true">*</span></label><input id="computer-gpu" type="text" maxlength="120" placeholder="z. B. integriert, Modell oder unbekannt"></div>
+              <div class="field-group"><label for="computer-mainboard">Mainboard <span aria-hidden="true">*</span></label><input id="computer-mainboard" type="text" maxlength="120" placeholder="Modell oder unbekannt"></div>
+              <div class="field-group"><label for="computer-psu">Netzteil/Ladegerät <span aria-hidden="true">*</span></label><input id="computer-psu" type="text" maxlength="120" placeholder="Modell, Leistung oder unbekannt"></div>
+              <p class="field-hint field-wide">Bitte vorhandene Angaben vom Gerät übernehmen. Falls eine Komponente nicht bekannt ist, „unbekannt“ eintragen; keine Werte schätzen.</p>
             </div>
             <div class="form-actions form-actions-end"><button class="button button-primary" type="button" data-next-step>Weiter zu Kontaktdaten <span aria-hidden="true">→</span></button></div>
           </fieldset>

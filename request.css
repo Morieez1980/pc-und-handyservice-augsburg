@@ -162,6 +162,10 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
+.form-grid[hidden],
+.field-group[hidden] {
+  display: none;
+}
 .field-group {
   display: grid;
   gap: 0.46rem;

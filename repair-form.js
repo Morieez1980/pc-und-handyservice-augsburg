@@ -9,7 +9,18 @@
   const next = form.querySelector('[data-next-step]');
   const previous = form.querySelector('[data-prev-step]');
   const device = form.querySelector('#device-type');
+  const deviceName = form.querySelector('#device-name');
+  const manufacturer = form.querySelector('#device-manufacturer');
+  const model = form.querySelector('#device-model');
+  const biginDeviceModel = form.querySelector('#bigin-device-model');
+  const description = form.querySelector('#description');
+  const biginDescription = form.querySelector('#bigin-description');
+  const serial = form.querySelector('#serial-number');
+  const imei = form.querySelector('#imei');
+  const identifierUnavailable = form.querySelector('#identifier-unavailable');
   const imeiWrap = form.querySelector('[data-imei-field]');
+  const computerWrap = form.querySelector('[data-computer-fields]');
+  const computerFields = [...computerWrap.querySelectorAll('input')];
   const submit = form.querySelector('[data-submit]');
   const errorSummary = form.querySelector('[data-error-summary]');
   const success = document.querySelector('[data-form-success]');
@@ -105,11 +116,15 @@
   };
 
   const validateArea = (area) => {
+    if (area === steps[0]) updateIdentifierFields();
     const controls = [...area.querySelectorAll('input, select, textarea')]
-      .filter((element) => !element.disabled && element.type !== 'hidden');
+      .filter((element) => !element.disabled && element.type !== 'hidden' && (!element.closest('[hidden]') || element.closest('[hidden]') === area));
     let firstInvalid = null;
 
     controls.forEach((element) => {
+      if (['device-name', 'device-manufacturer', 'device-model', 'description', 'serial-number', 'imei', 'computer-cpu', 'computer-ram', 'computer-gpu', 'computer-mainboard', 'computer-psu'].includes(element.id)) {
+        element.setCustomValidity(element.required && !element.value.trim() ? 'Bitte dieses Feld ausfüllen.' : '');
+      }
       const valid = element.checkValidity();
       element.setAttribute('aria-invalid', String(!valid));
       if (!valid && !firstInvalid) firstInvalid = element;
@@ -121,13 +136,36 @@
     return false;
   };
 
+  const updateIdentifierFields = () => {
+    const exempt = identifierUnavailable.checked;
+    serial.disabled = exempt;
+    imei.disabled = exempt || imeiWrap.hidden;
+    const hasSerial = !!serial.value.trim();
+    const hasImei = !imeiWrap.hidden && !!imei.value.trim();
+    serial.required = !exempt && !hasImei;
+    imei.required = !exempt && !imeiWrap.hidden && !hasSerial;
+  };
+
   const updateDeviceFields = () => {
     const needsImei = ['Smartphone', 'Tablet'].includes(device.value);
+    const needsComputerDetails = ['Desktop-PC', 'Laptop'].includes(device.value);
     imeiWrap.hidden = !needsImei;
-    if (!needsImei) imeiWrap.querySelector('input').value = '';
+    computerWrap.hidden = !needsComputerDetails;
+    computerFields.forEach((field) => { field.required = needsComputerDetails; });
+    if (!needsImei) imei.value = '';
+    updateIdentifierFields();
   };
 
   device.addEventListener('change', updateDeviceFields);
+  serial.addEventListener('input', updateIdentifierFields);
+  imei.addEventListener('input', updateIdentifierFields);
+  identifierUnavailable.addEventListener('change', () => {
+    if (identifierUnavailable.checked) {
+      serial.value = '';
+      imei.value = '';
+    }
+    updateIdentifierFields();
+  });
   updateDeviceFields();
 
   form.addEventListener('input', (event) => {
@@ -238,8 +276,14 @@
     }
 
     form.querySelector('[name="returnURL"]').value = location.origin + '/anfrage-bestaetigt?ref=' + encodeURIComponent(confirmationNonce);
-    const model = form.querySelector('#device-model').value.trim();
-    form.querySelector('[name="Potential Name"]').value = ('Reparatur · ' + model + ' · ' + new Date().toLocaleDateString('de-DE')).slice(0, 100);
+    biginDeviceModel.value = [deviceName.value.trim(), manufacturer.value.trim(), model.value.trim()].join(' | ');
+    const hardware = computerWrap.hidden ? [] : computerFields.map((field) => `${form.querySelector(`label[for="${field.id}"]`).textContent.trim().replace('*', '').trim()}: ${field.value.trim()}`);
+    biginDescription.value = [
+      description.value.trim(),
+      ...hardware,
+      ...(identifierUnavailable.checked ? ['Gerätekennung: nicht vorhanden oder nicht lesbar; Zuordnung bei Geräteannahme prüfen'] : [])
+    ].join('\n');
+    form.querySelector('[name="Potential Name"]').value = ('Reparatur · ' + biginDeviceModel.value + ' · ' + new Date().toLocaleDateString('de-DE')).slice(0, 100);
     sending = true;
     responseTimer = setTimeout(showUnconfirmed, 30000);
     submit.textContent = 'Wird sicher übermittelt …';

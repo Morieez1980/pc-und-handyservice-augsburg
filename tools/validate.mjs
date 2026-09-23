@@ -199,20 +199,17 @@ if (
 ) {
   errors.push('reparaturanfrage.html: altes Zoho-CRM-Formular ist noch eingebunden');
 }
-if (/id="serial-number"[^>]*\brequired\b/.test(requestPage)) {
-  errors.push('reparaturanfrage.html: Seriennummer darf bei der Erstanfrage nicht verpflichtend sein');
-}
-if (/id="imei"[^>]*\brequired\b/.test(requestPage)) {
-  errors.push('reparaturanfrage.html: IMEI darf bei der Erstanfrage nicht verpflichtend sein');
-}
-for (const id of ['device-type', 'device-model', 'description', 'first-name', 'last-name', 'email', 'phone', 'street', 'postcode', 'city', 'privacy-acknowledged']) {
+for (const id of ['device-type', 'device-name', 'device-manufacturer', 'device-model', 'description', 'first-name', 'last-name', 'email', 'phone', 'street', 'postcode', 'city', 'privacy-acknowledged']) {
   if (!new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) {
     errors.push(`reparaturanfrage.html: Pflichtfeld #${id} ist nicht als erforderlich markiert`);
   }
 }
 for (const marker of [
-  'Gerätename, Hersteller und genaues Modell',
+  'Gerätename',
+  'Genaue Modellnummer',
   'genaue Modellbezeichnung beziehungsweise Modellnummer',
+  'Keine Seriennummer oder IMEI vorhanden beziehungsweise lesbar',
+  'data-computer-fields',
   'Kontaktdaten und Rechnungsanschrift vollständig eintragen',
   'Für Rückfragen und die spätere Rechnung erforderlich:'
 ]) {
@@ -221,7 +218,8 @@ for (const marker of [
 for (const marker of [
   'vollständige Anschrift',
   'Modell beziehungsweise Modellnummer',
-  'Seriennummer und gegebenenfalls IMEI können freiwillig angegeben werden',
+  'Ist keine Kennung vorhanden oder lesbar',
+  'Bei PC und Laptop erfragen wir zusätzlich',
   'Kontakt- und Adressdaten dem zugehörigen Vorgang'
 ]) {
   if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Formular-Datenschutzhinweis fehlt (${marker})`);
