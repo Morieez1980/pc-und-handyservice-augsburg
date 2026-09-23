@@ -3,7 +3,7 @@ import { dirname, extname, join, normalize } from 'node:path';
 import { createHash } from 'node:crypto';
 
 const requiredFiles = [
-  'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
+  'index.html', 'rechtliches.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
   'pc-reparatur-augsburg.html', 'handyreparatur-augsburg.html',
   'datenrettung-augsburg.html', 'konsolenreparatur-augsburg.html',
   'styles.css', 'styles.min.css', 'enhancements.min.css', 'request.css', 'request.min.css',
@@ -37,7 +37,7 @@ for (const file of requiredFiles) {
 }
 
 const htmlFiles = [
-  'index.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
+  'index.html', 'rechtliches.html', 'impressum.html', 'datenschutz.html', 'reparaturanfrage.html', '404.html',
   'pc-reparatur-augsburg.html', 'handyreparatur-augsburg.html',
   'datenrettung-augsburg.html', 'konsolenreparatur-augsburg.html'
 ];
@@ -257,6 +257,7 @@ if (!jsonLdMatch) {
 
 const canonicals = {
   'index.html': 'https://www.pc-und-handyservice-augsburg.com/',
+  'rechtliches.html': 'https://www.pc-und-handyservice-augsburg.com/rechtliches',
   'impressum.html': 'https://www.pc-und-handyservice-augsburg.com/impressum',
   'datenschutz.html': 'https://www.pc-und-handyservice-augsburg.com/datenschutz',
   'reparaturanfrage.html': 'https://www.pc-und-handyservice-augsburg.com/reparaturanfrage',
@@ -267,6 +268,11 @@ const canonicals = {
 };
 for (const [file, url] of Object.entries(canonicals)) {
   if (!htmlByFile.get(file).includes(`<link rel="canonical" href="${url}">`)) errors.push(`${file}: Canonical URL fehlt oder ist falsch`);
+}
+
+const legalHub = htmlByFile.get('rechtliches.html');
+if (!legalHub.includes('href="/impressum"') || !legalHub.includes('href="/datenschutz"')) {
+  errors.push('rechtliches.html: beide Rechtslinks fehlen');
 }
 
 const dataRecoveryHtml = htmlByFile.get('datenrettung-augsburg.html');
