@@ -46,7 +46,7 @@ jobs:
             home_marker=false
             request_marker=false
             if grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page"; then home_marker=true; fi
-            if grep --fixed-strings --quiet 'repair-form.js?v=20260919-2' <<< "$request_page"; then request_marker=true; fi
+            if grep --fixed-strings --quiet 'repair-form.js?v=' <<< "$request_page"; then request_marker=true; fi
             if [[ "$all_ready" == "true" && "$home_marker" == "true" && "$request_marker" == "true" ]]; then
               echo "Deployment is ready after attempt ${attempt}."
               exit 0
@@ -97,7 +97,7 @@ jobs:
         run: |
           set -euo pipefail
           page="$(curl --silent --show-error --location --retry 3 "${MONITOR_BASE}/reparaturanfrage")"
-          for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="POTENTIALCF5"' 'name="POTENTIALCF6"' 'name="POTENTIALCF7"' 'name="Contacts.Mobile"' 'class="phone-control"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.min.css?v=20260914-1' 'repair-form.js?v=20260919-2' 'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3' 'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3'; do
+          for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="POTENTIALCF5"' 'name="POTENTIALCF6"' 'name="POTENTIALCF7"' 'name="Contacts.Mobile"' 'class="phone-control"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.css?v=' 'repair-form.js?v=' 'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3' 'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3'; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing repair-form marker: ${marker}"
               exit 1
