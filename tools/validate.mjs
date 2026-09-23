@@ -293,7 +293,7 @@ const repairScript = await readFile('repair-form.js', 'utf8');
 for (const marker of ['window.intlTelInput', "initialCountry: 'de'", 'countrySearch: true', 'isValidNumber()', 'getNumber()']) {
   if (!repairScript.includes(marker)) errors.push(`repair-form.js: internationale Telefonprüfung unvollständig: ${marker}`);
 }
-for (const marker of ["fetch('/api/repair-confirmation'", "confirmation !== 'valid'", 'HTMLFormElement.prototype.submit.call(form)']) {
+for (const marker of ["fetch('/api/repair-confirmation'", "dataset.confirmation === 'valid'", "result.pathname !== '/bigin-rueckmeldung.html'", 'if (!verification.ok)', 'HTMLFormElement.prototype.submit.call(form)']) {
   if (!repairScript.includes(marker)) errors.push(`repair-form.js: serverseitige Übermittlungsbestätigung unvollständig: ${marker}`);
 }
 const confirmationFunction = await readFile('functions/anfrage-bestaetigt.js', 'utf8');

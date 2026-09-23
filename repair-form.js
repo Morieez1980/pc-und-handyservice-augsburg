@@ -33,6 +33,17 @@
     submit.textContent = 'Antwort von Bigin prüfen';
   };
 
+  const showSuccess = () => {
+    clearTimeout(responseTimer);
+    sending = false;
+    form.hidden = true;
+    responseFrame.classList.remove('response-visible');
+    responseFrame.setAttribute('aria-hidden', 'true');
+    document.querySelector('.request-form-heading').hidden = true;
+    success.hidden = false;
+    success.focus();
+  };
+
   const requestConfirmationReference = async () => {
     const response = await fetch('/api/repair-confirmation', {
       method: 'POST',
@@ -130,21 +141,28 @@
   });
   previous.addEventListener('click', () => showStep(1));
 
-  responseFrame.addEventListener('load', () => {
+  responseFrame.addEventListener('load', async () => {
     if (!sending) return;
+    let result;
     try {
-      const result = new URL(responseFrame.contentWindow.location.href);
-      const confirmation = responseFrame.contentDocument?.documentElement?.dataset.confirmation;
-      if (result.origin !== location.origin || result.pathname !== '/anfrage-bestaetigt' || result.searchParams.get('ref') !== confirmationNonce || confirmation !== 'valid') return showUnconfirmed();
+      result = new URL(responseFrame.contentWindow.location.href);
     } catch { return showUnconfirmed(); }
-    clearTimeout(responseTimer);
-    sending = false;
-    form.hidden = true;
-    responseFrame.classList.remove('response-visible');
-    responseFrame.setAttribute('aria-hidden', 'true');
-    document.querySelector('.request-form-heading').hidden = true;
-    success.hidden = false;
-    success.focus();
+    if (result.origin !== location.origin) return showUnconfirmed();
+
+    if (result.pathname === '/anfrage-bestaetigt' && result.searchParams.get('ref') === confirmationNonce && responseFrame.contentDocument?.documentElement?.dataset.confirmation === 'valid') {
+      showSuccess();
+      return;
+    }
+
+    if (result.pathname !== '/bigin-rueckmeldung.html' || !confirmationNonce) return showUnconfirmed();
+    try {
+      const verification = await fetch('/anfrage-bestaetigt?ref=' + encodeURIComponent(confirmationNonce), {
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
+      if (!verification.ok) return showUnconfirmed();
+      showSuccess();
+    } catch { showUnconfirmed(); }
   });
 
   form.addEventListener('submit', async (event) => {
