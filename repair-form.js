@@ -45,6 +45,7 @@
   };
 
   const showSuccess = () => {
+    if (!success.hidden) return;
     clearTimeout(responseTimer);
     sending = false;
     form.hidden = true;
@@ -53,6 +54,7 @@
     document.querySelector('.request-form-heading').hidden = true;
     success.hidden = false;
     success.focus();
+    window.pcTrackRepairLead?.();
   };
 
   const requestConfirmationReference = async () => {

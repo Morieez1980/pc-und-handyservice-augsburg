@@ -4,7 +4,7 @@
 
   if (document.documentElement.dataset.privatePage === 'true') return;
 
-  const storageKey = 'pc-service-clarity-consent-v1';
+  const storageKey = 'pc-service-analysis-consent-v2';
   const settingsButtons = document.querySelectorAll('[data-clarity-settings]');
 
   const setChoice = (choice) => {
@@ -54,7 +54,7 @@
     banner.innerHTML = `
       <div>
         <strong>Optionale Nutzungsanalyse</strong>
-        <p>Mit Ihrer Einwilligung hilft Microsoft Clarity dabei, die Bedienbarkeit dieser Website zu verbessern. Ohne Zustimmung wird Clarity nicht geladen. <a href="/datenschutz">Datenschutz</a></p>
+        <p>Mit Ihrer Einwilligung nutzen wir Microsoft Clarity und Google Analytics für die Website-Analyse. Ohne Zustimmung werden diese Dienste nicht geladen. <a href="/datenschutz">Datenschutz</a></p>
       </div>
       <div class="consent-actions">
         <button type="button" class="button button-outline" data-clarity-choice="denied">Ablehnen</button>
@@ -65,10 +65,16 @@
       button.addEventListener('click', () => {
         const choice = button.dataset.clarityChoice;
         setChoice(choice);
-        if (choice === 'granted') loadClarity();
-        else if (window.clarity) {
-          configureClarity('denied');
-          window.clarity('consent', false);
+        if (choice === 'granted') {
+          loadClarity();
+          window.dispatchEvent(new Event('pc-service-analysis-consent-granted'));
+        }
+        else {
+          if (window.clarity) {
+            configureClarity('denied');
+            window.clarity('consent', false);
+          }
+          window.dispatchEvent(new Event('pc-service-analysis-consent-denied'));
           location.reload();
         }
         removeBanner();

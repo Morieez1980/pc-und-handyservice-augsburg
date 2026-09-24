@@ -15,7 +15,7 @@ const requiredFiles = [
   'vendor/intl-tel-input/LICENSE',
   'qr.min.css', 'qr-print.js', 'qr-reparaturanfrage.png', 'google-qr-reparaturanfrage.jpg',
   'qr-schild-reparaturanfrage.html', 'google-qr-reparaturanfrage.html',
-  'clarity-consent.js', 'clarity-consent.min.js', 'MICROSOFT-INTEGRATIONS.md',
+  'clarity-consent.js', 'clarity-consent.min.js', 'analytics-consent.js', 'MICROSOFT-INTEGRATIONS.md',
   'functions/api/review-summary.js', 'functions/api/google-reviews.js', 'functions/api/repair-confirmation.js',
   'functions/_middleware.js', 'functions/_shared/repair-confirmation.js',
   'functions/_shared/access.js', 'functions/_shared/http.js', 'functions/_shared/reports-page.js',
@@ -55,6 +55,7 @@ for (const file of htmlFiles) {
   if (!html.includes('styles.min.css?v=')) errors.push(`${file}: minifiziertes CSS wird nicht genutzt`);
   if (!html.includes('rel="apple-touch-icon"')) errors.push(`${file}: Apple-Touch-Icon fehlt`);
   if (!html.includes('clarity-consent.min.js?v=')) errors.push(`${file}: vorbereitete Clarity-Consent-Integration fehlt`);
+  if (!html.includes('analytics-consent.js?v=')) errors.push(`${file}: Google-Analytics-Consent-Integration fehlt`);
   if (!html.includes('data-clarity-project="xn1s7qrbvj"')) errors.push(`${file}: aktive Clarity-Projekt-ID fehlt oder ist falsch`);
   const externalTabs = html.match(/<a\b[^>]*target=["']_blank["'][^>]*>/gi) ?? [];
   for (const anchor of externalTabs) {
@@ -344,6 +345,10 @@ for (const marker of ["consentv2", "ad_Storage: 'denied'", "analytics_Storage: a
 }
 if (clarity.indexOf('loadClarity()') < clarity.indexOf("choice === 'granted'")) {
   errors.push('clarity-consent.js: Clarity darf nicht vor einer Einwilligung geladen werden');
+}
+const analytics = await readFile('analytics-consent.js', 'utf8');
+for (const marker of ["G-W6FZ6FN9T3", "pc-service-analysis-consent-v2", "if (loaded || !hasConsent())", "send_page_view: !privatePage", "generate_lead"]) {
+  if (!analytics.includes(marker)) errors.push(`analytics-consent.js: Consent- oder Messmarker fehlt: ${marker}`);
 }
 const microsoftGuide = await readFile('MICROSOFT-INTEGRATIONS.md', 'utf8');
 if (!microsoftGuide.includes('msvalidate.01') || !microsoftGuide.includes('xn1s7qrbvj')) {
