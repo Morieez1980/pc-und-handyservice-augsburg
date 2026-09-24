@@ -54,7 +54,7 @@
     banner.innerHTML = `
       <div>
         <strong>Optionale Nutzungsanalyse</strong>
-        <p>Mit Ihrer Einwilligung nutzen wir Microsoft Clarity und Google Analytics für die Website-Analyse. Ohne Zustimmung werden diese Dienste nicht geladen. <a href="/datenschutz">Datenschutz</a></p>
+        <p>Mit Ihrer Einwilligung analysieren wir Seitenaufrufe und Interaktionen mit Google Analytics und Microsoft Clarity. Dabei können Cookies, technische Kennungen und Nutzungsdaten verarbeitet und auch in die USA übermittelt werden. Ohne Zustimmung laden wir diese Dienste nicht. <a href="/datenschutz">Details zum Datenschutz</a></p>
       </div>
       <div class="consent-actions">
         <button type="button" class="button button-outline" data-clarity-choice="denied">Ablehnen</button>
