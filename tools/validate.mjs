@@ -186,7 +186,7 @@ for (const marker of [
   'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3',
   'class="phone-control"',
   'name="Contacts.Mobile"',
-  'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen',
+  'Für die Online-Reparaturanfrage ist JavaScript erforderlich',
   'src="/qr-reparaturanfrage.png',
   'name="Pipeline" value="Reparaturaufträge"',
   'name="Stage" value="Anfrage eingegangen"'
@@ -198,6 +198,9 @@ if (
   requestPage.includes('crmWebToEntityForm')
 ) {
   errors.push('reparaturanfrage.html: altes Zoho-CRM-Formular ist noch eingebunden');
+}
+if (requestPage.includes('https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen')) {
+  errors.push('reparaturanfrage.html: abweichendes Bigin-Ersatzformular darf nicht verlinkt werden');
 }
 for (const id of ['device-type', 'device-name', 'device-manufacturer', 'device-model', 'description', 'first-name', 'last-name', 'email', 'phone', 'street', 'postcode', 'city', 'privacy-acknowledged']) {
   if (!new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) {

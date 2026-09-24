@@ -97,12 +97,16 @@ jobs:
         run: |
           set -euo pipefail
           page="$(curl --silent --show-error --location --retry 3 "${MONITOR_BASE}/reparaturanfrage")"
-          for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="POTENTIALCF5"' 'name="POTENTIALCF6"' 'name="POTENTIALCF7"' 'name="Contacts.Mobile"' 'class="phone-control"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' 'request.css?v=' 'repair-form.js?v=' 'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3' 'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3'; do
+          for marker in 'id="repair-request"' 'id="pipeline-email"' 'name="POTENTIALCF5"' 'name="POTENTIALCF6"' 'name="POTENTIALCF7"' 'name="Contacts.Mobile"' 'class="phone-control"' 'action="https://bigin.zoho.eu/crm/WebForm"' 'class="bigin-response-frame"' 'Für die Online-Reparaturanfrage ist JavaScript erforderlich' 'request.css?v=' 'repair-form.js?v=' 'vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3' 'vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3'; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$page"; then
               echo "Missing repair-form marker: ${marker}"
               exit 1
             fi
           done
+          if grep --fixed-strings --quiet 'https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen' <<< "$page"; then
+            echo "Outdated Bigin fallback is still linked in production"
+            exit 1
+          fi
           script="$(curl --silent --show-error --location --retry 3 "${MONITOR_BASE}/repair-form.js")"
           for marker in 'pipeline-email' 'intlTelInput' 'isValidNumber' 'getNumber'; do
             if ! grep --fixed-strings --quiet "$marker" <<< "$script"; then
