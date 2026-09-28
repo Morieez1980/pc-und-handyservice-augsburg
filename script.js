@@ -106,7 +106,7 @@ const sortReviewsNewestFirst = (reviews) => reviews
 
 const verifiedOriginalReviewFallback = {
   rating: 4.9,
-  reviewCount: 91,
+  reviewCount: 92,
   source: 'verified-public-originals',
   reviews: [
     { author: 'Seba', rating: 5, dateLabel: 'vor einer Woche', text: 'Ich habe meinen PC hier reparieren lassen und bin super zufrieden. Die Reparatur ging extrem schnell und auch die Kommunikation verlief absolut reibungslos. Sehr freundlich und kompetent\n\nkann ich definitiv nur weiterempfehlen!' },
