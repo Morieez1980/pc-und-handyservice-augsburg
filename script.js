@@ -157,9 +157,19 @@ const createGoogleReview = (review, inDialog = false) => {
 
   const comment = document.createElement('p');
   comment.className = 'google-review-text';
-  comment.textContent = review.text || 'Bewertung ohne zusätzlichen Text.';
-
+  const parts = (review.text || 'Bewertung ohne zusätzlichen Text.').split(/\s*\(Translated by Google\)\s*/);
+  comment.textContent = parts[0];
   article.append(header, stars, comment);
+  if (parts.length > 1) {
+    const translation = document.createElement('details');
+    translation.className = 'review-translation';
+    const label = document.createElement('summary');
+    label.textContent = 'Google-Übersetzung anzeigen';
+    const text = document.createElement('p');
+    text.textContent = parts.slice(1).join('\n');
+    translation.append(label, text);
+    article.append(translation);
+  }
   return article;
 };
 

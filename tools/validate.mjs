@@ -203,7 +203,7 @@ if (
 if (requestPage.includes('https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen')) {
   errors.push('reparaturanfrage.html: abweichendes Bigin-Ersatzformular darf nicht verlinkt werden');
 }
-for (const id of ['device-type', 'device-name', 'device-manufacturer', 'device-model', 'description', 'first-name', 'last-name', 'email', 'phone', 'street', 'postcode', 'city', 'privacy-acknowledged']) {
+for (const id of ['device-type', 'device-name', 'description', 'first-name', 'last-name', 'email', 'phone', 'privacy-acknowledged']) {
   if (!new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) {
     errors.push(`reparaturanfrage.html: Pflichtfeld #${id} ist nicht als erforderlich markiert`);
   }
@@ -212,24 +212,24 @@ for (const marker of [
   'Gerätename',
   'Genaue Modellnummer',
   'genaue Modellbezeichnung beziehungsweise Modellnummer',
-  'Keine Seriennummer oder IMEI vorhanden beziehungsweise lesbar',
+  'Gerätekennung nicht bekannt – bei der Annahme klären',
   'data-computer-fields',
-  'Kontaktdaten und Rechnungsanschrift vollständig eintragen',
-  'Für Rückfragen und die spätere Rechnung erforderlich:'
+  'Die Rechnungsanschrift können Sie später nachreichen',
+  'Für Rückfragen erforderlich:'
 ]) {
   if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Pflichtfeld-Hinweis fehlt (${marker})`);
 }
 for (const marker of [
-  'vollständige Anschrift',
+  'Freiwillig können Sie außerdem Ihre Anschrift',
   'Modell beziehungsweise Modellnummer',
-  'Ist keine Kennung vorhanden oder lesbar',
-  'Bei PC und Laptop erfragen wir zusätzlich',
+  'Seriennummer und IMEI sind für die erste Anfrage freiwillig',
+  'Bei PC und Laptop können Sie zusätzlich freiwillig',
   'Kontakt- und Adressdaten dem zugehörigen Vorgang'
 ]) {
   if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Formular-Datenschutzhinweis fehlt (${marker})`);
 }
-if (privacyPage.includes('Freiwillig können Sie außerdem Ihre Anschrift')) {
-  errors.push('datenschutz.html: Anschrift wird fälschlich noch als freiwillig bezeichnet');
+for (const id of ['device-manufacturer', 'device-model', 'street', 'postcode', 'city']) {
+  if (new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) errors.push(`reparaturanfrage.html: freiwilliges Feld #${id} darf nicht verpflichtend sein`);
 }
 if (requestPage.includes('Contacts.Mailing Country') || requestPage.includes('Contacts.Mailing State')) {
   errors.push('reparaturanfrage.html: nicht eingegebene Adressdaten werden weiterhin automatisch ergänzt');

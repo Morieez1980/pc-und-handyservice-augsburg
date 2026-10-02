@@ -24,3 +24,5 @@
 .service-detail-page .footer{margin-top:0}
 @media(max-width:960px){.service-detail-hero{min-height:auto}.service-detail-panel{max-width:760px}}
 @media(max-width:700px){.service-detail-panel{padding:1.4rem}.service-detail-breadcrumb{margin-bottom:1rem}.service-detail-copy{font-size:1rem}}
+
+.service-detail-list li{grid-template-columns:2rem minmax(0,1fr);overflow-wrap:anywhere}.service-detail-panel{min-width:0;max-width:100%}.service-detail-page .hero-copy{min-width:0}

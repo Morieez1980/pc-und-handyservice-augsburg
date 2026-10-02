@@ -1,3 +1,5 @@
+import { addPublishedReports } from './_shared/sitemap.js';
+
 const COMMON_SECURITY_HEADERS = Object.freeze({
   'Strict-Transport-Security': 'max-age=63072000; includeSubDomains',
   'X-Content-Type-Options': 'nosniff',
@@ -9,7 +11,8 @@ const COMMON_SECURITY_HEADERS = Object.freeze({
 });
 
 export async function onRequest(context) {
-  const response = await context.next();
+  let response = await context.next();
+  if (new URL(context.request.url).pathname === '/sitemap.xml') response = await addPublishedReports(response, context.env || {});
   const headers = new Headers(response.headers);
 
   for (const [name, value] of Object.entries(COMMON_SECURITY_HEADERS)) {

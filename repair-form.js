@@ -109,7 +109,8 @@
     progress.forEach((item, index) => {
       item.classList.toggle('is-active', index === number - 1);
       item.classList.toggle('is-done', index < number - 1);
-      item.textContent = index < number - 1 ? '✓' : String(index + 1);
+      item.textContent = `${index < number - 1 ? '✓' : index + 1} · ${index === 0 ? 'Gerät & Fehler' : 'Kontakt'}`;
+      item.setAttribute('aria-current', index === number - 1 ? 'step' : 'false');
     });
     document.querySelector('.request-form-shell').scrollIntoView({
       behavior: 'smooth',
@@ -142,10 +143,8 @@
     const exempt = identifierUnavailable.checked;
     serial.disabled = exempt;
     imei.disabled = exempt || imeiWrap.hidden;
-    const hasSerial = !!serial.value.trim();
-    const hasImei = !imeiWrap.hidden && !!imei.value.trim();
-    serial.required = !exempt && !hasImei;
-    imei.required = !exempt && !imeiWrap.hidden && !hasSerial;
+    serial.required = false;
+    imei.required = false;
   };
 
   const updateDeviceFields = () => {
@@ -153,7 +152,7 @@
     const needsComputerDetails = ['Desktop-PC', 'Laptop'].includes(device.value);
     imeiWrap.hidden = !needsImei;
     computerWrap.hidden = !needsComputerDetails;
-    computerFields.forEach((field) => { field.required = needsComputerDetails; });
+    computerFields.forEach((field) => { field.required = false; });
     if (!needsImei) imei.value = '';
     updateIdentifierFields();
   };
@@ -278,8 +277,8 @@
     }
 
     form.querySelector('[name="returnURL"]').value = location.origin + '/anfrage-bestaetigt?ref=' + encodeURIComponent(confirmationNonce);
-    biginDeviceModel.value = [deviceName.value.trim(), manufacturer.value.trim(), model.value.trim()].join(' | ');
-    const hardware = computerWrap.hidden ? [] : computerFields.map((field) => `${form.querySelector(`label[for="${field.id}"]`).textContent.trim().replace('*', '').trim()}: ${field.value.trim()}`);
+    biginDeviceModel.value = [deviceName.value.trim(), manufacturer.value.trim(), model.value.trim()].filter(Boolean).join(' | ');
+    const hardware = computerWrap.hidden ? [] : computerFields.filter((field) => field.value.trim()).map((field) => `${form.querySelector(`label[for="${field.id}"]`).textContent.trim().replace('*', '').trim()}: ${field.value.trim()}`);
     biginDescription.value = [
       description.value.trim(),
       ...hardware,
