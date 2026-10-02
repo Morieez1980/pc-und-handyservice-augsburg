@@ -3,11 +3,12 @@ import path from 'node:path';
 import {languages,routes,prices,localeContent} from '../locales/content.mjs';
 import {formRows,formShared} from '../locales/form-data.mjs';
 import {runtimeRows,unconfirmed} from '../locales/runtime-data.mjs';
+import {additionalForms,additionalRuntime,additionalUnconfirmed} from '../locales/additional-form-data.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
-const version='20261002-lang1',origin='https://www.pc-und-handyservice-augsburg.com';
+const version='20261002-lang2',origin='https://www.pc-und-handyservice-augsburg.com';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const norm=s=>s.replaceAll('&amp;','&').replaceAll('&nbsp;',' ').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
 const url=(lang,route='')=>lang==='de'?'/'+route:'/'+lang+'/'+route;
@@ -22,15 +23,15 @@ for(const [lang,c] of Object.entries(localeContent)){
   const column=Object.keys(localeContent).indexOf(lang)+1;
   if(c.labels.length!==25||c.priceNames.length!==prices.length||c.services.length!==4)throw Error('Incomplete content: '+lang);
   const map={};
-  for(const row of formRows){if(row.length!==8)throw Error('Translation columns: '+row[0]);map[source[Number(row[0])]]=row[column]}
+  if(additionalForms[lang]){if(additionalForms[lang].length!==source.length)throw Error('Missing form rows: '+lang);source.forEach((key,i)=>map[key]=additionalForms[lang][i]);}else for(const row of formRows){if(row.length!==8)throw Error('Translation columns: '+row[0]);map[source[Number(row[0])]]=row[column]}
   for(const [i,v] of Object.entries(formShared))map[source[i]]=v;
   map[source[36]]=c.fees;
   for(const key of source)if(!map[key])throw Error('Missing form translation: '+lang+' '+key);
-  for(const row of runtimeRows){if(row.length!==8)throw Error('Runtime columns');map[row[0]]=row[column]}
+  for(const [i,row] of runtimeRows.entries()){if(row.length!==8)throw Error('Runtime columns');map[row[0]]=additionalRuntime[lang]?.[i]||row[column];if(!map[row[0]])throw Error('Missing runtime translation: '+lang+' '+row[0]);}
   map['Gerät & Fehler']=c.labels[21];map['Kontakt']=c.labels[22];
   const oldUnconfirmed=read('repair-form.js').match(/errorSummary.textContent = (?:t\()?("Bitte prüfen Sie die Antwort von Bigin unten:[^"]*")/);
   if(!oldUnconfirmed)throw Error('Bigin response message not found');
-  map[oldUnconfirmed[1].slice(1,-1)]=unconfirmed[lang];
+  map[oldUnconfirmed[1].slice(1,-1)]=additionalUnconfirmed[lang]||unconfirmed[lang];
   write(lang+'/form-i18n.js','window.siteTranslate=(key)=>('+JSON.stringify(map)+')[key]||key;\n');
   const translateText=html=>html.replace(/>([^<>]+)</g,(all,raw)=>map[norm(raw)]?'>'+(/^\s/.test(raw)?' ':'')+esc(map[norm(raw)])+(/\s$/.test(raw)?' ':'')+'<':all).replace(/\b(placeholder|aria-label|title)="([^"]*)"/g,(all,key,raw)=>map[norm(raw)]?key+'="'+esc(map[norm(raw)])+'"':all);
   let form=translateText(baseForm).replaceAll('href="/"','href="'+url(lang)+'"').replaceAll('href="/datenschutz"','href="'+url(lang,'datenschutz')+'"');
@@ -79,5 +80,5 @@ for(const route of routes){
 let sitemap=read('sitemap.xml').replace(/<!-- locales:start -->[\s\S]*?<!-- locales:end -->/g,'');
 const entries=Object.keys(localeContent).flatMap(l=>routes.slice(0,6).map(r=>'<url><loc>'+origin+url(l,r)+'</loc><lastmod>2026-10-02</lastmod></url>')).join('\n');
 write('sitemap.xml',sitemap.replace('</urlset>','<!-- locales:start -->\n'+entries+'\n<!-- locales:end -->\n</urlset>'));
-console.log('Built 63 localized pages, 7 form dictionaries, reciprocal language links and sitemap.');
+console.log('Built 90 localized pages, 10 form dictionaries, reciprocal language links and sitemap.');
 

@@ -6,8 +6,8 @@ import {languages,routes,prices,localeContent} from '../locales/content.mjs';
 const source=JSON.parse(fs.readFileSync('locales/form-source.json','utf8'));
 const read=f=>fs.readFileSync(f,'utf8');
 const fields=html=>[...html.matchAll(/<input\b[^>]*type="hidden"[^>]*>/g)].map(m=>m[0]).sort();
-test('All seven languages have pages, SEO links, local assets and all 23 unchanged prices',()=>{
- assert.deepEqual(Object.keys(localeContent),['en','tr','ro','uk','es','sv','da']);
+test('All ten languages have pages, SEO links, local assets and all 23 unchanged prices',()=>{
+ assert.deepEqual(Object.keys(localeContent),['en','tr','ro','uk','es','sv','da','ru','zh','ja']);
  for(const lang of Object.keys(localeContent)){
   for(const route of routes){
    const html=read(lang+'/'+(route||'index')+'.html');
@@ -42,14 +42,14 @@ test('Translated forms preserve CRM fields and translate every visible source st
   assert.ok(html.includes('action="https://bigin.zoho.eu/crm/WebForm"'));
  }
 });
-test('Legal originals remain explicitly marked; no excluded language is advertised',()=>{
+test('Legal originals remain explicitly marked; newly requested languages are linked',()=>{
  for(const lang of Object.keys(localeContent)){
   for(const page of ['impressum','datenschutz']){
    const html=read(lang+'/'+page+'.html');
    assert.ok(html.includes('<article lang="de" translate="no"'));
    assert.ok(html.includes('noindex,follow'));
   }
-  assert.ok(!/hreflang="(?:ru|zh|ja)"/.test(read(lang+'/index.html')));
+  for(const added of ['ru','zh','ja'])assert.ok(read(lang+'/index.html').includes('hreflang="'+added+'"'));
  }
 });
 

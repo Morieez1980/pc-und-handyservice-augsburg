@@ -1,4 +1,4 @@
-@import url('/language-picker.css?v=20261002-lang1');
+@import url('/language-picker.css?v=20261002-lang2');
 .locale-page{color:#e4eaf5;background:#070c18;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.65;margin:0}
 .locale-page *, .locale-page *::before,.locale-page *::after{box-sizing:border-box;min-width:0}
 .locale-header{position:relative;z-index:50;display:flex;align-items:center;gap:24px;max-width:1248px;margin:auto;padding:18px 24px;border-bottom:1px solid #273045}
@@ -24,7 +24,7 @@
 .locale-cards article a{display:inline-block;padding:10px 0}
 .locale-prices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;margin:0}
 .locale-prices>div{display:flex;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid #263147}
-.locale-prices dt{overflow-wrap:anywhere}.locale-prices dd{margin:0;white-space:nowrap;color:#58e0d5;font-weight:750}
+.locale-prices dt{overflow-wrap:anywhere}.locale-prices dd{flex-shrink:0;margin:0;white-space:nowrap;color:#58e0d5;font-weight:750}
 .locale-note{font-size:.92rem}.locale-steps{padding-left:25px}.locale-steps li{padding:8px 0 8px 8px}
 .locale-faq{border-bottom:1px solid #273045;padding:15px 0}.locale-faq summary{cursor:pointer;font-weight:650;min-height:44px;padding:8px 0}
 .locale-page address{font-style:normal}.contact-email{word-break:break-word}
@@ -45,4 +45,11 @@
 .locale-form-intro{padding:26px 0 20px}.locale-form-intro h1{font-size:1.9rem}.locale-form-page .request-form-heading{display:flex;flex-direction:column;align-items:stretch;gap:14px;padding:20px}.locale-form-page .repair-form{padding:20px}.locale-form-page .form-actions{flex-wrap:wrap}.locale-form-page .form-actions button{flex:1;min-width:110px}.locale-form-page .form-progress{justify-content:flex-start}.locale-form-page .request-form-heading h2{font-size:1.4rem}.locale-form-page .request-form-shell{border-radius:14px}.locale-legal{padding-top:25px}
 }
 @media print{.locale-header,.locale-footer,.locale-mobile-contact{display:none}.locale-page{background:white;color:black}.locale-page p,.locale-page a{color:black}}
+
+
+
+
+
+
+html:lang(zh) .locale-page h1,html:lang(ja) .locale-page h1{font-size:clamp(1.9rem,5.3vw,3.6rem);line-height:1.25;letter-spacing:0;text-wrap:balance}
 

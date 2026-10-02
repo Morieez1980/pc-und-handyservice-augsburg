@@ -1,4 +1,5 @@
-export const languages={de:'Deutsch',en:'English',tr:'Türkçe',ro:'Română',uk:'Українська',es:'Español',sv:'Svenska',da:'Dansk'};
+import {additionalContent} from './additional-content.mjs';
+export const languages={de:'Deutsch',en:'English',tr:'Türkçe',ro:'Română',uk:'Українська',es:'Español',sv:'Svenska',da:'Dansk',ru:'Русский',zh:'简体中文',ja:'日本語'};
 export const routes=['','pc-reparatur-augsburg','handyreparatur-augsburg','konsolenreparatur-augsburg','datenrettung-augsburg','reparaturanfrage','impressum','datenschutz','rechtliches'];
 export const prices=[30,0,59,59,89,59,59,89,59,69,79,59,59,69,49,55,250,49,69,49,69,39,79];
 export const localeContent={
@@ -69,3 +70,5 @@ faq:[['Kan jeg komme uden en aftale?','Ja. Kontakt på forhånd hjælper os med 
 formIntro:'Beskriv enheden og fejlen, og tilføj kontaktoplysninger. Forespørgslen er uforpligtende.',original:'Følgende tekst er den tyske original. Den er markeret som tysk og præsenteres ikke som en oversættelse.',originals:'Kundeanmeldelser og værkstedsrapporter findes på originalsproget.',privacyAck:'Jeg har læst privatlivspolitikken (tysk original).',languageNote:'Disse sider giver information på det valgte sprog. De lover ikke telefonsupport på det pågældende sprog.'}
 };
 
+
+Object.assign(localeContent,additionalContent);
