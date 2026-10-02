@@ -1,5 +1,6 @@
 (() => {
   'use strict';
+  const t = window.siteTranslate || ((text) => text);
 
   const form = document.querySelector('#repair-request');
   if (!form) return;
@@ -36,12 +37,12 @@
   let confirmationNonce;
   const showUnconfirmed = () => {
     if (!sending) return;
-    errorSummary.textContent = 'Bitte prüfen Sie die Antwort von Bigin unten: Steht dort „Vielen Dank für Ihre Reparaturanfrage“, ist Ihre Anfrage eingegangen. Die Website kann diese externe Antwort nicht automatisch auslesen. Bitte nicht erneut senden. Fehlt die Dankesmeldung, rufen Sie uns an: 0152 54530080.';
+    errorSummary.textContent = t("Bitte prüfen Sie die Antwort von Bigin unten: Steht dort „Vielen Dank für Ihre Reparaturanfrage“, ist Ihre Anfrage eingegangen. Die Website kann diese externe Antwort nicht automatisch auslesen. Bitte nicht erneut senden. Fehlt die Dankesmeldung, rufen Sie uns an: 0152 54530080.");
     errorSummary.hidden = false;
     responseFrame.removeAttribute('aria-hidden');
     responseFrame.removeAttribute('tabindex');
     responseFrame.classList.add('response-visible');
-    submit.textContent = 'Antwort von Bigin prüfen';
+    submit.textContent = t("Antwort von Bigin prüfen");
   };
 
   const showSuccess = () => {
@@ -74,20 +75,20 @@
     countryOrder: ['de', 'at', 'ch', 'tr', 'ua'],
     countrySearch: true,
     separateDialCode: true,
-    countryNameLocale: 'de',
+    countryNameLocale: document.documentElement.lang || 'de',
     strictMode: true,
     formatAsYouType: true,
     uiTranslations: {
-      selectedCountryAriaLabel: 'Land der Telefonnummer ändern, ausgewählt ${countryName} (${dialCode})',
-      noCountrySelected: 'Land der Telefonnummer auswählen',
-      countryListAriaLabel: 'Liste der Länder',
-      searchPlaceholder: 'Land suchen',
-      clearSearchAriaLabel: 'Suche löschen',
-      searchEmptyState: 'Keine Suchergebnisse',
+      selectedCountryAriaLabel: '${countryName} (${dialCode})',
+      noCountrySelected: t("Land der Telefonnummer auswählen"),
+      countryListAriaLabel: t("Liste der Länder"),
+      searchPlaceholder: t("Land suchen"),
+      clearSearchAriaLabel: t("Suche löschen"),
+      searchEmptyState: t("Keine Suchergebnisse"),
       searchSummaryAria(count) {
-        if (count === 0) return 'Keine Suchergebnisse';
-        if (count === 1) return 'Ein Suchergebnis';
-        return `${count} Suchergebnisse`;
+        if (count === 0) return t("Keine Suchergebnisse");
+        if (count === 1) return t("Ein Suchergebnis");
+        return `${count} ${t("Suchergebnisse")}`;
       }
     }
   }) : null;
@@ -109,7 +110,7 @@
     progress.forEach((item, index) => {
       item.classList.toggle('is-active', index === number - 1);
       item.classList.toggle('is-done', index < number - 1);
-      item.textContent = `${index < number - 1 ? '✓' : index + 1} · ${index === 0 ? 'Gerät & Fehler' : 'Kontakt'}`;
+      item.textContent = `${index < number - 1 ? '✓' : index + 1} · ${index === 0 ? t("Gerät & Fehler") : t("Kontakt")}`;
       item.setAttribute('aria-current', index === number - 1 ? 'step' : 'false');
     });
     document.querySelector('.request-form-shell').scrollIntoView({
@@ -126,8 +127,10 @@
 
     controls.forEach((element) => {
       if (['device-name', 'device-manufacturer', 'device-model', 'description', 'serial-number', 'imei', 'computer-cpu', 'computer-ram', 'computer-gpu', 'computer-mainboard', 'computer-psu'].includes(element.id)) {
-        element.setCustomValidity(element.required && !element.value.trim() ? 'Bitte dieses Feld ausfüllen.' : '');
+        element.setCustomValidity(element.required && !element.value.trim() ? t("Bitte dieses Feld ausfüllen.") : '');
       }
+      if (window.siteTranslate && element.validity.valueMissing) element.setCustomValidity(t('Bitte dieses Feld ausfüllen.'));
+      if (window.siteTranslate && element.validity.typeMismatch) element.setCustomValidity(t('Bitte prüfen Sie die markierten Felder.'));
       const valid = element.checkValidity();
       element.setAttribute('aria-invalid', String(!valid));
       if (!valid && !firstInvalid) firstInvalid = element;
@@ -171,6 +174,7 @@
 
   form.addEventListener('input', (event) => {
     if (event.target.matches('input, select, textarea')) {
+      event.target.setCustomValidity('');
       event.target.removeAttribute('aria-invalid');
     }
   });
@@ -220,7 +224,7 @@
 
     const honeypot = form.querySelector('#website-url');
     if (honeypot.value || Date.now() - started < 2500) {
-      errorSummary.textContent = 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.';
+      errorSummary.textContent = t("Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.");
       errorSummary.hidden = false;
       return;
     }
@@ -228,9 +232,9 @@
     let value;
     if (phoneInput) {
       if (!phoneInput.isValidNumber()) {
-        phone.setCustomValidity('Bitte geben Sie eine gültige Telefonnummer für das ausgewählte Land ein.');
+        phone.setCustomValidity(t("Bitte geben Sie eine gültige Telefonnummer für das ausgewählte Land ein."));
         phone.setAttribute('aria-invalid', 'true');
-        errorSummary.textContent = 'Bitte prüfen Sie die markierte Telefonnummer und versuchen Sie es erneut.';
+        errorSummary.textContent = t("Bitte prüfen Sie die markierte Telefonnummer und versuchen Sie es erneut.");
         errorSummary.hidden = false;
         phone.focus();
         phone.reportValidity();
@@ -242,9 +246,9 @@
       if (value.startsWith('00')) value = '+' + value.slice(2);
       else if (value.startsWith('0')) value = '+49' + value.slice(1);
       if (!/^\+[1-9]\d{6,14}$/.test(value)) {
-        phone.setCustomValidity('Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein.');
+        phone.setCustomValidity(t("Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein."));
         phone.setAttribute('aria-invalid', 'true');
-        errorSummary.textContent = 'Bitte prüfen Sie die markierte Telefonnummer und versuchen Sie es erneut.';
+        errorSummary.textContent = t("Bitte prüfen Sie die markierte Telefonnummer und versuchen Sie es erneut.");
         errorSummary.hidden = false;
         phone.focus();
         phone.reportValidity();
@@ -265,13 +269,13 @@
     ].filter(Boolean).join(', ');
 
     submit.disabled = true;
-    submit.textContent = 'Bestätigung wird vorbereitet …';
+    submit.textContent = t("Bestätigung wird vorbereitet …");
     try {
       confirmationNonce = await requestConfirmationReference();
     } catch {
       submit.disabled = false;
-      submit.textContent = 'Reparaturanfrage senden';
-      errorSummary.textContent = 'Die sichere Bestätigungsnummer konnte nicht erstellt werden. Bitte versuchen Sie es erneut.';
+      submit.textContent = t("Reparaturanfrage senden");
+      errorSummary.textContent = t("Die sichere Bestätigungsnummer konnte nicht erstellt werden. Bitte versuchen Sie es erneut.");
       errorSummary.hidden = false;
       return;
     }
@@ -287,7 +291,7 @@
     form.querySelector('[name="Potential Name"]').value = ('Reparatur · ' + biginDeviceModel.value + ' · ' + new Date().toLocaleDateString('de-DE')).slice(0, 100);
     sending = true;
     responseTimer = setTimeout(showUnconfirmed, 30000);
-    submit.textContent = 'Wird sicher übermittelt …';
+    submit.textContent = t("Wird sicher übermittelt …");
     HTMLFormElement.prototype.submit.call(form);
   });
 })();

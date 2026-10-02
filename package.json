@@ -2,7 +2,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tools/test-repair-reports.mjs tools/test-google-reviews.mjs tools/test-repair-confirmation.mjs tools/test-analytics-consent.mjs tools/test-site-audit.mjs",
-    "validate": "node tools/validate.mjs"
+    "test": "node --test tools/test-repair-reports.mjs tools/test-google-reviews.mjs tools/test-repair-confirmation.mjs tools/test-analytics-consent.mjs tools/test-site-audit.mjs tools/test-locales.mjs",
+    "validate": "node tools/validate.mjs",
+    "build:locales": "node tools/build-locales.mjs"
   }
 }

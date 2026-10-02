@@ -1,0 +1,48 @@
+@import url('/language-picker.css?v=20261002-lang1');
+.locale-page{color:#e4eaf5;background:#070c18;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.65;margin:0}
+.locale-page *, .locale-page *::before,.locale-page *::after{box-sizing:border-box;min-width:0}
+.locale-header{position:relative;z-index:50;display:flex;align-items:center;gap:24px;max-width:1248px;margin:auto;padding:18px 24px;border-bottom:1px solid #273045}
+.locale-header .brand{margin-right:auto;flex-shrink:1}.locale-header .brand small{white-space:normal}
+#locale-nav{display:flex;gap:22px;align-items:center;font-size:14px;font-weight:650}
+#locale-nav a{color:#cbd7eb;text-decoration:none}#locale-nav a:last-child{color:#52ddda}
+.locale-toggle{display:none}
+.locale-main{max-width:1160px;margin:auto;padding:0 24px 48px}
+.locale-hero{padding:64px 0 40px;max-width:970px}
+.locale-page h1{font-size:clamp(2rem,5.3vw,4.6rem);line-height:1.1;letter-spacing:-.035em;overflow-wrap:anywhere;margin:18px 0 25px}
+.locale-page h2{font-size:clamp(1.65rem,3vw,2.45rem);line-height:1.2;margin:0 0 24px;overflow-wrap:anywhere}
+.locale-page h3{font-size:1.35rem;line-height:1.3;margin:0 0 12px;overflow-wrap:anywhere}
+.locale-page p{max-width:80ch;color:#bfcadd;margin:16px 0}
+.locale-page a{color:#59e3dc;text-underline-offset:4px;overflow-wrap:anywhere}
+.locale-page a:focus-visible,.locale-page summary:focus-visible,.locale-page button:focus-visible{outline:3px solid #54e8e0;outline-offset:4px}
+.locale-page .hero-lead{font-size:1.18rem;line-height:1.6}
+.locale-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:28px 0}
+.locale-page .button{white-space:normal;text-align:center;min-height:48px;max-width:100%;height:auto}
+.locale-page .button-primary{color:white}
+.locale-section{padding:44px 0;border-top:1px solid #273045;scroll-margin-top:20px}
+.locale-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.locale-cards article{padding:28px;border:1px solid #28354c;border-radius:18px;background:linear-gradient(145deg,#102631,#0b1324)}
+.locale-cards article a{display:inline-block;padding:10px 0}
+.locale-prices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;margin:0}
+.locale-prices>div{display:flex;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid #263147}
+.locale-prices dt{overflow-wrap:anywhere}.locale-prices dd{margin:0;white-space:nowrap;color:#58e0d5;font-weight:750}
+.locale-note{font-size:.92rem}.locale-steps{padding-left:25px}.locale-steps li{padding:8px 0 8px 8px}
+.locale-faq{border-bottom:1px solid #273045;padding:15px 0}.locale-faq summary{cursor:pointer;font-weight:650;min-height:44px;padding:8px 0}
+.locale-page address{font-style:normal}.contact-email{word-break:break-word}
+.locale-footer{display:flex;flex-wrap:wrap;gap:18px;max-width:1160px;margin:auto;padding:28px 24px 100px;border-top:1px solid #273045;font-size:14px}
+.locale-mobile-contact{display:none}
+.locale-form-intro{padding:30px 0 22px}.locale-form-intro h1{font-size:clamp(1.9rem,4vw,3rem);margin:8px 0 14px}
+.locale-form-page .request-form-shell{max-width:880px;margin-bottom:40px}.locale-form-page .request-form-heading h2{font-size:1.6rem;margin:0}.locale-form-page .request-form-heading p{margin:0}
+.locale-form-page .form-grid{max-width:100%}.locale-form-page input,.locale-form-page select,.locale-form-page textarea{max-width:100%}
+.locale-form-page .form-progress{flex-wrap:wrap;gap:7px}.locale-form-page .form-progress span{white-space:normal;text-align:center}
+.locale-form-page .privacy-check a{color:#58e0d5}.locale-form-page .field-hint{font-size:.87rem}
+.locale-legal{padding-top:35px;max-width:960px}.locale-original-note{padding:20px;border:1px solid #39c9bd;border-radius:12px;margin-bottom:32px}.locale-legal-original h2{font-size:1.45rem;margin-top:30px}.locale-legal-original{overflow-wrap:anywhere}
+@media(max-width:900px){.locale-header{gap:12px}#locale-nav{gap:12px;font-size:13px}}
+@media(max-width:700px){.locale-header{padding:12px 16px;flex-wrap:wrap;gap:10px}.locale-header .brand{max-width:calc(100% - 124px);font-size:12px;gap:8px}.locale-header .brand-mark{width:36px;height:36px;flex-shrink:0}.locale-header .brand strong{font-size:12px}.locale-header .brand small{font-size:9px}
+.locale-toggle{display:block;width:42px;height:42px;border:1px solid #465570;border-radius:8px;background:#121d31;color:white;font-size:24px;cursor:pointer}
+#locale-nav{display:none;flex-basis:100%;flex-direction:column;align-items:stretch;padding:12px 0;font-size:16px}#locale-nav.open{display:flex}#locale-nav a{padding:10px 8px}
+.locale-main{padding:0 18px 24px}.locale-hero{padding:34px 0}.locale-page h1{font-size:clamp(1.9rem,8.5vw,2.8rem)}.locale-page .hero-lead{font-size:1.06rem}.locale-actions{gap:16px;margin:22px 0}.locale-cards,.locale-prices{grid-template-columns:1fr}.locale-cards article{padding:23px}.locale-section{padding:32px 0}.locale-prices>div{gap:12px}
+.locale-mobile-contact{display:grid;grid-template-columns:1fr 1fr 1.2fr;position:fixed;bottom:0;left:0;right:0;z-index:90;padding:8px 8px max(8px,env(safe-area-inset-bottom));gap:6px;background:#081020;border-top:1px solid #334158}.locale-mobile-contact a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:6px;text-align:center;text-decoration:none;font-size:12px;font-weight:750;line-height:1.25;color:#fff}.locale-mobile-contact a:last-child{background:#e94f54;border-radius:9px}
+.locale-form-intro{padding:26px 0 20px}.locale-form-intro h1{font-size:1.9rem}.locale-form-page .request-form-heading{display:flex;flex-direction:column;align-items:stretch;gap:14px;padding:20px}.locale-form-page .repair-form{padding:20px}.locale-form-page .form-actions{flex-wrap:wrap}.locale-form-page .form-actions button{flex:1;min-width:110px}.locale-form-page .form-progress{justify-content:flex-start}.locale-form-page .request-form-heading h2{font-size:1.4rem}.locale-form-page .request-form-shell{border-radius:14px}.locale-legal{padding-top:25px}
+}
+@media print{.locale-header,.locale-footer,.locale-mobile-contact{display:none}.locale-page{background:white;color:black}.locale-page p,.locale-page a{color:black}}
+
