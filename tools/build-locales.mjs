@@ -8,7 +8,7 @@ const root=path.resolve(import.meta.dirname,'..');
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
-const version='20261002-lang2',origin='https://www.pc-und-handyservice-augsburg.com';
+const version='20261002-lang2',repairFormVersion='20261005-portal1',origin='https://www.pc-und-handyservice-augsburg.com';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const norm=s=>s.replaceAll('&amp;','&').replaceAll('&nbsp;',' ').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
 const url=(lang,route='')=>lang==='de'?'/'+route:'/'+lang+'/'+route;
@@ -51,7 +51,7 @@ for(const [lang,c] of Object.entries(localeContent)){
       const i=routes.indexOf(route)-1,[t,d,detail]=c.services[i];title=t+' · Augsburg';description=d;
       body='<section class="locale-hero"><a href="'+url(lang)+'">← '+esc(l[8])+'</a><h1>'+esc(title)+'</h1><p class="hero-lead">'+esc(d)+'</p><div class="locale-actions">'+button+'</div><p>'+esc(c.hours)+'</p></section><section class="locale-section"><h2>'+esc(l[7])+'</h2><p>'+esc(detail)+'</p></section>'+priceSection([0,1,...servicePrices[i]])+process+faq+contact;
     } else if(formPage){
-      title=l[20];description=c.formIntro;extra='<link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3"><link rel="stylesheet" href="/request.css?v='+version+'"><script defer src="/'+lang+'/form-i18n.js?v='+version+'"></script><script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script><script defer src="/repair-form.js?v='+version+'"></script>';
+      title=l[20];description=c.formIntro;extra='<link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3"><link rel="stylesheet" href="/request.css?v='+version+'"><script defer src="/'+lang+'/form-i18n.js?v='+version+'"></script><script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script><script defer src="/repair-form.js?v='+repairFormVersion+'"></script>';
       body='<section class="locale-form-intro"><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p></section>'+form+contact;
     } else {
       title=route==='datenschutz'?l[10]:route==='impressum'?l[9]:l[9]+' · '+l[10];description=c.original;
@@ -66,7 +66,7 @@ for(const [lang,c] of Object.entries(localeContent)){
 // German source pages receive reciprocal links and the same language menu.
 for(const route of routes){
   const file=(route||'index')+'.html';let html=read(file);
-  html=html.replace(/<link\b[^>]*rel="alternate"[^>]*>/g,'').replace(/<!-- languages:start -->[\s\S]*?<!-- languages:end -->/g,'');
+  html=html.replace(/<link\b[^>]*rel="alternate"[^>]*>\r?\n?/g,'').replace(/<!-- languages:start -->[\s\S]*?<!-- languages:end -->/g,'');
   html=html.replace('</head>',alternates(route)+'\n<link rel="stylesheet" href="/language-picker.css?v='+version+'">\n</head>');
   html=html.replace(/<link rel="stylesheet" href="\/language-picker.css[^"]*">\s*(?=[\s\S]*<link rel="stylesheet" href="\/language-picker.css)/g,'');
   const menu='<!-- languages:start -->'+picker('de',route)+'<!-- languages:end -->';
@@ -74,11 +74,11 @@ for(const route of routes){
   else html=html.replace('</header>',menu+'</header>');
   html=html.replace(/<script defer src="\/locale-nav.js[^\"]*"><\/script>/g,'');
   html=html.replace('</head>','<script defer src="/locale-nav.js?v='+version+'"></script></head>');
-  if(route==='reparaturanfrage')html=html.replace('/repair-form.js?v=20261002-1','/repair-form.js?v='+version);
+  if(route==='reparaturanfrage')html=html.replace(/\/repair-form\.js\?v=[^"']+/g,'/repair-form.js?v='+repairFormVersion);
   write(file,html);
 }
-let sitemap=read('sitemap.xml').replace(/<!-- locales:start -->[\s\S]*?<!-- locales:end -->/g,'');
-const entries=Object.keys(localeContent).flatMap(l=>routes.slice(0,6).map(r=>'<url><loc>'+origin+url(l,r)+'</loc><lastmod>2026-10-02</lastmod></url>')).join('\n');
+let sitemap=read('sitemap.xml').replace(/<!-- locales:start -->[\s\S]*?<!-- locales:end -->\s*/g,'');
+const entries=Object.keys(localeContent).flatMap(l=>routes.slice(0,6).map(r=>'<url><loc>'+origin+url(l,r)+'</loc><lastmod>'+(r==='reparaturanfrage'?'2026-10-05':'2026-10-02')+'</lastmod></url>')).join('\n');
 write('sitemap.xml',sitemap.replace('</urlset>','<!-- locales:start -->\n'+entries+'\n<!-- locales:end -->\n</urlset>'));
 console.log('Built 90 localized pages, 10 form dictionaries, reciprocal language links and sitemap.');
 

@@ -19,16 +19,22 @@ export async function onRequest(context) {
     headers.set(name, value);
   }
 
-  const confirmationFrame = new URL(context.request.url).pathname === '/anfrage-bestaetigt';
+  const pathname = new URL(context.request.url).pathname;
+  const confirmationFrame = ['/anfrage-bestaetigt', '/bigin-rueckmeldung', '/bigin-rueckmeldung.html'].includes(pathname);
   const htmlResponse = (headers.get('Content-Type') || '').toLowerCase().startsWith('text/html');
   headers.set('X-Frame-Options', confirmationFrame ? 'SAMEORIGIN' : 'DENY');
 
-  if (!headers.has('Content-Security-Policy')) {
+  if (confirmationFrame) {
+    // Cloudflare may supply static _headers and redirect .html to the clean URL.
+    // Both return pages must be readable in the form's same-origin iframe.
+    headers.set('Content-Security-Policy', "default-src 'none'; frame-ancestors 'self'; base-uri 'none'; style-src 'self' 'unsafe-inline'");
+    headers.set('Cache-Control', 'no-store');
+    headers.set('X-Robots-Tag', 'noindex, nofollow');
+    headers.set('Referrer-Policy', 'no-referrer');
+  } else if (!headers.has('Content-Security-Policy')) {
     headers.set(
       'Content-Security-Policy',
-      confirmationFrame
-        ? "default-src 'none'; frame-ancestors 'self'; base-uri 'none'"
-        : htmlResponse
+      htmlResponse
           ? "default-src 'self'; base-uri 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com; font-src 'self'; form-action 'self' https://bigin.zoho.eu; frame-ancestors 'none'; frame-src https://bigin.zoho.eu https://eu.bigin.online 'self'; img-src 'self' data: https://*.clarity.ms https://c.bing.com; manifest-src 'self'; object-src 'none'; script-src 'self' https://www.clarity.ms; style-src 'self' 'unsafe-inline'; worker-src 'none'; upgrade-insecure-requests"
           : "default-src 'none'; frame-ancestors 'none'; base-uri 'none'"
     );

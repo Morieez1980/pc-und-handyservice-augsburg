@@ -111,3 +111,33 @@ test('Middleware ergänzt Sicherheitsheader und erlaubt nur den Bestätigungs-If
   assert.equal(confirmationResponse.headers.get('X-Frame-Options'), 'SAMEORIGIN');
   assert.match(confirmationResponse.headers.get('Content-Security-Policy'), /frame-ancestors 'self'/);
 });
+
+
+test('Bigin callback remains embeddable after clean-URL redirects and static header injection', async () => {
+  for (const pathname of ['/bigin-rueckmeldung', '/bigin-rueckmeldung.html', '/anfrage-bestaetigt?ref=test']) {
+    const response = await applySecurityHeaders({
+      request: new Request('https://www.pc-und-handyservice-augsburg.com' + pathname),
+      next: async () => new Response('<!doctype html><p>Callback</p>', {
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'X-Frame-Options': 'DENY',
+          'Content-Security-Policy': "default-src 'self'; frame-ancestors 'none'",
+          'Cache-Control': 'public, max-age=3600'
+        }
+      })
+    });
+    assert.equal(response.headers.get('X-Frame-Options'), 'SAMEORIGIN');
+    assert.match(response.headers.get('Content-Security-Policy'), /frame-ancestors 'self'/);
+    assert.doesNotMatch(response.headers.get('Content-Security-Policy'), /frame-ancestors 'none'/);
+    assert.equal(response.headers.get('Cache-Control'), 'no-store');
+    assert.equal(response.headers.get('X-Robots-Tag'), 'noindex, nofollow');
+  }
+  const normalPage = await applySecurityHeaders({
+    request: new Request('https://www.pc-und-handyservice-augsburg.com/reparaturanfrage'),
+    next: async () => new Response('<!doctype html>', {
+      headers: { 'Content-Type': 'text/html', 'Content-Security-Policy': "frame-ancestors 'none'" }
+    })
+  });
+  assert.equal(normalPage.headers.get('X-Frame-Options'), 'DENY');
+  assert.equal(normalPage.headers.get('Content-Security-Policy'), "frame-ancestors 'none'");
+});
