@@ -197,7 +197,7 @@
       return;
     }
 
-    if (result.pathname !== '/bigin-rueckmeldung.html' || !confirmationNonce) return showUnconfirmed();
+    if (!['/bigin-rueckmeldung', '/bigin-rueckmeldung.html'].includes(result.pathname) || !confirmationNonce) return showUnconfirmed();
     try {
       const verification = await fetch('/anfrage-bestaetigt?ref=' + encodeURIComponent(confirmationNonce), {
         credentials: 'same-origin',
