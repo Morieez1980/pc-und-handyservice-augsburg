@@ -631,6 +631,9 @@
 .repair-form .form-grid{gap:.85rem;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 .identifier-title{margin:0;font-size:.88rem;font-weight:750}
 .identifier-title span{color:#ff8b82}
+.required-device-details,.required-address-details{display:grid;gap:.85rem}
+.required-address-details{padding-top:.5rem}
+@media(max-width:700px){.repair-form .compact-fields,.repair-form .required-device-details .form-grid,.repair-form .required-address-details .form-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.repair-form .field-wide{grid-column:1/-1}}
 .request-intro{margin-bottom:1.25rem}
 .request-intro h1{font-size:clamp(2rem,4vw,3rem)}
 .repair-form .optional-device-details,.repair-form .request-price-details,.repair-form .optional-address-details{margin:0}

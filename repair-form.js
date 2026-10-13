@@ -30,6 +30,9 @@
   const pipelinePhone = form.querySelector('#pipeline-phone');
   const pipelineAddress = form.querySelector('#pipeline-address');
   const contactEmail = form.querySelector('#email');
+  const customerKind = form.querySelector('#customer-kind');
+  const company = form.querySelector('#company');
+  const companyWrap = form.querySelector('[data-company-field]');
   const phone = form.querySelector('#phone');
   const started = Date.now();
   let sending = false;
@@ -126,7 +129,7 @@
     let firstInvalid = null;
 
     controls.forEach((element) => {
-      if (['device-name', 'device-manufacturer', 'device-model', 'description', 'serial-number', 'imei', 'computer-cpu', 'computer-ram', 'computer-gpu', 'computer-mainboard', 'computer-psu'].includes(element.id)) {
+      if (element.required && ['text', 'textarea', 'email', 'tel'].includes(element.type)) {
         element.setCustomValidity(element.required && !element.value.trim() ? t("Bitte dieses Feld ausfüllen.") : '');
       }
       if (element.id === 'serial-number' && element.required && !element.value.trim()) {
@@ -150,21 +153,27 @@
   const updateIdentifierFields = () => {
     const exempt = identifierUnavailable.checked;
     serial.disabled = exempt;
-    imei.disabled = exempt || imeiWrap.hidden;
-    const acceptsImei = !imeiWrap.hidden;
-    serial.required = !exempt && !(acceptsImei && imei.value.trim());
-    imei.required = !exempt && acceptsImei && !serial.value.trim();
+    imei.disabled = exempt;
+    serial.required = !exempt && !imei.value.trim();
+    imei.required = !exempt && !serial.value.trim();
   };
 
   const updateDeviceFields = () => {
-    const needsImei = ['Smartphone', 'Tablet'].includes(device.value);
     const needsComputerDetails = ['Desktop-PC', 'Laptop'].includes(device.value);
-    imeiWrap.hidden = !needsImei;
+    imeiWrap.hidden = false;
     computerWrap.hidden = !needsComputerDetails;
-    computerFields.forEach((field) => { field.required = false; });
-    if (!needsImei) imei.value = '';
+    computerFields.forEach((field) => { field.required = needsComputerDetails; field.disabled = !needsComputerDetails; });
     updateIdentifierFields();
   };
+
+  const updateCustomerKind = () => {
+    const business = customerKind.value === 'business';
+    companyWrap.hidden = !business;
+    company.disabled = !business;
+    company.required = business;
+  };
+  customerKind.addEventListener('change', updateCustomerKind);
+  updateCustomerKind();
 
   device.addEventListener('change', updateDeviceFields);
   serial.addEventListener('input', updateIdentifierFields);

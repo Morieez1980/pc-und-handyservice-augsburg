@@ -55,6 +55,11 @@ try {
       assert.equal(await page.locator('[data-next-step],[data-prev-step]').count(),0,lang+' has step buttons');
       assert.equal(await page.locator('[data-form-step="2"]').isVisible(),true,lang+' contact fields hidden');
       assert.equal(await page.locator('#serial-number').isVisible(),true,lang+' device identifier hidden');
+      assert.equal(await page.locator('#imei').isVisible(),true,lang+' IMEI hidden');
+      for (const id of ['device-manufacturer','device-model','street','postcode','city']) {
+        assert.equal(await page.locator('#'+id).isVisible(),true,lang+' required field hidden: '+id);
+        assert.equal(await page.locator('#'+id).evaluate(e=>e.required),true,lang+' missing required field: '+id);
+      }
       assert.equal(await page.locator('a[href="tel:+4915254530080"]').count()>0,true);
       assert.equal(await page.locator('a[href^="https://wa.me/4915254530080"]').count()>0,true);
       const dimensions=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
@@ -70,6 +75,8 @@ try {
   await page.clock.fastForward(3000);
   await page.locator('#device-type').selectOption('Smartphone');
   await page.locator('#device-name').fill('TEST Smartphone');
+  await page.locator('#device-manufacturer').fill('Apple');
+  await page.locator('#device-model').fill('A2882');
   await page.locator('#description').fill('Gekennzeichneter lokaler Test ohne Kundenversand.');
   await page.locator('#first-name').fill('Test');
   await page.locator('#last-name').fill('Inhaber');
@@ -79,6 +86,22 @@ try {
   await page.locator('[data-submit]').click();
   assert.equal(await page.evaluate(()=>document.activeElement.id),'serial-number');
   assert.equal(references,0,'Missing identifier must not transmit');
+  for(const type of ['Desktop-PC','Laptop','Smartphone','Tablet','Konsole','Sonstiges']) {
+    await page.locator('#device-type').selectOption(type);
+    assert.equal(await page.locator('#imei').isVisible(),true,type+' IMEI must remain visible');
+    const computer=['Desktop-PC','Laptop'].includes(type);
+    for(const id of ['computer-cpu','computer-ram','computer-gpu','computer-mainboard','computer-psu']) {
+      assert.equal(await page.locator('#'+id).evaluate(e=>e.required),computer,type+' specification required state: '+id);
+      assert.equal(await page.locator('#'+id).isDisabled(),!computer,type+' hidden specification disabled: '+id);
+    }
+    await page.locator('#serial-number').fill('CODEX-LOCAL-TEST');
+    assert.equal(await page.locator('#imei').evaluate(e=>e.required),false,type+' serial alternative');
+    await page.locator('#serial-number').fill('');
+    await page.locator('#imei').fill('490154203237518');
+    assert.equal(await page.locator('#serial-number').evaluate(e=>e.required),false,type+' IMEI alternative');
+    await page.locator('#imei').fill('');
+  }
+  await page.locator('#device-type').selectOption('Smartphone');
   await page.locator('#imei').fill('490154203237518');
   assert.equal(await page.locator('#serial-number').evaluate(e=>e.required),false);
   await page.locator('#imei').fill('123');
@@ -87,15 +110,40 @@ try {
   await page.locator('#identifier-unavailable').check();
   assert.equal(await page.locator('#serial-number').isDisabled(),true);
   assert.equal(await page.locator('#imei').isDisabled(),true);
-  await page.locator('.optional-address-details').evaluate(e=>e.open=true);
-  await page.locator('#postcode').fill('12');
-  await page.locator('.optional-address-details').evaluate(e=>e.open=false);
+  for(const id of ['device-manufacturer','device-model']) {
+    const field=page.locator('#'+id), prior=await field.inputValue();
+    await field.fill('   ');
+    await page.locator('[data-submit]').click();
+    assert.equal(await page.evaluate(()=>document.activeElement.id),id);
+    assert.equal(references,0,'Missing '+id+' must not transmit');
+    await field.fill(prior);
+  }
   await page.locator('[data-submit]').click();
-  assert.equal(await page.locator('.optional-address-details').evaluate(e=>e.open),true,'Invalid optional address should open');
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'street');
+  assert.equal(references,0,'Missing billing address must not transmit');
+  await page.locator('#street').fill('Stätzlinger Straße 99');
+  await page.locator('#postcode').fill('12');
+  await page.locator('[data-submit]').click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'postcode');
   assert.equal(references,0);
   await page.locator('#postcode').fill('86165');
-  await page.locator('#street').fill('Stätzlinger Straße 99');
+  await page.locator('[data-submit]').click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'city');
+  assert.equal(references,0,'Missing city must not transmit');
   await page.locator('#city').fill('Augsburg');
+  await page.locator('#customer-kind').selectOption('business');
+  await page.locator('[data-submit]').click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'company');
+  assert.equal(references,0,'Business invoice requires company');
+  await page.locator('#company').fill('CODEX LOCAL TEST');
+  await page.locator('#customer-kind').selectOption('private');
+  assert.equal(await page.locator('#company').isDisabled(),true);
+  await page.locator('#device-type').selectOption('Desktop-PC');
+  await page.locator('[data-submit]').click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'computer-cpu');
+  assert.equal(references,0,'PC specifications must not be omitted');
+  for(const [id,value] of Object.entries({'computer-cpu':'Intel Core i5','computer-ram':'16 GB','computer-gpu':'Intel UHD','computer-mainboard':'TEST BOARD','computer-psu':'TEST 65 W'})) await page.locator('#'+id).fill(value);
+  await page.locator('#device-type').selectOption('Smartphone');
   await page.locator('[data-submit]').click();
   await page.waitForFunction(()=>document.querySelector('[data-submit]').disabled);
   await page.locator('form#repair-request').evaluate(f=>{f.requestSubmit(); f.requestSubmit();});
@@ -109,7 +157,9 @@ try {
   assert.equal(mapping.POTENTIALCF6,'+4915254530080');
   assert.equal(mapping.POTENTIALCF7,'Stätzlinger Straße 99, 86165 Augsburg');
   assert.match(mapping.Description,/Gerätekennung: nicht vorhanden/);
+  assert.equal(mapping.POTENTIALCF2,'TEST Smartphone | Apple | A2882');
+  assert.doesNotMatch(mapping.Description,/TEST BOARD|TEST 65 W/,'Hidden PC details must not reach smartphone requests');
   assert.equal(errors.length,0,errors.join('\n'));
-  await fs.writeFile(path.join(evidence,'Ergebnis.json'),JSON.stringify({layouts,checks:['all fields in one view','device serial or IMEI or explicit exception','IMEI validation','invalid optional address expands','CRM field mapping','rapid repeat submission suppressed','all external submissions intercepted'],references,crmPosts:posts,errors},null,2));
+  await fs.writeFile(path.join(evidence,'Ergebnis.json'),JSON.stringify({layouts,checks:['required manufacturer and exact model','required full billing address','all six device types accept serial OR IMEI OR explicit exception','IMEI validation','company required only for business invoice','PC specifications required only for PCs/laptops','CRM field mapping','rapid repeat submission suppressed','all external submissions intercepted'],references,crmPosts:posts,errors},null,2));
   console.log('44 Sprach-/Breitenprüfungen und Formularverhalten bestanden. Externe Übermittlung ausschließlich abgefangen.');
 } finally { if(browser) await browser.close(); await new Promise(resolve=>server.close(resolve)); }

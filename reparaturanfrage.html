@@ -34,12 +34,12 @@
 
   <link rel="stylesheet" href="/styles.min.css?v=20261002-1">
   <link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3">
-  <link rel="stylesheet" href="/request.css?v=20261002-1">
+  <link rel="stylesheet" href="/request.css?v=20261013-required1">
   <script defer src="/script.min.js?v=20261002-1"></script>
   <script defer src="/clarity-consent.min.js?v=20261002-1"></script>
   <script defer src="/analytics-consent.js?v=20260924-2"></script>
   <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
-  <script defer src="/repair-form.js?v=20261013-ux1"></script>
+  <script defer src="/repair-form.js?v=20261013-required1"></script>
 
 
 
@@ -116,7 +116,7 @@
       <section class="request-form-shell" aria-labelledby="request-form-title">
         <div class="request-form-heading">
           <div><p class="eyebrow"><span></span> Online-Anfrage</p><h2 id="request-form-title">Was dürfen wir reparieren?</h2></div>
-          <p class="request-short-help">Gerät, Fehler und Kontakt ausfüllen. Dann einmal absenden. Felder mit * sind erforderlich.</p>
+          <p class="request-short-help">Gerät, Fehler, Kontakt und Rechnungsanschrift ausfüllen. Alle angezeigten Angaben sind erforderlich. Für die Gerätekennung genügt Seriennummer oder IMEI. Dann einmal absenden.</p>
         </div>
 
         <div class="form-success" data-form-success hidden tabindex="-1">
@@ -175,34 +175,34 @@
                 <label for="serial-number">Seriennummer</label>
                 <input id="serial-number" name="POTENTIALCF3" type="text" maxlength="255" autocomplete="off" aria-describedby="device-identifier-hint">
               </div>
-              <div class="field-group" data-imei-field hidden>
+              <div class="field-group" data-imei-field>
                 <label for="imei">IMEI <small>(Alternative zur Seriennummer)</small></label>
                 <input id="imei" name="POTENTIALCF17" type="text" inputmode="numeric" maxlength="15" pattern="[0-9]{15}" autocomplete="off" aria-describedby="device-identifier-hint">
               </div>
             </div>
-            <p class="field-hint" id="device-identifier-hint">Bitte Seriennummer oder IMEI angeben. Falls nicht auffindbar, markieren Sie die Ausnahme. Wir prüfen die Gerätekennung bei der Annahme.</p>
-            <label class="check-row"><input id="identifier-unavailable" type="checkbox"> Seriennummer oder IMEI nicht auffindbar</label>
-            <details class="optional-device-details"><summary>Weitere Geräteangaben (freiwillig)</summary>
+            <p class="field-hint" id="device-identifier-hint">Für die eindeutige Gerätezuordnung ist mindestens eine Kennung erforderlich: Seriennummer oder IMEI. Eine IMEI gibt es nur bei Geräten mit Mobilfunk. Finden Sie keine der beiden Kennungen, markieren Sie die Ausnahme. Wir prüfen die Zuordnung bei der Annahme.</p>
+            <label class="check-row"><input id="identifier-unavailable" type="checkbox"> Weder Seriennummer noch IMEI vorhanden oder auffindbar</label>
+            <div class="required-device-details">
             <div class="form-grid">
               <div class="field-group">
-                <label for="device-manufacturer">Hersteller <small>(freiwillig)</small></label>
-                <input id="device-manufacturer" type="text" maxlength="80" placeholder="z. B. Apple oder Lenovo">
+                <label for="device-manufacturer">Hersteller <span aria-hidden="true">*</span></label>
+                <input id="device-manufacturer" type="text" maxlength="80" placeholder="z. B. Apple oder Lenovo" required>
               </div>
               <div class="field-group">
-                <label for="device-model">Genaue Modellnummer <small>(freiwillig)</small></label>
-                <input id="device-model" type="text" maxlength="80" placeholder="z. B. A2882 oder 21AH" aria-describedby="device-model-hint">
+                <label for="device-model">Genaue Modellnummer <span aria-hidden="true">*</span></label>
+                <input id="device-model" type="text" maxlength="80" placeholder="z. B. A2882 oder 21AH" aria-describedby="device-model-hint" required>
               </div>
             </div>
-            <p class="field-hint" id="device-model-hint">Die genaue Modellbezeichnung beziehungsweise Modellnummer hilft uns bei der Vorbereitung. Falls unbekannt, können Sie diese Angabe später nachreichen.</p>
+            <p class="field-hint" id="device-model-hint">Hersteller und genaue Modellnummer sind erforderlich. Sie finden die Modellnummer meist auf dem Typenschild, der Verpackung oder in den Geräteeinstellungen.</p>
             <div class="form-grid" data-computer-fields hidden>
-              <div class="field-group"><label for="computer-cpu">Prozessor <small>(freiwillig)</small></label><input id="computer-cpu" type="text" maxlength="120" placeholder="z. B. Intel Core i5 oder unbekannt"></div>
-              <div class="field-group"><label for="computer-ram">RAM-Speicher <small>(freiwillig)</small></label><input id="computer-ram" type="text" maxlength="120" placeholder="z. B. 16 GB oder unbekannt"></div>
-              <div class="field-group"><label for="computer-gpu">Grafikkarte <small>(freiwillig)</small></label><input id="computer-gpu" type="text" maxlength="120" placeholder="z. B. integriert, Modell oder unbekannt"></div>
-              <div class="field-group"><label for="computer-mainboard">Mainboard <small>(freiwillig)</small></label><input id="computer-mainboard" type="text" maxlength="120" placeholder="Modell oder unbekannt"></div>
-              <div class="field-group"><label for="computer-psu">Netzteil/Ladegerät <small>(freiwillig)</small></label><input id="computer-psu" type="text" maxlength="120" placeholder="Modell, Leistung oder unbekannt"></div>
-              <p class="field-hint field-wide">Diese technischen Angaben sind freiwillig. Unbekannte Felder können Sie leer lassen.</p>
+              <div class="field-group"><label for="computer-cpu">Prozessor <span aria-hidden="true">*</span></label><input id="computer-cpu" type="text" maxlength="120" placeholder="Intel Core i5"></div>
+              <div class="field-group"><label for="computer-ram">RAM-Speicher <span aria-hidden="true">*</span></label><input id="computer-ram" type="text" maxlength="120" placeholder="16 GB"></div>
+              <div class="field-group"><label for="computer-gpu">Grafikkarte <span aria-hidden="true">*</span></label><input id="computer-gpu" type="text" maxlength="120" placeholder="Intel UHD Graphics"></div>
+              <div class="field-group"><label for="computer-mainboard">Mainboard <span aria-hidden="true">*</span></label><input id="computer-mainboard" type="text" maxlength="120" placeholder="Hersteller und Modell des Mainboards"></div>
+              <div class="field-group"><label for="computer-psu">Netzteil/Ladegerät <span aria-hidden="true">*</span></label><input id="computer-psu" type="text" maxlength="120" placeholder="Hersteller, Modell und Leistung"></div>
+              <p class="field-hint field-wide">Bei PC und Laptop benötigen wir diese technischen Angaben zur Vorbereitung. Unter Windows finden Sie Prozessor, RAM und Mainboard in „Systeminformationen“, die Grafikkarte im Geräte-Manager und Netzteildaten auf dem Netzteil oder Ladegerät.</p>
             </div>
-            </details>
+            </div>
             <details class="request-price-details"><summary>Diagnosekosten und Datenrettung</summary>
         <p class="request-price-note">Fehlerdiagnose: 30 € ohne anschließende Reparatur; bei Durchführung der Reparatur entfällt diese Gebühr. Datenrettung: 55 € für die Analyse allein oder bei erfolgloser Wiederherstellung. Bei erfolgreicher softwarebasierter Datenrettung zahlen Sie insgesamt 250 € einschließlich Analyse.</p>
             </details>
@@ -222,17 +222,19 @@
                 <p class="field-hint" id="phone-hint">Land auswählen; die Nummer wird international gespeichert.</p>
               </div>
             </div>
-            <details class="optional-address-details"><summary>Rechnungsanschrift ergänzen (freiwillig)</summary>
-            <p class="field-hint">Für eine spätere Rechnung benötigen wir die vollständige Anschrift. Sie können sie jetzt ergänzen oder bei der Geräteannahme nachreichen.</p>
+            <div class="required-address-details">
+            <p class="identifier-title">Ihre Rechnungsanschrift <span aria-hidden="true">*</span></p>
+            <p class="field-hint">Die vollständige Anschrift ist für die Auftragsdaten und eine spätere Rechnung erforderlich. Durch die Angabe entsteht noch kein kostenpflichtiger Auftrag.</p>
             <div class="form-grid">
-              <div class="field-group field-wide"><label for="company">Firma <small>(nur bei Firmenrechnung)</small></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization"></div>
-              <div class="field-group field-wide"><label for="street">Straße und Hausnummer <small>(freiwillig)</small></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address"></div>
-              <div class="field-group field-postcode"><label for="postcode">PLZ <small>(freiwillig)</small></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"></div>
-              <div class="field-group field-city"><label for="city">Ort <small>(freiwillig)</small></label><input id="city" name="Contacts.Mailing City" type="text" maxlength="100" autocomplete="address-level2"></div>
+              <div class="field-group field-wide"><label for="customer-kind">Rechnung für <span aria-hidden="true">*</span></label><select id="customer-kind" required><option value="private">Privatperson</option><option value="business">Firma</option></select></div>
+              <div class="field-group field-wide" data-company-field hidden><label for="company">Firmenname <span aria-hidden="true">*</span></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization" disabled></div>
+              <div class="field-group field-wide"><label for="street">Straße und Hausnummer <span aria-hidden="true">*</span></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address" required></div>
+              <div class="field-group field-postcode"><label for="postcode">PLZ <span aria-hidden="true">*</span></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" required></div>
+              <div class="field-group field-city"><label for="city">Ort <span aria-hidden="true">*</span></label><input id="city" name="Contacts.Mailing City" type="text" maxlength="100" autocomplete="address-level2" required></div>
             </div>
-            </details>
+            </div>
             <label class="privacy-check"><input id="privacy-acknowledged" type="checkbox" required><span>Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zur Kenntnis genommen. <b aria-hidden="true">*</b></span></label>
-            <p class="field-hint"><strong>Unverbindlich:</strong> Sie senden zunächst nur eine Anfrage. Reparaturen und kostenpflichtige Zusatzarbeiten beginnen erst nach Ihrer Freigabe.</p>
+            <p class="field-hint"><strong>Unverbindliche Reparaturanfrage:</strong> Die Angaben dienen der Gerätezuordnung, der Kommunikation und der Vorbereitung Ihrer Auftragsdaten. Reparaturen und kostenpflichtige Zusatzarbeiten beginnen erst nach Ihrer Freigabe.</p>
             <p class="form-error-summary" data-error-summary role="alert" hidden>Bitte prüfen Sie die markierten Felder.</p>
             <div class="form-actions">
               <button class="button button-primary" type="submit" data-submit>Reparaturanfrage senden</button>
