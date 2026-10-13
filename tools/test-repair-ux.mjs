@@ -1,0 +1,115 @@
+import assert from 'node:assert/strict';
+import http from 'node:http';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+const require = createRequire(import.meta.url);
+// Install Playwright locally, or set PLAYWRIGHT_MODULE_PATH for a bundled runtime.
+const {chromium} = require(process.env.PLAYWRIGHT_MODULE_PATH || 'playwright');
+const root = path.resolve(import.meta.dirname, '..');
+const evidence = path.resolve(root, '..', 'Formular-Pruefung');
+await fs.mkdir(evidence, {recursive: true});
+const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.png':'image/png', '.svg':'image/svg+xml'};
+const server = http.createServer(async (req,res) => {
+  try {
+    let file = new URL(req.url, 'http://localhost').pathname;
+    if (file.endsWith('/')) file += 'index.html';
+    if (!path.extname(file)) file += '.html';
+    const target = path.resolve(root, '.' + file);
+    if (!target.startsWith(root + path.sep)) throw new Error('Invalid path');
+    res.setHeader('Content-Type', types[path.extname(target)] || 'application/octet-stream');
+    res.end(await fs.readFile(target));
+  } catch { res.writeHead(404); res.end('Not found'); }
+});
+await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+const origin = 'http://127.0.0.1:' + server.address().port;
+let browser;
+try {
+  browser = await chromium.launch({headless:true, channel:'msedge'});
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  let posts=0, references=0, releaseReference;
+  await context.route('**/*', async route => {
+    const url = new URL(route.request().url());
+    if (url.origin !== origin) {
+      if (url.hostname==='bigin.zoho.eu' && route.request().method()==='POST') { posts++; await route.fulfill({contentType:'text/html',body:'<p>Intercepted test submission</p>'}); }
+      else await route.abort();
+      return;
+    }
+    if (url.pathname==='/api/repair-confirmation') {
+      references++;
+      await new Promise(resolve => { releaseReference=resolve; });
+      await route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({ref:'12345678-1234-4123-8123-123456789012'})});
+      return;
+    }
+    await route.continue();
+  });
+  const layouts=[];
+  for (const lang of ['de','en','tr','ro','uk','es','sv','da','ru','zh','ja']) {
+    for (const width of [320,360,390,1280]) {
+      await page.setViewportSize({width,height:900});
+      await page.goto(origin + (lang==='de'?'':'/'+lang) + '/reparaturanfrage');
+      await page.locator('#phone').waitFor({state:'visible'});
+      assert.equal(await page.locator('[data-next-step],[data-prev-step]').count(),0,lang+' has step buttons');
+      assert.equal(await page.locator('[data-form-step="2"]').isVisible(),true,lang+' contact fields hidden');
+      assert.equal(await page.locator('#serial-number').isVisible(),true,lang+' device identifier hidden');
+      assert.equal(await page.locator('a[href="tel:+4915254530080"]').count()>0,true);
+      assert.equal(await page.locator('a[href^="https://wa.me/4915254530080"]').count()>0,true);
+      const dimensions=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+      assert.ok(dimensions.scroll<=dimensions.width+1,lang+' horizontal overflow at '+width+': '+JSON.stringify(dimensions));
+      const nav=page.locator(lang==='de'?'.nav-toggle':'.locale-toggle');
+      if(width<700){ await nav.click(); assert.equal(await nav.getAttribute('aria-expanded'),'true'); await nav.click(); }
+      if(lang==='de' && [390,1280].includes(width)) await page.screenshot({path:path.join(evidence,'Reparaturformular-'+width+'.png'),fullPage:true});
+      layouts.push({lang,width,passed:true});
+    }
+  }
+  await page.goto(origin+'/reparaturanfrage');
+  await page.clock.install();
+  await page.clock.fastForward(3000);
+  await page.locator('#device-type').selectOption('Smartphone');
+  await page.locator('#device-name').fill('TEST Smartphone');
+  await page.locator('#description').fill('Gekennzeichneter lokaler Test ohne Kundenversand.');
+  await page.locator('#first-name').fill('Test');
+  await page.locator('#last-name').fill('Inhaber');
+  await page.locator('#email').fill('MauriceKeil@pc-und-handyservice-augsburg.com');
+  await page.locator('#phone').fill('015254530080');
+  await page.locator('#privacy-acknowledged').check();
+  await page.locator('[data-submit]').click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'serial-number');
+  assert.equal(references,0,'Missing identifier must not transmit');
+  await page.locator('#imei').fill('490154203237518');
+  assert.equal(await page.locator('#serial-number').evaluate(e=>e.required),false);
+  await page.locator('#imei').fill('123');
+  await page.locator('[data-submit]').click();
+  assert.equal(references,0,'Invalid IMEI must not transmit');
+  await page.locator('#identifier-unavailable').check();
+  assert.equal(await page.locator('#serial-number').isDisabled(),true);
+  assert.equal(await page.locator('#imei').isDisabled(),true);
+  await page.locator('.optional-address-details').evaluate(e=>e.open=true);
+  await page.locator('#postcode').fill('12');
+  await page.locator('.optional-address-details').evaluate(e=>e.open=false);
+  await page.locator('[data-submit]').click();
+  assert.equal(await page.locator('.optional-address-details').evaluate(e=>e.open),true,'Invalid optional address should open');
+  assert.equal(references,0);
+  await page.locator('#postcode').fill('86165');
+  await page.locator('#street').fill('Stätzlinger Straße 99');
+  await page.locator('#city').fill('Augsburg');
+  await page.locator('[data-submit]').click();
+  await page.waitForFunction(()=>document.querySelector('[data-submit]').disabled);
+  await page.locator('form#repair-request').evaluate(f=>{f.requestSubmit(); f.requestSubmit();});
+  await page.waitForTimeout(100);
+  assert.equal(references,1,'Rapid repeated submission creates only one confirmation');
+  releaseReference();
+  await page.waitForTimeout(200);
+  assert.equal(posts,1,'Rapid repeated submission reaches CRM once');
+  const mapping=await page.locator('#repair-request').evaluate(f=>Object.fromEntries(Array.from(f.elements).filter(e=>e.type==='hidden'&&!['xnQsjsdp','xmIwtLD','zc_gad','actionType'].includes(e.name)).map(e=>[e.name,e.value])));
+  assert.equal(mapping.POTENTIALCF5,'MauriceKeil@pc-und-handyservice-augsburg.com');
+  assert.equal(mapping.POTENTIALCF6,'+4915254530080');
+  assert.equal(mapping.POTENTIALCF7,'Stätzlinger Straße 99, 86165 Augsburg');
+  assert.match(mapping.Description,/Gerätekennung: nicht vorhanden/);
+  assert.equal(errors.length,0,errors.join('\n'));
+  await fs.writeFile(path.join(evidence,'Ergebnis.json'),JSON.stringify({layouts,checks:['all fields in one view','device serial or IMEI or explicit exception','IMEI validation','invalid optional address expands','CRM field mapping','rapid repeat submission suppressed','all external submissions intercepted'],references,crmPosts:posts,errors},null,2));
+  console.log('44 Sprach-/Breitenprüfungen und Formularverhalten bestanden. Externe Übermittlung ausschließlich abgefangen.');
+} finally { if(browser) await browser.close(); await new Promise(resolve=>server.close(resolve)); }

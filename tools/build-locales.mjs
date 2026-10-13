@@ -4,11 +4,12 @@ import {languages,routes,prices,localeContent} from '../locales/content.mjs';
 import {formRows,formShared} from '../locales/form-data.mjs';
 import {runtimeRows,unconfirmed} from '../locales/runtime-data.mjs';
 import {additionalForms,additionalRuntime,additionalUnconfirmed} from '../locales/additional-form-data.mjs';
+import {repairUxTranslations} from '../locales/repair-ux.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
-const version='20261002-lang2',repairFormVersion='20261005-portal1',origin='https://www.pc-und-handyservice-augsburg.com';
+const version='20261002-lang2',repairFormVersion='20261013-ux1',origin='https://www.pc-und-handyservice-augsburg.com';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const norm=s=>s.replaceAll('&amp;','&').replaceAll('&nbsp;',' ').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
 const url=(lang,route='')=>lang==='de'?'/'+route:'/'+lang+'/'+route;
@@ -32,6 +33,7 @@ for(const [lang,c] of Object.entries(localeContent)){
   const oldUnconfirmed=read('repair-form.js').match(/errorSummary.textContent = (?:t\()?("Bitte prüfen Sie die Antwort von Bigin unten:[^"]*")/);
   if(!oldUnconfirmed)throw Error('Bigin response message not found');
   map[oldUnconfirmed[1].slice(1,-1)]=additionalUnconfirmed[lang]||unconfirmed[lang];
+  Object.assign(map,repairUxTranslations[lang]);
   write(lang+'/form-i18n.js','window.siteTranslate=(key)=>('+JSON.stringify(map)+')[key]||key;\n');
   const translateText=html=>html.replace(/>([^<>]+)</g,(all,raw)=>map[norm(raw)]?'>'+(/^\s/.test(raw)?' ':'')+esc(map[norm(raw)])+(/\s$/.test(raw)?' ':'')+'<':all).replace(/\b(placeholder|aria-label|title)="([^"]*)"/g,(all,key,raw)=>map[norm(raw)]?key+'="'+esc(map[norm(raw)])+'"':all);
   let form=translateText(baseForm).replaceAll('href="/"','href="'+url(lang)+'"').replaceAll('href="/datenschutz"','href="'+url(lang,'datenschutz')+'"');
@@ -51,7 +53,7 @@ for(const [lang,c] of Object.entries(localeContent)){
       const i=routes.indexOf(route)-1,[t,d,detail]=c.services[i];title=t+' · Augsburg';description=d;
       body='<section class="locale-hero"><a href="'+url(lang)+'">← '+esc(l[8])+'</a><h1>'+esc(title)+'</h1><p class="hero-lead">'+esc(d)+'</p><div class="locale-actions">'+button+'</div><p>'+esc(c.hours)+'</p></section><section class="locale-section"><h2>'+esc(l[7])+'</h2><p>'+esc(detail)+'</p></section>'+priceSection([0,1,...servicePrices[i]])+process+faq+contact;
     } else if(formPage){
-      title=l[20];description=c.formIntro;extra='<link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3"><link rel="stylesheet" href="/request.css?v='+version+'"><script defer src="/'+lang+'/form-i18n.js?v='+version+'"></script><script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script><script defer src="/repair-form.js?v='+repairFormVersion+'"></script>';
+      title=l[20];description=c.formIntro;extra='<link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3"><link rel="stylesheet" href="/request.css?v='+repairFormVersion+'"><script defer src="/'+lang+'/form-i18n.js?v='+repairFormVersion+'"></script><script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script><script defer src="/repair-form.js?v='+repairFormVersion+'"></script>';
       body='<section class="locale-form-intro"><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p></section>'+form+contact;
     } else {
       title=route==='datenschutz'?l[10]:route==='impressum'?l[9]:l[9]+' · '+l[10];description=c.original;

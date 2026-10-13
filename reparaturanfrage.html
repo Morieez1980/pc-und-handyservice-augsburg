@@ -39,7 +39,7 @@
   <script defer src="/clarity-consent.min.js?v=20261002-1"></script>
   <script defer src="/analytics-consent.js?v=20260924-2"></script>
   <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
-  <script defer src="/repair-form.js?v=20261005-portal1"></script>
+  <script defer src="/repair-form.js?v=20261013-ux1"></script>
 
 
 
@@ -116,7 +116,7 @@
       <section class="request-form-shell" aria-labelledby="request-form-title">
         <div class="request-form-heading">
           <div><p class="eyebrow"><span></span> Online-Anfrage</p><h2 id="request-form-title">Was dürfen wir reparieren?</h2></div>
-          <div class="form-progress" aria-label="Formularfortschritt"><span class="is-active" data-progress-step="1">1 · Gerät &amp; Fehler</span><i></i><span data-progress-step="2">2 · Kontakt</span></div>
+          <p class="request-short-help">Gerät, Fehler und Kontakt ausfüllen. Dann einmal absenden. Felder mit * sind erforderlich.</p>
         </div>
 
         <div class="form-success" data-form-success hidden tabindex="-1">
@@ -143,7 +143,8 @@
           <input id="website-url" class="form-honeypot" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
 
           <fieldset class="form-step is-active" data-form-step="1">
-            <legend class="sr-only">Schritt 1: Gerät und Fehler</legend>
+            <legend>Ihr Gerät</legend>
+            <div class="form-grid device-fields">
             <div class="field-group">
               <label for="device-type">Gerätetyp <span aria-hidden="true">*</span></label>
               <select id="device-type" name="POTENTIALCF1" required>
@@ -157,15 +158,30 @@
               </select>
             </div>
             <div class="field-group">
-              <label for="device-name">Gerätename <span aria-hidden="true">*</span></label>
+              <label for="device-name">Gerät / Modell <span aria-hidden="true">*</span></label>
               <input id="device-name" type="text" maxlength="80" placeholder="z. B. iPhone 14 oder ThinkPad T14" required>
+            </div>
             </div>
             <div class="field-group field-wide">
               <label for="description">Was funktioniert nicht? <span aria-hidden="true">*</span></label>
-              <textarea id="description" rows="5" maxlength="30000" placeholder="Beschreiben Sie kurz den Fehler und seit wann er auftritt." required></textarea>
+              <textarea id="description" rows="3" maxlength="30000" placeholder="Beschreiben Sie kurz den Fehler und seit wann er auftritt." required></textarea>
               <p class="field-hint">Bitte keine Passwörter, PINs oder Entsperrcodes eintragen.</p>
             </div>
             <input id="bigin-description" name="Description" type="hidden" value="">
+            <input id="bigin-device-model" name="POTENTIALCF2" type="hidden" value="">
+            <p class="identifier-title">Gerätekennung <span aria-hidden="true">*</span></p>
+            <div class="form-grid compact-fields">
+              <div class="field-group">
+                <label for="serial-number">Seriennummer</label>
+                <input id="serial-number" name="POTENTIALCF3" type="text" maxlength="255" autocomplete="off" aria-describedby="device-identifier-hint">
+              </div>
+              <div class="field-group" data-imei-field hidden>
+                <label for="imei">IMEI <small>(Alternative zur Seriennummer)</small></label>
+                <input id="imei" name="POTENTIALCF17" type="text" inputmode="numeric" maxlength="15" pattern="[0-9]{15}" autocomplete="off" aria-describedby="device-identifier-hint">
+              </div>
+            </div>
+            <p class="field-hint" id="device-identifier-hint">Bitte Seriennummer oder IMEI angeben. Falls nicht auffindbar, markieren Sie die Ausnahme. Wir prüfen die Gerätekennung bei der Annahme.</p>
+            <label class="check-row"><input id="identifier-unavailable" type="checkbox"> Seriennummer oder IMEI nicht auffindbar</label>
             <details class="optional-device-details"><summary>Weitere Geräteangaben (freiwillig)</summary>
             <div class="form-grid">
               <div class="field-group">
@@ -178,19 +194,6 @@
               </div>
             </div>
             <p class="field-hint" id="device-model-hint">Die genaue Modellbezeichnung beziehungsweise Modellnummer hilft uns bei der Vorbereitung. Falls unbekannt, können Sie diese Angabe später nachreichen.</p>
-            <input id="bigin-device-model" name="POTENTIALCF2" type="hidden" value="">
-            <div class="form-grid compact-fields">
-              <div class="field-group">
-                <label for="serial-number">Seriennummer <small>(freiwillig)</small></label>
-                <input id="serial-number" name="POTENTIALCF3" type="text" maxlength="255" autocomplete="off">
-              </div>
-              <div class="field-group" data-imei-field hidden>
-                <label for="imei">IMEI <small>(Alternative zur Seriennummer)</small></label>
-                <input id="imei" name="POTENTIALCF17" type="text" inputmode="numeric" maxlength="30" autocomplete="off">
-              </div>
-            </div>
-            <p class="field-hint" id="device-identifier-hint">Seriennummer und IMEI sind für die erste Anfrage freiwillig. Die eindeutige Gerätezuordnung prüfen wir bei der Geräteannahme.</p>
-            <label class="check-row"><input id="identifier-unavailable" type="checkbox"> Gerätekennung nicht bekannt – bei der Annahme klären</label>
             <div class="form-grid" data-computer-fields hidden>
               <div class="field-group"><label for="computer-cpu">Prozessor <small>(freiwillig)</small></label><input id="computer-cpu" type="text" maxlength="120" placeholder="z. B. Intel Core i5 oder unbekannt"></div>
               <div class="field-group"><label for="computer-ram">RAM-Speicher <small>(freiwillig)</small></label><input id="computer-ram" type="text" maxlength="120" placeholder="z. B. 16 GB oder unbekannt"></div>
@@ -203,13 +206,11 @@
             <details class="request-price-details"><summary>Diagnosekosten und Datenrettung</summary>
         <p class="request-price-note">Fehlerdiagnose: 30 € ohne anschließende Reparatur; bei Durchführung der Reparatur entfällt diese Gebühr. Datenrettung: 55 € für die Analyse allein oder bei erfolgloser Wiederherstellung. Bei erfolgreicher softwarebasierter Datenrettung zahlen Sie insgesamt 250 € einschließlich Analyse.</p>
             </details>
-            <div class="form-actions form-actions-end"><button class="button button-primary" type="button" data-next-step>Weiter zu Kontaktdaten <span aria-hidden="true">→</span></button></div>
           </fieldset>
 
-          <fieldset class="form-step" data-form-step="2" hidden>
-            <legend class="sr-only">Schritt 2: Kontakt</legend>
-            <div class="step-copy"><strong>Fast geschafft.</strong><span>Bitte Name, E-Mail und Telefonnummer eintragen. Die Rechnungsanschrift können Sie später nachreichen.</span></div>
-            <div class="form-grid">
+          <fieldset class="form-step is-active" data-form-step="2">
+            <legend>Ihre Kontaktdaten</legend>
+            <div class="form-grid contact-fields">
               <div class="field-group"><label for="first-name">Vorname <span aria-hidden="true">*</span></label><input id="first-name" name="Contacts.First Name" type="text" maxlength="40" autocomplete="given-name" required></div>
               <div class="field-group"><label for="last-name">Nachname <span aria-hidden="true">*</span></label><input id="last-name" name="Contacts.Last Name" type="text" maxlength="80" autocomplete="family-name" required></div>
               <div class="field-group"><label for="email">E-Mail <span aria-hidden="true">*</span></label><input id="email" name="Contacts.Email" type="email" maxlength="100" autocomplete="email" required></div>
@@ -220,17 +221,20 @@
                 </div>
                 <p class="field-hint" id="phone-hint">Land auswählen; die Nummer wird international gespeichert.</p>
               </div>
+            </div>
+            <details class="optional-address-details"><summary>Rechnungsanschrift ergänzen (freiwillig)</summary>
+            <p class="field-hint">Für eine spätere Rechnung benötigen wir die vollständige Anschrift. Sie können sie jetzt ergänzen oder bei der Geräteannahme nachreichen.</p>
+            <div class="form-grid">
               <div class="field-group field-wide"><label for="company">Firma <small>(nur bei Firmenrechnung)</small></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization"></div>
               <div class="field-group field-wide"><label for="street">Straße und Hausnummer <small>(freiwillig)</small></label><input id="street" name="Contacts.Mailing Street" type="text" maxlength="250" autocomplete="street-address"></div>
               <div class="field-group field-postcode"><label for="postcode">PLZ <small>(freiwillig)</small></label><input id="postcode" name="Contacts.Mailing Zip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"></div>
               <div class="field-group field-city"><label for="city">Ort <small>(freiwillig)</small></label><input id="city" name="Contacts.Mailing City" type="text" maxlength="100" autocomplete="address-level2"></div>
             </div>
-            <p class="field-hint"><strong>Für Rückfragen erforderlich:</strong> Name, E-Mail-Adresse und Telefonnummer. Die Anschrift ist für diese unverbindliche Anfrage freiwillig; für einen späteren Auftrag erfassen wir sie bei der Annahme.</p>
+            </details>
             <label class="privacy-check"><input id="privacy-acknowledged" type="checkbox" required><span>Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zur Kenntnis genommen. <b aria-hidden="true">*</b></span></label>
             <p class="field-hint"><strong>Unverbindlich:</strong> Sie senden zunächst nur eine Anfrage. Reparaturen und kostenpflichtige Zusatzarbeiten beginnen erst nach Ihrer Freigabe.</p>
             <p class="form-error-summary" data-error-summary role="alert" hidden>Bitte prüfen Sie die markierten Felder.</p>
             <div class="form-actions">
-              <button class="button button-outline" type="button" data-prev-step><span aria-hidden="true">←</span> Zurück</button>
               <button class="button button-primary" type="submit" data-submit>Reparaturanfrage senden</button>
             </div>
           </fieldset>
