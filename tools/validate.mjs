@@ -203,7 +203,7 @@ if (
 if (requestPage.includes('https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen')) {
   errors.push('reparaturanfrage.html: abweichendes Bigin-Ersatzformular darf nicht verlinkt werden');
 }
-for (const id of ['device-type', 'device-name', 'description', 'first-name', 'last-name', 'email', 'phone', 'privacy-acknowledged']) {
+for (const id of ['device-type', 'device-name', 'device-manufacturer', 'device-model', 'description', 'first-name', 'last-name', 'email', 'phone', 'street', 'postcode', 'city', 'customer-kind', 'privacy-acknowledged']) {
   if (!new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) {
     errors.push(`reparaturanfrage.html: Pflichtfeld #${id} ist nicht als erforderlich markiert`);
   }
@@ -211,26 +211,25 @@ for (const id of ['device-type', 'device-name', 'description', 'first-name', 'la
 for (const marker of [
   'Gerät / Modell',
   'Genaue Modellnummer',
-  'genaue Modellbezeichnung beziehungsweise Modellnummer',
-  'Seriennummer oder IMEI nicht auffindbar',
+  'Hersteller und genaue Modellnummer sind erforderlich',
+  'Weder Seriennummer noch IMEI vorhanden oder auffindbar',
   'data-computer-fields',
-  'bei der Geräteannahme nachreichen',
+  'Die vollständige Anschrift ist für die Auftragsdaten',
   'Ihre Kontaktdaten'
 ]) {
   if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Pflichtfeld-Hinweis fehlt (${marker})`);
 }
 for (const marker of [
-  'Freiwillig können Sie außerdem Ihre Anschrift',
-  'Modell beziehungsweise Modellnummer',
+  'vollständige Rechnungsanschrift',
+  'genaue Modellnummer',
   'Falls die Gerätekennung nicht auffindbar ist',
-  'Bei PC und Laptop können Sie zusätzlich freiwillig',
-  'Kontakt- und Adressdaten dem zugehörigen Vorgang'
+  'Bei PC und Laptop werden zusätzlich',
+  'Kontakt- und Adressdaten werden dem zugehörigen Vorgang'
 ]) {
   if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Formular-Datenschutzhinweis fehlt (${marker})`);
 }
-for (const id of ['device-manufacturer', 'device-model', 'street', 'postcode', 'city']) {
-  if (new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) errors.push(`reparaturanfrage.html: freiwilliges Feld #${id} darf nicht verpflichtend sein`);
-}
+if (/freiwillig|optional-device-details|optional-address-details/.test(requestPage)) errors.push('reparaturanfrage.html: veraltete freiwillige Formularangaben vorhanden');
+if (/data-imei-field hidden/.test(requestPage)) errors.push('reparaturanfrage.html: IMEI muss bei allen Gerätetypen sichtbar sein');
 if (requestPage.includes('Contacts.Mailing Country') || requestPage.includes('Contacts.Mailing State')) {
   errors.push('reparaturanfrage.html: nicht eingegebene Adressdaten werden weiterhin automatisch ergänzt');
 }
