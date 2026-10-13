@@ -209,20 +209,20 @@ for (const id of ['device-type', 'device-name', 'description', 'first-name', 'la
   }
 }
 for (const marker of [
-  'Gerätename',
+  'Gerät / Modell',
   'Genaue Modellnummer',
   'genaue Modellbezeichnung beziehungsweise Modellnummer',
-  'Gerätekennung nicht bekannt – bei der Annahme klären',
+  'Seriennummer oder IMEI nicht auffindbar',
   'data-computer-fields',
-  'Die Rechnungsanschrift können Sie später nachreichen',
-  'Für Rückfragen erforderlich:'
+  'bei der Geräteannahme nachreichen',
+  'Ihre Kontaktdaten'
 ]) {
   if (!requestPage.includes(marker)) errors.push(`reparaturanfrage.html: Pflichtfeld-Hinweis fehlt (${marker})`);
 }
 for (const marker of [
   'Freiwillig können Sie außerdem Ihre Anschrift',
   'Modell beziehungsweise Modellnummer',
-  'Seriennummer und IMEI sind für die erste Anfrage freiwillig',
+  'Falls die Gerätekennung nicht auffindbar ist',
   'Bei PC und Laptop können Sie zusätzlich freiwillig',
   'Kontakt- und Adressdaten dem zugehörigen Vorgang'
 ]) {

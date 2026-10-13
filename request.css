@@ -625,4 +625,18 @@
 .optional-device-details,.request-price-details{margin:16px 0;padding:14px;border:1px solid #43516a;border-radius:12px}.optional-device-details>summary,.request-price-details>summary{cursor:pointer;font-weight:700;color:#c8d5ff}.request-price-details .request-price-note{border:0;margin:12px 0 0;padding:0}
 .form-progress{flex-wrap:wrap;gap:8px}.form-progress span{width:auto;min-width:32px;height:auto;min-height:32px;border-radius:12px;padding:7px 10px;line-height:1.3;font-size:12px}.form-progress i{display:none}
 .request-form-shell{scroll-margin-top:84px}
+.request-short-help{max-width:34rem;margin:0;color:#c6cedb;font-size:.88rem;line-height:1.5}
+.repair-form .form-step>legend{padding:0;margin:0 0 .75rem;font-size:1.1rem;font-weight:750;color:#f8fafc}
+.repair-form .form-step{gap:.85rem}
+.repair-form .form-grid{gap:.85rem;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.identifier-title{margin:0;font-size:.88rem;font-weight:750}
+.identifier-title span{color:#ff8b82}
+.request-intro{margin-bottom:1.25rem}
+.request-intro h1{font-size:clamp(2rem,4vw,3rem)}
+.repair-form .optional-device-details,.repair-form .request-price-details,.repair-form .optional-address-details{margin:0}
+.repair-form .form-step+.form-step{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #334155}
+.optional-address-details{margin:16px 0;padding:14px;border:1px solid #43516a;border-radius:12px}
+.optional-address-details>summary{cursor:pointer;font-weight:700;color:#c8d5ff}
+.optional-address-details .form-grid{margin-top:12px}
+@media(max-width:700px){.request-page .request-main{padding-top:6rem}.request-intro .eyebrow{display:none}.request-short-help{margin-top:10px}.repair-form .field-group{margin-bottom:0}.request-price-details{padding:10px}.optional-device-details,.optional-address-details{padding:10px}.repair-form .form-step+.form-step{margin-top:1rem;padding-top:1rem}.repair-form .form-grid{grid-template-columns:minmax(0,1fr)}.repair-form .contact-fields{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.contact-fields>.field-group:nth-child(n+3){grid-column:1/-1}.request-page .mobile-contact-bar{display:none}.request-page.has-mobile-contact{padding-bottom:0}}
 @media(max-width:700px){.request-intro{padding-top:22px;padding-bottom:16px}.request-intro h1{font-size:34px;line-height:1.1}.request-intro .hero-lead{font-size:15px;line-height:1.5;margin:12px 0}.request-intro .eyebrow{margin-bottom:12px}.request-trust{display:none}.request-form-heading{padding:18px;display:block}.request-form-heading .eyebrow{display:none}.request-form-heading h2{font-size:22px;margin-bottom:12px}.request-form-heading .form-progress{justify-content:flex-start}.request-side .qr-compact{display:none}}

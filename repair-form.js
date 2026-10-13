@@ -129,6 +129,9 @@
       if (['device-name', 'device-manufacturer', 'device-model', 'description', 'serial-number', 'imei', 'computer-cpu', 'computer-ram', 'computer-gpu', 'computer-mainboard', 'computer-psu'].includes(element.id)) {
         element.setCustomValidity(element.required && !element.value.trim() ? t("Bitte dieses Feld ausfüllen.") : '');
       }
+      if (element.id === 'serial-number' && element.required && !element.value.trim()) {
+        element.setCustomValidity(t("Bitte Seriennummer oder IMEI angeben oder die Ausnahme markieren."));
+      }
       if (window.siteTranslate && element.validity.valueMissing) element.setCustomValidity(t('Bitte dieses Feld ausfüllen.'));
       if (window.siteTranslate && element.validity.typeMismatch) element.setCustomValidity(t('Bitte prüfen Sie die markierten Felder.'));
       const valid = element.checkValidity();
@@ -137,6 +140,8 @@
     });
 
     if (!firstInvalid) return true;
+    const collapsedDetails = firstInvalid.closest('details');
+    if (collapsedDetails) collapsedDetails.open = true;
     firstInvalid.focus();
     firstInvalid.reportValidity();
     return false;
@@ -146,8 +151,9 @@
     const exempt = identifierUnavailable.checked;
     serial.disabled = exempt;
     imei.disabled = exempt || imeiWrap.hidden;
-    serial.required = false;
-    imei.required = false;
+    const acceptsImei = !imeiWrap.hidden;
+    serial.required = !exempt && !(acceptsImei && imei.value.trim());
+    imei.required = !exempt && acceptsImei && !serial.value.trim();
   };
 
   const updateDeviceFields = () => {
@@ -179,10 +185,10 @@
     }
   });
 
-  next.addEventListener('click', () => {
+  next?.addEventListener('click', () => {
     if (validateArea(steps[0])) showStep(2);
   });
-  previous.addEventListener('click', () => showStep(1));
+  previous?.addEventListener('click', () => showStep(1));
 
   responseFrame.addEventListener('load', async () => {
     if (!sending) return;
@@ -210,14 +216,16 @@
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (sending) return;
+    if (sending || submit.disabled) return;
     errorSummary.hidden = true;
     if (!validateArea(steps[0])) {
-      showStep(1);
+      if (next) showStep(1);
       validateArea(steps[0]);
       return;
     }
     if (!validateArea(steps[1])) {
+      const collapsedDetails = steps[1].querySelector('[aria-invalid="true"]')?.closest('details');
+      if (collapsedDetails) collapsedDetails.open = true;
       errorSummary.hidden = false;
       return;
     }
