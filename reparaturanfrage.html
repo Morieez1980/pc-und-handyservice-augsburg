@@ -39,7 +39,7 @@
   <script defer src="/clarity-consent.min.js?v=20261002-1"></script>
   <script defer src="/analytics-consent.js?v=20260924-2"></script>
   <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
-  <script defer src="/repair-form.js?v=20261013-required1"></script>
+  <script defer src="/repair-form.js?v=20261014-plain1"></script>
 
 
 
@@ -105,7 +105,7 @@
       <div>
         <p class="eyebrow"><span></span> Direkte Reparaturanfrage</p>
         <h1 id="request-title">Reparatur online <em>anfragen.</em></h1>
-        <p class="hero-lead">Gerät und Fehler beschreiben, Kontaktdaten ergänzen – unverbindlich. Ein kostenpflichtiger Auftrag entsteht erst nach Ihrer Freigabe.</p>
+        <p class="hero-lead">Ihre Anfrage ist unverbindlich. Ein kostenpflichtiger Auftrag entsteht erst nach Ihrer Freigabe.</p>
       </div>
       <div class="request-trust" aria-label="Vorteile">
         <span>Schnell ausgefüllt</span><span>Direkt übermittelt</span><span>Persönliche Rückmeldung</span>
@@ -116,7 +116,7 @@
       <section class="request-form-shell" aria-labelledby="request-form-title">
         <div class="request-form-heading">
           <div><p class="eyebrow"><span></span> Online-Anfrage</p><h2 id="request-form-title">Was dürfen wir reparieren?</h2></div>
-          <p class="request-short-help">Gerät, Fehler, Kontakt und Rechnungsanschrift ausfüllen. Alle angezeigten Angaben sind erforderlich. Für die Gerätekennung genügt Seriennummer oder IMEI. Dann einmal absenden.</p>
+          <p class="request-short-help">Bitte füllen Sie die Angaben aus. Alle angezeigten Angaben sind erforderlich. Seriennummer oder IMEI genügt.</p>
         </div>
 
         <div class="form-success" data-form-success hidden tabindex="-1">
@@ -180,7 +180,7 @@
                 <input id="imei" name="POTENTIALCF17" type="text" inputmode="numeric" maxlength="15" pattern="[0-9]{15}" autocomplete="off" aria-describedby="device-identifier-hint">
               </div>
             </div>
-            <p class="field-hint" id="device-identifier-hint">Für die eindeutige Gerätezuordnung ist mindestens eine Kennung erforderlich: Seriennummer oder IMEI. Eine IMEI gibt es nur bei Geräten mit Mobilfunk. Finden Sie keine der beiden Kennungen, markieren Sie die Ausnahme. Wir prüfen die Zuordnung bei der Annahme.</p>
+            <p class="field-hint" id="device-identifier-hint">Seriennummer oder IMEI genügt. IMEI: nur bei Mobilfunkgeräten. Keine Kennung gefunden? Bitte die Ausnahme ankreuzen.</p>
             <label class="check-row"><input id="identifier-unavailable" type="checkbox"> Weder Seriennummer noch IMEI vorhanden oder auffindbar</label>
             <div class="required-device-details">
             <div class="form-grid">
@@ -193,18 +193,20 @@
                 <input id="device-model" type="text" maxlength="80" placeholder="z. B. A2882 oder 21AH" aria-describedby="device-model-hint" required>
               </div>
             </div>
-            <p class="field-hint" id="device-model-hint">Hersteller und genaue Modellnummer sind erforderlich. Sie finden die Modellnummer meist auf dem Typenschild, der Verpackung oder in den Geräteeinstellungen.</p>
+            <p class="field-hint" id="device-model-hint">Hersteller und genaue Modellnummer sind erforderlich. Sie stehen auf dem Typenschild oder in den Einstellungen.</p>
             <div class="form-grid" data-computer-fields hidden>
               <div class="field-group"><label for="computer-cpu">Prozessor <span aria-hidden="true">*</span></label><input id="computer-cpu" type="text" maxlength="120" placeholder="Intel Core i5"></div>
               <div class="field-group"><label for="computer-ram">RAM-Speicher <span aria-hidden="true">*</span></label><input id="computer-ram" type="text" maxlength="120" placeholder="16 GB"></div>
               <div class="field-group"><label for="computer-gpu">Grafikkarte <span aria-hidden="true">*</span></label><input id="computer-gpu" type="text" maxlength="120" placeholder="Intel UHD Graphics"></div>
               <div class="field-group"><label for="computer-mainboard">Mainboard <span aria-hidden="true">*</span></label><input id="computer-mainboard" type="text" maxlength="120" placeholder="Hersteller und Modell des Mainboards"></div>
               <div class="field-group"><label for="computer-psu">Netzteil/Ladegerät <span aria-hidden="true">*</span></label><input id="computer-psu" type="text" maxlength="120" placeholder="Hersteller, Modell und Leistung"></div>
-              <p class="field-hint field-wide">Bei PC und Laptop benötigen wir diese technischen Angaben zur Vorbereitung. Unter Windows finden Sie Prozessor, RAM und Mainboard in „Systeminformationen“, die Grafikkarte im Geräte-Manager und Netzteildaten auf dem Netzteil oder Ladegerät.</p>
+              <p class="field-hint field-wide">Angaben finden Sie in Windows unter „Systeminformationen“ und im Geräte-Manager. Netzteildaten stehen auf dem Netzteil oder Ladegerät.</p>
             </div>
             </div>
             <details class="request-price-details"><summary>Diagnosekosten und Datenrettung</summary>
         <p class="request-price-note">Fehlerdiagnose: 30 € ohne anschließende Reparatur; bei Durchführung der Reparatur entfällt diese Gebühr. Datenrettung: 55 € für die Analyse allein oder bei erfolgloser Wiederherstellung. Bei erfolgreicher softwarebasierter Datenrettung zahlen Sie insgesamt 250 € einschließlich Analyse.</p>
+        <p class="request-price-note">Zahlung erst nach Vereinbarung: per SEPA-Echtzeitüberweisung. Ersatzteile bestellen wir nach Zahlungseingang. Abholung nach vollständiger Bezahlung.</p>
+        <p class="request-price-note">Bitte sichern Sie Ihre Daten vor der Abgabe. Eine erfolgreiche Datenrettung können wir nicht garantieren.</p>
             </details>
           </fieldset>
 
@@ -224,7 +226,7 @@
             </div>
             <div class="required-address-details">
             <p class="identifier-title">Ihre Rechnungsanschrift <span aria-hidden="true">*</span></p>
-            <p class="field-hint">Die vollständige Anschrift ist für die Auftragsdaten und eine spätere Rechnung erforderlich. Durch die Angabe entsteht noch kein kostenpflichtiger Auftrag.</p>
+            <p class="field-hint">Die vollständige Anschrift ist für die Auftragsdaten und eine spätere Rechnung erforderlich.</p>
             <div class="form-grid">
               <div class="field-group field-wide"><label for="customer-kind">Rechnung für <span aria-hidden="true">*</span></label><select id="customer-kind" required><option value="private">Privatperson</option><option value="business">Firma</option></select></div>
               <div class="field-group field-wide" data-company-field hidden><label for="company">Firmenname <span aria-hidden="true">*</span></label><input id="company" name="POTENTIALCF18" type="text" maxlength="255" autocomplete="organization" disabled></div>
@@ -234,7 +236,7 @@
             </div>
             </div>
             <label class="privacy-check"><input id="privacy-acknowledged" type="checkbox" required><span>Ich habe die <a href="/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zur Kenntnis genommen. <b aria-hidden="true">*</b></span></label>
-            <p class="field-hint"><strong>Unverbindliche Reparaturanfrage:</strong> Die Angaben dienen der Gerätezuordnung, der Kommunikation und der Vorbereitung Ihrer Auftragsdaten. Reparaturen und kostenpflichtige Zusatzarbeiten beginnen erst nach Ihrer Freigabe.</p>
+            <p class="field-hint"><strong>Unverbindliche Reparaturanfrage:</strong> Wir besprechen Prüfung, Kosten und Reparatur mit Ihnen. Kostenpflichtige Arbeiten nur nach Ihrer Freigabe.</p>
             <p class="form-error-summary" data-error-summary role="alert" hidden>Bitte prüfen Sie die markierten Felder.</p>
             <div class="form-actions">
               <button class="button button-primary" type="submit" data-submit>Reparaturanfrage senden</button>
