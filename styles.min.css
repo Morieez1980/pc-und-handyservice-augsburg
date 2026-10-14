@@ -15,3 +15,6 @@
 .has-mobile-contact .consent-banner{bottom:calc(78px + env(safe-area-inset-bottom));max-height:calc(100dvh - 94px - env(safe-area-inset-bottom))}
 .consent-banner p{font-size:13px;line-height:1.5;margin:8px 0 12px}.consent-actions{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:12px}.consent-actions .button{padding:0 12px;width:100%}
 }
+
+/* Einheitliche Firmenmarke, 14.10.2026 */
+.brand-logo{width:48px;height:48px;flex-shrink:0;object-fit:contain;border-radius:10px}.brand-art{min-height:0!important;display:flex;align-items:center;justify-content:center}.brand-art a{display:block;width:100%;max-width:560px}.brand-art img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.12)}
