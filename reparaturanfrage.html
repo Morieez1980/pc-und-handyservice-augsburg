@@ -39,7 +39,7 @@
   <script defer src="/clarity-consent.min.js?v=20261002-1"></script>
   <script defer src="/analytics-consent.js?v=20260924-2"></script>
   <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
-  <script defer src="/repair-form.js?v=20261014-plain1"></script>
+  <script defer src="/repair-form.js?v=20261014-unlock1"></script>
 
 
 
@@ -165,10 +165,27 @@
             <div class="field-group field-wide">
               <label for="description">Was funktioniert nicht? <span aria-hidden="true">*</span></label>
               <textarea id="description" rows="3" maxlength="30000" placeholder="Beschreiben Sie kurz den Fehler und seit wann er auftritt." required></textarea>
-              <p class="field-hint">Bitte keine Passwörter, PINs oder Entsperrcodes eintragen.</p>
             </div>
             <input id="bigin-description" name="Description" type="hidden" value="">
             <input id="bigin-device-model" name="POTENTIALCF2" type="hidden" value="">
+            <div class="form-grid" data-unlock-fields hidden>
+              <div class="field-group">
+                <label for="unlock-method" id="unlock-label">Geräteentsperrung (optional)</label>
+                <select id="unlock-method" aria-describedby="unlock-hint">
+                  <option value="later">Bei Geräteabgabe mitteilen</option>
+                  <option value="none">Keine Sperre vorhanden</option>
+                  <option value="pin">PIN</option>
+                  <option value="password">Passwort</option>
+                  <option value="pattern" data-unlock-pattern>Muster</option>
+                </select>
+              </div>
+              <div class="field-group" data-unlock-value hidden>
+                <label for="unlock-code" id="unlock-code-label">PIN / Passwort</label>
+                <input id="unlock-code" type="password" maxlength="128" autocomplete="off" spellcheck="false" aria-describedby="unlock-hint" disabled>
+              </div>
+              <p class="field-hint field-wide" id="unlock-hint">Nur die Geräteentsperrung für die Reparatur angeben. Keine Passwörter für E-Mail, Apple, Google oder andere Onlinekonten. Alternativ bei Geräteabgabe mitteilen.</p>
+              <p class="field-hint field-wide" data-pattern-hint hidden>Muster: Punkte zeilenweise von 1 bis 9 nummerieren (oben 1–2–3, Mitte 4–5–6, unten 7–8–9), dann die Reihenfolge eingeben.</p>
+            </div>
             <p class="identifier-title">Gerätekennung <span aria-hidden="true">*</span></p>
             <div class="form-grid compact-fields">
               <div class="field-group">

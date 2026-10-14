@@ -7,11 +7,12 @@ import {additionalForms,additionalRuntime,additionalUnconfirmed} from '../locale
 import {repairUxTranslations} from '../locales/repair-ux.mjs';
 import {repairRequiredTranslations} from '../locales/repair-required.mjs';
 import {repairPlainTranslations} from '../locales/repair-plain.mjs';
+import {repairUnlockTranslations} from '../locales/repair-unlock.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
-const version='20261002-lang2',repairFormVersion='20261014-plain1',origin='https://www.pc-und-handyservice-augsburg.com';
+const version='20261002-lang2',repairFormVersion='20261014-unlock1',origin='https://www.pc-und-handyservice-augsburg.com';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const norm=s=>s.replaceAll('&amp;','&').replaceAll('&nbsp;',' ').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
 const url=(lang,route='')=>lang==='de'?'/'+route:'/'+lang+'/'+route;
@@ -38,6 +39,7 @@ for(const [lang,c] of Object.entries(localeContent)){
   Object.assign(map,repairUxTranslations[lang]);
   Object.assign(map,repairRequiredTranslations[lang]);
   Object.assign(map,repairPlainTranslations[lang]);
+  Object.assign(map,repairUnlockTranslations[lang]);
   write(lang+'/form-i18n.js','window.siteTranslate=(key)=>('+JSON.stringify(map)+')[key]||key;\n');
   const translateText=html=>html.replace(/>([^<>]+)</g,(all,raw)=>map[norm(raw)]?'>'+(/^\s/.test(raw)?' ':'')+esc(map[norm(raw)])+(/\s$/.test(raw)?' ':'')+'<':all).replace(/\b(placeholder|aria-label|title)="([^"]*)"/g,(all,key,raw)=>map[norm(raw)]?key+'="'+esc(map[norm(raw)])+'"':all);
   let form=translateText(baseForm).replaceAll('href="/"','href="'+url(lang)+'"').replaceAll('href="/datenschutz"','href="'+url(lang,'datenschutz')+'"');
