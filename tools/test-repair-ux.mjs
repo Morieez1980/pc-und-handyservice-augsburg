@@ -64,6 +64,14 @@ try {
       assert.equal(await page.locator('a[href^="https://wa.me/4915254530080"]').count()>0,true);
       const dimensions=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
       assert.ok(dimensions.scroll<=dimensions.width+1,lang+' horizontal overflow at '+width+': '+JSON.stringify(dimensions));
+      await page.locator('#device-type').selectOption('Smartphone');
+      await page.locator('#unlock-method').selectOption('pattern');
+      await page.locator('#unlock-code').fill('1 2 3 6');
+      assert.equal(await page.locator('#unlock-code').isVisible(),true);
+      assert.equal(await page.locator('#unlock-code').evaluate(e=>e.checkValidity()),true);
+      if(lang!=='de') assert.notEqual(await page.locator('#unlock-label').textContent(),'PIN, Passwort oder Muster (optional)');
+      const unlockDimensions=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+      assert.ok(unlockDimensions.scroll<=unlockDimensions.width+1,lang+' unlock fields overflow at '+width);
       const nav=page.locator(lang==='de'?'.nav-toggle':'.locale-toggle');
       if(width<700){ await nav.click(); assert.equal(await nav.getAttribute('aria-expanded'),'true'); await nav.click(); }
       if(lang==='de' && [390,1280].includes(width)) await page.screenshot({path:path.join(evidence,'Reparaturformular-'+width+'.png'),fullPage:true});
@@ -88,6 +96,22 @@ try {
   assert.equal(references,0,'Missing identifier must not transmit');
   for(const type of ['Desktop-PC','Laptop','Smartphone','Tablet','Konsole','Sonstiges']) {
     await page.locator('#device-type').selectOption(type);
+    const supportsUnlock=type!=='Sonstiges';
+    assert.equal(await page.locator('[data-unlock-fields]').isVisible(),supportsUnlock,type+' unlock visibility');
+    assert.equal(await page.locator('#unlock-code').isDisabled(),true,type+' code disabled until selected');
+    if(supportsUnlock) {
+      await page.locator('#unlock-method').selectOption('pin');
+      assert.equal(await page.locator('#unlock-code').evaluate(e=>e.required),true);
+      await page.locator('#unlock-code').fill('LOCAL-TEST-PIN');
+      await page.locator('#unlock-method').selectOption('password');
+      assert.equal(await page.locator('#unlock-code').inputValue(),'','Method change clears old secret');
+      await page.locator('#unlock-code').fill('   ');
+      assert.equal(await page.locator('#unlock-code').evaluate(e=>e.checkValidity()),false,'Blank password rejected');
+      await page.locator('#unlock-code').fill('LOCAL-TEST-PASSWORD');
+      await page.locator('#unlock-method').selectOption('none');
+      assert.equal(await page.locator('#unlock-code').inputValue(),'');
+      assert.equal(await page.locator('#unlock-code').isDisabled(),true);
+    }
     assert.equal(await page.locator('#imei').isVisible(),true,type+' IMEI must remain visible');
     const computer=['Desktop-PC','Laptop'].includes(type);
     for(const id of ['computer-cpu','computer-ram','computer-gpu','computer-mainboard','computer-psu']) {
@@ -144,6 +168,9 @@ try {
   assert.equal(references,0,'PC specifications must not be omitted');
   for(const [id,value] of Object.entries({'computer-cpu':'Intel Core i5','computer-ram':'16 GB','computer-gpu':'Intel UHD','computer-mainboard':'TEST BOARD','computer-psu':'TEST 65 W'})) await page.locator('#'+id).fill(value);
   await page.locator('#device-type').selectOption('Smartphone');
+  assert.equal(await page.locator('#unlock-code').inputValue(),'','Device change clears old secret');
+  await page.locator('#unlock-method').selectOption('pattern');
+  await page.locator('#unlock-code').fill('1 2 3 6');
   await page.locator('[data-submit]').click();
   await page.waitForFunction(()=>document.querySelector('[data-submit]').disabled);
   await page.locator('form#repair-request').evaluate(f=>{f.requestSubmit(); f.requestSubmit();});
@@ -157,6 +184,7 @@ try {
   assert.equal(mapping.POTENTIALCF6,'+4915254530080');
   assert.equal(mapping.POTENTIALCF7,'Stätzlinger Straße 99, 86165 Augsburg');
   assert.match(mapping.Description,/Gerätekennung: nicht vorhanden/);
+  assert.match(mapping.Description,/Geräteentsperrung \(Muster – Punkte 1–9\): 1 2 3 6/);
   assert.equal(mapping.POTENTIALCF2,'TEST Smartphone | Apple | A2882');
   assert.doesNotMatch(mapping.Description,/TEST BOARD|TEST 65 W/,'Hidden PC details must not reach smartphone requests');
   assert.equal(errors.length,0,errors.join('\n'));
