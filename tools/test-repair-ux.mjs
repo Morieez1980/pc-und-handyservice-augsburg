@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 // Install Playwright locally, or set PLAYWRIGHT_MODULE_PATH for a bundled runtime.
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE_PATH || 'playwright');
 const root = path.resolve(import.meta.dirname, '..');
-const evidence = path.resolve(root, '..', 'Formular-Pruefung');
+const evidence = path.resolve(root, '..', 'Formular-Optional-20261020');
 await fs.mkdir(evidence, {recursive: true});
 const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.png':'image/png', '.svg':'image/svg+xml'};
 const server = http.createServer(async (req,res) => {
@@ -56,7 +56,7 @@ try {
       assert.equal(await page.locator('[data-form-step="2"]').isVisible(),true,lang+' contact fields hidden');
       assert.equal(await page.locator('#serial-number').isVisible(),true,lang+' device identifier hidden');
       assert.equal(await page.locator('#imei').isVisible(),true,lang+' IMEI hidden');
-      for (const id of ['device-manufacturer','device-model','street','postcode','city']) {
+      for (const id of ['street','postcode','city']) {
         assert.equal(await page.locator('#'+id).isVisible(),true,lang+' required field hidden: '+id);
         assert.equal(await page.locator('#'+id).evaluate(e=>e.required),true,lang+' missing required field: '+id);
       }
@@ -64,6 +64,12 @@ try {
       assert.equal(await page.locator('a[href^="https://wa.me/4915254530080"]').count()>0,true);
       const dimensions=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
       assert.ok(dimensions.scroll<=dimensions.width+1,lang+' horizontal overflow at '+width+': '+JSON.stringify(dimensions));
+      await page.locator('#device-type').selectOption('Desktop-PC');
+      for(const id of ['device-manufacturer','device-model','computer-cpu','computer-ram','computer-gpu','computer-mainboard','computer-psu']) {
+        assert.equal(await page.locator('#'+id).evaluate(e=>e.required),false,lang+' optional technical field: '+id);
+        assert.equal(await page.locator('#'+id).evaluate(e=>e.checkValidity()),true,lang+' empty optional field: '+id);
+        assert.doesNotMatch(await page.locator('label[for="'+id+'"]').textContent(),/\*/);
+      }
       await page.locator('#device-type').selectOption('Smartphone');
       await page.locator('#unlock-method').selectOption('pattern');
       await page.locator('#unlock-code').fill('1 2 3 6');
@@ -115,7 +121,7 @@ try {
     assert.equal(await page.locator('#imei').isVisible(),true,type+' IMEI must remain visible');
     const computer=['Desktop-PC','Laptop'].includes(type);
     for(const id of ['computer-cpu','computer-ram','computer-gpu','computer-mainboard','computer-psu']) {
-      assert.equal(await page.locator('#'+id).evaluate(e=>e.required),computer,type+' specification required state: '+id);
+      assert.equal(await page.locator('#'+id).evaluate(e=>e.required),false,type+' specification must be optional: '+id);
       assert.equal(await page.locator('#'+id).isDisabled(),!computer,type+' hidden specification disabled: '+id);
     }
     await page.locator('#serial-number').fill('CODEX-LOCAL-TEST');
@@ -137,9 +143,8 @@ try {
   for(const id of ['device-manufacturer','device-model']) {
     const field=page.locator('#'+id), prior=await field.inputValue();
     await field.fill('   ');
-    await page.locator('[data-submit]').click();
-    assert.equal(await page.evaluate(()=>document.activeElement.id),id);
-    assert.equal(references,0,'Missing '+id+' must not transmit');
+    assert.equal(await field.evaluate(e=>e.required),false,'Optional '+id);
+    assert.equal(await field.evaluate(e=>e.checkValidity()),true,'Blank optional '+id+' must be valid');
     await field.fill(prior);
   }
   await page.locator('[data-submit]').click();
@@ -163,9 +168,7 @@ try {
   await page.locator('#customer-kind').selectOption('private');
   assert.equal(await page.locator('#company').isDisabled(),true);
   await page.locator('#device-type').selectOption('Desktop-PC');
-  await page.locator('[data-submit]').click();
-  assert.equal(await page.evaluate(()=>document.activeElement.id),'computer-cpu');
-  assert.equal(references,0,'PC specifications must not be omitted');
+  for(const id of ['computer-cpu','computer-ram','computer-gpu','computer-mainboard','computer-psu']) assert.equal(await page.locator('#'+id).evaluate(e=>e.checkValidity()),true,'Empty PC specification must be valid: '+id);
   for(const [id,value] of Object.entries({'computer-cpu':'Intel Core i5','computer-ram':'16 GB','computer-gpu':'Intel UHD','computer-mainboard':'TEST BOARD','computer-psu':'TEST 65 W'})) await page.locator('#'+id).fill(value);
   await page.locator('#device-type').selectOption('Smartphone');
   assert.equal(await page.locator('#unlock-code').inputValue(),'','Device change clears old secret');
@@ -187,7 +190,23 @@ try {
   assert.match(mapping.Description,/Geräteentsperrung \(Muster – Punkte 1–9\): 1 2 3 6/);
   assert.equal(mapping.POTENTIALCF2,'TEST Smartphone | Apple | A2882');
   assert.doesNotMatch(mapping.Description,/TEST BOARD|TEST 65 W/,'Hidden PC details must not reach smartphone requests');
+  for(const type of ['Desktop-PC','Laptop']) {
+    await page.goto(origin+'/reparaturanfrage');
+    await page.clock.fastForward(3000);
+    await page.locator('#device-type').selectOption(type);
+    for(const [id,value] of Object.entries({'device-name':'Lokaler Test-PC','description':'Lokaler Test ohne technische Zusatzangaben und ohne echten Versand.','serial-number':'CODEX-LOCAL-TEST','first-name':'Maurice','last-name':'Keil','email':'MauriceKeil@pc-und-handyservice-augsburg.com','phone':'015254530080','street':'Stätzlinger Straße 99','postcode':'86165','city':'Augsburg'})) await page.locator('#'+id).fill(value);
+    await page.locator('#privacy-acknowledged').check();
+    const prior=posts;
+    await page.locator('[data-submit]').click();
+    await page.waitForFunction(()=>document.querySelector('[data-submit]').disabled);
+    releaseReference();
+    await page.frameLocator('[name="bigin-response"]').getByText('Intercepted test submission').waitFor();
+    assert.equal(posts,prior+1,type+' accepts blank optional technical details');
+    assert.equal(await page.locator('#bigin-device-model').inputValue(),'Lokaler Test-PC');
+    for(const id of ['device-manufacturer','device-model','computer-cpu','computer-ram','computer-gpu','computer-mainboard','computer-psu']) assert.equal(await page.locator('#'+id).inputValue(),'');
+  }
+  assert.equal(posts,3,'Only three intercepted local submissions');
   assert.equal(errors.length,0,errors.join('\n'));
-  await fs.writeFile(path.join(evidence,'Ergebnis.json'),JSON.stringify({layouts,checks:['required manufacturer and exact model','required full billing address','all six device types accept serial OR IMEI OR explicit exception','IMEI validation','company required only for business invoice','PC specifications required only for PCs/laptops','CRM field mapping','rapid repeat submission suppressed','all external submissions intercepted'],references,crmPosts:posts,errors},null,2));
+  await fs.writeFile(path.join(evidence,'Ergebnis.json'),JSON.stringify({layouts,checks:['optional manufacturer and exact model','required full billing address','all six device types accept serial OR IMEI OR explicit exception','IMEI validation','company required only for business invoice','PC specifications optional for PCs/laptops','CRM field mapping','rapid repeat submission suppressed','all external submissions intercepted'],references,crmPosts:posts,errors},null,2));
   console.log('44 Sprach-/Breitenprüfungen und Formularverhalten bestanden. Externe Übermittlung ausschließlich abgefangen.');
 } finally { if(browser) await browser.close(); await new Promise(resolve=>server.close(resolve)); }
