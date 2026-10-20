@@ -191,7 +191,7 @@
     updateUnlockMethod();
     imeiWrap.hidden = false;
     computerWrap.hidden = !needsComputerDetails;
-    computerFields.forEach((field) => { field.required = needsComputerDetails; field.disabled = !needsComputerDetails; });
+    computerFields.forEach((field) => { field.required = false; field.disabled = !needsComputerDetails; });
     updateIdentifierFields();
   };
 

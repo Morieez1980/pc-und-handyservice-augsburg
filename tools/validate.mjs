@@ -206,7 +206,7 @@ if (
 if (requestPage.includes('https://eu.bigin.online/org20117040394/forms/reparatur-online-anfragen')) {
   errors.push('reparaturanfrage.html: abweichendes Bigin-Ersatzformular darf nicht verlinkt werden');
 }
-for (const id of ['device-type', 'device-name', 'device-manufacturer', 'device-model', 'description', 'first-name', 'last-name', 'email', 'phone', 'street', 'postcode', 'city', 'customer-kind', 'privacy-acknowledged']) {
+for (const id of ['device-type', 'device-name', 'description', 'first-name', 'last-name', 'email', 'phone', 'street', 'postcode', 'city', 'customer-kind', 'privacy-acknowledged']) {
   if (!new RegExp(`id="${id}"[^>]*\\brequired\\b`).test(requestPage)) {
     errors.push(`reparaturanfrage.html: Pflichtfeld #${id} ist nicht als erforderlich markiert`);
   }
@@ -214,7 +214,7 @@ for (const id of ['device-type', 'device-name', 'device-manufacturer', 'device-m
 for (const marker of [
   'Gerät / Modell',
   'Genaue Modellnummer',
-  'Hersteller und genaue Modellnummer sind erforderlich',
+  'Hersteller und genaue Modellnummer sind optional',
   'Weder Seriennummer noch IMEI vorhanden oder auffindbar',
   'data-computer-fields',
   'Die vollständige Anschrift ist für die Auftragsdaten',
@@ -226,12 +226,12 @@ for (const marker of [
   'vollständige Rechnungsanschrift',
   'genaue Modellnummer',
   'Falls die Gerätekennung nicht auffindbar ist',
-  'Bei PC und Laptop werden zusätzlich',
+  'Bei PC und Laptop können zusätzlich',
   'Kontakt- und Adressdaten werden dem zugehörigen Vorgang'
 ]) {
   if (!privacyPage.includes(marker)) errors.push(`datenschutz.html: Formular-Datenschutzhinweis fehlt (${marker})`);
 }
-if (/freiwillig|optional-device-details|optional-address-details/.test(requestPage)) errors.push('reparaturanfrage.html: veraltete freiwillige Formularangaben vorhanden');
+if (/optional-address-details/.test(requestPage)) errors.push('reparaturanfrage.html: veraltete freiwillige Formularangaben vorhanden');
 if (/data-imei-field hidden/.test(requestPage)) errors.push('reparaturanfrage.html: IMEI muss bei allen Gerätetypen sichtbar sein');
 if (requestPage.includes('Contacts.Mailing Country') || requestPage.includes('Contacts.Mailing State')) {
   errors.push('reparaturanfrage.html: nicht eingegebene Adressdaten werden weiterhin automatisch ergänzt');

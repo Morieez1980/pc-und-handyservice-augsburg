@@ -39,7 +39,7 @@
   <script defer src="/clarity-consent.min.js?v=20261002-1"></script>
   <script defer src="/analytics-consent.js?v=20260924-2"></script>
   <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
-  <script defer src="/repair-form.js?v=20261014-unlock1"></script>
+  <script defer src="/repair-form.js?v=20261020-optional1"></script>
 
 
 
@@ -202,22 +202,22 @@
             <div class="required-device-details">
             <div class="form-grid">
               <div class="field-group">
-                <label for="device-manufacturer">Hersteller <span aria-hidden="true">*</span></label>
-                <input id="device-manufacturer" type="text" maxlength="80" placeholder="z. B. Apple oder Lenovo" required>
+                <label for="device-manufacturer">Hersteller</label>
+                <input id="device-manufacturer" type="text" maxlength="80" placeholder="z. B. Apple oder Lenovo">
               </div>
               <div class="field-group">
-                <label for="device-model">Genaue Modellnummer <span aria-hidden="true">*</span></label>
-                <input id="device-model" type="text" maxlength="80" placeholder="z. B. A2882 oder 21AH" aria-describedby="device-model-hint" required>
+                <label for="device-model">Genaue Modellnummer</label>
+                <input id="device-model" type="text" maxlength="80" placeholder="z. B. A2882 oder 21AH" aria-describedby="device-model-hint">
               </div>
             </div>
-            <p class="field-hint" id="device-model-hint">Hersteller und genaue Modellnummer sind erforderlich. Sie stehen auf dem Typenschild oder in den Einstellungen.</p>
+            <p class="field-hint" id="device-model-hint">Hersteller und genaue Modellnummer sind optional. Falls bekannt, finden Sie diese auf dem Typenschild oder in den Einstellungen.</p>
             <div class="form-grid" data-computer-fields hidden>
-              <div class="field-group"><label for="computer-cpu">Prozessor <span aria-hidden="true">*</span></label><input id="computer-cpu" type="text" maxlength="120" placeholder="Intel Core i5"></div>
-              <div class="field-group"><label for="computer-ram">RAM-Speicher <span aria-hidden="true">*</span></label><input id="computer-ram" type="text" maxlength="120" placeholder="16 GB"></div>
-              <div class="field-group"><label for="computer-gpu">Grafikkarte <span aria-hidden="true">*</span></label><input id="computer-gpu" type="text" maxlength="120" placeholder="Intel UHD Graphics"></div>
-              <div class="field-group"><label for="computer-mainboard">Mainboard <span aria-hidden="true">*</span></label><input id="computer-mainboard" type="text" maxlength="120" placeholder="Hersteller und Modell des Mainboards"></div>
-              <div class="field-group"><label for="computer-psu">Netzteil/Ladegerät <span aria-hidden="true">*</span></label><input id="computer-psu" type="text" maxlength="120" placeholder="Hersteller, Modell und Leistung"></div>
-              <p class="field-hint field-wide">Angaben finden Sie in Windows unter „Systeminformationen“ und im Geräte-Manager. Netzteildaten stehen auf dem Netzteil oder Ladegerät.</p>
+              <div class="field-group"><label for="computer-cpu">Prozessor</label><input id="computer-cpu" type="text" maxlength="120" placeholder="Intel Core i5"></div>
+              <div class="field-group"><label for="computer-ram">RAM-Speicher</label><input id="computer-ram" type="text" maxlength="120" placeholder="16 GB"></div>
+              <div class="field-group"><label for="computer-gpu">Grafikkarte</label><input id="computer-gpu" type="text" maxlength="120" placeholder="Intel UHD Graphics"></div>
+              <div class="field-group"><label for="computer-mainboard">Mainboard</label><input id="computer-mainboard" type="text" maxlength="120" placeholder="Hersteller und Modell des Mainboards"></div>
+              <div class="field-group"><label for="computer-psu">Netzteil/Ladegerät</label><input id="computer-psu" type="text" maxlength="120" placeholder="Hersteller, Modell und Leistung"></div>
+              <p class="field-hint field-wide">Technische Angaben sind optional. Falls bekannt, finden Sie diese in Windows unter „Systeminformationen“ und im Geräte-Manager. Netzteildaten stehen auf dem Netzteil oder Ladegerät.</p>
             </div>
             </div>
             <details class="request-price-details"><summary>Diagnosekosten und Datenrettung</summary>
