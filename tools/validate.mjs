@@ -129,7 +129,7 @@ for (const marker of [
   'Geräteannahme und Abholung ausschließlich nach bestätigtem Termin',
   '"priceRange": "30 €–250 €"',
   'Augsburg-Lechhausen',
-  'Mo–Sa 09:00–20:00',
+  'Mo–Sa 10:00–20:00',
   'Maurice Keil – Ihr Ansprechpartner.',
   'id="preise-pc"',
   'id="preise-handy"',
