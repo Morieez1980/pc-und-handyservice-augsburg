@@ -1,0 +1,7 @@
+.arrival-notice{box-sizing:border-box;max-width:1120px;margin:2rem auto;padding:1.25rem;border:1px solid #34465c;border-radius:12px;background:#101d30;color:#f1f5fa;line-height:1.65;overflow-wrap:anywhere}.arrival-notice h2{margin:0 0 1rem;font-size:clamp(1.3rem,3vw,1.8rem);line-height:1.3}.arrival-notice p{margin:.75rem 0}.arrival-notice a{color:#8ed6ff;text-decoration:underline}.arrival-notice .arrival-address{font-style:normal;font-weight:600}@media(max-width:600px){.arrival-notice{margin:1.5rem 1rem;padding:1rem}.locale-section .arrival-notice{margin:1.5rem 0}}
+
+[dir=rtl] .locale-main,[dir=rtl] .locale-header,[dir=rtl] .locale-footer{text-align:right}[dir=rtl] input[type=tel],[dir=rtl] input[type=email],[dir=rtl] .arrival-address,[dir=rtl] a[href^=tel]{direction:ltr;unicode-bidi:isolate}[dir=rtl] .locale-legal-original{direction:ltr;text-align:left}
+
+[dir=rtl] .form-honeypot,[dir=rtl] .bigin-response-frame:not(.response-visible){left:0!important;right:auto!important;clip-path:inset(50%);overflow:hidden}
+
+.arrival-notice a[href^="tel:"]{white-space:nowrap;display:inline-block;direction:ltr;unicode-bidi:isolate}

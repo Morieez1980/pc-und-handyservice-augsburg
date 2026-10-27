@@ -1,5 +1,6 @@
+import {expandedContent,expandedLanguages} from './expanded-locales.mjs';
 import {additionalContent} from './additional-content.mjs';
-export const languages={de:'Deutsch',en:'English',tr:'Türkçe',ro:'Română',uk:'Українська',es:'Español',sv:'Svenska',da:'Dansk',ru:'Русский',zh:'简体中文',ja:'日本語'};
+export const languages={de:'Deutsch',en:'English',tr:'Türkçe',ro:'Română',uk:'Українська',es:'Español',sv:'Svenska',da:'Dansk',ru:'Русский',ja:'日本語'};
 export const routes=['','pc-reparatur-augsburg','handyreparatur-augsburg','konsolenreparatur-augsburg','datenrettung-augsburg','reparaturanfrage','impressum','datenschutz','rechtliches'];
 export const prices=[30,0,59,59,89,59,59,89,59,69,79,59,59,69,49,55,250,49,69,49,69,39,79];
 export const localeContent={
@@ -72,3 +73,6 @@ formIntro:'Beskriv enheden og fejlen, og tilføj kontaktoplysninger. Forespørgs
 
 
 Object.assign(localeContent,additionalContent);
+
+Object.assign(languages,{zh:'简体中文'},expandedLanguages);
+Object.assign(localeContent,expandedContent);

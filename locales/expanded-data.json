@@ -1,0 +1,330 @@
+{
+  "pl": {
+    "name": "Polski",
+    "labels": "Usługi|Ceny|Jak to działa|Pytania|Kontakt|Zgłoś naprawę|Zadzwoń|Więcej|Strona główna|Dane firmy|Prywatność|Opinie klientów|Opisy napraw|Język|od|Bezpłatnie|Wyślij zapytanie|Dojazd|Oryginał niemiecki|Wstecz|Zapytanie o naprawę online|Urządzenie i usterka|Dane kontaktowe|Otwórz menu|Zamknij menu",
+    "hero": "Naprawa komputerów, telefonów i konsol w Augsburgu",
+    "intro": "Osobisty serwis Maurice’a Keila. Opisz usterkę. Sprawdzimy urządzenie i uzgodnimy rozwiązanie oraz koszty.",
+    "hours": "Przyjęcie i odbiór wyłącznie po potwierdzeniu terminu. Pon.–pt. 10:00–20:00; sob. 10:00–16:00 od 31.10.2026; niedziele nieczynne. Zapytaj co najmniej godzinę wcześniej telefonicznie, przez WhatsApp, e-mail lub stronę i poczekaj na potwierdzenie.",
+    "services": "Komputery i laptopy|Telefony i tablety|Konsole do gier|Programowe odzyskiwanie danych",
+    "details": [
+      "Diagnostyka, Windows, oprogramowanie, SSD, RAM, czyszczenie i konserwacja.",
+      "Wymiana ekranu i baterii, gniazda ładowania, tylne szkło i usterki systemowe.",
+      "Diagnostyka i naprawa PlayStation oraz Xbox, czyszczenie, pasta termiczna i HDMI.",
+      "Analiza usuniętych plików i logicznych błędów dysków. Nie otwieramy dysków ani nie naprawiamy uszkodzeń fizycznych. Powodzenia nie można zagwarantować."
+    ],
+    "prices": "Diagnostyka usterki|Konsultacja|Kontrola systemu|Kopia danych|Instalacja Windows|Instalacja sterowników|Instalacja oprogramowania|Montaż SSD z klonowaniem|Rozbudowa RAM|Czyszczenie i konserwacja|Wymiana ekranu|Wymiana baterii|Naprawa gniazda ładowania|Naprawa tylnego szkła|Usterki oprogramowania/systemu|Analiza odzyskiwania danych|Skuteczne programowe odzyskiwanie danych|Czyszczenie PlayStation|Naprawa PlayStation|Czyszczenie Xbox|Naprawa Xbox|Wymiana pasty termicznej|Naprawa HDMI",
+    "fees": "Diagnostyka: 30 € bez późniejszej naprawy; przy wykonaniu naprawy opłata nie obowiązuje. Odzyskiwanie danych: 55 € za samą analizę lub nieudaną próbę. Skuteczne odzyskanie programowe: łącznie 250 € z analizą.",
+    "terms": "Ceny końcowe; zgodnie z § 19 niemieckiej UStG VAT nie jest wykazywany. Ceny „od” mogą wzrosnąć o części i dodatkowe prace. Płatne prace wykonujemy dopiero po akceptacji.",
+    "steps": [
+      "Skontaktuj się i opisz usterkę.",
+      "Ustal i potwierdź termin przekazania urządzenia.",
+      "Po diagnozie zaakceptuj rozwiązanie i koszty.",
+      "Odbierz urządzenie w uzgodnionym terminie."
+    ],
+    "faq": [
+      "Czy potrzebuję terminu?",
+      "Kiedy rozpoczyna się naprawa?",
+      "Czy należy zrobić kopię danych?"
+    ],
+    "approve": "Płatne naprawy i prace dodatkowe rozpoczynamy dopiero po Twojej zgodzie.",
+    "backup": "Przed przekazaniem urządzenia wykonaj kopię ważnych danych. Nie gwarantujemy ich odzyskania.",
+    "original": "Teksty prawne są dostępne jako niemiecki oryginał.",
+    "originals": "Opinie i opisy napraw pozostają niemieckimi oryginałami.",
+    "privacyAck": "Zapoznałem się z polityką prywatności.",
+    "languageNote": "Tłumaczenie strony pomaga w orientacji. Język osobistej konsultacji prosimy uzgodnić.",
+    "arrival": [
+      "Dojazd i przekazanie urządzenia",
+      "Wejście znajduje się w tylnym budynku. Wjazd z Eppaner Straße. Po około 30 metrach skręć w prawo na duży dziedziniec i jedź do samego końca.",
+      "Przyjęcie i odbiór wyłącznie po wcześniejszym ustaleniu i potwierdzeniu terminu. Samo zapytanie o naprawę nie jest potwierdzeniem terminu.",
+      "Urządzenie przekazujemy przy wejściu. Nie ma ogólnodostępnego lokalu sklepowego.",
+      "Jeśli nie możesz znaleźć wejścia, zadzwoń:"
+    ]
+  },
+  "it": {
+    "name": "Italiano",
+    "labels": "Servizi|Prezzi|Come funziona|Domande|Contatti|Richiedi una riparazione|Chiama|Scopri di più|Home|Dati aziendali|Privacy|Recensioni|Resoconti delle riparazioni|Lingua|da|Gratuito|Invia richiesta|Come arrivare|Originale tedesco|Indietro|Richiesta di riparazione online|Dispositivo e guasto|Dati di contatto|Apri menu|Chiudi menu",
+    "hero": "Riparazione di computer, telefoni e console ad Augusta",
+    "intro": "Assistenza personale di Maurice Keil. Descrivi il problema: verifichiamo il dispositivo e concordiamo soluzione e costi.",
+    "hours": "Consegna e ritiro solo su appuntamento confermato. Lun.–ven. 10:00–20:00; sab. 10:00–16:00 dal 31/10/2026; domenica chiuso. Contattaci almeno un’ora prima per telefono, WhatsApp, e-mail o sito e attendi la conferma.",
+    "services": "Computer e portatili|Telefoni e tablet|Console da gioco|Recupero dati tramite software",
+    "details": [
+      "Diagnosi, Windows, software, SSD, RAM, pulizia e manutenzione.",
+      "Sostituzione di display e batteria, connettori di ricarica, vetro posteriore e problemi di sistema.",
+      "Diagnosi e riparazione PlayStation e Xbox, pulizia, pasta termica e HDMI.",
+      "Analisi di file eliminati e problemi logici delle unità. Non apriamo dischi né ripariamo danni fisici. Il recupero non è garantito."
+    ],
+    "prices": "Diagnosi del guasto|Consulenza|Controllo sistema|Backup dati|Installazione Windows|Installazione driver|Installazione software|Montaggio SSD con clonazione|Espansione RAM|Pulizia e manutenzione|Sostituzione display|Sostituzione batteria|Riparazione connettore di ricarica|Riparazione vetro posteriore|Problemi software/sistema|Analisi recupero dati|Recupero dati software riuscito|Pulizia PlayStation|Riparazione PlayStation|Pulizia Xbox|Riparazione Xbox|Sostituzione pasta termica|Riparazione HDMI",
+    "fees": "Diagnosi: 30 € senza successiva riparazione; il costo non si applica se eseguiamo la riparazione. Recupero dati: 55 € per la sola analisi o un tentativo senza esito. Recupero software riuscito: 250 € totali, analisi inclusa.",
+    "terms": "Prezzi finali; IVA non esposta ai sensi del § 19 UStG tedesco. I prezzi «da» possono aumentare per ricambi e lavori aggiuntivi. Lavori a pagamento solo dopo approvazione.",
+    "steps": [
+      "Contattaci e descrivi il problema.",
+      "Concorda e conferma la consegna del dispositivo.",
+      "Approva soluzione e costi dopo la diagnosi.",
+      "Ritira il dispositivo all’appuntamento concordato."
+    ],
+    "faq": [
+      "Serve un appuntamento?",
+      "Quando inizia la riparazione?",
+      "Devo fare un backup?"
+    ],
+    "approve": "Riparazioni e lavori aggiuntivi a pagamento iniziano solo dopo il tuo consenso.",
+    "backup": "Esegui un backup dei dati importanti prima della consegna. Il recupero non può essere garantito.",
+    "original": "I testi legali sono disponibili nell’originale tedesco.",
+    "originals": "Recensioni e resoconti delle riparazioni restano negli originali tedeschi.",
+    "privacyAck": "Ho preso visione dell’informativa sulla privacy.",
+    "languageNote": "La traduzione facilita la consultazione del sito. Concordare la lingua della consulenza personale.",
+    "arrival": [
+      "Come arrivare e consegna",
+      "L’ingresso si trova nell’edificio sul retro. Accedi da Eppaner Straße. Dopo circa 30 metri gira a destra nel grande cortile e prosegui fino in fondo.",
+      "Consegna e ritiro solo previo appuntamento confermato da noi. Una richiesta di riparazione da sola non conferma un appuntamento.",
+      "La consegna avviene all’ingresso. Non è presente un negozio aperto al pubblico.",
+      "Se non trovi l’ingresso, chiama:"
+    ]
+  },
+  "fr": {
+    "name": "Français",
+    "labels": "Services|Tarifs|Déroulement|Questions|Contact|Demander une réparation|Appeler|En savoir plus|Accueil|Mentions légales|Confidentialité|Avis clients|Comptes rendus de réparation|Langue|à partir de|Gratuit|Envoyer une demande|Accès|Original allemand|Retour|Demande de réparation en ligne|Appareil et panne|Coordonnées|Ouvrir le menu|Fermer le menu",
+    "hero": "Réparation d’ordinateurs, téléphones et consoles à Augsbourg",
+    "intro": "Un service personnel assuré par Maurice Keil. Décrivez la panne : nous vérifions l’appareil et convenons avec vous de la solution et du coût.",
+    "hours": "Dépôt et retrait uniquement sur rendez-vous confirmé. Lun.–ven. 10 h–20 h ; sam. 10 h–16 h à partir du 31/10/2026 ; fermé le dimanche. Contactez-nous au moins une heure à l’avance par téléphone, WhatsApp, e-mail ou via le site et attendez la confirmation.",
+    "services": "Ordinateurs et portables|Téléphones et tablettes|Consoles de jeux|Récupération de données par logiciel",
+    "details": [
+      "Diagnostic, Windows, logiciels, SSD, RAM, nettoyage et entretien.",
+      "Remplacement d’écran et de batterie, connecteurs de charge, vitre arrière et problèmes système.",
+      "Diagnostic et réparation PlayStation et Xbox, nettoyage, pâte thermique et HDMI.",
+      "Analyse de fichiers supprimés et de défaillances logiques des supports. Nous n’ouvrons pas les disques et ne réparons pas les dommages physiques. Le résultat n’est pas garanti."
+    ],
+    "prices": "Diagnostic de panne|Conseil|Contrôle système|Sauvegarde des données|Installation Windows|Installation de pilotes|Installation de logiciels|Installation SSD avec clonage|Extension RAM|Nettoyage et entretien|Remplacement d’écran|Remplacement de batterie|Réparation du connecteur de charge|Réparation de la vitre arrière|Problèmes logiciels/système|Analyse de récupération de données|Récupération logicielle réussie|Nettoyage PlayStation|Réparation PlayStation|Nettoyage Xbox|Réparation Xbox|Remplacement de pâte thermique|Réparation HDMI",
+    "fees": "Diagnostic : 30 € sans réparation ultérieure ; ces frais sont supprimés si nous réalisons la réparation. Récupération de données : 55 € pour l’analyse seule ou en cas d’échec. Récupération logicielle réussie : 250 € au total, analyse comprise.",
+    "terms": "Prix finaux ; TVA non indiquée conformément au § 19 de la loi allemande UStG. Les prix « à partir de » peuvent augmenter selon les pièces et travaux supplémentaires. Travaux payants uniquement après accord.",
+    "steps": [
+      "Contactez-nous et décrivez la panne.",
+      "Convenez d’un rendez-vous confirmé pour le dépôt.",
+      "Validez la solution et le coût après le diagnostic.",
+      "Récupérez l’appareil au rendez-vous convenu."
+    ],
+    "faq": [
+      "Faut-il un rendez-vous ?",
+      "Quand commence la réparation ?",
+      "Dois-je sauvegarder mes données ?"
+    ],
+    "approve": "Les réparations et travaux supplémentaires payants commencent uniquement après votre accord.",
+    "backup": "Sauvegardez vos données importantes avant le dépôt. Leur récupération ne peut pas être garantie.",
+    "original": "Les textes juridiques sont disponibles dans leur version originale allemande.",
+    "originals": "Les avis et comptes rendus de réparation restent dans leur version originale allemande.",
+    "privacyAck": "J’ai pris connaissance de la politique de confidentialité.",
+    "languageNote": "La traduction facilite la consultation du site. La langue de l’entretien personnel est à convenir.",
+    "arrival": [
+      "Accès et remise de l’appareil",
+      "L’entrée se trouve dans le bâtiment arrière. Accédez par Eppaner Straße. Après environ 30 mètres, tournez à droite dans la grande cour et allez tout au fond.",
+      "Dépôt et retrait uniquement sur rendez-vous préalablement confirmé par nos soins. Une demande de réparation ne constitue pas à elle seule une confirmation de rendez-vous.",
+      "La remise se fait à l’entrée. Il n’y a pas de magasin ouvert au public.",
+      "Si vous ne trouvez pas l’entrée, appelez le :"
+    ]
+  },
+  "bg": {
+    "name": "Български",
+    "labels": "Услуги|Цени|Как работи|Въпроси|Контакт|Заявка за ремонт|Обаждане|Научете повече|Начало|Данни за фирмата|Поверителност|Отзиви|Доклади за ремонти|Език|от|Безплатно|Изпратете запитване|Упътване|Немски оригинал|Назад|Онлайн заявка за ремонт|Устройство и повреда|Данни за контакт|Отваряне на менюто|Затваряне на менюто",
+    "hero": "Ремонт на компютри, телефони и конзоли в Аугсбург",
+    "intro": "Лично обслужване от Maurice Keil. Опишете проблема. Проверяваме устройството и съгласуваме решението и разходите.",
+    "hours": "Приемане и получаване само с предварително потвърден час. Пон.–пет. 10:00–20:00; съб. 10:00–16:00 от 31.10.2026; неделя почивен ден. Свържете се поне час по-рано по телефон, WhatsApp, имейл или сайта и изчакайте потвърждение.",
+    "services": "Компютри и лаптопи|Телефони и таблети|Игрови конзоли|Софтуерно възстановяване на данни",
+    "details": [
+      "Диагностика, Windows, софтуер, SSD, RAM, почистване и поддръжка.",
+      "Смяна на дисплей и батерия, букси за зареждане, заден стъклен панел и системни проблеми.",
+      "Диагностика и ремонт на PlayStation и Xbox, почистване, термопаста и HDMI.",
+      "Анализ на изтрити файлове и логически проблеми с носители. Не отваряме дискове и не ремонтираме физически повреди. Успешното възстановяване не е гарантирано."
+    ],
+    "prices": "Диагностика|Консултация|Проверка на системата|Архивиране на данни|Инсталиране на Windows|Инсталиране на драйвери|Инсталиране на софтуер|Монтаж на SSD с клониране|Надграждане на RAM|Почистване и поддръжка|Смяна на дисплей|Смяна на батерия|Ремонт на букса за зареждане|Ремонт на задно стъкло|Софтуерни/системни проблеми|Анализ за възстановяване на данни|Успешно софтуерно възстановяване|Почистване на PlayStation|Ремонт на PlayStation|Почистване на Xbox|Ремонт на Xbox|Смяна на термопаста|Ремонт на HDMI",
+    "fees": "Диагностика: 30 € без последващ ремонт; таксата отпада при извършване на ремонта. Възстановяване на данни: 55 € само за анализ или при неуспех. При успешно софтуерно възстановяване: общо 250 € с включен анализ.",
+    "terms": "Крайни цени; ДДС не се посочва съгласно § 19 от германския UStG. Цените „от“ могат да се увеличат за части и допълнителна работа. Платени дейности само след одобрение.",
+    "steps": [
+      "Свържете се и опишете повредата.",
+      "Уговорете и потвърдете час за предаване.",
+      "След диагностиката одобрете решението и разходите.",
+      "Получете устройството в уговорения час."
+    ],
+    "faq": [
+      "Нужен ли е час?",
+      "Кога започва ремонтът?",
+      "Да архивирам ли данните си?"
+    ],
+    "approve": "Платените ремонти и допълнителни дейности започват само след Вашето одобрение.",
+    "backup": "Архивирайте важните данни преди предаване. Възстановяването им не може да бъде гарантирано.",
+    "original": "Правните текстове са достъпни в немски оригинал.",
+    "originals": "Отзивите и докладите за ремонти остават в немски оригинал.",
+    "privacyAck": "Запознах се с политиката за поверителност.",
+    "languageNote": "Преводът помага за ориентиране в сайта. Езикът на личната консултация се уточнява предварително.",
+    "arrival": [
+      "Упътване и предаване",
+      "Входът е в задната сграда. Влезте от Eppaner Straße. След около 30 метра завийте надясно в големия двор и продължете до самия край.",
+      "Приемане и получаване само след предварително уговаряне и наше потвърждение. Самата заявка за ремонт не потвърждава час.",
+      "Предаването става на входа. Няма магазин със свободен достъп.",
+      "Ако не намирате входа, обадете се на:"
+    ]
+  },
+  "hr": {
+    "name": "Hrvatski",
+    "labels": "Usluge|Cijene|Postupak|Pitanja|Kontakt|Zatražite popravak|Nazovite|Saznajte više|Početna|Podaci o tvrtki|Privatnost|Recenzije|Izvješća o popravcima|Jezik|od|Besplatno|Pošaljite upit|Upute za dolazak|Njemački izvornik|Natrag|Mrežni upit za popravak|Uređaj i kvar|Kontaktni podaci|Otvori izbornik|Zatvori izbornik",
+    "hero": "Popravak računala, telefona i konzola u Augsburgu",
+    "intro": "Osobna usluga Mauricea Keila. Opišite kvar. Pregledat ćemo uređaj i s Vama dogovoriti rješenje i trošak.",
+    "hours": "Predaja i preuzimanje samo uz potvrđen termin. Pon.–pet. 10:00–20:00; sub. 10:00–16:00 od 31.10.2026.; nedjeljom zatvoreno. Javite se najmanje sat vremena ranije telefonom, WhatsAppom, e-poštom ili preko stranice i pričekajte potvrdu.",
+    "services": "Računala i prijenosnici|Telefoni i tableti|Igraće konzole|Softverski oporavak podataka",
+    "details": [
+      "Dijagnostika, Windows, softver, SSD, RAM, čišćenje i održavanje.",
+      "Zamjena zaslona i baterije, priključci za punjenje, stražnje staklo i sistemske poteškoće.",
+      "Dijagnostika i popravak PlayStationa i Xboxa, čišćenje, termalna pasta i HDMI.",
+      "Analiza izbrisanih datoteka i logičkih problema s medijima. Ne otvaramo diskove i ne popravljamo fizička oštećenja. Uspješan oporavak nije zajamčen."
+    ],
+    "prices": "Dijagnostika kvara|Savjetovanje|Provjera sustava|Sigurnosna kopija|Instalacija Windowsa|Instalacija upravljačkih programa|Instalacija softvera|Ugradnja SSD-a s kloniranjem|Nadogradnja RAM-a|Čišćenje i održavanje|Zamjena zaslona|Zamjena baterije|Popravak priključka za punjenje|Popravak stražnjeg stakla|Softverske/sistemske poteškoće|Analiza oporavka podataka|Uspješan softverski oporavak|Čišćenje PlayStationa|Popravak PlayStationa|Čišćenje Xboxa|Popravak Xboxa|Zamjena termalne paste|Popravak HDMI-ja",
+    "fees": "Dijagnostika: 30 € bez naknadnog popravka; naknada se ne naplaćuje ako izvršimo popravak. Oporavak podataka: 55 € za samu analizu ili neuspješan pokušaj. Uspješan softverski oporavak: ukupno 250 € s analizom.",
+    "terms": "Konačne cijene; PDV se ne iskazuje prema § 19 njemačkog UStG-a. Cijene „od” mogu se povećati zbog dijelova i dodatnih radova. Naplativi radovi samo uz odobrenje.",
+    "steps": [
+      "Javite se i opišite kvar.",
+      "Dogovorite i potvrdite termin predaje.",
+      "Nakon dijagnostike odobrite rješenje i trošak.",
+      "Preuzmite uređaj u dogovoreno vrijeme."
+    ],
+    "faq": [
+      "Trebam li termin?",
+      "Kada počinje popravak?",
+      "Trebam li sigurnosnu kopiju?"
+    ],
+    "approve": "Popravak i dodatni naplativi radovi počinju tek nakon Vašeg odobrenja.",
+    "backup": "Prije predaje izradite sigurnosnu kopiju važnih podataka. Oporavak nije zajamčen.",
+    "original": "Pravni tekstovi dostupni su u njemačkom izvorniku.",
+    "originals": "Recenzije i izvješća o popravcima ostaju u njemačkom izvorniku.",
+    "privacyAck": "Pročitao/la sam pravila privatnosti.",
+    "languageNote": "Prijevod olakšava korištenje stranice. Jezik osobnog savjetovanja dogovara se unaprijed.",
+    "arrival": [
+      "Dolazak i predaja uređaja",
+      "Ulaz je u stražnjoj zgradi. Uđite iz Eppaner Straße. Nakon otprilike 30 metara skrenite desno u veliko dvorište i nastavite do samog kraja.",
+      "Predaja i preuzimanje samo uz unaprijed dogovoren i potvrđen termin. Sam upit za popravak nije potvrda termina.",
+      "Predaja se obavlja na ulazu. Nema prodajnog prostora otvorenog za javnost.",
+      "Ako ne možete pronaći ulaz, nazovite:"
+    ]
+  },
+  "el": {
+    "name": "Ελληνικά",
+    "labels": "Υπηρεσίες|Τιμές|Διαδικασία|Ερωτήσεις|Επικοινωνία|Αίτημα επισκευής|Καλέστε|Περισσότερα|Αρχική|Στοιχεία επιχείρησης|Απόρρητο|Αξιολογήσεις|Αναφορές επισκευών|Γλώσσα|από|Δωρεάν|Αποστολή αιτήματος|Πρόσβαση|Γερμανικό πρωτότυπο|Πίσω|Ηλεκτρονικό αίτημα επισκευής|Συσκευή και βλάβη|Στοιχεία επικοινωνίας|Άνοιγμα μενού|Κλείσιμο μενού",
+    "hero": "Επισκευή υπολογιστών, τηλεφώνων και κονσολών στο Άουγκσμπουργκ",
+    "intro": "Προσωπική εξυπηρέτηση από τον Maurice Keil. Περιγράψτε τη βλάβη. Ελέγχουμε τη συσκευή και συμφωνούμε μαζί σας τη λύση και το κόστος.",
+    "hours": "Παράδοση και παραλαβή μόνο με επιβεβαιωμένο ραντεβού. Δευ.–Παρ. 10:00–20:00· Σάβ. 10:00–16:00 από 31/10/2026· Κυριακή κλειστά. Επικοινωνήστε τουλάχιστον μία ώρα πριν τηλεφωνικά, μέσω WhatsApp, email ή ιστοσελίδας και περιμένετε επιβεβαίωση.",
+    "services": "Υπολογιστές και φορητοί|Τηλέφωνα και tablet|Κονσόλες παιχνιδιών|Ανάκτηση δεδομένων μέσω λογισμικού",
+    "details": [
+      "Διάγνωση, Windows, λογισμικό, SSD, RAM, καθαρισμός και συντήρηση.",
+      "Αντικατάσταση οθόνης και μπαταρίας, υποδοχές φόρτισης, πίσω γυαλί και προβλήματα συστήματος.",
+      "Διάγνωση και επισκευή PlayStation και Xbox, καθαρισμός, θερμοαγώγιμη πάστα και HDMI.",
+      "Έλεγχος διαγραμμένων αρχείων και λογικών προβλημάτων μέσων. Δεν ανοίγουμε δίσκους ούτε επισκευάζουμε φυσικές βλάβες. Η επιτυχία δεν είναι εγγυημένη."
+    ],
+    "prices": "Διάγνωση βλάβης|Συμβουλευτική|Έλεγχος συστήματος|Αντίγραφο ασφαλείας|Εγκατάσταση Windows|Εγκατάσταση οδηγών|Εγκατάσταση λογισμικού|Τοποθέτηση SSD με κλωνοποίηση|Αναβάθμιση RAM|Καθαρισμός και συντήρηση|Αντικατάσταση οθόνης|Αντικατάσταση μπαταρίας|Επισκευή υποδοχής φόρτισης|Επισκευή πίσω γυαλιού|Προβλήματα λογισμικού/συστήματος|Ανάλυση ανάκτησης δεδομένων|Επιτυχής ανάκτηση μέσω λογισμικού|Καθαρισμός PlayStation|Επισκευή PlayStation|Καθαρισμός Xbox|Επισκευή Xbox|Αντικατάσταση θερμοαγώγιμης πάστας|Επισκευή HDMI",
+    "fees": "Διάγνωση: 30 € χωρίς επακόλουθη επισκευή· η χρέωση δεν ισχύει εάν πραγματοποιήσουμε την επισκευή. Ανάκτηση δεδομένων: 55 € μόνο για ανάλυση ή αποτυχημένη προσπάθεια. Επιτυχής ανάκτηση μέσω λογισμικού: συνολικά 250 € μαζί με την ανάλυση.",
+    "terms": "Τελικές τιμές· δεν αναγράφεται ΦΠΑ σύμφωνα με το § 19 του γερμανικού UStG. Οι τιμές «από» ενδέχεται να αυξηθούν για ανταλλακτικά και πρόσθετες εργασίες. Χρεώσιμες εργασίες μόνο κατόπιν έγκρισης.",
+    "steps": [
+      "Επικοινωνήστε και περιγράψτε τη βλάβη.",
+      "Συμφωνήστε και επιβεβαιώστε το ραντεβού παράδοσης.",
+      "Εγκρίνετε τη λύση και το κόστος μετά τη διάγνωση.",
+      "Παραλάβετε τη συσκευή στο συμφωνημένο ραντεβού."
+    ],
+    "faq": [
+      "Χρειάζεται ραντεβού;",
+      "Πότε ξεκινά η επισκευή;",
+      "Χρειάζεται αντίγραφο ασφαλείας;"
+    ],
+    "approve": "Η επισκευή και οι πρόσθετες χρεώσιμες εργασίες ξεκινούν μόνο μετά την έγκρισή σας.",
+    "backup": "Δημιουργήστε αντίγραφο ασφαλείας των σημαντικών δεδομένων πριν από την παράδοση. Η ανάκτησή τους δεν είναι εγγυημένη.",
+    "original": "Τα νομικά κείμενα διατίθενται στο γερμανικό πρωτότυπο.",
+    "originals": "Οι αξιολογήσεις και οι αναφορές επισκευών παραμένουν στα γερμανικά πρωτότυπα.",
+    "privacyAck": "Έλαβα γνώση της πολιτικής απορρήτου.",
+    "languageNote": "Η μετάφραση διευκολύνει τη χρήση της ιστοσελίδας. Η γλώσσα προσωπικής εξυπηρέτησης συμφωνείται εκ των προτέρων.",
+    "arrival": [
+      "Πρόσβαση και παράδοση",
+      "Η είσοδος βρίσκεται στο πίσω κτίριο. Μπείτε από την Eppaner Straße. Μετά από περίπου 30 μέτρα στρίψτε δεξιά στη μεγάλη αυλή και συνεχίστε μέχρι το βάθος.",
+      "Παράδοση και παραλαβή μόνο κατόπιν προηγούμενου ραντεβού και δικής μας επιβεβαίωσης. Το αίτημα επισκευής από μόνο του δεν αποτελεί επιβεβαίωση ραντεβού.",
+      "Η παράδοση γίνεται στην είσοδο. Δεν υπάρχει κατάστημα ελεύθερης πρόσβασης.",
+      "Αν δεν βρίσκετε την είσοδο, καλέστε:"
+    ]
+  },
+  "ar": {
+    "name": "العربية",
+    "labels": "الخدمات|الأسعار|خطوات العمل|الأسئلة|التواصل|طلب إصلاح|اتصل الآن|المزيد|الرئيسية|بيانات المنشأة|الخصوصية|آراء العملاء|تقارير الإصلاح|اللغة|ابتداءً من|مجاناً|إرسال استفسار|طريقة الوصول|الأصل الألماني|رجوع|طلب إصلاح عبر الإنترنت|الجهاز والعطل|بيانات التواصل|فتح القائمة|إغلاق القائمة",
+    "hero": "إصلاح أجهزة الكمبيوتر والهواتف وأجهزة الألعاب في أوغسبورغ",
+    "intro": "خدمة شخصية من Maurice Keil. اشرح العطل لنفحص الجهاز ونتفق معك على الحل والتكلفة.",
+    "hours": "تسليم الأجهزة واستلامها بموعد مؤكد مسبقاً فقط. الاثنين–الجمعة 10:00–20:00؛ السبت 10:00–16:00 اعتباراً من 31 أكتوبر 2026؛ الأحد مغلق. تواصل قبل ساعة على الأقل بالهاتف أو WhatsApp أو البريد الإلكتروني أو الموقع، وانتظر تأكيد الموعد.",
+    "services": "الكمبيوتر والحواسيب المحمولة|الهواتف والأجهزة اللوحية|أجهزة الألعاب|استعادة البيانات بالبرامج",
+    "details": [
+      "تشخيص الأعطال وWindows والبرامج وتركيب SSD وترقية RAM والتنظيف والصيانة.",
+      "تغيير الشاشة والبطارية وإصلاح منفذ الشحن والزجاج الخلفي وأعطال النظام.",
+      "تشخيص وإصلاح PlayStation وXbox والتنظيف وتغيير المعجون الحراري وإصلاح HDMI.",
+      "فحص الملفات المحذوفة والأعطال المنطقية لوحدات التخزين. لا نفتح الأقراص ولا نصلح الأضرار المادية. لا يمكن ضمان نجاح الاستعادة."
+    ],
+    "prices": "تشخيص العطل|استشارة|فحص النظام|نسخ احتياطي|تثبيت Windows|تثبيت برامج التشغيل|تثبيت البرامج|تركيب SSD مع استنساخ البيانات|ترقية RAM|تنظيف وصيانة|تغيير الشاشة|تغيير البطارية|إصلاح منفذ الشحن|إصلاح الزجاج الخلفي|أعطال البرامج والنظام|تحليل استعادة البيانات|استعادة ناجحة للبيانات بالبرامج|تنظيف PlayStation|إصلاح PlayStation|تنظيف Xbox|إصلاح Xbox|تغيير المعجون الحراري|إصلاح HDMI",
+    "fees": "التشخيص: 30 € إذا لم يتبعه إصلاح؛ تُلغى هذه الرسوم عند تنفيذ الإصلاح. استعادة البيانات: 55 € للتحليل وحده أو عند عدم نجاح الاستعادة. عند نجاح الاستعادة بالبرامج يكون الإجمالي 250 € شاملاً التحليل.",
+    "terms": "الأسعار نهائية؛ لا تُدرج ضريبة القيمة المضافة وفقاً للمادة 19 من القانون الألماني UStG. قد ترتفع الأسعار التي تبدأ من مبلغ معين بسبب القطع أو الأعمال الإضافية. لا تبدأ الأعمال المدفوعة إلا بعد موافقتك.",
+    "steps": [
+      "تواصل واشرح العطل.",
+      "اتفق معنا على موعد تسليم مؤكد.",
+      "وافق على الحل والتكلفة بعد التشخيص.",
+      "استلم الجهاز في الموعد المتفق عليه."
+    ],
+    "faq": [
+      "هل أحتاج إلى موعد؟",
+      "متى يبدأ الإصلاح؟",
+      "هل أنشئ نسخة احتياطية؟"
+    ],
+    "approve": "لا يبدأ الإصلاح ولا الأعمال الإضافية المدفوعة إلا بعد موافقتك.",
+    "backup": "أنشئ نسخة احتياطية من بياناتك المهمة قبل التسليم. لا يمكننا ضمان استعادة البيانات.",
+    "original": "النصوص القانونية متاحة في أصلها الألماني.",
+    "originals": "تظل آراء العملاء وتقارير الإصلاح في أصلها الألماني.",
+    "privacyAck": "اطلعت على سياسة الخصوصية.",
+    "languageNote": "تساعد ترجمة الموقع على فهم المعلومات. يُرجى الاتفاق مسبقاً على لغة الاستشارة الشخصية.",
+    "arrival": [
+      "طريقة الوصول وتسليم الجهاز",
+      "المدخل في المبنى الخلفي. ادخل من Eppaner Straße. بعد نحو 30 متراً انعطف يميناً إلى الساحة الكبيرة وتابع إلى أقصى الخلف.",
+      "التسليم والاستلام بموعد مسبق وتأكيد منا فقط. طلب الإصلاح وحده لا يُعد تأكيداً للموعد.",
+      "يتم تسليم الجهاز عند المدخل. لا يوجد متجر مفتوح لدخول الجمهور.",
+      "إذا لم تجد المدخل، اتصل على:"
+    ]
+  },
+  "fa": {
+    "name": "فارسی",
+    "labels": "خدمات|قیمت‌ها|روند کار|پرسش‌ها|تماس|درخواست تعمیر|تماس بگیرید|بیشتر بدانید|صفحه اصلی|اطلاعات کسب‌وکار|حریم خصوصی|نظر مشتریان|گزارش‌های تعمیر|زبان|از|رایگان|ارسال درخواست|مسیر دسترسی|اصل آلمانی|بازگشت|درخواست آنلاین تعمیر|دستگاه و خرابی|اطلاعات تماس|باز کردن منو|بستن منو",
+    "hero": "تعمیر رایانه، تلفن همراه و کنسول بازی در آگسبورگ",
+    "intro": "خدمات شخصی توسط Maurice Keil. مشکل را شرح دهید تا دستگاه را بررسی و راه‌حل و هزینه را با شما هماهنگ کنیم.",
+    "hours": "تحویل و دریافت دستگاه فقط با وقت قبلی تأییدشده. دوشنبه تا جمعه ۱۰ تا ۲۰؛ شنبه ۱۰ تا ۱۶ از ۳۱ اکتبر ۲۰۲۶؛ یکشنبه تعطیل. دست‌کم یک ساعت پیش از طریق تلفن، WhatsApp، ایمیل یا وب‌سایت تماس بگیرید و منتظر تأیید بمانید.",
+    "services": "رایانه و لپ‌تاپ|تلفن همراه و تبلت|کنسول بازی|بازیابی نرم‌افزاری اطلاعات",
+    "details": [
+      "عیب‌یابی، Windows، نرم‌افزار، نصب SSD، ارتقای RAM، تمیزکاری و نگهداری.",
+      "تعویض نمایشگر و باتری، تعمیر درگاه شارژ و شیشه پشت و رفع مشکلات سیستم.",
+      "عیب‌یابی و تعمیر PlayStation و Xbox، تمیزکاری، خمیر حرارتی و HDMI.",
+      "بررسی فایل‌های حذف‌شده و مشکلات منطقی حافظه. هارد را باز نمی‌کنیم و آسیب فیزیکی را تعمیر نمی‌کنیم. موفقیت بازیابی تضمین‌شده نیست."
+    ],
+    "prices": "عیب‌یابی|مشاوره|بررسی سیستم|پشتیبان‌گیری اطلاعات|نصب Windows|نصب درایور|نصب نرم‌افزار|نصب SSD همراه با کلون|ارتقای RAM|تمیزکاری و نگهداری|تعویض نمایشگر|تعویض باتری|تعمیر درگاه شارژ|تعمیر شیشه پشت|مشکلات نرم‌افزار و سیستم|تحلیل بازیابی اطلاعات|بازیابی موفق نرم‌افزاری|تمیزکاری PlayStation|تعمیر PlayStation|تمیزکاری Xbox|تعمیر Xbox|تعویض خمیر حرارتی|تعمیر HDMI",
+    "fees": "عیب‌یابی: 30 € در صورت انجام نشدن تعمیر؛ با انجام تعمیر این هزینه حذف می‌شود. بازیابی اطلاعات: 55 € برای تحلیل یا بازیابی ناموفق. در صورت بازیابی موفق نرم‌افزاری، مجموعاً 250 € شامل تحلیل.",
+    "terms": "قیمت‌ها نهایی هستند؛ مطابق ماده ۱۹ قانون آلمانی UStG مالیات بر ارزش افزوده درج نمی‌شود. قیمت‌های «از» ممکن است با توجه به قطعه و کار اضافی افزایش یابند. کار دارای هزینه فقط پس از تأیید شما انجام می‌شود.",
+    "steps": [
+      "تماس بگیرید و خرابی را توضیح دهید.",
+      "وقت تحویل را هماهنگ و تأیید کنید.",
+      "پس از عیب‌یابی راه‌حل و هزینه را تأیید کنید.",
+      "دستگاه را در وقت هماهنگ‌شده تحویل بگیرید."
+    ],
+    "faq": [
+      "آیا وقت قبلی لازم است؟",
+      "تعمیر چه زمانی شروع می‌شود؟",
+      "آیا پشتیبان‌گیری لازم است؟"
+    ],
+    "approve": "تعمیر و کارهای اضافی دارای هزینه فقط پس از تأیید شما شروع می‌شوند.",
+    "backup": "پیش از تحویل از اطلاعات مهم خود پشتیبان تهیه کنید. بازیابی اطلاعات را نمی‌توان تضمین کرد.",
+    "original": "متن‌های حقوقی به زبان اصلی آلمانی موجود هستند.",
+    "originals": "نظر مشتریان و گزارش‌های تعمیر به زبان اصلی آلمانی باقی می‌مانند.",
+    "privacyAck": "سیاست حریم خصوصی را مطالعه کرده‌ام.",
+    "languageNote": "ترجمه وب‌سایت برای آشنایی با اطلاعات است. زبان مشاوره حضوری را از پیش هماهنگ کنید.",
+    "arrival": [
+      "مسیر دسترسی و تحویل دستگاه",
+      "ورودی در ساختمان پشتی است. از Eppaner Straße وارد شوید. پس از حدود ۳۰ متر به راست داخل حیاط بزرگ بپیچید و تا انتهای حیاط بروید.",
+      "تحویل و دریافت فقط با وقت قبلی و تأیید ما انجام می‌شود. ارسال درخواست تعمیر به‌تنهایی تأیید وقت نیست.",
+      "تحویل دستگاه در ورودی انجام می‌شود. فروشگاه با دسترسی آزاد برای عموم وجود ندارد.",
+      "اگر ورودی را پیدا نکردید، تماس بگیرید:"
+    ]
+  }
+}
