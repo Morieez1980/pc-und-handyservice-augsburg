@@ -5,7 +5,12 @@ import {arrival} from '../locales/arrival.mjs';
 import {premises} from '../locales/premises.mjs';
 import {wayfinder} from '../locales/wayfinder.mjs';
 import {arrivalPhoto} from '../locales/arrival-photo.mjs';
+import {arrivalRoute} from '../locales/arrival-route.mjs';
 Object.assign(arrival,expandedArrival);
+for(const [lang,[heading,directions]] of Object.entries(arrivalRoute)){
+  wayfinder[lang][0]=heading;
+  arrival[lang][1]=directions;
+}
 import path from 'node:path';
 import {languages,routes,prices,localeContent} from '../locales/content.mjs';
 import {formRows,formShared} from '../locales/form-data.mjs';
