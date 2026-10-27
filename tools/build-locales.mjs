@@ -4,7 +4,7 @@ import {closureNotices} from '../locales/opening-hours.mjs';
 import {arrival} from '../locales/arrival.mjs';
 import {premises} from '../locales/premises.mjs';
 import {wayfinder} from '../locales/wayfinder.mjs';
-import {arrivalPhoto} from '../locales/arrival-photo.mjs';
+import {arrivalPhoto,arrivalMore} from '../locales/arrival-photo.mjs';
 import {arrivalRoute} from '../locales/arrival-route.mjs';
 Object.assign(arrival,expandedArrival);
 for(const [lang,[heading,directions]] of Object.entries(arrivalRoute)){
@@ -35,7 +35,7 @@ const closureNotice=lang=>!closureNotices[lang]?'':'<aside class="special-hours-
 const hoursScript='<script defer src="/special-hours.js?v=20261024"></script>';
 const alternates=route=>Object.keys(languages).map(l=>'<link rel="alternate" hreflang="'+(l==='de'?'de-DE':l)+'" href="'+origin+url(l,route)+'">').join('\n')+'\n<link rel="alternate" hreflang="x-default" href="'+origin+url('de',route)+'">';
 const premisesLead=lang=>{const p=premises[lang];if(!p||p.length!==3)throw Error('Missing premises translation: '+lang);return '<p class="arrival-context">'+esc(p[0])+'</p>';};
-const arrivalWayfinder=lang=>{const w=wayfinder[lang],a=arrival[lang];if(!w||w.length!==2||!a)throw Error('Missing wayfinder translation: '+lang);return '<aside class="arrival-wayfinder" aria-labelledby="wayfinder-heading"><div><strong id="wayfinder-heading">'+esc(w[0])+'</strong><p>'+esc(a[1])+'</p></div><a class="arrival-wayfinder-link" href="#anfahrt">'+esc(arrivalPhoto[lang][0])+' <span aria-hidden="true">↓</span></a></aside>';};
+const arrivalWayfinder=lang=>{const w=wayfinder[lang],a=arrival[lang];if(!w||w.length!==2||!a)throw Error('Missing wayfinder translation: '+lang);return '<aside class="arrival-wayfinder" aria-labelledby="wayfinder-heading"><div><strong id="wayfinder-heading">'+esc(w[0])+'</strong><p>'+esc(a[1])+'</p><p>'+esc(arrivalMore[lang])+'</p></div><a class="arrival-wayfinder-link" href="#anfahrt">'+esc(arrivalPhoto[lang][0])+' <span aria-hidden="true">↓</span></a></aside>';};
 const arrivalSection=lang=>{const a=arrival[lang],p=premises[lang],photo=arrivalPhoto[lang];if(!a||!p||!photo)throw Error('Missing arrival translation: '+lang);return '<section class="arrival-notice" id="anfahrt" aria-labelledby="arrival-heading"><h2 id="arrival-heading">'+esc(a[0])+'</h2><div class="arrival-guide"><div class="arrival-guide-copy"><p class="arrival-address">PC &amp; Handyservice Augsburg – Maurice Keil<br>Stätzlinger Straße 99, 86165 Augsburg</p>'+premisesLead(lang)+'<p>'+esc(a[1])+'</p><p><strong>'+esc(a[2])+'</strong></p><p>'+esc(a[3])+'</p><p>'+esc(p[1])+'</p><p>'+esc(p[2])+'</p><p>'+esc(a[4])+' <a href="tel:+4915254530080">0152 54530080</a></p></div><figure class="arrival-photo"><a href="/anfahrt-hinterhaus.jpg" target="_blank" rel="noopener noreferrer" aria-label="'+esc(photo[1])+'"><img src="/anfahrt-hinterhaus.jpg" width="582" height="1150" loading="lazy" decoding="async" alt="'+esc(a[1])+'"></a><figcaption>'+esc(photo[0])+' · <a href="/anfahrt-hinterhaus.jpg" target="_blank" rel="noopener noreferrer">'+esc(photo[1])+' ↗</a></figcaption></figure></div></section>';};
 const range=(a,b)=>Array.from({length:b-a+1},(_,i)=>i+a);
 const servicePrices=[range(2,9),range(10,14),range(17,22),[15,16]];
