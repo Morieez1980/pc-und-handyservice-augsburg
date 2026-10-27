@@ -3,11 +3,12 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createRequire} from 'node:module';
+import {languages} from '../locales/content.mjs';
 const require = createRequire(import.meta.url);
 // Install Playwright locally, or set PLAYWRIGHT_MODULE_PATH for a bundled runtime.
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE_PATH || 'playwright');
 const root = path.resolve(import.meta.dirname, '..');
-const evidence = path.resolve(root, '..', 'Formular-Optional-20261020');
+const evidence = path.resolve(root, '..', 'Anfahrt-Sprachen-20261027');
 await fs.mkdir(evidence, {recursive: true});
 const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.png':'image/png', '.svg':'image/svg+xml'};
 const server = http.createServer(async (req,res) => {
@@ -47,7 +48,7 @@ try {
     await route.continue();
   });
   const layouts=[];
-  for (const lang of ['de','en','tr','ro','uk','es','sv','da','ru','zh','ja']) {
+  for (const lang of Object.keys(languages)) {
     for (const width of [320,360,390,1280]) {
       await page.setViewportSize({width,height:900});
       await page.goto(origin + (lang==='de'?'':'/'+lang) + '/reparaturanfrage');
@@ -208,5 +209,5 @@ try {
   assert.equal(posts,3,'Only three intercepted local submissions');
   assert.equal(errors.length,0,errors.join('\n'));
   await fs.writeFile(path.join(evidence,'Ergebnis.json'),JSON.stringify({layouts,checks:['optional manufacturer and exact model','required full billing address','all six device types accept serial OR IMEI OR explicit exception','IMEI validation','company required only for business invoice','PC specifications optional for PCs/laptops','CRM field mapping','rapid repeat submission suppressed','all external submissions intercepted'],references,crmPosts:posts,errors},null,2));
-  console.log('44 Sprach-/Breitenprüfungen und Formularverhalten bestanden. Externe Übermittlung ausschließlich abgefangen.');
+  console.log(layouts.length+' Sprach-/Breitenprüfungen und Formularverhalten bestanden. Externe Übermittlung ausschließlich abgefangen.');
 } finally { if(browser) await browser.close(); await new Promise(resolve=>server.close(resolve)); }

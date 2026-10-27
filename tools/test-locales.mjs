@@ -6,8 +6,9 @@ import {languages,routes,prices,localeContent} from '../locales/content.mjs';
 const source=JSON.parse(fs.readFileSync('locales/form-source.json','utf8'));
 const read=f=>fs.readFileSync(f,'utf8');
 const fields=html=>[...html.matchAll(/<input\b[^>]*type="hidden"[^>]*>/g)].map(m=>m[0]).sort();
-test('All ten languages have pages, SEO links, local assets and all 23 unchanged prices',()=>{
- assert.deepEqual(Object.keys(localeContent),['en','tr','ro','uk','es','sv','da','ru','zh','ja']);
+test('All offered languages have pages, SEO links, local assets and all 23 unchanged prices',()=>{
+ assert.deepEqual(Object.keys(localeContent),['en','tr','ro','uk','es','sv','da','ru','zh','ja','pl','it','fr','bg','hr','el','ar','fa']);
+ assert.deepEqual(new Set(Object.keys(localeContent)),new Set(Object.keys(languages).filter(lang=>lang!=='de')));
  for(const lang of Object.keys(localeContent)){
   for(const route of routes){
    const html=read(lang+'/'+(route||'index')+'.html');
