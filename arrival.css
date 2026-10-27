@@ -6,6 +6,9 @@
 
 .arrival-notice a[href^="tel:"]{white-space:nowrap;display:inline-block;direction:ltr;unicode-bidi:isolate}
 
+.arrival-guide{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:1.5rem;align-items:start}.arrival-guide-copy{min-width:0}.arrival-photo{margin:0;min-width:0}.arrival-photo>a{display:block;border-radius:10px;overflow:hidden}.arrival-photo img{display:block;width:100%;height:auto;max-width:100%;border-radius:10px}.arrival-photo figcaption{margin-top:.6rem;font-size:.9rem;line-height:1.5}.arrival-photo a:focus-visible{outline:3px solid #8ed6ff;outline-offset:4px}
+@media(max-width:700px){.arrival-guide{grid-template-columns:minmax(0,1fr);gap:1rem}.arrival-photo{grid-row:1;width:100%;max-width:380px;margin-inline:auto}.arrival-photo img{max-height:440px;object-fit:contain;background:#08111f}}
+
 /* Visible before the hero, not hidden in the footer or a dismissable dialog. */
 .arrival-wayfinder{box-sizing:border-box;position:relative;max-width:1120px;margin:94px auto 0;padding:18px 24px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;background:#fff0bd;color:#142238;border:1px solid #edc565;border-inline-start:6px solid #d99a11;border-radius:12px;line-height:1.5;overflow-wrap:anywhere}
 .arrival-wayfinder>div{min-width:0}.arrival-wayfinder strong{display:block;font-size:clamp(18px,2vw,22px);line-height:1.3}.arrival-wayfinder p{color:#26364e;margin:6px 0 0;font-size:15px;max-width:80ch}
