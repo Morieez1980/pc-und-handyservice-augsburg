@@ -8,9 +8,10 @@ import {arrivalPhoto,arrivalMore} from '../locales/arrival-photo.mjs';
 import {arrivalRoute} from '../locales/arrival-route.mjs';
 import {arrivalClosing} from '../locales/arrival-closing.mjs';
 Object.assign(arrival,expandedArrival);
-for(const [lang,[heading,directions]] of Object.entries(arrivalRoute)){
+for(const [lang,[heading,directions,introduction]] of Object.entries(arrivalRoute)){
   wayfinder[lang][0]=heading;
   arrival[lang][1]=directions;
+  premises[lang][0]=introduction;
 }
 import path from 'node:path';
 import {languages,routes,prices,localeContent} from '../locales/content.mjs';
