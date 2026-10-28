@@ -2,7 +2,7 @@ import {expandedContent,expandedLanguages} from './expanded-locales.mjs';
 import {additionalContent} from './additional-content.mjs';
 export const languages={de:'Deutsch',en:'English',tr:'Türkçe',ro:'Română',uk:'Українська',es:'Español',sv:'Svenska',da:'Dansk',ru:'Русский',ja:'日本語'};
 export const routes=['','pc-reparatur-augsburg','handyreparatur-augsburg','konsolenreparatur-augsburg','datenrettung-augsburg','reparaturanfrage','impressum','datenschutz','rechtliches'];
-export const prices=[30,0,59,59,89,59,59,89,59,69,79,59,59,69,49,55,250,49,69,49,69,39,79];
+export const prices=[30,0,59,69,89,59,59,89,59,79,89,69,69,79,49,55,250,59,89,59,89,49,99];
 export const localeContent={
 en:{
 labels:'Services|Prices|How it works|Questions|Contact|Request a repair|Call now|Learn more|Home|Legal notice|Privacy policy|Customer reviews|Repair reports|Language|from|Free|Send an enquiry|Directions|German original|Back|Online repair enquiry|Device & fault|Contact details|Open menu|Close menu'.split('|'),
