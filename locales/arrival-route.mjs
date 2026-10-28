@@ -1,22 +1,98 @@
-// Friendly directions from the street to the courtyard entrance.
+// Directions are from the viewpoint of the street facing the building; parking remains separate.
 export const arrivalRoute = {
-  de: ['Privates Wohnhaus · Eingang über den Hof', 'Wenn Sie an der Stätzlinger Straße bei der Bushaltestelle oder der Pizzeria ankommen, folgen Sie bitte links am Gebäude der Eppaner Straße. Am Ende des Gebäudes biegen Sie rechts in den großen Hof ab. Unser Eingang liegt im hinteren Bereich des Hofs. Dort begrüße ich Sie zur vereinbarten Geräteübergabe.', 'Gewerblicher Reparaturservice in einem privaten Wohnhaus. Ich empfange Sie zur Geräteannahme und Abholung persönlich am Eingang im Hof – nach bestätigtem Termin.'],
-  en: ['Private residential building · entrance via the courtyard', 'When you arrive on Stätzlinger Straße by the bus stop or pizzeria, please follow Eppaner Straße along the left side of the building. At the end of the building, turn right into the large courtyard. Our entrance is towards the back of the courtyard, where I will welcome you for your arranged device handover.', 'Commercial repair service based in a private residential building. I welcome you personally at the courtyard entrance for device drop-off and collection by confirmed appointment.'],
-  tr: ['Özel konut binası · giriş avludan', 'Stätzlinger Straße üzerindeki otobüs durağına veya pizzacıya geldiğinizde, lütfen binanın solundan Eppaner Straße boyunca ilerleyin. Binanın sonunda sağa, büyük avluya dönün. Girişimiz avlunun arka bölümündedir. Kararlaştırdığımız cihaz teslimi için sizi orada karşılayacağım.', 'Özel bir konut binasında faaliyet gösteren ticari onarım hizmeti. Onaylanmış randevunuzda cihaz teslimi ve teslim alma için sizi avludaki girişte şahsen karşılıyorum.'],
-  ro: ['Clădire de locuințe privată · acces prin curte', 'Când ajungeți pe Stätzlinger Straße, lângă stația de autobuz sau pizzerie, urmați Eppaner Straße pe partea stângă a clădirii. La capătul clădirii virați la dreapta în curtea mare. Intrarea noastră se află în partea din spate a curții. Vă voi întâmpina acolo pentru predarea dispozitivului la ora stabilită.', 'Serviciu comercial de reparații într-o clădire de locuințe privată. Vă întâmpin personal la intrarea din curte pentru predarea și ridicarea dispozitivelor, pe baza unei programări confirmate.'],
-  uk: ['Приватний житловий будинок · вхід через двір', 'Коли ви прибудете на Stätzlinger Straße до автобусної зупинки або піцерії, прямуйте вулицею Eppaner Straße ліворуч уздовж будівлі. Біля кінця будівлі поверніть праворуч у великий двір. Наш вхід розташований у дальній частині двору. Там я зустріну вас для передачі пристрою в узгоджений час.', 'Комерційний ремонтний сервіс у приватному житловому будинку. Я особисто зустріну вас біля входу у дворі для приймання або видачі пристрою за підтвердженим записом.'],
-  es: ['Edificio residencial privado · acceso por el patio', 'Al llegar a Stätzlinger Straße, junto a la parada de autobús o la pizzería, siga Eppaner Straße por el lado izquierdo del edificio. Al final del edificio gire a la derecha hacia el patio grande. Nuestra entrada está en la parte posterior del patio. Allí le recibiré para la entrega del dispositivo a la hora acordada.', 'Servicio comercial de reparación en un edificio residencial privado. Le recibiré personalmente en la entrada del patio para entregar o recoger su dispositivo, con cita confirmada.'],
-  sv: ['Privat bostadshus · ingång via gården', 'När du kommer till Stätzlinger Straße vid busshållplatsen eller pizzerian, följ Eppaner Straße längs byggnadens vänstra sida. Vid byggnadens slut svänger du höger in på den stora gården. Vår ingång ligger i gårdens bortre del. Där välkomnar jag dig för den avtalade överlämningen av din enhet.', 'Yrkesmässig reparationsservice i ett privat bostadshus. Jag tar personligen emot dig vid ingången på gården för inlämning och hämtning efter bekräftad tidsbokning.'],
-  da: ['Privat beboelsesejendom · indgang via gården', 'Når du ankommer til Stätzlinger Straße ved busstoppestedet eller pizzeriaet, følger du Eppaner Straße langs bygningens venstre side. Ved enden af bygningen drejer du til højre ind i den store gård. Vores indgang ligger i den bagerste del af gården. Her byder jeg dig velkommen til den aftalte overdragelse af din enhed.', 'Erhvervsmæssig reparationsservice i en privat beboelsesejendom. Jeg tager personligt imod dig ved indgangen i gården til indlevering og afhentning efter en bekræftet aftale.'],
-  ru: ['Частный жилой дом · вход через двор', 'Когда вы прибудете на Stätzlinger Straße к автобусной остановке или пиццерии, следуйте по Eppaner Straße вдоль левой стороны здания. В конце здания поверните направо в большой двор. Наш вход расположен в дальней части двора. Там я встречу вас для передачи устройства в согласованное время.', 'Коммерческий ремонтный сервис в частном жилом доме. Я лично встречу вас у входа во дворе для приёма или выдачи устройства по подтверждённой записи.'],
-  zh: ['私人住宅楼 · 从院子进入', '到达 Stätzlinger Straße 的公交车站或披萨店附近后，请沿建筑物左侧的 Eppaner Straße 前行。在建筑物尽头右转进入大院。我们的入口在院子后部，我会在那里按约定时间迎接您，办理设备交接。', '本维修服务经营于私人住宅楼内。送修和取回设备均须提前预约并获得确认，我会在院内入口亲自接待您。'],
-  ja: ['個人の住宅 · 中庭からお入りください', 'Stätzlinger Straße のバス停またはピザ店付近に到着されましたら、建物の左側の Eppaner Straße に沿ってお進みください。建物の端で右折すると、大きな中庭に入ります。入口は中庭の奥にあります。ご予約の機器の受け渡しの際は、そこでお迎えいたします。', '個人の住宅で営業する修理サービスです。機器のお預かり・お渡しは、確認済みのご予約に合わせて中庭の入口で直接対応いたします。'],
-  pl: ['Prywatny budynek mieszkalny · wejście przez dziedziniec', 'Po przybyciu na Stätzlinger Straße w pobliże przystanku autobusowego lub pizzerii proszę udać się wzdłuż Eppaner Straße po lewej stronie budynku. Na końcu budynku należy skręcić w prawo na duży dziedziniec. Nasze wejście znajduje się w jego dalszej części. Tam powitam Państwa w ustalonym terminie przekazania urządzenia.', 'Profesjonalny serwis naprawczy w prywatnym budynku mieszkalnym. Osobiście przyjmę Państwa przy wejściu na dziedzińcu w celu przekazania lub odbioru urządzenia, po potwierdzeniu terminu.'],
-  it: ['Edificio residenziale privato · accesso dal cortile', 'Quando arriva in Stätzlinger Straße, presso la fermata dell’autobus o la pizzeria, segua Eppaner Straße lungo il lato sinistro dell’edificio. Alla fine dell’edificio giri a destra nel grande cortile. Il nostro ingresso si trova nella parte posteriore del cortile. La accoglierò lì per la consegna del dispositivo all’orario concordato.', 'Servizio professionale di riparazione in un edificio residenziale privato. La accoglierò personalmente all’ingresso nel cortile per la consegna e il ritiro del dispositivo, su appuntamento confermato.'],
-  fr: ['Immeuble résidentiel privé · accès par la cour', 'À votre arrivée dans Stätzlinger Straße, près de l’arrêt de bus ou de la pizzeria, suivez Eppaner Straße le long du côté gauche du bâtiment. Au bout du bâtiment, tournez à droite dans la grande cour. Notre entrée se situe dans la partie arrière de la cour. Je vous y accueillerai pour la remise de votre appareil à l’heure convenue.', 'Service professionnel de réparation dans un immeuble résidentiel privé. Je vous accueille personnellement à l’entrée dans la cour pour le dépôt et le retrait des appareils, sur rendez-vous confirmé.'],
-  bg: ['Частна жилищна сграда · достъп през двора', 'Когато пристигнете на Stätzlinger Straße до автобусната спирка или пицарията, продължете по Eppaner Straße от лявата страна на сградата. В края на сградата завийте надясно в големия двор. Нашият вход се намира в задната част на двора. Там ще ви посрещна за предаването на устройството в уговорения час.', 'Професионален ремонтен сервиз в частна жилищна сграда. Ще ви посрещна лично при входа в двора за предаване и получаване на устройството след потвърдена уговорка.'],
-  hr: ['Privatna stambena zgrada · pristup kroz dvorište', 'Kada stignete na Stätzlinger Straße kod autobusne stanice ili pizzerije, slijedite Eppaner Straße uz lijevu stranu zgrade. Na kraju zgrade skrenite desno u veliko dvorište. Naš se ulaz nalazi u stražnjem dijelu dvorišta. Tamo ću vas dočekati radi predaje uređaja u dogovoreno vrijeme.', 'Profesionalni servis za popravke u privatnoj stambenoj zgradi. Osobno ću vas dočekati na ulazu u dvorištu radi predaje i preuzimanja uređaja uz potvrđen termin.'],
-  el: ['Ιδιωτική κατοικία · πρόσβαση από την αυλή', 'Όταν φτάσετε στην Stätzlinger Straße κοντά στη στάση λεωφορείου ή την πιτσαρία, ακολουθήστε την Eppaner Straße κατά μήκος της αριστερής πλευράς του κτιρίου. Στο τέλος του κτιρίου στρίψτε δεξιά στη μεγάλη αυλή. Η είσοδός μας βρίσκεται στο πίσω μέρος της αυλής. Εκεί θα σας υποδεχτώ για την παράδοση της συσκευής σας την ώρα που συμφωνήσαμε.', 'Επαγγελματικό σέρβις επισκευών σε ιδιωτική κατοικία. Σας υποδέχομαι προσωπικά στην είσοδο στην αυλή για παράδοση και παραλαβή συσκευών με επιβεβαιωμένο ραντεβού.'],
-  ar: ['مبنى سكني خاص · الوصول عبر الفناء', 'عند وصولكم إلى Stätzlinger Straße قرب محطة الحافلات أو مطعم البيتزا، اتبعوا Eppaner Straße بمحاذاة الجانب الأيسر من المبنى. عند نهاية المبنى انعطفوا يميناً إلى الفناء الكبير. يقع مدخلنا في الجزء الخلفي من الفناء، حيث سأستقبلكم لتسليم الجهاز في الموعد المتفق عليه.', 'خدمة إصلاح تجارية في مبنى سكني خاص. أستقبلكم شخصياً عند المدخل في الفناء لتسليم الأجهزة واستلامها بعد تأكيد الموعد.'],
-  fa: ['ساختمان مسکونی خصوصی · دسترسی از حیاط', 'وقتی به Stätzlinger Straße کنار ایستگاه اتوبوس یا پیتزافروشی رسیدید، لطفاً Eppaner Straße را از سمت چپ ساختمان دنبال کنید. در انتهای ساختمان به راست وارد حیاط بزرگ شوید. ورودی ما در بخش پشتی حیاط قرار دارد و من آنجا در زمان توافق‌شده برای تحویل دستگاه از شما استقبال می‌کنم.', 'خدمات تجاری تعمیر در یک ساختمان مسکونی خصوصی ارائه می‌شود. برای تحویل و دریافت دستگاه، پس از تأیید وقت قبلی، شخصاً در ورودی داخل حیاط از شما استقبال می‌کنم.']
+  "de": [
+    "Privates Wohnhaus · Hauseingang im Hof",
+    "Google Maps führt Sie an der Stätzlinger Straße 99 zunächst zum großen weißen Gebäude bei Bushaltestelle und Pizzeria. Blicken Sie von der Straße auf das Gebäude: Folgen Sie links der Eppaner Straße am Gebäude entlang. Nach etwa 30 Metern biegen Sie rechts hinter dem Gebäude in den großen Autohof mit vielen geparkten Autos ein. Unser Hauseingang liegt ganz hinten im Hof, erkennbar an unserem Firmenschild und der beschrifteten Klingel.",
+    "Gewerblicher Reparaturservice im privaten Wohnhaus. Persönliche Geräteübergabe am Hauseingang im Hof – nach bestätigtem Termin."
+  ],
+  "en": [
+    "Private residential building · entrance via the courtyard",
+    "Google Maps initially takes you to the front of the large white building at Stätzlinger Straße 99, by the bus stop and pizzeria. Facing the building from the street, follow Eppaner Straße along its left side. After about 30 metres, turn right behind the building into the large courtyard with many parked cars. Our residential entrance is at the far end of the courtyard, marked by our business sign and labelled doorbell.",
+    "Commercial repair service based in a private residential building. I welcome you personally at the courtyard entrance for device drop-off and collection by confirmed appointment."
+  ],
+  "tr": [
+    "Özel konut binası · giriş avludan",
+    "Google Maps sizi önce Stätzlinger Straße 99 adresindeki otobüs durağı ve pizzacının yanındaki büyük beyaz binanın önüne getirir. Sokaktan binaya baktığınızda, sol taraftaki Eppaner Straße boyunca binanın yanından ilerleyin. Yaklaşık 30 metre sonra binanın arkasında sağa, çok sayıda aracın park ettiği büyük avluya dönün. Ev girişimiz avlunun en arkasındadır; firma tabelamız ve üzerinde adımız yazan zil ile belirtilmiştir.",
+    "Özel bir konut binasında faaliyet gösteren ticari onarım hizmeti. Onaylanmış randevunuzda cihaz teslimi ve teslim alma için sizi avludaki girişte şahsen karşılıyorum."
+  ],
+  "ro": [
+    "Clădire de locuințe privată · acces prin curte",
+    "Google Maps vă conduce mai întâi în fața clădirii mari albe de la Stätzlinger Straße 99, lângă stația de autobuz și pizzerie. Privind clădirea dinspre stradă, urmați Eppaner Straße pe partea stângă, de-a lungul clădirii. După aproximativ 30 de metri, virați la dreapta în spatele clădirii, în curtea mare cu multe mașini parcate. Intrarea în locuință este în capătul din spate al curții și este marcată prin firma noastră și soneria inscripționată.",
+    "Serviciu comercial de reparații într-o clădire de locuințe privată. Vă întâmpin personal la intrarea din curte pentru predarea și ridicarea dispozitivelor, pe baza unei programări confirmate."
+  ],
+  "uk": [
+    "Приватний житловий будинок · вхід через двір",
+    "Google Maps спочатку приведе вас до передньої сторони великої білої будівлі за адресою Stätzlinger Straße 99, біля автобусної зупинки та піцерії. Дивлячись на будівлю з вулиці, прямуйте ліворуч уздовж неї вулицею Eppaner Straße. Приблизно через 30 метрів поверніть праворуч за будівлею у великий двір із багатьма припаркованими автомобілями. Вхід до житлового будинку — у самому кінці двору; його позначено вивіскою нашого сервісу та підписаним дверним дзвінком.",
+    "Комерційний ремонтний сервіс у приватному житловому будинку. Я особисто зустріну вас біля входу у дворі для приймання або видачі пристрою за підтвердженим записом."
+  ],
+  "es": [
+    "Edificio residencial privado · acceso por el patio",
+    "Google Maps le lleva primero al frente del gran edificio blanco de Stätzlinger Straße 99, junto a la parada de autobús y la pizzería. Mirando el edificio desde la calle, siga Eppaner Straße por su lado izquierdo. Tras unos 30 metros, gire a la derecha detrás del edificio para entrar en el gran patio con muchos coches aparcados. La entrada de nuestra vivienda está al fondo del patio, identificada con el cartel del negocio y el timbre rotulado.",
+    "Servicio comercial de reparación en un edificio residencial privado. Le recibiré personalmente en la entrada del patio para entregar o recoger su dispositivo, con cita confirmada."
+  ],
+  "sv": [
+    "Privat bostadshus · ingång via gården",
+    "Google Maps leder dig först till framsidan av den stora vita byggnaden på Stätzlinger Straße 99, vid busshållplatsen och pizzerian. När du står på gatan och tittar mot byggnaden följer du Eppaner Straße längs dess vänstra sida. Efter cirka 30 meter svänger du höger bakom byggnaden in på den stora gården med många parkerade bilar. Vår bostadsentré ligger längst in på gården och är märkt med vår företagsskylt och namnet vid dörrklockan.",
+    "Yrkesmässig reparationsservice i ett privat bostadshus. Jag tar personligen emot dig vid ingången på gården för inlämning och hämtning efter bekräftad tidsbokning."
+  ],
+  "da": [
+    "Privat beboelsesejendom · indgang via gården",
+    "Google Maps fører dig først til forsiden af den store hvide bygning på Stätzlinger Straße 99 ved busstoppestedet og pizzeriaet. Når du ser på bygningen fra gaden, følger du Eppaner Straße langs dens venstre side. Efter cirka 30 meter drejer du til højre bag bygningen ind i den store gård med mange parkerede biler. Vores indgang til boligen ligger helt bagest i gården og er markeret med vores firmaskilt og den mærkede dørklokke.",
+    "Erhvervsmæssig reparationsservice i en privat beboelsesejendom. Jeg tager personligt imod dig ved indgangen i gården til indlevering og afhentning efter en bekræftet aftale."
+  ],
+  "ru": [
+    "Частный жилой дом · вход через двор",
+    "Google Maps сначала приведёт вас к передней стороне большого белого здания по адресу Stätzlinger Straße 99, возле автобусной остановки и пиццерии. Если смотреть на здание с улицы, следуйте слева вдоль него по Eppaner Straße. Примерно через 30 метров поверните направо за зданием в большой двор с множеством припаркованных машин. Вход в наш жилой дом находится в самом конце двора; он обозначен вывеской сервиса и подписанным дверным звонком.",
+    "Коммерческий ремонтный сервис в частном жилом доме. Я лично встречу вас у входа во дворе для приёма или выдачи устройства по подтверждённой записи."
+  ],
+  "zh": [
+    "私人住宅楼 · 从院子进入",
+    "Google Maps 会先将您带到 Stätzlinger Straße 99 的大白色建筑正面，附近有公交车站和披萨店。从街道面向建筑物时，请沿左侧的 Eppaner Straße 顺着建筑物前行。约30米后，在建筑物后方右转进入停有许多汽车的大院。我们的住宅入口位于院子最里面，可通过公司标牌和标有名称的门铃辨认。",
+    "本维修服务经营于私人住宅楼内。送修和取回设备均须提前预约并获得确认，我会在院内入口亲自接待您。"
+  ],
+  "ja": [
+    "個人の住宅 · 中庭からお入りください",
+    "Google Maps はまず Stätzlinger Straße 99 の大きな白い建物の正面（バス停とピザ店の近く）へ案内します。道路から建物に向かって見たときの左側にある Eppaner Straße を、建物に沿ってお進みください。約30メートル先、建物の裏で右折すると多くの車が駐車している大きな中庭に入ります。住宅の入口は中庭の一番奥にあり、当店の案内表示と名前の付いた呼び鈴が目印です。",
+    "個人の住宅で営業する修理サービスです。機器のお預かり・お渡しは、確認済みのご予約に合わせて中庭の入口で直接対応いたします。"
+  ],
+  "pl": [
+    "Prywatny budynek mieszkalny · wejście przez dziedziniec",
+    "Google Maps prowadzi najpierw przed duży biały budynek przy Stätzlinger Straße 99, obok przystanku autobusowego i pizzerii. Patrząc na budynek od strony ulicy, należy iść lub jechać Eppaner Straße wzdłuż jego lewej strony. Po około 30 metrach proszę skręcić w prawo za budynkiem na duży dziedziniec z wieloma zaparkowanymi samochodami. Wejście do naszego domu znajduje się na samym końcu dziedzińca i jest oznaczone szyldem firmy oraz opisanym dzwonkiem.",
+    "Profesjonalny serwis naprawczy w prywatnym budynku mieszkalnym. Osobiście przyjmę Państwa przy wejściu na dziedzińcu w celu przekazania lub odbioru urządzenia, po potwierdzeniu terminu."
+  ],
+  "it": [
+    "Edificio residenziale privato · accesso dal cortile",
+    "Google Maps conduce inizialmente davanti al grande edificio bianco in Stätzlinger Straße 99, vicino alla fermata dell’autobus e alla pizzeria. Guardando l’edificio dalla strada, segua Eppaner Straße lungo il suo lato sinistro. Dopo circa 30 metri svolti a destra dietro l’edificio, nel grande cortile con molte auto parcheggiate. L’ingresso della nostra abitazione si trova in fondo al cortile ed è riconoscibile dall’insegna dell’attività e dal campanello con il nome.",
+    "Servizio professionale di riparazione in un edificio residenziale privato. La accoglierò personalmente all’ingresso nel cortile per la consegna e il ritiro del dispositivo, su appuntamento confermato."
+  ],
+  "fr": [
+    "Immeuble résidentiel privé · accès par la cour",
+    "Google Maps vous conduit d’abord devant le grand bâtiment blanc au Stätzlinger Straße 99, près de l’arrêt de bus et de la pizzeria. En regardant le bâtiment depuis la rue, suivez Eppaner Straße le long de son côté gauche. Après environ 30 mètres, tournez à droite derrière le bâtiment pour entrer dans la grande cour où de nombreuses voitures sont garées. L’entrée de notre habitation se trouve tout au fond de la cour ; elle est signalée par notre enseigne et la sonnette étiquetée.",
+    "Service professionnel de réparation dans un immeuble résidentiel privé. Je vous accueille personnellement à l’entrée dans la cour pour le dépôt et le retrait des appareils, sur rendez-vous confirmé."
+  ],
+  "bg": [
+    "Частна жилищна сграда · достъп през двора",
+    "Google Maps първо ви отвежда пред голямата бяла сграда на Stätzlinger Straße 99, до автобусната спирка и пицарията. Гледайки сградата откъм улицата, продължете по Eppaner Straße покрай лявата ѝ страна. След около 30 метра завийте надясно зад сградата в големия двор с много паркирани автомобили. Входът на нашето жилище е в самия край на двора и е обозначен с фирмената ни табела и надписания звънец.",
+    "Професионален ремонтен сервиз в частна жилищна сграда. Ще ви посрещна лично при входа в двора за предаване и получаване на устройството след потвърдена уговорка."
+  ],
+  "hr": [
+    "Privatna stambena zgrada · pristup kroz dvorište",
+    "Google Maps vas najprije dovodi pred veliku bijelu zgradu na adresi Stätzlinger Straße 99, kod autobusne stanice i pizzerije. Gledajući zgradu s ulice, slijedite Eppaner Straße uz njezinu lijevu stranu. Nakon otprilike 30 metara skrenite desno iza zgrade u veliko dvorište s mnogo parkiranih automobila. Ulaz u naš dom nalazi se na samom kraju dvorišta, a prepoznat ćete ga po oznaci naše tvrtke i označenom zvoncu.",
+    "Profesionalni servis za popravke u privatnoj stambenoj zgradi. Osobno ću vas dočekati na ulazu u dvorištu radi predaje i preuzimanja uređaja uz potvrđen termin."
+  ],
+  "el": [
+    "Ιδιωτική κατοικία · πρόσβαση από την αυλή",
+    "Το Google Maps σας οδηγεί αρχικά μπροστά στο μεγάλο λευκό κτίριο στην Stätzlinger Straße 99, κοντά στη στάση λεωφορείου και την πιτσαρία. Κοιτάζοντας το κτίριο από τον δρόμο, ακολουθήστε την Eppaner Straße κατά μήκος της αριστερής πλευράς του. Μετά από περίπου 30 μέτρα στρίψτε δεξιά πίσω από το κτίριο στη μεγάλη αυλή με πολλά σταθμευμένα αυτοκίνητα. Η είσοδος της κατοικίας μας βρίσκεται στο βάθος της αυλής και αναγνωρίζεται από την πινακίδα της επιχείρησης και το κουδούνι με την ονομασία μας.",
+    "Επαγγελματικό σέρβις επισκευών σε ιδιωτική κατοικία. Σας υποδέχομαι προσωπικά στην είσοδο στην αυλή για παράδοση και παραλαβή συσκευών με επιβεβαιωμένο ραντεβού."
+  ],
+  "ar": [
+    "مبنى سكني خاص · الوصول عبر الفناء",
+    "تقودكم خرائط Google أولاً إلى واجهة المبنى الأبيض الكبير في Stätzlinger Straße 99، قرب محطة الحافلات ومطعم البيتزا. عند النظر إلى المبنى من الشارع، اتبعوا Eppaner Straße بمحاذاة جانبه الأيسر. بعد نحو 30 متراً انعطفوا يميناً خلف المبنى إلى الساحة الكبيرة التي تضم كثيراً من السيارات المتوقفة. يقع مدخل منزلنا في أقصى نهاية الساحة، ويمكن تمييزه بلافتة نشاطنا والاسم المكتوب بجانب جرس الباب.",
+    "خدمة إصلاح تجارية في مبنى سكني خاص. أستقبلكم شخصياً عند المدخل في الفناء لتسليم الأجهزة واستلامها بعد تأكيد الموعد."
+  ],
+  "fa": [
+    "ساختمان مسکونی خصوصی · دسترسی از حیاط",
+    "Google Maps ابتدا شما را به جلوی ساختمان بزرگ سفید در Stätzlinger Straße 99، کنار ایستگاه اتوبوس و پیتزافروشی می‌رساند. وقتی از خیابان رو به ساختمان ایستاده‌اید، Eppaner Straße را در امتداد سمت چپ ساختمان دنبال کنید. پس از حدود ۳۰ متر، پشت ساختمان به راست وارد حیاط بزرگی که خودروهای زیادی در آن پارک شده‌اند شوید. ورودی خانه ما در انتهای حیاط است و با تابلوی کسب‌وکار و زنگ دارای نام مشخص شده است.",
+    "خدمات تجاری تعمیر در یک ساختمان مسکونی خصوصی ارائه می‌شود. برای تحویل و دریافت دستگاه، پس از تأیید وقت قبلی، شخصاً در ورودی داخل حیاط از شما استقبال می‌کنم."
+  ]
 };
