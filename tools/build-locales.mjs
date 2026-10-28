@@ -7,6 +7,8 @@ import {wayfinder} from '../locales/wayfinder.mjs';
 import {arrivalPhoto,arrivalMore} from '../locales/arrival-photo.mjs';
 import {arrivalRoute} from '../locales/arrival-route.mjs';
 import {arrivalClosing} from '../locales/arrival-closing.mjs';
+import {ownerIntro,soleOwnerText} from '../locales/sole-owner.mjs';
+import {priceScope} from '../locales/price-scope.mjs';
 Object.assign(arrival,expandedArrival);
 for(const [lang,[heading,directions,introduction]] of Object.entries(arrivalRoute)){
   wayfinder[lang][0]=heading;
@@ -23,6 +25,9 @@ import {repairRequiredTranslations} from '../locales/repair-required.mjs';
 import {repairPlainTranslations} from '../locales/repair-plain.mjs';
 import {repairUnlockTranslations} from '../locales/repair-unlock.mjs';
 const root=path.resolve(import.meta.dirname,'..');
+const ownerMap=(value,lang)=>typeof value==='string'?soleOwnerText(value,lang):Array.isArray(value)?value.map(v=>ownerMap(v,lang)):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k,ownerMap(v,lang)])):value;
+for(const[lang,c]of Object.entries(localeContent)){Object.assign(c,ownerMap(c,lang));c.intro=ownerIntro[lang];c.terms=priceScope[lang]+' '+c.terms;}
+for(const source of[arrival,premises,wayfinder,arrivalPhoto,arrivalMore,arrivalRoute,arrivalClosing])for(const[lang,value]of Object.entries(source))source[lang]=ownerMap(value,lang);
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
@@ -116,4 +121,5 @@ let sitemap=read('sitemap.xml').replace(/<!-- locales:start -->[\s\S]*?<!-- loca
 const entries=Object.keys(localeContent).flatMap(l=>routes.slice(0,6).map(r=>'<url><loc>'+origin+url(l,r)+'</loc><lastmod>'+(r==='reparaturanfrage'?'2026-10-05':'2026-10-02')+'</lastmod></url>')).join('\n');
 write('sitemap.xml',sitemap.replace('</urlset>','<!-- locales:start -->\n'+entries+'\n<!-- locales:end -->\n</urlset>'));
 console.log('Built '+Object.keys(localeContent).length*routes.length+' localized pages and '+Object.keys(localeContent).length+' form dictionaries.');
+await import('./apply-owner-voice.mjs');
 
