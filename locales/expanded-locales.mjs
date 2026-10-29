@@ -1,9 +1,11 @@
 import fs from 'node:fs';
+import {repairAccessTranslationKeys} from './repair-unlock.mjs';
 const data=JSON.parse(fs.readFileSync(new URL('./expanded-data.json',import.meta.url),'utf8'));
 const forms=JSON.parse(fs.readFileSync(new URL('./expanded-forms.json',import.meta.url),'utf8'));
 const source=JSON.parse(fs.readFileSync(new URL('./form-source.json',import.meta.url),'utf8'));
 const reference=fs.readFileSync(new URL('../en/form-i18n.js',import.meta.url),'utf8');
-const keys=Object.keys(JSON.parse(reference.slice('window.siteTranslate=(key)=>('.length).split(')[key]||key;')[0]));
+// The legacy expanded rows are positional; the independently keyed access text is merged later.
+const keys=Object.keys(JSON.parse(reference.slice('window.siteTranslate=(key)=>('.length).split(')[key]||key;')[0])).filter(key=>!repairAccessTranslationKeys.includes(key));
 if(keys.length!==137)throw Error('Review expanded form translation keys: '+keys.length);
 export const expandedContent={},expandedFormTranslations={},expandedArrival={},expandedLanguages={};
 for(const [lang,d]of Object.entries(data)){
