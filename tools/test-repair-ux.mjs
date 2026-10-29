@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 // Install Playwright locally, or set PLAYWRIGHT_MODULE_PATH for a bundled runtime.
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE_PATH || 'playwright');
 const root = path.resolve(import.meta.dirname, '..');
-const evidence = path.resolve(root, '..', 'Anfahrt-Sprachen-20261027');
+const evidence = path.resolve(root, '..', 'Geraetezugang-Pruefung-20261029');
 await fs.mkdir(evidence, {recursive: true});
 const types = {'.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.png':'image/png', '.svg':'image/svg+xml'};
 const server = http.createServer(async (req,res) => {
@@ -76,7 +76,7 @@ try {
       await page.locator('#unlock-code').fill('1 2 3 6');
       assert.equal(await page.locator('#unlock-code').isVisible(),true);
       assert.equal(await page.locator('#unlock-code').evaluate(e=>e.checkValidity()),true);
-      if(lang!=='de') assert.notEqual(await page.locator('#unlock-label').textContent(),'PIN, Passwort oder Muster (optional)');
+      if(lang!=='de') assert.notEqual(await page.locator('#unlock-label').textContent(),'Gerätezugang (bitte auswählen)');
       const unlockDimensions=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
       assert.ok(unlockDimensions.scroll<=unlockDimensions.width+1,lang+' unlock fields overflow at '+width);
       const nav=page.locator(lang==='de'?'.nav-toggle':'.locale-toggle');
@@ -98,6 +98,7 @@ try {
   await page.locator('#email').fill('MauriceKeil@pc-und-handyservice-augsburg.com');
   await page.locator('#phone').fill('015254530080');
   await page.locator('#privacy-acknowledged').check();
+  await page.locator('#unlock-method').selectOption('later');
   await page.locator('[data-submit]').click();
   assert.equal(await page.evaluate(()=>document.activeElement.id),'serial-number');
   assert.equal(references,0,'Missing identifier must not transmit');
@@ -107,6 +108,13 @@ try {
     assert.equal(await page.locator('[data-unlock-fields]').isVisible(),supportsUnlock,type+' unlock visibility');
     assert.equal(await page.locator('#unlock-code').isDisabled(),true,type+' code disabled until selected');
     if(supportsUnlock) {
+      assert.equal(await page.locator('#unlock-method').inputValue(),'','No access status may be assumed');
+      assert.equal(await page.locator('#unlock-method').evaluate(e=>e.checkValidity()),false,'An explicit access choice is required');
+      for(const choice of ['unknown','later','none']) {
+        await page.locator('#unlock-method').selectOption(choice);
+        assert.equal(await page.locator('#unlock-method').evaluate(e=>e.checkValidity()),true,choice+' is a valid non-secret choice');
+        assert.equal(await page.locator('#unlock-code').isDisabled(),true,choice+' must not require a code');
+      }
       await page.locator('#unlock-method').selectOption('pin');
       assert.equal(await page.locator('#unlock-code').evaluate(e=>e.required),true);
       await page.locator('#unlock-code').fill('LOCAL-TEST-PIN');
@@ -133,6 +141,7 @@ try {
     await page.locator('#imei').fill('');
   }
   await page.locator('#device-type').selectOption('Smartphone');
+  await page.locator('#unlock-method').selectOption('later');
   await page.locator('#imei').fill('490154203237518');
   assert.equal(await page.locator('#serial-number').evaluate(e=>e.required),false);
   await page.locator('#imei').fill('123');
@@ -195,6 +204,7 @@ try {
     await page.goto(origin+'/reparaturanfrage');
     await page.clock.fastForward(3000);
     await page.locator('#device-type').selectOption(type);
+    await page.locator('#unlock-method').selectOption(type==='Desktop-PC'?'unknown':'later');
     for(const [id,value] of Object.entries({'device-name':'Lokaler Test-PC','description':'Lokaler Test ohne technische Zusatzangaben und ohne echten Versand.','serial-number':'CODEX-LOCAL-TEST','first-name':'Maurice','last-name':'Keil','email':'MauriceKeil@pc-und-handyservice-augsburg.com','phone':'015254530080','street':'Stätzlinger Straße 99','postcode':'86165','city':'Augsburg'})) await page.locator('#'+id).fill(value);
     await page.locator('#privacy-acknowledged').check();
     const prior=posts;
@@ -204,6 +214,9 @@ try {
     await page.frameLocator('[name="bigin-response"]').getByText('Intercepted test submission').waitFor();
     assert.equal(posts,prior+1,type+' accepts blank optional technical details');
     assert.equal(await page.locator('#bigin-device-model').inputValue(),'Lokaler Test-PC');
+    const crmDescription=await page.locator('#bigin-description').inputValue();
+    assert.match(crmDescription,type==='Desktop-PC'?/Gerätezugang: PIN\/Kennwort nicht bekannt; Rücksprache erforderlich\./:/Gerätezugang: Kunde entsperrt bei Geräteabgabe persönlich/);
+    assert.doesNotMatch(crmDescription,/undefined|Geräteentsperrung: bei Geräteabgabe mitteilen/);
     for(const id of ['device-manufacturer','device-model','computer-cpu','computer-ram','computer-gpu','computer-mainboard','computer-psu']) assert.equal(await page.locator('#'+id).inputValue(),'');
   }
   assert.equal(posts,3,'Only three intercepted local submissions');

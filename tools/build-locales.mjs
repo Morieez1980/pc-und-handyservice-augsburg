@@ -31,7 +31,7 @@ for(const source of[arrival,premises,wayfinder,arrivalPhoto,arrivalMore,arrivalR
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
-const version='20261027-lang3',repairFormVersion='20261020-optional1',origin='https://www.pc-und-handyservice-augsburg.com';
+const version='20261027-lang3',repairFormVersion='20261029-access1',origin='https://www.pc-und-handyservice-augsburg.com';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const norm=s=>s.replaceAll('&amp;','&').replaceAll('&nbsp;',' ').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
 const url=(lang,route='')=>lang==='de'?'/'+route:'/'+lang+'/'+route;

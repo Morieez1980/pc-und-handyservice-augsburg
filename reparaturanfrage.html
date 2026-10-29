@@ -39,7 +39,7 @@
   <script defer src="/clarity-consent.min.js?v=20261002-1"></script>
   <script defer src="/analytics-consent.js?v=20260924-2"></script>
   <script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script>
-  <script defer src="/repair-form.js?v=20261020-optional1"></script>
+  <script defer src="/repair-form.js?v=20261029-access1"></script>
 
 
 
@@ -180,10 +180,12 @@
             <input id="bigin-device-model" name="POTENTIALCF2" type="hidden" value="">
             <div class="form-grid" data-unlock-fields hidden>
               <div class="field-group">
-                <label for="unlock-method" id="unlock-label">Geräteentsperrung (optional)</label>
-                <select id="unlock-method" aria-describedby="unlock-hint">
-                  <option value="later">Bei Geräteabgabe mitteilen</option>
+                <label for="unlock-method" id="unlock-label">Gerätezugang (bitte auswählen)</label>
+                <select id="unlock-method" aria-describedby="unlock-hint unlock-access-hint" required>
+                  <option value="">Bitte auswählen</option>
+                  <option value="later">Bei Abgabe persönlich entsperren / Zugang klären</option>
                   <option value="none">Keine Sperre vorhanden</option>
+                  <option value="unknown">PIN / Kennwort nicht bekannt</option>
                   <option value="pin">PIN</option>
                   <option value="password">Passwort</option>
                   <option value="pattern" data-unlock-pattern>Muster</option>
@@ -194,6 +196,7 @@
                 <input id="unlock-code" type="password" maxlength="128" autocomplete="off" spellcheck="false" aria-describedby="unlock-hint" disabled>
               </div>
               <p class="field-hint field-wide" id="unlock-hint">Nur die Geräteentsperrung für die Reparatur angeben. Keine Passwörter für E-Mail, Apple, Google oder andere Onlinekonten. Alternativ bei Geräteabgabe mitteilen.</p>
+              <p class="field-hint field-wide" id="unlock-access-hint">Die Auswahl ist erforderlich, ein Code im Onlineformular nicht. Ohne Gerätezugang kläre ich die Möglichkeiten mit Ihnen. Kein Zurücksetzen oder Löschen ohne gesonderte Freigabe.</p>
               <p class="field-hint field-wide" data-pattern-hint hidden>Muster: Punkte zeilenweise von 1 bis 9 nummerieren (oben 1–2–3, Mitte 4–5–6, unten 7–8–9), dann die Reihenfolge eingeben.</p>
             </div>
             <p class="identifier-title">Gerätekennung <span aria-hidden="true">*</span></p>
