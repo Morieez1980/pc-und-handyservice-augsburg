@@ -3,7 +3,7 @@ import {prices} from '../locales/content.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 const names=['Fehlerdiagnose','Beratung','System-Check','Daten-Backup','Windows-Installation','Treiber-Installation','Software-Installation','SSD-Einbau inkl. Klonen','RAM-Aufrüstung','Reinigung &amp; Wartung','Displaywechsel','Akkutausch','Ladeanschluss-Reparatur','Rückglas-Reparatur','Software- / Systemfehler','Datenrettungsanalyse','Datenrettung','PlayStation-Reinigung','PlayStation-Reparatur','Xbox-Reinigung','Xbox-Reparatur','Wärmeleitpaste erneuern','HDMI-Anschluss-Reparatur'];
 const summaryPrices={
-  'pc-reparatur-augsburg.html':[['System-Check',2],['Reinigung &amp; Wartung',9]],
+  'pc-reparatur-augsburg.html':[['System-Check',2],['SSD inklusive Klonen',7],['Reinigung &amp; Wartung',9]],
   'handyreparatur-augsburg.html':[['Displaywechsel',10],['Akkutausch',11],['Softwarefehler',14]],
   'konsolenreparatur-augsburg.html':[['Reinigung',17],['HDMI-Reparatur',22],['Reparatur',18]],
 };
