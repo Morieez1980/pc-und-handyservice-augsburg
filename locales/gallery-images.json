@@ -1,0 +1,127 @@
+[
+  {
+    "src": "/bilder/werkstatt-2.png",
+    "width": 1265,
+    "height": 481,
+    "type": "brand",
+    "number": 2
+  },
+  {
+    "src": "/bilder/preise-20261030.png",
+    "width": 1800,
+    "height": 1629,
+    "type": "price"
+  },
+  {
+    "src": "/bilder/werkstatt-4.jpg",
+    "width": 1265,
+    "height": 816,
+    "type": "pc",
+    "number": 4
+  },
+  {
+    "src": "/bilder/werkstatt-5.jpg",
+    "width": 1265,
+    "height": 949,
+    "type": "pc",
+    "number": 5
+  },
+  {
+    "src": "/bilder/werkstatt-6.jpg",
+    "width": 1265,
+    "height": 949,
+    "type": "pc",
+    "number": 6
+  },
+  {
+    "src": "/bilder/werkstatt-7.jpg",
+    "width": 1265,
+    "height": 949,
+    "type": "phone",
+    "number": 7
+  },
+  {
+    "src": "/bilder/werkstatt-8.jpg",
+    "width": 1265,
+    "height": 713,
+    "type": "pc",
+    "number": 8
+  },
+  {
+    "src": "/bilder/werkstatt-9.jpg",
+    "width": 1265,
+    "height": 949,
+    "type": "pc",
+    "number": 9
+  },
+  {
+    "src": "/bilder/werkstatt-10.jpg",
+    "width": 1265,
+    "height": 708,
+    "type": "pc",
+    "number": 10
+  },
+  {
+    "src": "/bilder/werkstatt-11.jpg",
+    "width": 1265,
+    "height": 693,
+    "type": "pc",
+    "number": 11
+  },
+  {
+    "src": "/bilder/werkstatt-12.jpg",
+    "width": 1265,
+    "height": 770,
+    "type": "pc",
+    "number": 12
+  },
+  {
+    "src": "/bilder/werkstatt-13.jpg",
+    "width": 1265,
+    "height": 949,
+    "type": "pc",
+    "number": 13
+  },
+  {
+    "src": "/bilder/iphone-se-akkutausch-1.webp",
+    "width": 1600,
+    "height": 1200,
+    "type": "iphone",
+    "number": 1
+  },
+  {
+    "src": "/bilder/iphone-se-akkutausch-2.webp",
+    "width": 1600,
+    "height": 1200,
+    "type": "iphone",
+    "number": 2
+  },
+  {
+    "src": "/bilder/iphone-se-akkutausch-3.webp",
+    "width": 1200,
+    "height": 1600,
+    "type": "iphone",
+    "number": 3
+  },
+  {
+    "src": "/bilder/iphone-se-akkutausch-4.webp",
+    "width": 1600,
+    "height": 1200,
+    "type": "iphone",
+    "number": 4
+  },
+  {
+    "src": "/bilder/iphone-se-akkutausch-5.webp",
+    "width": 1600,
+    "height": 1200,
+    "type": "iphone",
+    "number": 5
+  },
+  {
+    "src": "/bilder/iphone-se-akkutausch-6.webp",
+    "width": 1200,
+    "height": 1600,
+    "type": "iphone",
+    "number": 6
+  }
+]
