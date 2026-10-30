@@ -127,7 +127,7 @@ if (!index.includes('4,9') || !index.includes('data-google-review-count>92</span
 for (const marker of [
   '"name": "PC & Handyservice Augsburg – Maurice Keil"',
   'Geräteannahme und Abholung ausschließlich nach bestätigtem Termin',
-  '"priceRange": "30 €–250 €"',
+  '"priceRange": "€–€€"',
   'Augsburg-Lechhausen',
   "Mo–Fr 10:00–20:00; Sa 10:00–16:00 (ab 31.10.2026); So geschlossen",
   'Maurice Keil – Ihr Ansprechpartner.',

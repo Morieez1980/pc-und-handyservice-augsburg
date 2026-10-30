@@ -1,3 +1,4 @@
+import {calibratedFees,calibratedScope} from '../locales/price-calibration.mjs';
 import {expandedFormTranslations,expandedArrival} from '../locales/expanded-locales.mjs';
 import fs from 'node:fs';
 import {closureNotices} from '../locales/opening-hours.mjs';
@@ -26,12 +27,12 @@ import {repairPlainTranslations} from '../locales/repair-plain.mjs';
 import {repairUnlockTranslations} from '../locales/repair-unlock.mjs';
 const root=path.resolve(import.meta.dirname,'..');
 const ownerMap=(value,lang)=>typeof value==='string'?soleOwnerText(value,lang):Array.isArray(value)?value.map(v=>ownerMap(v,lang)):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k,ownerMap(v,lang)])):value;
-for(const[lang,c]of Object.entries(localeContent)){Object.assign(c,ownerMap(c,lang));c.intro=ownerIntro[lang];c.terms=priceScope[lang]+' '+c.terms;}
+for(const[lang,c]of Object.entries(localeContent)){Object.assign(c,ownerMap(c,lang));c.intro=ownerIntro[lang];c.fees=calibratedFees[lang];c.terms=calibratedScope[lang]+' '+c.terms;}
 for(const source of[arrival,premises,wayfinder,arrivalPhoto,arrivalMore,arrivalRoute,arrivalClosing])for(const[lang,value]of Object.entries(source))source[lang]=ownerMap(value,lang);
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
-const version='20261027-lang3',repairFormVersion='20261029-access1',origin='https://www.pc-und-handyservice-augsburg.com';
+const version='20261027-lang3',repairFormVersion='20261030-preise1',origin='https://www.pc-und-handyservice-augsburg.com';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const norm=s=>s.replaceAll('&amp;','&').replaceAll('&nbsp;',' ').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
 const url=(lang,route='')=>lang==='de'?'/'+route:'/'+lang+'/'+route;
@@ -72,7 +73,7 @@ for(const [lang,c] of Object.entries(localeContent)){
   const l=c.labels;
   const button='<a class="button button-primary" href="'+url(lang,'reparaturanfrage')+'">'+esc(l[5])+' →</a>';
   const contact='<section class="locale-section" id="kontakt"><h2>'+esc(l[4])+'</h2><p>PC &amp; Handyservice Augsburg – Maurice Keil</p><address>Stätzlinger Straße 99<br>86165 Augsburg</address><p>'+esc(c.hours)+'</p><div class="locale-actions"><a class="button button-outline" href="tel:+4915254530080">'+esc(l[6])+' · 0152 54530080</a><a class="button button-outline" href="https://wa.me/4915254530080" rel="noopener noreferrer">WhatsApp</a><a class="button button-outline" href="https://share.google/57mrs7jE79LUInKVg" rel="noopener noreferrer">Google</a><a class="button button-outline" href="'+url(lang,'reparaturanfrage')+'">'+esc(l[5])+'</a></div><p><a class="contact-email" href="mailto:MauriceKeil@pc-und-handyservice-augsburg.com">MauriceKeil@pc-und-handyservice-augsburg.com</a></p><p><a href="https://www.google.com/maps/dir/?api=1&amp;destination=St%C3%A4tzlinger+Stra%C3%9Fe+99%2C+86165+Augsburg" rel="noopener noreferrer">'+esc(l[17])+' ↗</a></p><p class="locale-note">'+esc(c.languageNote)+'</p></section>';
-  const priceSection=(indices=range(0,22))=>'<section class="locale-section" id="preise"><h2>'+esc(l[1])+'</h2><dl class="locale-prices">'+indices.map(i=>'<div data-price-index="'+i+'"><dt>'+esc(c.priceNames[i])+'</dt><dd>'+(i===1?esc(l[15]):([0,15,16].includes(i)?'':esc(l[14])+' ')+prices[i]+' €')+'</dd></div>').join('')+'</dl><p>'+esc(c.fees)+'</p><p class="locale-note">'+esc(c.terms)+'</p></section>';
+  const priceSection=(indices=range(0,22))=>'<section class="locale-section" id="preise"><h2>'+esc(l[1])+'</h2><dl class="locale-prices">'+indices.map(i=>'<div data-price-index="'+i+'"><dt>'+esc(c.priceNames[i])+'</dt><dd>'+(i===1?esc(l[15]):([0,15].includes(i)?'':esc(l[14])+' ')+prices[i]+' €')+'</dd></div>').join('')+'</dl><p>'+esc(c.fees)+'</p><p class="locale-note">'+esc(c.terms)+'</p></section>';
   const process='<section class="locale-section" id="ablauf"><h2>'+esc(l[2])+'</h2><ol class="locale-steps">'+c.steps.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol></section>';
   const faq='<section class="locale-section" id="faq"><h2>'+esc(l[3])+'</h2>'+c.faq.map(([q,a])=>'<details class="locale-faq"><summary>'+esc(q)+'</summary><p>'+esc(a)+'</p></details>').join('')+'</section>';
   for(const route of routes){
