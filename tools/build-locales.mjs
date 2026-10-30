@@ -125,7 +125,10 @@ for(const [lang,c] of Object.entries(localeContent)){
     if(!legal)body=arrivalWayfinder(lang)+(!route?copyPreviewBanner(lang):'')+body+arrivalSection(lang,route);
     const pageUrl=origin+url(lang,route);
     const html='<!doctype html>\n<html lang="'+lang+'" dir="'+(['ar','fa'].includes(lang)?'rtl':'ltr')+'" data-private-page="true"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="'+(legal?'noindex,follow':'index,follow')+'"><title>'+esc(title)+' | PC &amp; Handyservice Augsburg</title><meta name="description" content="'+esc(description)+'"><link rel="canonical" href="'+pageUrl+'">'+alternates(route)+'<meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(description)+'"><meta property="og:type" content="website"><meta property="og:url" content="'+pageUrl+'"><meta property="og:image" content="'+origin+'/og-image.png"><meta name="theme-color" content="#050914"><link rel="icon" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="/styles.min.css?v=20261014-logo"><link rel="stylesheet" href="/locale.css?v='+version+'">'+extra+(!legal&&!formPage?'<link rel="stylesheet" href="/offers.css?v=20261030-2">':'')+'<link rel="stylesheet" href="/arrival.css?v=20261030-compact1">'+hoursScript+'<script defer src="/locale-nav.js?v='+version+'"></script></head><body class="locale-page'+(formPage?' locale-form-page':'')+'"><header class="locale-header"><a class="brand" href="'+url(lang)+'"><img class="brand-logo" src="/favicon.svg?v=20261014-logo" width="48" height="48" alt=""><span><strong>PC &amp; Handyservice</strong><small>Augsburg · Maurice Keil</small></span></a>'+picker(lang,route)+'<button class="locale-toggle" type="button" aria-expanded="false" aria-controls="locale-nav" data-open="'+esc(l[23])+'" data-close="'+esc(l[24])+'" aria-label="'+esc(l[23])+'">☰</button><nav id="locale-nav"><a href="'+url(lang)+'#leistungen">'+esc(l[0])+'</a><a href="'+url(lang)+'#preise">'+esc(l[1])+'</a><a href="'+url(lang)+'#kontakt">'+esc(l[4])+'</a><a href="'+url(lang,'reparaturanfrage')+'">'+esc(l[5])+'</a></nav></header><main id="main" class="locale-main'+(legal?' locale-legal':'')+'">'+closureNotice(lang)+body+'</main><footer class="locale-footer"><a href="'+url(lang)+'">'+esc(l[8])+'</a><a href="'+url(lang,'impressum')+'">'+esc(l[9])+'</a><a href="'+url(lang,'datenschutz')+'">'+esc(l[10])+'</a><span>© 2026 Maurice Keil</span></footer><aside class="locale-mobile-contact"><a href="tel:+4915254530080">'+esc(l[6])+'</a><a href="https://wa.me/4915254530080">WhatsApp</a><a href="'+url(lang,'reparaturanfrage')+'">'+esc(l[5])+'</a></aside></body></html>';
-    write(lang+'/'+(route||'index')+'.html',html);
+    const startLinkedHtml=html
+      .replace('<html lang=','<html id="top" lang=')
+      .replace('<a class="brand" href="'+url(lang)+'"','<a class="brand" href="'+url(lang)+'#top"');
+    write(lang+'/'+(route||'index')+'.html',startLinkedHtml);
   }
 }
 // German source pages receive reciprocal links and the same language menu.
@@ -163,6 +166,7 @@ for(const route of routes){
   html=html.replace(/<aside class="arrival-wayfinder"[\s\S]*?<\/aside>/g,'').replace(/<aside class="copy-preview"[\s\S]*?<\/aside>/g,'');
   if(routes.slice(0,6).includes(route))html=html.replace(/(<main\b[^>]*>)/,'$1'+arrivalWayfinder('de')+(!route?copyPreviewBanner('de'):''));
   html=html.replace(/\/arrival\.css\?v=[^"']+/g,'/arrival.css?v=20261030-compact1');
+  html=html.replace(/<a class="brand" href="[^"]*"/g,'<a class="brand" href="/#top"');
   write(file,html);
 }
 let sitemap=read('sitemap.xml').replace(/<!-- locales:start -->[\s\S]*?<!-- locales:end -->\s*/g,'');
