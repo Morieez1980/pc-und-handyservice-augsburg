@@ -1,13 +1,14 @@
 import { escapeHtml } from "./http.js";
+import { withAppsNavigation } from "./apps-navigation.js";
 
-const shell = (title, description, body, canonical) => `<!doctype html>
+const shell = (title, description, body, canonical) => withAppsNavigation(`<!doctype html>
 <html lang="de" data-private-page="true"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escapeHtml(title)}</title><meta name="description" content="${escapeHtml(description)}"><link rel="canonical" href="${canonical}">
 <meta name="theme-color" content="#050914"><link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/styles.min.css?v=20261002-1"><link rel="stylesheet" href="/reports.css?v=20261002-1"></head>
 <body><a class="skip-link" href="#main">Zum Inhalt springen</a><header class="site-header scrolled" data-header><a class="brand" href="/" aria-label="Startseite"><span class="brand-mark">MK</span><span><strong>PC &amp; Handyservice</strong><small>Augsburg · Maurice Keil</small></span></a><button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" data-nav-toggle><span class="sr-only">Menü öffnen</span><span></span><span></span></button><nav id="nav" class="nav" aria-label="Hauptnavigation" data-nav><a href="/#leistungen">Leistungen</a><a href="/#preise">Preise</a><a href="/reparaturberichte" aria-current="page">Reparaturberichte</a><a class="nav-cta" href="/reparaturanfrage">Reparatur anfragen</a></nav></header>
 <main id="main" class="reports-main">${body}</main><footer class="reports-footer"><a href="/">Startseite</a><a href="/reparaturanfrage">Reparaturanfrage</a><a href="/datenschutz">Datenschutz</a><a href="/impressum">Impressum</a><span>© 2026 Maurice Keil</span></footer>
-<script src="/clarity-consent.min.js?v=20261002-1" defer></script><script src="/script.min.js?v=20261002-1" defer></script><script src="/reports.js?v=20260914-2" defer></script></body></html>`;
+<script src="/clarity-consent.min.js?v=20261002-1" defer></script><script src="/script.min.js?v=20261002-1" defer></script><script src="/reports.js?v=20260914-2" defer></script></body></html>`);
 
 const stageLabels = { before: "Vorher", repair: "Reparatur", result: "Ergebnis" };
 const imageUrl = (id) => `/api/reparaturberichte/bild/${encodeURIComponent(id)}?v=20260914-2`;
