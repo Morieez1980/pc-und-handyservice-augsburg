@@ -14,6 +14,7 @@ import {premisesTrust} from '../locales/premises-trust.mjs';
 import {serviceCoverage,germanOverviewCards} from '../locales/service-coverage.mjs';
 import {compactArrival} from '../locales/arrival-compact.mjs';
 import {copyProgramPreview} from '../locales/copy-program-preview.mjs';
+import {withAppsNavigation} from '../functions/_shared/apps-navigation.js';
 import {ownerIntro,soleOwnerText} from '../locales/sole-owner.mjs';
 import {priceScope} from '../locales/price-scope.mjs';
 Object.assign(arrival,expandedArrival);
@@ -55,7 +56,7 @@ for(const [lang,c] of Object.entries(localeContent)){
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
-const version='20261027-lang3',repairFormVersion='20261030-preise1',origin='https://www.pc-und-handyservice-augsburg.com';
+const version='20261030-apps1',repairFormVersion='20261030-preise1',origin='https://www.pc-und-handyservice-augsburg.com';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const norm=s=>s.replaceAll('&amp;','&').replaceAll('&nbsp;',' ').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
 const url=(lang,route='')=>lang==='de'?'/'+route:'/'+lang+'/'+route;
@@ -68,7 +69,7 @@ const alternates=route=>Object.keys(languages).map(l=>'<link rel="alternate" hre
 const premisesLead=lang=>{const p=premises[lang];if(!p||p.length!==3)throw Error('Missing premises translation: '+lang);return '<p class="arrival-context">'+esc(p[0])+'</p>';};
 const premisesReviewLink=lang=>{const t=premisesTrust[lang];if(!t||t.length!==3)throw Error('Missing premises trust translation: '+lang);return '<p class="arrival-trust"><a href="/#bewertungen" hreflang="de">'+esc(t[2])+'</a></p>';};
 const arrivalWayfinder=lang=>{const c=compactArrival[lang];if(!c)throw Error('Missing wayfinder translation: '+lang);return '<aside class="arrival-wayfinder" aria-labelledby="wayfinder-heading"><div><strong id="wayfinder-heading">'+esc(c[0])+'</strong><p>'+esc(c[1])+'</p><p>'+esc(c[2])+'</p><p>'+esc(c[3])+'</p>'+premisesReviewLink(lang)+'</div><a class="arrival-wayfinder-link" href="#anfahrt">'+esc(arrivalPhoto[lang][0])+' <span aria-hidden="true">↓</span></a></aside>';};
-const copyPreviewBanner=lang=>{const c=copyProgramPreview[lang];if(!c||c.length!==3)throw Error('Missing program preview: '+lang);return '<aside class="copy-preview" aria-labelledby="copy-preview-heading"><div><h2 id="copy-preview-heading">'+esc(c[0])+'</h2><p>'+esc(c[1])+'</p></div><a href="mailto:MauriceKeil@pc-und-handyservice-augsburg.com?subject=Kopierprogramm">'+esc(c[2])+' →</a></aside>';};
+const copyPreviewBanner=lang=>{const c=copyProgramPreview[lang];if(!c||c.length!==3)throw Error('Missing program preview: '+lang);return '<aside class="copy-preview" id="apps" aria-labelledby="copy-preview-heading"><div><h2 id="copy-preview-heading">'+esc(c[0])+'</h2><p>'+esc(c[1])+'</p></div><a href="mailto:MauriceKeil@pc-und-handyservice-augsburg.com?subject=Kopierprogramm">'+esc(c[2])+' →</a></aside>';};
 const arrivalOriginalMapLink='<a data-original-map href="https://www.google.com/maps/place/St%C3%A4tzlinger+Str.+99,+86165+Lechhausen/@48.3796179,10.9431915,143m/data=!3m1!1e3!4m6!3m5!1s0x479e97bdef4a65a7:0x55076455bfc4f062!8m2!3d48.3796179!4d10.9431915!16s%2Fg%2F11c26q5nbw" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>';
 const arrivalSection=(lang,route="")=>{const a=arrival[lang],p=premises[lang],photo=arrivalPhoto[lang];if(!a||!p||!photo)throw Error('Missing arrival translation: '+lang);return '<section class="arrival-notice" id="anfahrt" aria-labelledby="arrival-heading"><h2 id="arrival-heading">'+esc(a[0])+'</h2><div class="arrival-guide"><div class="arrival-guide-copy"><p class="arrival-address">PC &amp; Handyservice Augsburg – Maurice Keil<br>Stätzlinger Straße 99, 86165 Augsburg</p><p>'+esc(a[1])+'</p><p><strong>'+esc(a[2])+'</strong></p><p>'+esc(p[1])+'</p><p>'+esc(p[2])+'</p><p>'+esc(a[4])+' <a href="tel:+4915254530080">0152 54530080</a></p>'+premisesReviewLink(lang)+'</div><figure class="arrival-photo"><a href="/anfahrt-hof-plan-20261030-v4.svg" target="_blank" rel="noopener noreferrer" aria-label="'+esc(photo[1])+'"><img src="/anfahrt-hof-plan-20261030-v4.svg" width="1122" height="1402" loading="lazy" decoding="async" alt="'+esc(a[1])+'"></a><figcaption>'+esc(photo[0])+' · <a href="/anfahrt-hof-plan-20261030-v4.svg" target="_blank" rel="noopener noreferrer">'+esc(photo[1])+' ↗</a> · '+arrivalOriginalMapLink+'</figcaption></figure></div><div class="arrival-closing"><p>'+esc(arrivalClosing[lang][0])+'</p><p><a href="'+(route==='reparaturanfrage'?'#repair-request':url(lang,'reparaturanfrage'))+'">'+esc(arrivalClosing[lang][2])+' →</a></p><p>'+esc(arrivalClosing[lang][1])+'<br><strong>Maurice Keil</strong><br>PC &amp; Handyservice Augsburg</p></div></section>';};
 const range=(a,b)=>Array.from({length:b-a+1},(_,i)=>i+a);
@@ -129,7 +130,7 @@ for(const [lang,c] of Object.entries(localeContent)){
     const startLinkedHtml=html
       .replace(/(<html lang="[^"]+")/,'$1 id="top"')
       .replace('<a class="brand" href="'+url(lang)+'"','<a class="brand" href="'+url(lang)+'#top"');
-    write(lang+'/'+(route||'index')+'.html',startLinkedHtml);
+    write(lang+'/'+(route||'index')+'.html',withAppsNavigation(startLinkedHtml,lang));
   }
 }
 // German source pages receive reciprocal links and the same language menu.
@@ -168,7 +169,7 @@ for(const route of routes){
   if(routes.slice(0,6).includes(route))html=html.replace(/(<main\b[^>]*>)/,'$1'+arrivalWayfinder('de')+(!route?copyPreviewBanner('de'):''));
   html=html.replace(/\/arrival\.css\?v=[^"']+/g,'/arrival.css?v=20261030-compact1');
   html=html.replace(/<a class="brand" href="[^"]*"/g,'<a class="brand" href="/#top"');
-  write(file,html);
+  write(file,withAppsNavigation(html,'de'));
 }
 let sitemap=read('sitemap.xml').replace(/<!-- locales:start -->[\s\S]*?<!-- locales:end -->\s*/g,'');
 const entries=Object.keys(localeContent).flatMap(l=>routes.slice(0,6).map(r=>'<url><loc>'+origin+url(l,r)+'</loc><lastmod>'+(r==='reparaturanfrage'?'2026-10-05':'2026-10-02')+'</lastmod></url>')).join('\n');
