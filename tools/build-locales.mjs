@@ -11,6 +11,7 @@ import {arrivalPhoto,arrivalMore} from '../locales/arrival-photo.mjs';
 import {arrivalRoute} from '../locales/arrival-route.mjs';
 import {arrivalClosing} from '../locales/arrival-closing.mjs';
 import {premisesTrust} from '../locales/premises-trust.mjs';
+import {serviceCoverage,germanOverviewCards} from '../locales/service-coverage.mjs';
 import {ownerIntro,soleOwnerText} from '../locales/sole-owner.mjs';
 import {priceScope} from '../locales/price-scope.mjs';
 Object.assign(arrival,expandedArrival);
@@ -33,6 +34,13 @@ const root=path.resolve(import.meta.dirname,'..');
 const ownerMap=(value,lang)=>typeof value==='string'?soleOwnerText(value,lang):Array.isArray(value)?value.map(v=>ownerMap(v,lang)):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k,ownerMap(v,lang)])):value;
 for(const[lang,c]of Object.entries(localeContent)){Object.assign(c,ownerMap(c,lang));c.intro=ownerIntro[lang];c.fees=calibratedFees[lang];c.terms=calibratedScope[lang]+' '+c.terms;c.services[0][0]=specialistService[lang][4];c.services[0][1]+=' MacBook · iMac · Mac mini · Mac Pro.';c.services[0][2]+=' '+specialistService[lang][1];}
 for(const source of[arrival,premises,wayfinder,arrivalPhoto,arrivalMore,arrivalRoute,arrivalClosing])for(const[lang,value]of Object.entries(source))source[lang]=ownerMap(value,lang);
+for(const [lang,c] of Object.entries(localeContent)){
+  const coverage=serviceCoverage[lang];
+  if(!coverage||coverage.length!==5)throw Error('Missing service coverage translation: '+lang);
+  c.services[0][1]=coverage[0];
+  c.services[3][0]=coverage[1];
+  c.services[3][1]=coverage[2];
+}
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const write=(f,s)=>{fs.mkdirSync(path.dirname(path.join(root,f)),{recursive:true});fs.writeFileSync(path.join(root,f),s.replace(/[ \t]+\r?\n/g,"\n"))};
 const source=JSON.parse(read('locales/form-source.json'));
@@ -89,10 +97,10 @@ for(const [lang,c] of Object.entries(localeContent)){
   for(const route of routes){
     let title=c.hero,description=c.intro,body='',extra='',formPage=route==='reparaturanfrage',legal=['impressum','datenschutz','rechtliches'].includes(route);
     if(!route){
-      body='<section class="locale-hero"><p class="eyebrow">AUGSBURG · MAURICE KEIL</p><h1>'+esc(c.hero)+'</h1><p class="hero-lead">'+esc(c.intro)+'</p><div class="locale-actions">'+button+'<a href="tel:+4915254530080">'+esc(l[6])+' · 0152 54530080</a></div><p>'+esc(c.hours)+'</p></section><section class="locale-section" id="leistungen"><h2>'+esc(l[0])+'</h2><div class="locale-cards">'+c.services.map(([t,d],i)=>'<article><h3>'+esc(t)+'</h3><p>'+esc(d)+'</p><a href="'+url(lang,routes[i+1])+'">'+esc(l[7])+' →</a></article>').join('')+extraServiceCards(lang)+'</div></section>'+priceSection()+process+faq+'<section class="locale-section" id="bewertungen"><h2>'+esc(l[11])+' · '+esc(l[12])+'</h2><p>'+esc(c.originals)+'</p><div class="locale-actions"><a href="/#bewertungen" hreflang="de">'+esc(l[11])+' ('+esc(l[18])+')</a><a href="/reparaturberichte" hreflang="de">'+esc(l[12])+' ('+esc(l[18])+')</a></div></section>'+contact;
+      body='<section class="locale-hero"><p class="eyebrow">AUGSBURG · MAURICE KEIL</p><h1>'+esc(c.hero)+'</h1><p class="hero-lead">'+esc(c.intro)+'</p><div class="locale-actions">'+button+'<a href="tel:+4915254530080">'+esc(l[6])+' · 0152 54530080</a></div><p>'+esc(c.hours)+'</p></section><section class="locale-section" id="leistungen"><h2>'+esc(l[0])+'</h2><p class="service-coverage-lead">'+esc(serviceCoverage[lang][4])+'</p><div class="locale-cards">'+c.services.map(([t,d],i)=>'<article><h3>'+esc(t)+'</h3><p>'+esc(d)+'</p><a href="'+url(lang,routes[i+1])+'">'+esc(l[7])+' →</a></article>').join('')+extraServiceCards(lang)+'</div></section>'+priceSection()+process+faq+'<section class="locale-section" id="bewertungen"><h2>'+esc(l[11])+' · '+esc(l[12])+'</h2><p>'+esc(c.originals)+'</p><div class="locale-actions"><a href="/#bewertungen" hreflang="de">'+esc(l[11])+' ('+esc(l[18])+')</a><a href="/reparaturberichte" hreflang="de">'+esc(l[12])+' ('+esc(l[18])+')</a></div></section>'+contact;
     } else if(routes.slice(1,5).includes(route)){
       const i=routes.indexOf(route)-1,[t,d,detail]=c.services[i];title=t+' · Augsburg';description=d;
-      body='<section class="locale-hero"><a href="'+url(lang)+'">← '+esc(l[8])+'</a><h1>'+esc(title)+'</h1><p class="hero-lead">'+esc(d)+'</p><div class="locale-actions">'+button+'</div><p>'+esc(c.hours)+'</p></section><section class="locale-section"><h2>'+esc(l[7])+'</h2><p>'+esc(detail)+'</p></section>'+priceSection([0,1,...servicePrices[i]])+process+faq+contact;
+      body='<section class="locale-hero"><a href="'+url(lang)+'">← '+esc(l[8])+'</a><h1>'+esc(title)+'</h1><p class="hero-lead">'+esc(d)+'</p><div class="locale-actions">'+button+'</div><p>'+esc(c.hours)+'</p></section><section class="locale-section"><h2>'+esc(l[7])+'</h2><p>'+esc(detail)+'</p></section>'+(i===3?'<section class="locale-section" data-backup-service><h2>'+esc(c.priceNames[3])+'</h2><p>'+esc(serviceCoverage[lang][3])+'</p></section>':'')+priceSection([0,1,...servicePrices[i]])+process+faq+contact;
     } else if(formPage){
       title=l[20];description=c.formIntro;extra='<link rel="stylesheet" href="/vendor/intl-tel-input/css/intlTelInput.min.css?v=29.2.3"><link rel="stylesheet" href="/request.css?v='+repairFormVersion+'"><script defer src="/'+lang+'/form-i18n.js?v='+repairFormVersion+'"></script><script defer src="/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js?v=29.2.3"></script><script defer src="/repair-form.js?v='+repairFormVersion+'"></script>';
       body='<section class="locale-form-intro"><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p></section>'+form+contact;
@@ -111,6 +119,23 @@ for(const [lang,c] of Object.entries(localeContent)){
 // German source pages receive reciprocal links and the same language menu.
 for(const route of routes){
   const file=(route||'index')+'.html';let html=read(file);
+  if(!route){
+    html=html.replace(/<section class="section services" id="leistungen">[\s\S]*?<\/section>/,section=>{
+      let card=0;
+      section=section.replace(/<article class="service-card[^\"]*">[\s\S]*?<\/article>/g,block=>{
+        if(card>=germanOverviewCards.length)return block;
+        const [title,summary,points]=germanOverviewCards[card++];
+        return block.replace(/<h3>[\s\S]*?<\/ul>/,'<h3>'+esc(title)+'</h3><p>'+esc(summary)+'</p><ul>'+points.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul>');
+      });
+      if(card!==4)throw Error('German service overview must contain four main repair cards');
+      return section.replace(/(<h2>[\s\S]*?<\/h2>\s*)<p>[\s\S]*?<\/p>/,'$1<p>'+esc(serviceCoverage.de[4])+'</p>');
+    });
+    html=html.replace('Schreiben Sie mich','Schreiben Sie mir').replace('Ich analysiere die Ursache und erklären verständlich','Ich analysiere die Ursache und erkläre verständlich');
+  }
+  if(route==='datenrettung-augsburg'){
+    html=html.replace(/<section class="section service-backup" data-backup-service>[\s\S]*?<\/section>/g,'');
+    html=html.replace('<section class="section services service-detail-content">','<section class="section service-backup" data-backup-service><div class="section-heading compact"><h2>Datensicherung &amp; Datenübernahme</h2></div><p>'+esc(serviceCoverage.de[3])+'</p></section><section class="section services service-detail-content">');
+  }
   html=html.replace(/<link\b[^>]*rel="alternate"[^>]*>\r?\n?/g,'').replace(/<!-- languages:start -->[\s\S]*?<!-- languages:end -->/g,'');
   html=html.replace('</head>',alternates(route)+'\n<link rel="stylesheet" href="/language-picker.css?v='+version+'">\n</head>');
   html=html.replace(/<link rel="stylesheet" href="\/language-picker.css[^"]*">\s*(?=[\s\S]*<link rel="stylesheet" href="\/language-picker.css)/g,'');
