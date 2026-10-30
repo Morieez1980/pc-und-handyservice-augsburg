@@ -1,0 +1,17 @@
+/* Repair, specialist work and sales are separate offers. */
+.hardware-sales,.specialist-notice{margin-block:32px;padding:clamp(22px,3.5vw,40px);border:1px solid #34456a;border-radius:20px;background:linear-gradient(145deg,#14233d,#0b1425);color:#eef3fc;min-width:0;overflow-wrap:anywhere;scroll-margin-top:96px}
+.hardware-sales h3,.specialist-notice h3{font-family:var(--display);font-size:clamp(23px,2.5vw,30px);line-height:1.2;margin:0 0 16px;color:#f2f5fa}
+.hardware-sales p,.specialist-notice p{color:#b5c2d7;max-width:950px;line-height:1.65}
+.hardware-sales ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin:20px 0 24px;padding:18px 0 0;list-style:none;border-top:1px solid #34456a}
+.hardware-sales li{padding:5px 0;font-weight:600}.hardware-sales li:before{content:'✓';color:#42d9ca;margin-inline-end:9px}
+.hardware-sales strong{color:#81e4da}.hardware-sales .button{white-space:normal;text-align:center;max-width:100%}
+.specialist-notice .service-exclusions{padding:14px 16px;border-inline-start:3px solid #8c9dbb;background:#0b1424;border-radius:8px;font-size:14px;margin-top:24px}
+#leistungen .service-grid,#leistungen .locale-cards{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.service-grid>.service-card,.locale-cards>.service-card{display:flex;flex-direction:column;min-width:0}.service-grid>.service-card .text-link,.locale-cards>.service-card .text-link{margin-top:auto;padding-top:22px}
+.service-specialist .service-icon,.service-sales .service-icon{font-size:30px}.service-sales{border-color:#366d70!important}.service-specialist{border-color:#526397!important}
+.price-nav,.price-category-nav{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 36px}.price-nav a,.price-category-nav a{display:inline-flex;padding:12px 18px;align-items:center;border:1px solid #34456a;border-radius:999px;background:#111d32;color:#dbe6fb;font-size:14px;font-weight:600;text-decoration:none;min-height:44px}
+.price-nav a:hover,.price-category-nav a:hover{border-color:#6e9aff;color:white}.locale-price-group{margin-block:30px;scroll-margin-top:96px}.locale-price-group h3{color:#eaf1ff;font-family:var(--display);font-size:clamp(21px,3vw,28px);line-height:1.25;margin-bottom:18px}
+.pricing [id],.locale-section [id]{scroll-margin-top:96px}.hardware-sales:target,.specialist-notice:target{border-color:#46d7c6}
+@media(max-width:580px){.hardware-sales ul{grid-template-columns:minmax(0,1fr)}.hardware-sales .button{width:100%;padding-inline:12px}.price-nav a,.price-category-nav a{padding:10px 13px;font-size:13px}.hardware-sales,.specialist-notice{margin-block:24px}}
+@media(max-width:1050px){#leistungen .service-grid,#leistungen .locale-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){#leistungen .service-grid,#leistungen .locale-cards{grid-template-columns:minmax(0,1fr)}}
