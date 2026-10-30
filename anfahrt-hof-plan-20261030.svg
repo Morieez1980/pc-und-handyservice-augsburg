@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1122" height="1402" viewBox="0 0 1122 1402" font-family="Arial,Helvetica,sans-serif" fill="#102b4d" role="img" aria-labelledby="title desc">
+  <title id="title">So finden Sie den Hauseingang im Hof</title>
+  <desc id="desc">Von der Stätzlinger Straße links am großen weißen Gebäude entlang, dann rechts in den Autohof. Der letzte rote Pfeil zeigt nach unten zum Hauseingang an der Rückseite des großen Gebäudes, unterhalb des weißen Autos. Ein Zaun verläuft vom Eingang nach links. Die übrigen Stellplätze gehören Nachbarbetrieben.</desc>
+  <defs>
+    <linearGradient id="roof" x2="0" y2="1"><stop stop-color="#2d587e"/><stop offset="1" stop-color="#1e3d5e"/></linearGradient>
+    <pattern id="panels" width="24" height="28" patternUnits="userSpaceOnUse"><rect width="24" height="28" fill="url(#roof)"/><path d="M0 0H24M0 0V28" fill="none" stroke="#81a4bd" stroke-width="1" opacity=".6"/></pattern>
+    <pattern id="fence" width="13" height="18" patternUnits="userSpaceOnUse"><path d="M6 0V18M0 5H13M0 14H13" stroke="#627c8a" stroke-width="2"/></pattern>
+    <filter id="shadow" x="-.1" y="-.1" width="1.2" height="1.2"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#172d47" flood-opacity=".13"/></filter>
+    <g id="car"><rect x="-18" y="-36" width="36" height="72" rx="10" fill="currentColor" stroke="#60717e" stroke-width="2"/><path d="M-13-20Q0-27 13-20L11-7H-11ZM-12 14H12L13 24Q0 29-13 24Z" fill="#314b61"/><path d="M-11-30H11M-11 30H11" stroke="#dce5eb" stroke-width="3"/></g>
+  </defs>
+  <rect width="1122" height="1402" fill="#f9fbfd"/>
+  <text x="561" y="79" text-anchor="middle" font-size="59" font-weight="800">So finden Sie den Eingang</text>
+  <text x="561" y="129" text-anchor="middle" font-size="32" font-weight="700">Stätzlinger Straße 99 · Augsburg</text>
+  <rect x="34" y="174" width="1054" height="998" rx="24" fill="#e7ecee" stroke="#c5d0d6" stroke-width="2"/>
+  <path d="M95 174H216V1060Q216 1091 248 1091H1088V1172H95Z" fill="#aab5bd"/>
+  <path d="M155 195V1098H1066" fill="none" stroke="#edf3f6" stroke-width="5" stroke-dasharray="28 25"/>
+  <text font-size="35" font-weight="700" letter-spacing=".5" transform="translate(126 853) rotate(-90)">Eppaner Straße</text>
+  <text font-size="35" font-weight="700" letter-spacing=".5" x="650" y="1145" text-anchor="middle">Stätzlinger Straße</text>
+  <!-- Neighbouring properties are deliberately simplified, not depicted as exact architecture. -->
+  <g fill="#d6dee2" stroke="#c0cbd1" stroke-width="2">
+    <rect x="303" y="207" width="365" height="72" rx="6"/><rect x="701" y="207" width="352" height="72" rx="6"/>
+    <rect x="1009" y="318" width="44" height="689" rx="5"/>
+  </g>
+  <text x="679" y="253" text-anchor="middle" font-size="24" fill="#425a6b">Nachbarbetriebe</text>
+  <g color="#52697a"><use href="#car" x="350" y="383"/><use href="#car" x="405" y="383"/><use href="#car" x="460" y="383"/><use href="#car" x="515" y="383"/><use href="#car" x="968" y="425"/><use href="#car" x="968" y="503"/></g>
+  <g color="#fff"><use href="#car" x="815" y="423"/></g>
+  <text x="815" y="377" text-anchor="middle" font-size="18" fill="#526c7e">Weißes Auto</text>
+  <g filter="url(#shadow)">
+    <rect x="324" y="430" width="313" height="61" rx="9" fill="#f7fafc"/>
+    <text font-size="21" x="480" y="455" text-anchor="middle">Privatparkplätze</text><text x="480" y="480" text-anchor="middle" font-size="20">Bitte freihalten</text>
+    <rect x="922" y="760" width="130" height="91" rx="9" fill="#f7fafc"/>
+    <text x="987" y="786" text-anchor="middle" font-size="19" font-weight="700">Private</text><text x="987" y="809" text-anchor="middle" font-size="19" font-weight="700">Stellplätze</text><text x="987" y="834" text-anchor="middle" font-size="17">Freihalten</text>
+  </g>
+  <text x="675" y="411" text-anchor="middle" font-size="30" font-weight="700">Autohof</text>
+  <path d="M300 528H671V553H910V1012H300Z" fill="#fff" stroke="#aebdc7" stroke-width="4" filter="url(#shadow)"/>
+  <rect x="321" y="552" width="284" height="350" rx="3" fill="url(#panels)"/>
+  <rect x="746" y="583" width="138" height="261" rx="3" fill="url(#panels)"/>
+  <rect x="567" y="925" width="160" height="60" rx="3" fill="url(#panels)"/>
+  <rect x="746" y="925" width="138" height="60" rx="3" fill="url(#panels)"/>
+  <rect x="620" y="669" width="104" height="146" rx="8" fill="#f2f6f9"/>
+  <text x="672" y="708" text-anchor="middle" font-size="23" font-weight="700">Großes</text><text x="672" y="739" text-anchor="middle" font-size="23" font-weight="700">weißes</text><text x="672" y="770" text-anchor="middle" font-size="23" font-weight="700">Gebäude</text>
+  <!-- Fence runs left along the building; no customer parking permission is inferred. -->
+  <path d="M320 519H672V544H787" fill="none" stroke="#627c8a" stroke-width="4"/>
+  <rect x="320" y="510" width="352" height="18" fill="url(#fence)"/><rect x="672" y="535" width="115" height="18" fill="url(#fence)"/>
+  <rect x="599" y="492" width="63" height="24" rx="5" fill="#e7eef2"/><text x="630" y="511" text-anchor="middle" font-size="18">Zaun</text>
+  <!-- Door is on the main building, below the white car, never on a neighbouring property. -->
+  <rect x="798" y="552" width="34" height="43" rx="2" fill="#173a65" stroke="#102b4d" stroke-width="2"/><circle cx="823" cy="576" r="2.5" fill="#fff"/>
+  <path d="M252 1062V356Q252 332 276 332H886Q909 332 909 356V467Q909 490 886 490H839Q815 490 815 514V525" fill="none" stroke="#fff" stroke-width="27" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M252 1062V356Q252 332 276 332H886Q909 332 909 356V467Q909 490 886 490H839Q815 490 815 514V525" fill="none" stroke="#e5242b" stroke-width="15" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M793 521H837L815 548Z" fill="#e5242b" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M234 755L252 727L270 755" fill="#e5242b" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+  <g fill="#e5242b" stroke="#fff" stroke-width="5"><circle cx="252" cy="853" r="29"/><circle cx="282" cy="332" r="29"/><circle cx="909" cy="433" r="29"/></g>
+  <text fill="#fff" font-size="30" font-weight="700" text-anchor="middle" dominant-baseline="central" x="252" y="853">1</text><text fill="#fff" font-size="30" font-weight="700" text-anchor="middle" dominant-baseline="central" x="282" y="332">2</text><text fill="#fff" font-size="30" font-weight="700" text-anchor="middle" dominant-baseline="central" x="909" y="433">3</text>
+  <g filter="url(#shadow)"><rect x="718" y="619" width="330" height="112" rx="13" fill="#fff1f0" stroke="#edaba9" stroke-width="2"/>
+    <text x="738" y="651" font-size="25" font-weight="800" fill="#c51d28">ZIEL: Hauseingang</text><text x="738" y="679" font-size="22" font-weight="700">am großen Gebäude</text><text x="738" y="709" font-size="18">Firmenschild &amp; beschriftete Klingel</text>
+  </g>
+  <path d="M814 597V611L826 619" fill="none" stroke="#c51d28" stroke-width="3"/>
+  <rect x="330" y="1028" width="567" height="45" rx="8" fill="#f6e6e5"/><text x="614" y="1058" text-anchor="middle" font-size="24" font-weight="700" fill="#9b3441">Vorderseite: kein Kundeneingang</text>
+  <g><circle cx="71" cy="1226" r="28" fill="#e5242b"/><text fill="#fff" font-size="30" font-weight="700" text-anchor="middle" dominant-baseline="central" x="71" y="1226">1</text><text font-size="24" font-weight="700" x="111" y="1219">Links am Gebäude</text><text font-size="24" font-weight="700" x="111" y="1250">entlang</text>
+    <circle cx="434" cy="1226" r="28" fill="#e5242b"/><text fill="#fff" font-size="30" font-weight="700" text-anchor="middle" dominant-baseline="central" x="434" y="1226">2</text><text font-size="24" font-weight="700" x="474" y="1219">Rechts in den</text><text font-size="24" font-weight="700" x="474" y="1250">Autohof</text>
+    <circle cx="767" cy="1226" r="28" fill="#e5242b"/><text fill="#fff" font-size="30" font-weight="700" text-anchor="middle" dominant-baseline="central" x="767" y="1226">3</text><text font-size="24" font-weight="700" x="807" y="1219">Pfeil nach unten:</text><text font-size="24" font-weight="700" x="807" y="1250">Hauseingang</text>
+  </g>
+  <rect x="34" y="1283" width="1054" height="62" rx="13" fill="#102b4d"/><text x="561" y="1325" text-anchor="middle" font-size="31" font-weight="700" fill="#fff">Nur nach bestätigtem Termin.</text>
+  <text x="561" y="1380" text-anchor="middle" font-size="19" fill="#617587">Schematische Orientierung · Gebäude vereinfacht · nicht maßstabsgetreu</text>
+</svg>
