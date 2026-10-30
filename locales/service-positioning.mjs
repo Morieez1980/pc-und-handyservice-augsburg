@@ -1,5 +1,26 @@
 // Positive, factual positioning. Appointment-only service and residential premises stay explicit.
 // Short appointment invitation, commercial-service context, personal introduction.
+export const localMotto = {
+ de:'Augsburg, für deine Technik gebe ich mein Bestes.',
+ en:'Augsburg, I give my best for your tech.',
+ tr:'Augsburg, teknolojiniz için elimden gelenin en iyisini yapıyorum.',
+ ro:'Augsburg, fac tot ce pot pentru tehnologia ta.',
+ uk:'Аугсбургу, я докладаю всіх зусиль заради твоєї техніки.',
+ es:'Augsburg, doy lo mejor de mí por tu tecnología.',
+ sv:'Augsburg, jag gör mitt bästa för din teknik.',
+ da:'Augsburg, jeg gør mit bedste for din teknik.',
+ ru:'Аугсбург, я делаю всё возможное для твоей техники.',
+ zh:'奥格斯堡，我为您的设备尽心尽力。',
+ ja:'Augsburg の皆さまの機器のために、最善を尽くします。',
+ pl:'Augsburg, daję z siebie wszystko dla Twojego sprzętu.',
+ it:'Augsburg, do il meglio di me per la tua tecnologia.',
+ fr:'Augsburg, je donne le meilleur de moi-même pour vos appareils.',
+ bg:'Аугсбург, давам най-доброто от себе си за твоята техника.',
+ hr:'Augsburg, dajem sve od sebe za tvoju tehniku.',
+ el:'Augsburg, δίνω τον καλύτερό μου εαυτό για τις συσκευές σας.',
+ ar:'أوغسبورغ، أبذل قصارى جهدي من أجل أجهزتك.',
+ fa:'آگسبورگ، برای دستگاه‌های شما تمام تلاشم را می‌کنم.'
+};
 export const servicePositioning = {
  de: ['Termin einfach per Telefon, WhatsApp oder online vereinbaren.', 'Gewerblicher Reparaturservice seit 2023. Persönliche Beratung, klare Preisabsprache und Rechnung. Geräteübergabe nach Termin im Wohngebäude.', 'Ich bin Maurice Keil. Seit 2023 betreue ich Kunden aus Augsburg und Gersthofen – anfangs mit Hausbesuchen, heute mit persönlichem Werkstattservice in Lechhausen. Ich prüfe Ihr Gerät und bespreche die Reparaturkosten vor Ihrer Freigabe.'],
  en: ['Arrange an appointment by phone, WhatsApp or online.', 'Commercial repair service since 2023. Personal advice, agreed pricing and an invoice. Device handover by appointment in a residential building.', 'I am Maurice Keil. Since 2023 I have helped customers from Augsburg and Gersthofen, starting with home visits and now offering a personal workshop service in Lechhausen. I assess your device and discuss repair costs before you approve the work.'],
