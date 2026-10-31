@@ -43,6 +43,10 @@ export const servicePositioning = {
  fa: ['به‌سادگی از طریق تلفن، واتساپ یا وب‌سایت وقت بگیرید.', 'خدمات تعمیر تجاری از سال ۲۰۲۳. مشاوره شخصی، قیمت توافق‌شده و فاکتور. تحویل دستگاه با وقت قبلی در ساختمان مسکونی انجام می‌شود.', 'من Maurice Keil هستم. از سال ۲۰۲۳ به مشتریان آگسبورگ و گرستهوفن کمک می‌کنم؛ ابتدا با مراجعه به منزل و اکنون با خدمات تعمیر شخصی در لخ‌هاوزن. دستگاه را بررسی می‌کنم و پیش از تأیید تعمیر، هزینه را با شما در میان می‌گذارم.']
 };
 
+// Home visits describe the origin of the business, not a currently available service.
+const noHomeVisits={de:'Keine Hausbesuche.',en:'No home visits.',tr:'Ev ziyareti hizmeti yoktur.',ro:'Nu ofer vizite la domiciliu.',uk:'Виїздів додому немає.',es:'No realizo visitas a domicilio.',sv:'Inga hembesök.',da:'Ingen hjemmebesøg.',ru:'Выездов на дом нет.',zh:'目前不提供上门服务。',ja:'現在、出張サービスは行っていません。',pl:'Nie oferuję wizyt domowych.',it:'Non effettuo interventi a domicilio.',fr:'Pas d’intervention à domicile.',bg:'Не предлагам посещения по домовете.',hr:'Ne nudim kućne posjete.',el:'Δεν πραγματοποιώ επισκέψεις κατ’ οίκον.',ar:'لا أقدم زيارات منزلية.',fa:'خدمات در منزل ارائه نمی‌شود.'};
+for(const [lang,text] of Object.entries(noHomeVisits)){servicePositioning[lang][0]+=' '+text;servicePositioning[lang][1]+=' '+text;}
+
 // Owner-confirmed business story and service values; no absolute price or market-rank claims.
 export const ownerStory = {
   "de": "Mit Hausbesuchen und viel Eigenarbeit habe ich PC & Handyservice Augsburg Schritt für Schritt aufgebaut. Mein Antrieb war von Anfang an derselbe: zufriedene Kunden, faire Preise und guter persönlicher Service. Als Inhaber begleite ich Ihren Auftrag persönlich, höre zu und erkläre verständlich. Ob jung oder alt, mit oder ohne Technikkenntnisse: Sie sind willkommen. Ich berate Sie zu einer passenden Lösung und bespreche Möglichkeiten und Kosten vorab offen mit Ihnen.",
