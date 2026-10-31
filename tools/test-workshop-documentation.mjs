@@ -19,7 +19,7 @@ test('Bilddokumentation ist ohne Datenbank erreichbar und bleibt von Kundenfäll
  assert.ok(!html.includes('stage-before'));
  assert.ok(!html.includes('stage-result'));
  assert.match(html,/iphone-se-2020-akkutausch/);
- assert.match(html,/favicon\.svg\?v=20261014-logo/);
+ assert.match(html,/favicon\.svg\?v=20261031-marke1/);
 });
 
 test('Jedes Werkstattfoto hat eine vorhandene Datei und einen erreichbaren Dokumentationsanker',async()=>{
