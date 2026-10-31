@@ -21,6 +21,7 @@ ar:['من ورشتي','أجهزة ومكونات وخطوات إصلاح من خ
 fa:['در کارگاه من','دستگاه‌ها، قطعات و مراحل تعمیر در خدمات من. برای دیدن تصویر کامل روی آن بزنید.','بزرگ‌نمایی تصویر','گزارش کامل تعمیر','دیدن عکس‌های کارگاه']
 };
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+const tabletLabels={de:'Tablet',en:'Tablet',tr:'Tablet',ro:'Tabletă',uk:'Планшет',es:'Tablet',sv:'Surfplatta',da:'Tablet',ru:'Планшет',zh:'平板电脑',ja:'タブレット',pl:'Tablet',it:'Tablet',fr:'Tablette',bg:'Таблет',hr:'Tablet',el:'Τάμπλετ',ar:'جهاز لوحي',fa:'تبلت'};
 const documentationCopy={
 de:['Reparaturberichte & Bilddokumentation','Zur Dokumentation','Leistungen im Überblick'],
 en:['Repair reports & photo documentation','Read documentation','Services at a glance'],
@@ -45,8 +46,8 @@ fa:['گزارش تعمیر و مستندات تصویری','مشاهده مست�
 export function workshopGallery(lang,{price,pc,phone}){
  const c=galleryCopy[lang];if(!c)throw Error('Missing gallery translation: '+lang);
  const d=documentationCopy[lang];if(!d)throw Error('Missing documentation translation: '+lang);
- const caption=p=>p.type==='brand'?'PC & Handyservice Augsburg – Maurice Keil':p.type==='services'?d[2]+' · Maurice Keil':p.type==='price'?price+' (DE) · 30.10.2026':p.type==='iphone'?'iPhone SE (2020) · '+p.number:(p.type==='phone'?phone:pc)+' · '+p.number;
- const report=p=>p.type==='iphone'?'https://www.pc-und-handyservice-augsburg.com/reparaturberichte/iphone-se-2020-akkutausch':p.type==='pc'||p.type==='phone'?'/reparaturberichte/werkstatt-notebook-smartphone#foto-'+p.number:'';
+ const caption=p=>p.type==='brand'?'PC & Handyservice Augsburg – Maurice Keil':p.type==='services'?d[2]+' · Maurice Keil':p.type==='price'?price+' (DE) · 30.10.2026':p.type==='iphone'?'iPhone SE (2020) · '+p.number:(p.type==='tablet'?tabletLabels[lang]:p.type==='phone'?phone:pc)+' · '+p.number;
+ const report=p=>p.type==='iphone'?'https://www.pc-und-handyservice-augsburg.com/reparaturberichte/iphone-se-2020-akkutausch':['pc','phone','tablet'].includes(p.type)?'/reparaturberichte/werkstatt-notebook-smartphone#foto-'+p.number:'';
  return '<section class="workshop-gallery" id="bilder" data-workshop-gallery aria-labelledby="workshop-gallery-title"><header><h2 id="workshop-gallery-title">'+esc(c[0])+'</h2><p>'+esc(c[1])+'</p><a href="/reparaturberichte" hreflang="de">'+esc(d[0])+' (DE) →</a></header><div class="workshop-gallery-grid">'+images.map(p=>'<figure><a href="'+esc(p.src)+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(c[2]+': '+caption(p))+'"><img src="'+esc(p.src)+'" width="'+p.width+'" height="'+p.height+'" loading="lazy" decoding="async" alt="'+esc(caption(p))+'"></a><figcaption>'+esc(caption(p))+(report(p)?'<a class="gallery-documentation-link" href="'+esc(report(p))+'" hreflang="de">'+esc(d[1])+' (DE) →</a>':'')+'</figcaption></figure>').join('')+'</div></section>';
 }
 export const workshopGalleryLink=lang=>'<p class="workshop-gallery-shortcut"><a href="#bilder">'+esc(galleryCopy[lang][4])+' ↓</a></p>';

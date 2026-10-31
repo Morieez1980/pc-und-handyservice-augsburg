@@ -44,3 +44,23 @@ test('Übersicht verlinkt echte Berichte und die zusätzliche Bilddokumentation 
  assert.ok(html.includes('workshop-documentation-intro'));
  assert.ok(html.includes('og-image.png?v=20261031'));
 });
+
+test('Werkstattübersicht zeigt alle zehn Fotos ohne Aufklappen oder zusätzliche Navigation',()=>{
+ const html=renderIndex([]);
+ const photoIds=[...html.matchAll(/data-workshop-photo="(\d+)"/g)].map(m=>Number(m[1]));
+ assert.deepEqual(photoIds.sort((a,b)=>a-b),workshopDocumentation.images.map(([id])=>id).sort((a,b)=>a-b));
+ assert.equal(new Set(photoIds).size,10);
+ assert.match(html,/workshop-presentation-photo[^]*werkstatt-4\.jpg/);
+ assert.ok(!html.includes('<details'));
+ assert.ok(!html.includes('data-gallery-src='));
+ assert.ok(html.includes('Kosten vorher kennen'));
+ assert.ok(html.includes('/reparaturanfrage'));
+});
+
+test('Tabletaufnahmen werden in Dokumentation und allen Sprachgalerien richtig zugeordnet',()=>{
+ for(const id of [8,11])assert.match(workshopDocumentation.images.find(([n])=>n===id)[1],/Tablet/);
+ const html=workshopGallery('de',{price:'Preise',pc:'Notebook',phone:'Handy'});
+ for(const id of [8,11])assert.ok(html.includes(`alt="Tablet · ${id}"`));
+ assert.ok(!html.includes('alt="Notebook · 8"'));
+ assert.ok(!html.includes('alt="Notebook · 11"'));
+});

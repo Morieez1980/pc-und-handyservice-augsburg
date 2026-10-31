@@ -9,3 +9,39 @@
 
 .report-detail,.report-card-copy,.report-gallery figure{min-width:0;overflow-wrap:anywhere}.consent>span{min-width:0;overflow-wrap:anywhere}.consent input{flex:0 0 auto}.report-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:800px){.report-gallery{grid-template-columns:minmax(0,1fr)}}
 .workshop-documentation-intro{max-width:1200px;margin:0 auto;padding:0 24px 100px}.workshop-documentation-intro>p{max-width:780px;color:#bac5d4}.workshop-documentation-intro>h2{font-size:clamp(28px,4vw,42px);line-height:1.12}.workshop-documentation-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);overflow:hidden;max-width:920px;margin-top:28px;border:1px solid var(--report-line);border-radius:20px;background:linear-gradient(145deg,#111c31,#0b1424)}.workshop-documentation-card>img{width:100%;height:100%;object-fit:cover}.workshop-documentation-card>span{display:flex;flex-direction:column;justify-content:center;gap:18px;padding:28px}.workshop-documentation-card b{font-size:28px;line-height:1.15}.workshop-documentation-card span span{color:#bac5d4}.workshop-documentation-card strong{color:#9fb2ff}.workshop-documentation .report-gallery img{aspect-ratio:auto;object-fit:contain}.workshop-documentation .report-gallery figure{scroll-margin-top:100px}.workshop-explanation{margin-top:32px;padding:24px;border:1px solid var(--report-line);border-radius:16px;background:#101a2d}.workshop-explanation p{margin-bottom:0;color:#bac5d4}.workshop-google-link{display:block;margin-top:24px;color:#9fb2ff}.workshop-documentation .report-cta .button{white-space:normal;max-width:100%;text-align:center}.reports-main .brand-logo{flex-shrink:0}@media(max-width:600px){.workshop-documentation-card{grid-template-columns:1fr}.workshop-documentation-card>img{aspect-ratio:3/2}.workshop-documentation-card>span{padding:22px}.workshop-documentation-intro{padding-bottom:64px}.workshop-documentation-intro h2{overflow-wrap:anywhere}}
+
+/* Open workshop overview: photographs and service information are visible without disclosure controls. */
+.reports-list{grid-template-columns:repeat(2,minmax(0,1fr));padding-bottom:72px}
+.report-card:only-child{grid-column:1/-1}
+.report-card:only-child>a{display:grid;grid-template-columns:1.05fr 1fr;align-items:stretch}
+.report-card:only-child img{height:100%;min-height:320px;object-fit:cover}
+.report-card:only-child .report-card-copy{display:flex;flex-direction:column;justify-content:center;padding:clamp(24px,4vw,48px)}
+.report-card:only-child h2{font-size:clamp(26px,3vw,38px);letter-spacing:-.025em}
+.workshop-overview-heading{max-width:780px;margin-bottom:32px}
+.workshop-overview-heading h2{font-size:clamp(32px,4.5vw,52px);line-height:1.1;letter-spacing:-.04em;margin:12px 0 16px}
+.workshop-overview-heading>p:last-child{color:#bac5d4;font-size:18px;line-height:1.65}
+.workshop-presentation{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);overflow:hidden;border:1px solid rgba(97,146,255,.25);border-radius:24px;background:linear-gradient(145deg,#12213b,#0b1424);margin-bottom:24px}
+.workshop-presentation-photo{min-width:0;margin:0;display:flex;flex-direction:column;justify-content:center;background:#0b1728}
+.workshop-presentation-photo img{display:block;width:100%;height:auto;object-fit:contain}
+.workshop-presentation-photo figcaption{padding:14px 20px;color:#b3c7e0;font-size:13px}
+.workshop-presentation-copy{min-width:0;padding:clamp(24px,3.5vw,42px);overflow-wrap:anywhere}
+.workshop-presentation-copy h3{font-size:clamp(27px,3vw,37px);line-height:1.15;letter-spacing:-.03em;margin:12px 0 18px}
+.workshop-presentation-copy>p:not(.reports-eyebrow){color:#bac5d4;line-height:1.7}
+.workshop-service-steps{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:20px}
+.workshop-service-steps li{display:flex;gap:14px;align-items:flex-start;min-width:0}
+.workshop-service-steps li>span{flex:0 0 32px;display:grid;place-items:center;height:32px;border:1px solid rgba(39,224,204,.3);border-radius:10px;color:#64ebdc;background:rgba(39,224,204,.08);font-size:12px;font-weight:800}
+.workshop-service-steps b{display:block;color:#f0f6ff;font-size:15px}
+.workshop-service-steps p{margin:4px 0 0;color:#aab9cd;font-size:14px;line-height:1.55}
+.workshop-overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.workshop-overview-photo{margin:0;min-width:0;overflow:hidden;border:1px solid var(--report-line);border-radius:17px;background:#0e192b}
+.workshop-overview-photo img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:#081322}
+.workshop-overview-photo figcaption{padding:16px 18px;color:#b9c8dc;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.workshop-documentation-intro>.workshop-overview-caption{max-width:none;margin:24px 0 0;color:#8f9fb7;font-size:14px;line-height:1.7}
+.workshop-overview-caption a{color:#a9bcff;text-underline-offset:4px;text-decoration:underline}
+.reports-service-cta{max-width:1152px;margin:0 auto 72px}
+.workshop-device-list{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:22px 0}
+.workshop-device-list li{padding:7px 11px;border:1px solid rgba(140,163,255,.2);border-radius:8px;color:#ccd8f4;font-size:13px}
+.workshop-overview-actions{display:flex;flex-wrap:wrap;align-items:center;gap:22px}
+.workshop-services-link{color:#b7c7ff;font-weight:700;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:1000px){.workshop-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workshop-presentation{grid-template-columns:1fr}.workshop-presentation-photo img{max-height:510px}.reports-service-cta{margin-left:24px;margin-right:24px}}
+@media(max-width:700px){.reports-hero{padding-bottom:40px}.reports-hero h1{font-size:clamp(39px,10vw,60px)}.reports-list{grid-template-columns:1fr;padding-bottom:56px}.report-card:only-child>a{grid-template-columns:1fr}.report-card:only-child img{min-height:0;height:auto}.workshop-overview-grid{grid-template-columns:1fr}.workshop-presentation{border-radius:18px}.workshop-presentation-copy{padding:24px 20px}.workshop-overview-heading>p:last-child{font-size:16px}.reports-service-cta{margin-bottom:56px;padding:24px 20px}.workshop-overview-actions{align-items:stretch;flex-direction:column;gap:20px}.workshop-overview-actions .button{white-space:normal;text-align:center;max-width:100%}}
