@@ -68,25 +68,11 @@
     "number": 10
   },
   {
-    "src": "/bilder/werkstatt-11.jpg",
-    "width": 1265,
-    "height": 693,
-    "type": "tablet",
-    "number": 11
-  },
-  {
     "src": "/bilder/werkstatt-12.jpg",
     "width": 1265,
     "height": 770,
     "type": "pc",
     "number": 12
-  },
-  {
-    "src": "/bilder/werkstatt-13.jpg",
-    "width": 1265,
-    "height": 949,
-    "type": "pc",
-    "number": 13
   },
   {
     "src": "/bilder/iphone-se-akkutausch-1.webp",
