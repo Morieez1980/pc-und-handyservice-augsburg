@@ -1,7 +1,11 @@
-import { renderDetail, reportPageHeaders } from "../_shared/reports-page.js";
+import { renderDetail, renderWorkshopDocumentation, reportPageHeaders } from "../_shared/reports-page.js";
 import { ensureReportEnhancements } from "../_shared/report-enhancements.js";
+import { workshopDocumentation } from "../_shared/workshop-documentation.js";
 
 export async function onRequestGet({ env, params }) {
+  if (String(params.slug) === workshopDocumentation.slug) {
+    return new Response(renderWorkshopDocumentation(), { headers: reportPageHeaders() });
+  }
   if (!env.DB) return new Response("Dienst vorübergehend nicht verfügbar.", { status: 503 });
   await ensureReportEnhancements(env);
   const report = await env.DB.prepare(`SELECT r.*, COALESCE(m.device_model, '') AS device_model, COALESCE(m.repair_type, '') AS repair_type, COALESCE(m.tested_functions, '') AS tested_functions,

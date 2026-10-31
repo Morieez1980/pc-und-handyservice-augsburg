@@ -3,6 +3,7 @@ import {hardwareSales,hardwareSalesSection} from '../locales/hardware-sales.mjs'
 import {specialistService,extraServiceCards,specialistServiceSection} from '../locales/specialist-service.mjs';
 import {expandedFormTranslations,expandedArrival} from '../locales/expanded-locales.mjs';
 import fs from 'node:fs';
+import {renderWorkshopDocumentation} from '../functions/_shared/reports-page.js';
 import {workshopGallery,workshopGalleryLink} from '../locales/workshop-gallery.mjs';
 import {closureNotices} from '../locales/opening-hours.mjs';
 import {arrival} from '../locales/arrival.mjs';
@@ -44,6 +45,8 @@ for(const [lang,t] of Object.entries(servicePositioning)){
   ownerIntro[lang]=t[2];
 }
 import path from 'node:path';
+fs.mkdirSync('reparaturberichte',{recursive:true});
+fs.writeFileSync('reparaturberichte/werkstatt-notebook-smartphone.html',renderWorkshopDocumentation());
 import {languages,routes,prices,localeContent} from '../locales/content.mjs';
 import {formRows,formShared} from '../locales/form-data.mjs';
 import {runtimeRows,unconfirmed} from '../locales/runtime-data.mjs';

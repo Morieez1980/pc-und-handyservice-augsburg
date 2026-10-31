@@ -118,7 +118,19 @@ const pageStyles = await readFile(new URL('../styles.css', import.meta.url), 'ut
 const qrStyles = await readFile(new URL('../qr.css', import.meta.url), 'utf8');
 assert.match(browserScript, /Promise\.all\(\[reviewSummaryRequest, googleReviewsRequest\]\)/);
 assert.match(browserScript, /googleData\?\.source === 'google-business-profile' \? googleData : fallbackData/);
-const reviewMarkup = pageMarkup.slice(pageMarkup.indexOf('<section class="section reviews"'), pageMarkup.indexOf('<section class="section faq"'));
+// Restrict review assertions to the review component; the photo gallery between
+// reviews and FAQ intentionally contains links that open full-sized photographs.
+const reviewStart = pageMarkup.indexOf('<section class="section reviews"');
+assert.ok(reviewStart >= 0);
+let sectionDepth = 0, reviewEnd = -1;
+for (const match of pageMarkup.slice(reviewStart).matchAll(/<section\b[^>]*>|<\/section>/g)) {
+  sectionDepth += match[0].startsWith('</') ? -1 : 1;
+  if (sectionDepth === 0) { reviewEnd = reviewStart + match.index + match[0].length; break; }
+}
+assert.ok(reviewEnd > reviewStart);
+const reviewDialogMarkup = pageMarkup.match(/<dialog class="review-dialog"[\s\S]*?<\/dialog>/)?.[0];
+assert.ok(reviewDialogMarkup);
+const reviewMarkup = pageMarkup.slice(reviewStart, reviewEnd) + reviewDialogMarkup;
 assert.match(reviewMarkup, /data-review-dialog-open>Kundenstimmen direkt hier lesen/);
 assert.doesNotMatch(reviewMarkup, /Google-Profil öffnen|Bei Google öffnen|target="_blank"/);
 assert.match(pageStyles, /\.review-dialog-trigger\[hidden\]\{display:none!important\}/);
