@@ -42,3 +42,26 @@ export const servicePositioning = {
  ar: ['احجز موعدًا بسهولة عبر الهاتف أو واتساب أو الموقع.', 'خدمة إصلاح تجارية منذ 2023. استشارة شخصية وسعر متفق عليه وفاتورة. تسليم الأجهزة بموعد مسبق داخل مبنى سكني.', 'أنا Maurice Keil. أخدم العملاء من أوغسبورغ وغيرستهوفن منذ 2023، بدءًا بالزيارات المنزلية واليوم بخدمة إصلاح شخصية في ليخهاوزن. أفحص جهازك وأناقش التكلفة قبل موافقتك على الإصلاح.'],
  fa: ['به‌سادگی از طریق تلفن، واتساپ یا وب‌سایت وقت بگیرید.', 'خدمات تعمیر تجاری از سال ۲۰۲۳. مشاوره شخصی، قیمت توافق‌شده و فاکتور. تحویل دستگاه با وقت قبلی در ساختمان مسکونی انجام می‌شود.', 'من Maurice Keil هستم. از سال ۲۰۲۳ به مشتریان آگسبورگ و گرستهوفن کمک می‌کنم؛ ابتدا با مراجعه به منزل و اکنون با خدمات تعمیر شخصی در لخ‌هاوزن. دستگاه را بررسی می‌کنم و پیش از تأیید تعمیر، هزینه را با شما در میان می‌گذارم.']
 };
+
+// Owner-confirmed origin of the business; no claims about wealth or market rank.
+export const ownerStory = {
+  "de": "2023 habe ich mit Hausbesuchen klein angefangen und meinen Betrieb Schritt für Schritt mit viel Eigenarbeit aufgebaut. Als Inhaber betreue ich Ihren Auftrag persönlich.",
+  "en": "I started small with home visits in 2023 and built my business step by step through my own hard work. As the owner, I personally look after your repair.",
+  "tr": "2023 yılında ev ziyaretleriyle küçük başladım ve işletmemi kendi emeğimle adım adım kurdum. İşletme sahibi olarak onarımınızla şahsen ilgileniyorum.",
+  "ro": "Am început modest, cu vizite la domiciliu în 2023, și mi-am construit afacerea pas cu pas, prin muncă proprie. Ca proprietar, mă ocup personal de reparația dumneavoastră.",
+  "uk": "У 2023 році я почав із невеликих виїздів до клієнтів і власною працею крок за кроком розбудував свою справу. Як власник, я особисто займаюся вашим замовленням.",
+  "es": "Empecé poco a poco con visitas a domicilio en 2023 y construí mi negocio paso a paso con mi propio esfuerzo. Como propietario, atiendo personalmente su reparación.",
+  "sv": "Jag började i liten skala med hembesök 2023 och byggde steg för steg upp mitt företag genom eget arbete. Som ägare tar jag personligen hand om din reparation.",
+  "da": "Jeg begyndte i det små med hjemmebesøg i 2023 og byggede min virksomhed op trin for trin gennem eget arbejde. Som ejer tager jeg mig personligt af din reparation.",
+  "ru": "В 2023 году я начал с небольших выездов к клиентам и собственным трудом шаг за шагом построил свое дело. Как владелец, я лично занимаюсь вашим заказом.",
+  "zh": "2023年，我从上门服务小规模起步，靠自己的努力一步步建立起这家维修服务。作为经营者，我亲自负责您的维修委托。",
+  "ja": "2023年に出張サービスから小さく始め、自分の手で一歩ずつ事業を築いてきました。事業主として、お客様の修理を私自身が担当します。",
+  "pl": "Zaczynałem skromnie od wizyt domowych w 2023 roku i krok po kroku budowałem firmę własną pracą. Jako właściciel osobiście zajmuję się Państwa zleceniem.",
+  "it": "Ho iniziato in piccolo con visite a domicilio nel 2023 e ho costruito la mia attività passo dopo passo con il mio lavoro. Come titolare seguo personalmente la sua riparazione.",
+  "fr": "J’ai commencé modestement par des visites à domicile en 2023 et bâti mon activité pas à pas grâce à mon propre travail. En tant que propriétaire, je m’occupe personnellement de votre réparation.",
+  "bg": "През 2023 г. започнах скромно с посещения по домовете и със собствен труд изградих бизнеса си стъпка по стъпка. Като собственик се грижа лично за вашата поръчка.",
+  "hr": "Počeo sam skromno s kućnim posjetima 2023. i vlastitim radom korak po korak izgradio svoj posao. Kao vlasnik osobno se brinem o vašem popravku.",
+  "el": "Ξεκίνησα σε μικρή κλίμακα με επισκέψεις κατ’ οίκον το 2023 και έχτισα την επιχείρησή μου βήμα βήμα με προσωπική δουλειά. Ως ιδιοκτήτης αναλαμβάνω προσωπικά την επισκευή σας.",
+  "ar": "بدأت على نطاق صغير بزيارات منزلية عام 2023، وبنيت عملي خطوة بخطوة بجهدي الشخصي. وبصفتي صاحب النشاط، أتابع طلب إصلاح جهازك بنفسي.",
+  "fa": "در سال ۲۰۲۳ با خدمات در منزل و در مقیاسی کوچک شروع کردم و با تلاش خودم، کسب‌وکارم را قدم‌به‌قدم ساختم. به‌عنوان صاحب کسب‌وکار، شخصاً به تعمیر دستگاه شما رسیدگی می‌کنم."
+};
