@@ -7,7 +7,7 @@
   X-Permitted-Cross-Domain-Policies: none
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; form-action 'self' https://bigin.zoho.eu; frame-ancestors 'none'; frame-src https://bigin.zoho.eu https://eu.bigin.online 'self'; img-src 'self' data: https://*.clarity.ms https://c.bing.com https://*.google-analytics.com; manifest-src 'self'; object-src 'none'; script-src 'self' 'sha256-Wz/tmzhKTwrmlHlD5XZIoOuP4e7OTRKZ0ku+nzDSZSY=' https://www.clarity.ms https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; worker-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://*.clarity.ms https://c.bing.com https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; form-action 'self' https://bigin.zoho.eu; frame-ancestors 'none'; frame-src https://bigin.zoho.eu https://eu.bigin.online 'self'; img-src 'self' data: https://*.clarity.ms https://c.bing.com https://*.google-analytics.com; manifest-src 'self'; object-src 'none'; script-src 'self' 'sha256-BCfXaHk0N66uI+zRrxiXh3D+8OgQxvjjZWJZaFCL5GM=' https://www.clarity.ms https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; worker-src 'none'; upgrade-insecure-requests
 
 /reparaturberichte-admin*
   Cache-Control: no-store

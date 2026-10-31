@@ -21,9 +21,32 @@ ar:['من ورشتي','أجهزة ومكونات وخطوات إصلاح من خ
 fa:['در کارگاه من','دستگاه‌ها، قطعات و مراحل تعمیر در خدمات من. برای دیدن تصویر کامل روی آن بزنید.','بزرگ‌نمایی تصویر','گزارش کامل تعمیر','دیدن عکس‌های کارگاه']
 };
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+const documentationCopy={
+de:['Reparaturberichte & Bilddokumentation','Zur Dokumentation','Leistungen im Überblick'],
+en:['Repair reports & photo documentation','Read documentation','Services at a glance'],
+tr:['Onarım raporları ve fotoğraflı belgeleme','Belgelemeyi gör','Hizmetlere genel bakış'],
+ro:['Rapoarte de reparație și documentație foto','Vezi documentația','Servicii pe scurt'],
+uk:['Звіти про ремонт і фотодокументація','Переглянути документацію','Огляд послуг'],
+es:['Informes de reparación y documentación fotográfica','Ver documentación','Servicios de un vistazo'],
+sv:['Reparationsrapporter och fotodokumentation','Läs dokumentationen','Översikt över tjänster'],
+da:['Reparationsrapporter og fotodokumentation','Se dokumentationen','Overblik over tjenester'],
+ru:['Отчёты о ремонте и фотодокументация','Открыть документацию','Обзор услуг'],
+zh:['维修报告和照片记录','查看记录','服务概览'],
+ja:['修理レポートと写真記録','記録を見る','サービス一覧'],
+pl:['Raporty z napraw i dokumentacja zdjęciowa','Zobacz dokumentację','Przegląd usług'],
+it:['Rapporti di riparazione e documentazione fotografica','Leggi la documentazione','Servizi in breve'],
+fr:['Rapports de réparation et documentation photo','Voir la documentation','Les services en bref'],
+bg:['Отчети за ремонти и фотодокументация','Вижте документацията','Преглед на услугите'],
+hr:['Izvještaji o popravcima i fotodokumentacija','Pogledaj dokumentaciju','Pregled usluga'],
+el:['Αναφορές επισκευών και φωτογραφική τεκμηρίωση','Δείτε την τεκμηρίωση','Επισκόπηση υπηρεσιών'],
+ar:['تقارير الإصلاح والتوثيق بالصور','عرض التوثيق','نظرة على الخدمات'],
+fa:['گزارش تعمیر و مستندات تصویری','مشاهده مستندات','خدمات در یک نگاه']
+};
 export function workshopGallery(lang,{price,pc,phone}){
  const c=galleryCopy[lang];if(!c)throw Error('Missing gallery translation: '+lang);
- const caption=p=>p.type==='brand'?'PC & Handyservice Augsburg – Maurice Keil':p.type==='price'?price+' (DE) · 30.10.2026':p.type==='iphone'?'iPhone SE (2020) · '+p.number:(p.type==='phone'?phone:pc)+' · '+p.number;
- return '<section class="workshop-gallery" id="bilder" data-workshop-gallery aria-labelledby="workshop-gallery-title"><header><h2 id="workshop-gallery-title">'+esc(c[0])+'</h2><p>'+esc(c[1])+'</p><a href="https://www.pc-und-handyservice-augsburg.com/reparaturberichte/iphone-se-2020-akkutausch" hreflang="de">'+esc(c[3])+' (DE) →</a></header><div class="workshop-gallery-grid">'+images.map(p=>'<figure><a href="'+esc(p.src)+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(c[2]+': '+caption(p))+'"><img src="'+esc(p.src)+'" width="'+p.width+'" height="'+p.height+'" loading="lazy" decoding="async" alt="'+esc(caption(p))+'"></a><figcaption>'+esc(caption(p))+'</figcaption></figure>').join('')+'</div></section>';
+ const d=documentationCopy[lang];if(!d)throw Error('Missing documentation translation: '+lang);
+ const caption=p=>p.type==='brand'?'PC & Handyservice Augsburg – Maurice Keil':p.type==='services'?d[2]+' · Maurice Keil':p.type==='price'?price+' (DE) · 30.10.2026':p.type==='iphone'?'iPhone SE (2020) · '+p.number:(p.type==='phone'?phone:pc)+' · '+p.number;
+ const report=p=>p.type==='iphone'?'https://www.pc-und-handyservice-augsburg.com/reparaturberichte/iphone-se-2020-akkutausch':p.type==='pc'||p.type==='phone'?'/reparaturberichte/werkstatt-notebook-smartphone#foto-'+p.number:'';
+ return '<section class="workshop-gallery" id="bilder" data-workshop-gallery aria-labelledby="workshop-gallery-title"><header><h2 id="workshop-gallery-title">'+esc(c[0])+'</h2><p>'+esc(c[1])+'</p><a href="/reparaturberichte" hreflang="de">'+esc(d[0])+' (DE) →</a></header><div class="workshop-gallery-grid">'+images.map(p=>'<figure><a href="'+esc(p.src)+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(c[2]+': '+caption(p))+'"><img src="'+esc(p.src)+'" width="'+p.width+'" height="'+p.height+'" loading="lazy" decoding="async" alt="'+esc(caption(p))+'"></a><figcaption>'+esc(caption(p))+(report(p)?'<a class="gallery-documentation-link" href="'+esc(report(p))+'" hreflang="de">'+esc(d[1])+' (DE) →</a>':'')+'</figcaption></figure>').join('')+'</div></section>';
 }
 export const workshopGalleryLink=lang=>'<p class="workshop-gallery-shortcut"><a href="#bilder">'+esc(galleryCopy[lang][4])+' ↓</a></p>';
