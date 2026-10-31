@@ -23,8 +23,8 @@ export const serviceCoverage = {
 };
 
 export const germanOverviewCards = [
-  ['Computer & Mac', serviceCoverage.de[0], ['Windows, macOS & Programme', 'SSD-Klonen, RAM & Datenübernahme', 'Reinigung, Kühlung & Fehlerdiagnose']],
-  ['Smartphone & Tablet', 'Display-, Akku-, Rückglas- und Ladebuchsenreparaturen sowie Hilfe bei Software- und Kontoproblemen.', ['Display, Akku & Rückglas', 'Ladebuchse & Systemfehler', 'iCloud-, Google- & Geräteeinrichtung']],
-  ['Spielekonsolen', 'Diagnose, Reinigung und Reparatur für PlayStation, Xbox und weitere Konsolen – abhängig von Modell und Fehlerbild.', ['Start-, Bild- & HDMI-Probleme', 'Überhitzung, Reinigung & Kühlung', 'Wärmeleitpaste & Hardwareprüfung']],
-  [serviceCoverage.de[1], serviceCoverage.de[2], ['Backup & Datenübernahme', 'Gelöschte Dateien', 'Softwarebasierte Datenrettung']]
+  ['Computer & Mac', 'Reparatur, Einrichtung und Aufrüstung für PC, Laptop und Mac.', ['Windows, macOS & Programme', 'SSD-Klonen, RAM & Datenübernahme', 'Reinigung, Kühlung & Fehlerdiagnose']],
+  ['Smartphone & Tablet', 'Hilfe bei Schäden, schwachem Akku und Softwareproblemen.', ['Display, Akku & Rückglas', 'Ladebuchse & Systemfehler', 'iCloud-, Google- & Geräteeinrichtung']],
+  ['Spielekonsolen', 'PlayStation, Xbox und weitere Konsolen – nach Modell und Fehlerbild.', ['Start-, Bild- & HDMI-Probleme', 'Überhitzung, Reinigung & Kühlung', 'Wärmeleitpaste & Hardwareprüfung']],
+  [serviceCoverage.de[1], 'Daten sichern, übertragen oder softwarebasiert wiederherstellen.', ['Backup & Datenübernahme', 'Gelöschte Dateien', 'Softwarebasierte Datenrettung']]
 ];
