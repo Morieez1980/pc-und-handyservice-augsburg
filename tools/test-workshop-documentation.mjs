@@ -13,8 +13,8 @@ test('Bilddokumentation ist ohne Datenbank erreichbar und bleibt von Kundenfäll
  const html=await response.text();
  assert.match(html,/Werkstatt-Bilddokumentation/);
  assert.match(html,/verschiedene Arbeiten/);
- assert.equal((html.match(/id="foto-/g)||[]).length,10);
- assert.equal((html.match(/data-gallery-src=/g)||[]).length,10);
+ assert.equal((html.match(/<figure id="foto-/g)||[]).length,8);
+ assert.equal((html.match(/data-gallery-src=/g)||[]).length,8);
  assert.ok(!html.includes('data-report-id='));
  assert.ok(!html.includes('stage-before'));
  assert.ok(!html.includes('stage-result'));
@@ -30,8 +30,8 @@ test('Jedes Werkstattfoto hat eine vorhandene Datei und einen erreichbaren Dokum
  }
  for(const lang of Object.keys(galleryCopy)){
   const html=workshopGallery(lang,{price:'Preise',pc:'Notebook',phone:'Smartphone'});
-  assert.equal((html.match(/<figure>/g)||[]).length,19);
-  assert.equal((html.match(/class="gallery-documentation-link"/g)||[]).length,16);
+  assert.equal((html.match(/<figure>/g)||[]).length,17);
+  assert.equal((html.match(/class="gallery-documentation-link"/g)||[]).length,14);
   for(const [number]of workshopDocumentation.images)assert.ok(html.includes(`/werkstatt-notebook-smartphone#foto-${number}`));
   assert.ok(html.includes('hreflang="de"'));
  }
@@ -45,11 +45,11 @@ test('Übersicht verlinkt echte Berichte und die zusätzliche Bilddokumentation 
  assert.ok(html.includes('og-image.png?v=20261031'));
 });
 
-test('Werkstattübersicht zeigt alle zehn Fotos ohne Aufklappen oder zusätzliche Navigation',()=>{
+test('Werkstattübersicht zeigt die ausgewählten Fotos ohne Aufklappen oder zusätzliche Navigation',()=>{
  const html=renderIndex([]);
  const photoIds=[...html.matchAll(/data-workshop-photo="(\d+)"/g)].map(m=>Number(m[1]));
  assert.deepEqual(photoIds.sort((a,b)=>a-b),workshopDocumentation.images.map(([id])=>id).sort((a,b)=>a-b));
- assert.equal(new Set(photoIds).size,10);
+ assert.equal(new Set(photoIds).size,8);
  assert.match(html,/workshop-presentation-photo[^]*werkstatt-4\.jpg/);
  assert.ok(!html.includes('<details'));
  assert.ok(!html.includes('data-gallery-src='));
@@ -58,9 +58,21 @@ test('Werkstattübersicht zeigt alle zehn Fotos ohne Aufklappen oder zusätzlich
 });
 
 test('Tabletaufnahmen werden in Dokumentation und allen Sprachgalerien richtig zugeordnet',()=>{
- for(const id of [8,11])assert.match(workshopDocumentation.images.find(([n])=>n===id)[1],/Tablet/);
+ for(const id of [8])assert.match(workshopDocumentation.images.find(([n])=>n===id)[1],/Tablet/);
  const html=workshopGallery('de',{price:'Preise',pc:'Notebook',phone:'Handy'});
- for(const id of [8,11])assert.ok(html.includes(`alt="Tablet · ${id}"`));
+ for(const id of [8])assert.ok(html.includes(`alt="Tablet · ${id}"`));
  assert.ok(!html.includes('alt="Notebook · 8"'));
  assert.ok(!html.includes('alt="Notebook · 11"'));
+});
+
+test('Ähnliche Doppelaufnahmen entfallen, bestehende Bildanker bleiben erreichbar',()=>{
+ const doc=renderWorkshopDocumentation();
+ const index=renderIndex([]);
+ const gallery=workshopGallery('de',{price:'Preise',pc:'Notebook',phone:'Handy'});
+ for(const id of [11,13]){
+  assert.ok(!doc.includes('werkstatt-'+id+'.jpg'));
+  assert.ok(!index.includes('werkstatt-'+id+'.jpg'));
+  assert.ok(!gallery.includes('werkstatt-'+id+'.jpg'));
+  assert.ok(doc.includes('id="foto-'+id+'"'));
+ }
 });
