@@ -157,16 +157,35 @@ const createGoogleReview = (review, inDialog = false) => {
 
   const comment = document.createElement('p');
   comment.className = 'google-review-text';
-  const parts = (review.text || 'Bewertung ohne zusätzlichen Text.').split(/\s*\(Translated by Google\)\s*/);
-  comment.textContent = parts[0];
+  const rawComment = (review.text || '').trim();
+  const translatedMarker = '(Translated by Google)';
+  const originalMarker = '(Original)';
+  let originalComment = rawComment;
+  let translatedComment = '';
+  if (rawComment.startsWith(translatedMarker)) {
+    const originalAt = rawComment.indexOf(originalMarker, translatedMarker.length);
+    if (originalAt >= 0) {
+      originalComment = rawComment.slice(originalAt + originalMarker.length).trim();
+      translatedComment = rawComment.slice(translatedMarker.length, originalAt).trim();
+    } else {
+      originalComment = rawComment.slice(translatedMarker.length).trim();
+    }
+  } else {
+    const translatedAt = rawComment.indexOf(translatedMarker);
+    if (translatedAt >= 0) {
+      originalComment = rawComment.slice(0, translatedAt).trim();
+      translatedComment = rawComment.slice(translatedAt + translatedMarker.length).trim();
+    }
+  }
+  comment.textContent = originalComment || translatedComment || 'Bewertung ohne zusätzlichen Text.';
   article.append(header, stars, comment);
-  if (parts.length > 1) {
+  if (translatedComment && translatedComment !== originalComment) {
     const translation = document.createElement('details');
     translation.className = 'review-translation';
     const label = document.createElement('summary');
     label.textContent = 'Google-Übersetzung anzeigen';
     const text = document.createElement('p');
-    text.textContent = parts.slice(1).join('\n');
+    text.textContent = translatedComment;
     translation.append(label, text);
     article.append(translation);
   }
