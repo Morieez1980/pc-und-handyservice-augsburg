@@ -26,16 +26,26 @@ body a:is(.button,.nav-cta,.mobile-contact-request)[href*="reparaturanfrage"]:ho
 body a:is(.button,.nav-cta,.mobile-contact-request)[href*="reparaturanfrage"]:focus-visible,body .locale-mobile-contact a[href*="reparaturanfrage"]:focus-visible{outline:3px solid #b5ffc4;outline-offset:4px}
 }
 
-/* A larger, crisp brand emblem without enlarging the fixed navigation bar. */
+/* Original Google business-profile logo, with a separately legible owner name. The image file is unchanged. */
 @media screen{
-body .site-header .brand-logo,body .locale-header .brand-logo,body .reports-header .brand-logo{width:64px;height:64px;flex:0 0 64px;object-fit:contain;filter:drop-shadow(0 0 10px #269df43b)}
+body .brand .brand-logo{width:104px;height:68px;flex:0 0 104px;object-fit:cover;object-position:50% 55%;border:1px solid #35526b;border-radius:8px;background:#000;filter:drop-shadow(0 3px 10px #0005)}
 body .site-header>.brand,body .locale-header>.brand{gap:12px}
-body .site-header .brand strong,body .locale-header .brand strong{font-size:16px;letter-spacing:-.015em}
-body .site-header.scrolled .brand-logo{width:56px;height:56px;flex-basis:56px}
+body .brand>span:last-child{min-width:0}
+body .site-header .brand strong,body .locale-header .brand strong{font-size:15px;letter-spacing:-.015em}
+body .brand .brand-owner{display:block;font-size:14px;line-height:1.25;font-weight:750;color:#98c8ff;letter-spacing:.01em;margin-top:2px}
+body .brand small{font-size:10px;line-height:1.2;margin-top:3px}
+body .site-header.scrolled .brand-logo{width:92px;height:58px;flex-basis:92px}
 @media(max-width:700px){
-body .site-header .brand-logo,body .site-header.scrolled .brand-logo,body .locale-header .brand-logo,body .reports-header .brand-logo{width:56px;height:56px;flex-basis:56px}
+body .brand .brand-logo,body .site-header.scrolled .brand-logo{width:92px;height:60px;flex-basis:92px}
 body .site-header>.brand,body .locale-header>.brand{gap:8px}
-body .site-header .brand strong,body .locale-header .brand strong{font-size:12px;line-height:1.2}
-body .site-header .brand small,body .locale-header .brand small{font-size:9px;line-height:1.25}
+body .site-header .brand strong,body .locale-header .brand strong{font-size:12px;line-height:1.2;overflow-wrap:anywhere}
+body .brand .brand-owner{font-size:12px;line-height:1.2;margin-top:2px}
+body .brand small{font-size:9px;line-height:1.2;margin-top:2px}
+}
+@media(max-width:359px){
+body .brand .brand-logo,body .site-header.scrolled .brand-logo{width:80px;height:56px;flex-basis:80px}
+body .site-header>.brand,body .locale-header>.brand{gap:6px}
+body .site-header .brand strong,body .locale-header .brand strong{font-size:11px}
+body .brand .brand-owner{font-size:11px}
 }
 }
