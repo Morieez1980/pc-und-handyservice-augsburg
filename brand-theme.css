@@ -18,3 +18,10 @@ body .workshop-gallery figure,body .report-card{background:linear-gradient(145de
 body .locale-section{border-color:#3e4a52}body .locale-footer,body .reports-footer{border-color:#3e4a52}body .footer{background:#0d1419}body .locale-mobile-contact,body .mobile-contact{background:#101a21;border-color:#44565d}body .accordion summary{color:#edf4f5}body .accordion details p{color:#bdcbd3}
 @media(max-width:700px){body .nav,body .locale-header #locale-nav{background:#121e27}body .home-overview{box-shadow:inset 0 1px #ffffff0b,0 12px 30px #050b0f26}}
 }
+
+/* Distinct green repair enquiries; other blue and WhatsApp actions stay as before. */
+@media screen{
+body a:is(.button,.nav-cta,.mobile-contact-request)[href*="reparaturanfrage"],body .locale-mobile-contact a[href*="reparaturanfrage"]{background:linear-gradient(135deg,#45df62,#28c64a);border:1px solid #71ee88;color:#082610!important;box-shadow:inset 0 1px #d2ffdb55,0 8px 24px #1bbe4626;text-shadow:none}
+body a:is(.button,.nav-cta,.mobile-contact-request)[href*="reparaturanfrage"]:hover,body .locale-mobile-contact a[href*="reparaturanfrage"]:hover{background:linear-gradient(135deg,#61ed7b,#3ed15b);border-color:#a0f7af;color:#082610!important}
+body a:is(.button,.nav-cta,.mobile-contact-request)[href*="reparaturanfrage"]:focus-visible,body .locale-mobile-contact a[href*="reparaturanfrage"]:focus-visible{outline:3px solid #b5ffc4;outline-offset:4px}
+}
