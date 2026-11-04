@@ -20,6 +20,27 @@ export const homeIntroExperience = {
  ar:'خبرة تقنية منذ 2001 · خدمة إصلاح منذ 2023',
  fa:'تجربهٔ فنی از ۲۰۰۱ · خدمات تعمیر از ۲۰۲۳'
 };
+export const homeIntroVisit = {
+ de:['Persönlicher Service nach Termin','Abgabe und Abholung Ihres Geräts vereinbare ich direkt mit Ihnen. Besuche nur nach meiner Terminbestätigung; kein offenes Ladengeschäft.'],
+ en:['Personal service by appointment','I arrange device drop-off and collection directly with you. Please visit only after I confirm your appointment; there is no walk-in shop.'],
+ tr:['Randevuyla kişisel hizmet','Cihaz teslimi ve geri alımını doğrudan sizinle kararlaştırırım. Lütfen yalnızca randevunuzu onayladıktan sonra gelin; randevusuz müşteri kabul eden bir mağaza yoktur.'],
+ ro:['Serviciu personal, cu programare','Stabilesc direct cu dumneavoastră predarea și ridicarea dispozitivului. Veniți doar după confirmarea programării; nu există magazin cu acces fără programare.'],
+ uk:['Особистий сервіс за записом','Передачу та отримання пристрою узгоджую безпосередньо з вами. Приходьте лише після мого підтвердження запису; магазину з вільним входом немає.'],
+ es:['Atención personal con cita','Acuerdo directamente con usted la entrega y recogida del equipo. Venga solo tras mi confirmación de la cita; no hay tienda de acceso sin cita.'],
+ sv:['Personlig service efter tidsbokning','Jag kommer överens med dig om inlämning och hämtning. Besök först när jag har bekräftat tiden; det finns ingen butik för drop-in.'],
+ da:['Personlig service efter aftale','Jeg aftaler indlevering og afhentning direkte med dig. Kom først, når jeg har bekræftet aftalen; der er ingen butik med fri adgang.'],
+ ru:['Личный сервис по записи','Передачу и получение устройства согласовываю непосредственно с вами. Приходите только после моего подтверждения записи; магазина со свободным входом нет.'],
+ zh:['预约后提供个人服务','设备送修和取回由我直接与您商定。请在收到我的预约确认后到访；这里不是可随时到店的门店。'],
+ ja:['ご予約での個別対応','機器のお預かりとお返しは、お客様と直接日程を相談します。予約の確認後にご来訪ください。予約なしで入店できる店舗ではありません。'],
+ pl:['Osobista obsługa po umówieniu','Ustalam z Państwem termin przekazania i odbioru urządzenia. Proszę przyjść dopiero po potwierdzeniu wizyty; nie prowadzę sklepu z wolnym wstępem.'],
+ it:['Assistenza personale su appuntamento','Concordo direttamente con lei consegna e ritiro del dispositivo. Venga solo dopo la mia conferma dell’appuntamento; non c’è un negozio con accesso libero.'],
+ fr:['Un service personnel sur rendez-vous','Je conviens directement avec vous du dépôt et du retrait de votre appareil. Venez uniquement après ma confirmation ; il n’y a pas de boutique ouverte sans rendez-vous.'],
+ bg:['Лично обслужване с уговорен час','Уговарям предаването и получаването на устройството директно с вас. Посещавайте само след моето потвърждение; няма магазин със свободен достъп.'],
+ hr:['Osobna usluga uz dogovoreni termin','Predaju i preuzimanje uređaja dogovaram izravno s vama. Dođite tek nakon moje potvrde termina; nema trgovine s pristupom bez najave.'],
+ el:['Προσωπική εξυπηρέτηση με ραντεβού','Συμφωνώ απευθείας μαζί σας την παράδοση και παραλαβή της συσκευής. Ελάτε μόνο μετά την επιβεβαίωσή μου· δεν υπάρχει κατάστημα ελεύθερης προσέλευσης.'],
+ ar:['خدمة شخصية بموعد مسبق','أنسّق معك مباشرةً تسليم جهازك واستلامه. يرجى الحضور بعد تأكيدي للموعد فقط؛ لا يوجد متجر مفتوح للزيارات دون موعد.'],
+ fa:['خدمات شخصی با وقت قبلی','تحویل و دریافت دستگاه را مستقیماً با شما هماهنگ می‌کنم. لطفاً فقط پس از تأیید وقت از طرف من مراجعه کنید؛ فروشگاه با مراجعهٔ آزاد وجود ندارد.']
+};
 // Compact first-screen introduction; the German owner section retains the full story.
 export const homeIntroLead = {
  de:'Mit Hausbesuchen und viel Eigenarbeit aufgebaut. Heute begleite ich Ihren Auftrag persönlich – mit verständlicher Beratung und klarer Preisabsprache.',
