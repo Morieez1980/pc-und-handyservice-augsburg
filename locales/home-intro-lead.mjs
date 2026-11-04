@@ -1,3 +1,25 @@
+// Personal technical experience and commercial business start are distinct dates.
+export const homeIntroExperience = {
+ de:'Technikerfahrung seit 2001 · Reparaturservice seit 2023',
+ en:'Technical experience since 2001 · Repair service since 2023',
+ tr:'2001’den beri teknik deneyim · 2023’ten beri onarım hizmeti',
+ ro:'Experiență tehnică din 2001 · Service de reparații din 2023',
+ uk:'Технічний досвід із 2001 року · Ремонтний сервіс із 2023 року',
+ es:'Experiencia técnica desde 2001 · Servicio de reparación desde 2023',
+ sv:'Teknisk erfarenhet sedan 2001 · Reparationsservice sedan 2023',
+ da:'Teknisk erfaring siden 2001 · Reparationsservice siden 2023',
+ ru:'Технический опыт с 2001 года · Ремонтный сервис с 2023 года',
+ zh:'自 2001 年积累技术经验 · 自 2023 年提供维修服务',
+ ja:'2001 年からの技術経験 · 2023 年から修理サービスを営業',
+ pl:'Doświadczenie techniczne od 2001 · Serwis naprawczy od 2023',
+ it:'Esperienza tecnica dal 2001 · Servizio di riparazione dal 2023',
+ fr:'Expérience technique depuis 2001 · Service de réparation depuis 2023',
+ bg:'Технически опит от 2001 г. · Ремонтен сервиз от 2023 г.',
+ hr:'Tehničko iskustvo od 2001. · Servis za popravke od 2023.',
+ el:'Τεχνική εμπειρία από το 2001 · Υπηρεσίες επισκευής από το 2023',
+ ar:'خبرة تقنية منذ 2001 · خدمة إصلاح منذ 2023',
+ fa:'تجربهٔ فنی از ۲۰۰۱ · خدمات تعمیر از ۲۰۲۳'
+};
 // Compact first-screen introduction; the German owner section retains the full story.
 export const homeIntroLead = {
  de:'Mit Hausbesuchen und viel Eigenarbeit aufgebaut. Heute begleite ich Ihren Auftrag persönlich – mit verständlicher Beratung und klarer Preisabsprache.',
