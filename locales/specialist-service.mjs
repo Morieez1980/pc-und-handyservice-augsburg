@@ -1,3 +1,4 @@
+import {offerContactActions} from './contact-actions.mjs';
 import {hardwareSales} from './hardware-sales.mjs';
 export const specialistService={
 de:['Lötarbeiten & Spezialreparaturen','Lötarbeiten, Microsoldering sowie Mainboard- und Chip-Level-Reparaturen – je nach Gerät und Schadensbild auch über spezialisierte Reparaturpartner. Ich bleibe Ihr Ansprechpartner und stimme die Partnerabwicklung, Machbarkeit und Kosten vorab mit Ihnen ab.','Keine Reparatur von Kopfhörern, Bluetooth-Adaptern und vergleichbaren Kleingeräten.','Nach Prüfung & Angebot','Computer & Mac'],
@@ -25,4 +26,4 @@ export function extraServiceCards(lang){
   const s=specialistService[lang],h=hardwareSales[lang];if(!s||!h)throw Error('Missing service translation '+lang);
   return '<article class="service-card service-specialist"><span class="service-number">05</span><div class="service-icon" aria-hidden="true">⌘</div><h3>'+esc(s[0])+'</h3><p>'+esc(s[1])+'</p><a class="text-link" href="#spezialreparaturen">'+esc(s[3])+' →</a></article><article class="service-card service-sales"><span class="service-number">06</span><div class="service-icon" aria-hidden="true">▦</div><h3>'+esc(h[0])+'</h3><p>'+esc(h[1])+'</p><a class="text-link" href="#hardwareverkauf">'+esc(h[6])+' →</a></article>';
 }
-export function specialistServiceSection(lang){const s=specialistService[lang];return '<aside class="specialist-notice" id="spezialreparaturen"><h3>'+esc(s[0])+'</h3><p>'+esc(s[1])+'</p><p class="service-exclusions">'+esc(s[2])+'</p><a class="text-link" href="tel:+4915254530080">0152 54530080 →</a></aside>';}
+export function specialistServiceSection(lang){const s=specialistService[lang];return '<aside class="specialist-notice" id="spezialreparaturen"><h3>'+esc(s[0])+'</h3><p>'+esc(s[1])+'</p><p class="service-exclusions">'+esc(s[2])+'</p>'+offerContactActions(lang)+'</aside>';}
