@@ -15,3 +15,7 @@
 @media(max-width:580px){.hardware-sales ul{grid-template-columns:minmax(0,1fr)}.hardware-sales .button{width:100%;padding-inline:12px}.price-nav a,.price-category-nav a{padding:10px 13px;font-size:13px}.hardware-sales,.specialist-notice{margin-block:24px}}
 @media(max-width:1050px){#leistungen .service-grid,#leistungen .locale-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){#leistungen .service-grid,#leistungen .locale-cards{grid-template-columns:minmax(0,1fr)}}
+
+/* Explicit choice at the two detailed offer panels, with normal wrapping on narrow screens. */
+.offer-contact-label{font-weight:650;color:#e6eff4!important;margin:20px 0 12px!important}.offer-contact-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px}.offer-contact-label+.offer-contact-actions{margin-top:0}.offer-contact-actions .button{font-size:14px;line-height:1.4;min-height:48px;padding:12px 18px;text-decoration:none;white-space:normal}.offer-contact-actions .button-outline{background:#182a37;border-color:#567083;color:#dfedff}.offer-contact-actions .button-outline:hover{background:#233c4c;border-color:#85b5d7}.offer-contact-actions a:focus-visible{outline:3px solid #b5ffc4;outline-offset:4px}
+@media(max-width:580px){.offer-contact-actions{align-items:stretch;gap:10px}.offer-contact-actions .button{flex:1 1 100%;width:100%;max-width:100%}}
