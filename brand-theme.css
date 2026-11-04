@@ -25,3 +25,17 @@ body a:is(.button,.nav-cta,.mobile-contact-request)[href*="reparaturanfrage"],bo
 body a:is(.button,.nav-cta,.mobile-contact-request)[href*="reparaturanfrage"]:hover,body .locale-mobile-contact a[href*="reparaturanfrage"]:hover{background:linear-gradient(135deg,#61ed7b,#3ed15b);border-color:#a0f7af;color:#082610!important}
 body a:is(.button,.nav-cta,.mobile-contact-request)[href*="reparaturanfrage"]:focus-visible,body .locale-mobile-contact a[href*="reparaturanfrage"]:focus-visible{outline:3px solid #b5ffc4;outline-offset:4px}
 }
+
+/* A larger, crisp brand emblem without enlarging the fixed navigation bar. */
+@media screen{
+body .site-header .brand-logo,body .locale-header .brand-logo,body .reports-header .brand-logo{width:64px;height:64px;flex:0 0 64px;object-fit:contain;filter:drop-shadow(0 0 10px #269df43b)}
+body .site-header>.brand,body .locale-header>.brand{gap:12px}
+body .site-header .brand strong,body .locale-header .brand strong{font-size:16px;letter-spacing:-.015em}
+body .site-header.scrolled .brand-logo{width:56px;height:56px;flex-basis:56px}
+@media(max-width:700px){
+body .site-header .brand-logo,body .site-header.scrolled .brand-logo,body .locale-header .brand-logo,body .reports-header .brand-logo{width:56px;height:56px;flex-basis:56px}
+body .site-header>.brand,body .locale-header>.brand{gap:8px}
+body .site-header .brand strong,body .locale-header .brand strong{font-size:12px;line-height:1.2}
+body .site-header .brand small,body .locale-header .brand small{font-size:9px;line-height:1.25}
+}
+}
