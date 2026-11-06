@@ -90,6 +90,7 @@ const arrivalSection=(lang,route="")=>{const a=arrival[lang],p=premises[lang],ph
 const range=(a,b)=>Array.from({length:b-a+1},(_,i)=>i+a);
 const servicePrices=[range(2,9),range(10,14),range(17,22),[15,16]];
 const baseForm=read('reparaturanfrage.html').match(/<section class="request-form-shell"[\s\S]*?<\/section>/)[0];
+const billingCountryLabels={en:'Country',tr:'Ülke',ro:'Țară',uk:'Країна',es:'País',sv:'Land',da:'Land',ru:'Страна',zh:'国家',ja:'国',pl:'Kraj',it:'Paese',fr:'Pays',bg:'Държава',hr:'Država',el:'Χώρα',ar:'البلد',fa:'کشور'};
 for(const [lang,c] of Object.entries(localeContent)){
   const column=Object.keys(localeContent).indexOf(lang)+1;
   if(c.labels.length!==25||c.priceNames.length!==prices.length||c.services.length!==4)throw Error('Incomplete content: '+lang);
@@ -107,6 +108,8 @@ for(const [lang,c] of Object.entries(localeContent)){
   Object.assign(map,repairRequiredTranslations[lang]);
   Object.assign(map,repairPlainTranslations[lang]);
   Object.assign(map,repairUnlockTranslations[lang]);
+  if(!billingCountryLabels[lang])throw Error('Missing billing country label: '+lang);
+  map['Land']=billingCountryLabels[lang];
   write(lang+'/form-i18n.js','window.siteTranslate=(key)=>('+JSON.stringify(map)+')[key]||key;\n');
   const translateText=html=>html.replace(/>([^<>]+)</g,(all,raw)=>map[norm(raw)]?'>'+(/^\s/.test(raw)?' ':'')+esc(map[norm(raw)])+(/\s$/.test(raw)?' ':'')+'<':all).replace(/\b(placeholder|aria-label|title)="([^"]*)"/g,(all,key,raw)=>map[norm(raw)]?key+'="'+esc(map[norm(raw)])+'"':all);
   let form=translateText(baseForm).replaceAll('href="/"','href="'+url(lang)+'"').replaceAll('href="/datenschutz"','href="'+url(lang,'datenschutz')+'"');
