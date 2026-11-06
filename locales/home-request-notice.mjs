@@ -1,0 +1,21 @@
+export const homeRequestNotice = {
+  de: 'Für jeden Auftrag ist das Reparaturanfrage-Formular erforderlich. Es erfasst Ihre Kunden- und Gerätedaten und ist unverbindlich. Kostenpflichtige Arbeiten erfolgen erst nach Absprache und Ihrer Freigabe.',
+  en: 'The repair enquiry form is required for every job. It collects your customer and device details and is non-binding. Paid work starts only after we agree on it and you give your approval.',
+  tr: 'Her onarım işi için onarım talep formunun doldurulması gerekir. Form, müşteri ve cihaz bilgilerinizi toplar ve bağlayıcı değildir. Ücretli işlemler yalnızca sizinle görüşüldükten ve onayınız alındıktan sonra yapılır.',
+  ro: 'Formularul de solicitare a reparației este necesar pentru fiecare lucrare. Acesta colectează datele dumneavoastră și ale dispozitivului, fără obligații. Lucrările contra cost se efectuează numai după consultare și cu acordul dumneavoastră.',
+  uk: 'Для кожного замовлення потрібно заповнити форму запиту на ремонт. Вона збирає ваші контактні дані та дані пристрою й не зобов’язує до замовлення. Платні роботи виконуються лише після узгодження та вашого схвалення.',
+  es: 'El formulario de solicitud de reparación es necesario para cada encargo. Recoge sus datos de cliente y del dispositivo, sin compromiso. Los trabajos de pago solo se realizan tras acordarlos con usted y recibir su autorización.',
+  sv: 'Reparationsformuläret krävs för varje uppdrag. Det samlar in dina kund- och enhetsuppgifter och är inte bindande. Avgiftsbelagt arbete utförs först efter överenskommelse och ditt godkännande.',
+  da: 'Reparationsformularen er nødvendig for hver opgave. Den indsamler dine kunde- og enhedsoplysninger og er uforpligtende. Arbejde mod betaling udføres først efter aftale og din godkendelse.',
+  ru: 'Для каждого заказа необходимо заполнить форму запроса на ремонт. Она собирает ваши контактные данные и сведения об устройстве и ни к чему не обязывает. Платные работы выполняются только после согласования и вашего одобрения.',
+  ja: '修理のご依頼には、お問い合わせフォームの入力が必要です。お客様と機器の情報を確認するためのもので、送信だけで契約や支払い義務は発生しません。有料の作業は、事前のご相談とお客様の承認後にのみ行います。',
+  zh: '每项维修委托都需要填写维修咨询表，用于登记您的客户信息和设备资料。提交咨询不构成维修委托，也不产生付款义务。收费工作仅在事先沟通并获得您的同意后进行。',
+  pl: 'Formularz zapytania o naprawę jest wymagany przy każdym zleceniu. Służy do zebrania danych klienta i urządzenia i do niczego nie zobowiązuje. Płatne prace wykonuję dopiero po uzgodnieniu i uzyskaniu Państwa zgody.',
+  it: 'Il modulo di richiesta di riparazione è necessario per ogni incarico. Raccoglie i dati del cliente e del dispositivo e non è vincolante. I lavori a pagamento vengono eseguiti solo dopo averli concordati e ricevuto la sua approvazione.',
+  fr: 'Le formulaire de demande de réparation est nécessaire pour chaque intervention. Il recueille vos coordonnées et les données de votre appareil, sans engagement. Les travaux payants ne sont effectués qu’après concertation et avec votre accord.',
+  bg: 'Формулярът за запитване за ремонт е необходим за всяка поръчка. Той събира данните ви като клиент и информацията за устройството и не ви обвързва с поръчка. Платена работа се извършва само след уточняване и ваше одобрение.',
+  hr: 'Obrazac upita za popravak potreban je za svaki nalog. Služi za prikupljanje vaših podataka i podataka o uređaju te vas ni na što ne obvezuje. Radovi koji se naplaćuju obavljaju se tek nakon dogovora i vašeg odobrenja.',
+  el: 'Η φόρμα αιτήματος επισκευής είναι απαραίτητη για κάθε εργασία. Συλλέγει τα στοιχεία πελάτη και συσκευής σας χωρίς να σας δεσμεύει. Εργασίες με χρέωση πραγματοποιούνται μόνο κατόπιν συνεννόησης και με την έγκρισή σας.',
+  ar: 'يلزم ملء نموذج طلب الإصلاح لكل مهمة. يُستخدم لجمع بياناتك وبيانات جهازك، وإرساله لا يُلزمك بطلب إصلاح أو بالدفع. لا تُنفّذ الأعمال المدفوعة إلا بعد التشاور معك والحصول على موافقتك.',
+  fa: 'برای هر سفارش، تکمیل فرم درخواست تعمیر لازم است. این فرم برای ثبت مشخصات شما و دستگاه است و ارسال آن تعهدی برای سفارش یا پرداخت ایجاد نمی‌کند. کارهای هزینه‌دار فقط پس از هماهنگی و تأیید شما انجام می‌شود.'
+};

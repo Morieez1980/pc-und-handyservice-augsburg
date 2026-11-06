@@ -33,3 +33,8 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 @media(max-width:700px){.repair-helper-toggle{padding-inline:0 10px}.repair-helper-panel{inset:auto 14px calc(86px + env(safe-area-inset-bottom)) auto;max-height:calc(100dvh - 194px);padding:20px}.repair-helper-panel>.repair-avatar{width:48px;height:48px}.home-intro .repair-helper-panel h2{font-size:21px}}
 @media(prefers-reduced-motion:reduce){.home-overview>div,.home-overview>.copy-preview{transition:none!important;transform:none!important}}
 @media print{.repair-helper{display:none!important}}
+
+/* Explain the non-binding intake next to the primary enquiry action. */
+.home-intro-action-group{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px 20px;min-width:0}
+.home-intro .home-request-note{min-width:0;margin:0;font-size:14px;line-height:1.5;color:#bfd1dc;text-wrap:pretty}
+@media(max-width:1000px){.home-intro-action-group{grid-template-columns:minmax(0,1fr);gap:12px}.home-intro .home-request-note{margin-inline:4px;max-width:90ch}}
