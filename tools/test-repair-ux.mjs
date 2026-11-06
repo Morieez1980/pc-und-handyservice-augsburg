@@ -95,7 +95,7 @@ try {
   await page.locator('#description').fill('Gekennzeichneter lokaler Test ohne Kundenversand.');
   await page.locator('#first-name').fill('Test');
   await page.locator('#last-name').fill('Inhaber');
-  await page.locator('#email').fill('MauriceKeil@pc-und-handyservice-augsburg.com');
+  await page.locator('#email').fill('keil.maurice1980@gmail.com');
   await page.locator('#phone').fill('015254530080');
   await page.locator('#privacy-acknowledged').check();
   await page.locator('#unlock-method').selectOption('later');
@@ -193,7 +193,7 @@ try {
   await page.waitForTimeout(200);
   assert.equal(posts,1,'Rapid repeated submission reaches CRM once');
   const mapping=await page.locator('#repair-request').evaluate(f=>Object.fromEntries(Array.from(f.elements).filter(e=>e.type==='hidden'&&!['xnQsjsdp','xmIwtLD','zc_gad','actionType'].includes(e.name)).map(e=>[e.name,e.value])));
-  assert.equal(mapping.POTENTIALCF5,'MauriceKeil@pc-und-handyservice-augsburg.com');
+  assert.equal(mapping.POTENTIALCF5,'keil.maurice1980@gmail.com');
   assert.equal(mapping.POTENTIALCF6,'+4915254530080');
   assert.equal(mapping.POTENTIALCF7,'Stätzlinger Straße 99, 86165 Augsburg');
   assert.match(mapping.Description,/Gerätekennung: nicht vorhanden/);
@@ -205,7 +205,7 @@ try {
     await page.clock.fastForward(3000);
     await page.locator('#device-type').selectOption(type);
     await page.locator('#unlock-method').selectOption(type==='Desktop-PC'?'unknown':'later');
-    for(const [id,value] of Object.entries({'device-name':'Lokaler Test-PC','description':'Lokaler Test ohne technische Zusatzangaben und ohne echten Versand.','serial-number':'CODEX-LOCAL-TEST','first-name':'Maurice','last-name':'Keil','email':'MauriceKeil@pc-und-handyservice-augsburg.com','phone':'015254530080','street':'Stätzlinger Straße 99','postcode':'86165','city':'Augsburg'})) await page.locator('#'+id).fill(value);
+    for(const [id,value] of Object.entries({'device-name':'Lokaler Test-PC','description':'Lokaler Test ohne technische Zusatzangaben und ohne echten Versand.','serial-number':'CODEX-LOCAL-TEST','first-name':'Maurice','last-name':'Keil','email':'keil.maurice1980@gmail.com','phone':'015254530080','street':'Stätzlinger Straße 99','postcode':'86165','city':'Augsburg'})) await page.locator('#'+id).fill(value);
     await page.locator('#privacy-acknowledged').check();
     const prior=posts;
     await page.locator('[data-submit]').click();
