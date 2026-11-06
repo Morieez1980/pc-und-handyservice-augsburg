@@ -45,12 +45,12 @@ const ideaForm=document.querySelector('#app-idea');
 if(ideaForm){
  ideaForm.addEventListener('submit',e=>{
   e.preventDefault();if(!ideaForm.reportValidity())return;
-  openMail('App-Idee / Funktionswunsch – '+ideaForm.elements.topic.value,[
+  openMail('Keil@Copy / App-Rückmeldung – '+ideaForm.elements.topic.value,[
    'Guten Tag Herr Keil,',
    'Thema: '+ideaForm.elements.topic.value,
    'Name: '+ideaForm.elements.name.value.trim(),
    'Antwortadresse: '+ideaForm.elements.email.value.trim(),
-   'Meine Idee oder mein Anliegen:\n'+ideaForm.elements.message.value.trim(),
+   'Meine Rückmeldung oder mein Anliegen:\n'+ideaForm.elements.message.value.trim(),
    'Dies ist eine unverbindliche Anfrage. Noch kein Entwicklungsauftrag und keine Anmeldung für Werbemails.'
   ],'#idea-status');
  });

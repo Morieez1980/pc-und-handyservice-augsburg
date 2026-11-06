@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "product": "Keil@Copy",
-  "version": "1.9.85",
+  "version": "1.9.88",
   "published": false,
   "checkoutMode": "personal-quotation",
   "supportEmail": "keil.maurice1980@gmail.com",
@@ -32,5 +32,8 @@
   },
   "purchaseDownloadUrl": null,
   "legalReviewComplete": false,
-  "practicalAcceptanceComplete": false
+  "practicalAcceptanceComplete": false,
+  "feedbackEmail": "keil.maurice1980@gmail.com",
+  "featureRequestsWelcome": true,
+  "featureDeliveryGuaranteed": false
 }
