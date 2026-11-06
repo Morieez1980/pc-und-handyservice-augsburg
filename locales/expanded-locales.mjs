@@ -5,8 +5,8 @@ const data=JSON.parse(fs.readFileSync(new URL('./expanded-data.json',import.meta
 const forms=JSON.parse(fs.readFileSync(new URL('./expanded-forms.json',import.meta.url),'utf8'));
 const source=JSON.parse(fs.readFileSync(new URL('./form-source.json',import.meta.url),'utf8'));
 const reference=fs.readFileSync(new URL('../en/form-i18n.js',import.meta.url),'utf8');
-// The legacy expanded rows are positional; the independently keyed access text is merged later.
-const keys=Object.keys(JSON.parse(reference.slice('window.siteTranslate=(key)=>('.length).split(')[key]||key;')[0])).map(key=>key.startsWith('Fehlerdiagnose: 30 €')&&key.includes('250')?calibratedFees.de:key).filter(key=>!repairAccessTranslationKeys.includes(key));
+// Legacy rows are positional; independently keyed access and billing-country labels are merged later.
+const keys=Object.keys(JSON.parse(reference.slice('window.siteTranslate=(key)=>('.length).split(')[key]||key;')[0])).map(key=>key.startsWith('Fehlerdiagnose: 30 €')&&key.includes('250')?calibratedFees.de:key).filter(key=>!repairAccessTranslationKeys.includes(key)&&key!=='Land');
 if(keys.length!==137)throw Error('Review expanded form translation keys: '+keys.length);
 export const expandedContent={},expandedFormTranslations={},expandedArrival={},expandedLanguages={};
 for(const [lang,d]of Object.entries(data)){

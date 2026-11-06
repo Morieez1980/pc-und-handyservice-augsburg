@@ -54,3 +54,16 @@ test('Legal originals remain explicitly marked; newly requested languages are li
  }
 });
 
+test('Every repair form explicitly asks for an unguessed billing country mapped to the Bigin contact',()=>{
+ for(const lang of ['de',...Object.keys(localeContent)]){
+  const html=read((lang==='de'?'':lang+'/')+'reparaturanfrage.html');
+  const country=html.match(/<input\b[^>]*\bid="country"[^>]*>/)?.[0];
+  assert.ok(country,lang+' country field missing');
+  assert.match(country,/name="Contacts\.Mailing Country"/);
+  assert.match(country,/autocomplete="country-name"/);
+  assert.match(country,/\brequired(?:\s|>)/);
+  assert.doesNotMatch(country,/\bvalue="[^\"]+"/);
+  assert.doesNotMatch(country,/type="hidden"/);
+ }
+});
+
