@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "product": "Keil@Copy",
+  "version": "1.9.85",
+  "published": false,
+  "checkoutMode": "personal-quotation",
+  "supportEmail": "keil.maurice1980@gmail.com",
+  "paypalEmail": "keil.maurice1980@gmail.com",
+  "paymentMethods": [
+    "PayPal",
+    "Revolut Pro · SEPA-Überweisung"
+  ],
+  "taxNote": "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.",
+  "demo": {
+    "days": 30,
+    "budgetBytes": 5000000000000,
+    "url": null
+  },
+  "editions": {
+    "personal": {
+      "label": "Privat",
+      "priceCents": 3500,
+      "people": 1,
+      "devices": 1
+    },
+    "technician": {
+      "label": "Techniker",
+      "priceCents": 6500,
+      "people": 1,
+      "devices": "wechselnde Kunden-PCs im Serviceeinsatz"
+    }
+  },
+  "purchaseDownloadUrl": null,
+  "legalReviewComplete": false,
+  "practicalAcceptanceComplete": false
+}

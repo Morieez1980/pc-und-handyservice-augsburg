@@ -8,7 +8,7 @@ export const appsNavLabels = {
 // Use the same public Apps destination in static pages and repair reports.
 export function withAppsNavigation(html, lang = 'de') {
   if (!Object.hasOwn(appsNavLabels, lang)) throw new Error('Unknown Apps language');
-  const href = `${lang === 'de' ? '/' : `/${lang}/`}#apps`;
+  const href = '/apps';
   const link = `<a data-apps-link href="${href}">${appsNavLabels[lang]}</a>`;
   html = html.replace(/<a\b[^>]*\bdata-apps-link\b[^>]*>[\s\S]*?<\/a>/g, '');
   html = html.replace(/(<header\b[^>]*>)([\s\S]*?)(<\/header>)/, (_, open, body, close) => {

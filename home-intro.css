@@ -38,3 +38,5 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 .home-intro-action-group{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px 20px;min-width:0}
 .home-intro .home-request-note{min-width:0;margin:0;font-size:14px;line-height:1.5;color:#bfd1dc;text-wrap:pretty}
 @media(max-width:1000px){.home-intro-action-group{grid-template-columns:minmax(0,1fr);gap:12px}.home-intro .home-request-note{margin-inline:4px;max-width:90ch}}
+
+.copy-preview h2{display:flex;align-items:center;gap:.6rem}.copy-preview-icon{flex:0 0 28px;color:#57b8e8}

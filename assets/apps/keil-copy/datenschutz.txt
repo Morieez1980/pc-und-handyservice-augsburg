@@ -1,0 +1,29 @@
+Stand 06.11.2026 · Keil@Copy 1.9.85
+Kontakt und Support: keil.maurice1980@gmail.com
+
+Keil@Copy · PRODUKT-DATENSCHUTZHINWEISE – ENTWURF 30.10.2026
+Vor öffentlicher Bereitstellung passend zum tatsächlich gewählten Vertriebsweg prüfen und freigeben. Anbieter/Verantwortlicher: Maurice Keil · PC & Handyservice Augsburg, Stätzlinger Straße 99, 86165 Augsburg, Deutschland. Kontakt: keil.maurice1980@gmail.com, +49 152 54530080.
+
+LOKALE APPDATEN
+Die App verarbeitet ausgewählte Datei-/Ordnerpfade, Größen, Zeitstempel und gegebenenfalls Prüfsummen, soweit der gewählte Kopier-/Prüfauftrag das benötigt. Ziel und Kopierweg bestimmt der Nutzer. Lokale Profile/Einstellungen, Fortschritts-/Wiederaufnahmedaten und Protokolle können Pfade und Fehler enthalten. Sie verbleiben auf dem verwendeten PC, insbesondere unter dem lokalen Benutzerbereich RoboCopyKompakt in LocalAppData; Supportexporte werden am ausdrücklich gewählten Ort gespeichert. Die App lädt diese Protokolle/Dateiinhalte nicht automatisch zu Maurice hoch.
+
+LIZENZ UND DEMO
+Eine importierte signierte Lizenz kann den Namen des Lizenznehmers, zufällige Lizenzkennung, Lizenzart, vereinbarten Geräteumfang sowie Ausstellungs-/gegebenenfalls Testablauf- und Supportangaben enthalten. Sie wird offline geprüft. Keine eingebaute Hardwarekennung oder Onlineaktivierungsanfrage. Der lokale Demo-Status speichert Beginn, letzte Beobachtung und reservierten geplanten Auftragsumfang (30 Tage / 5 TB); dies ist kein zentraler Kundenbestand. Die Signatur verhindert keine missbräuchliche Weitergabe einer gültigen Lizenzdatei. Gesetzliche Rechte werden nicht durch diese Beschreibung verkürzt.
+
+NETZWERKVERBINDUNGEN
+Gewählte Windows-Netzwerk-/FTP-Ziele erhalten die für den Auftrag nötigen Dateien und Anmeldedaten. FTP ohne TLS ist unverschlüsselt. FTP-Kennwörter werden nicht im Profil gespeichert und nach dem Auftrag aus dem Eingabefeld entfernt. Zielgeräte/Netzwerkserver werden vom Nutzer ausgewählt und verantwortet.
+Die Updateprüfung verwendet den eigenen Dienst https://updates.pc-und-handyservice-augsburg.com/ bzw. eine konfigurierte HTTPS-Quelle. Für Programmdateien kann die bestehende GitHub-Releasequelle bzw. die signiert benannte Paketquelle kontaktiert werden. Die Gegenstellen erhalten nötige Verbindungsdaten wie IP-Adresse, Zeitpunkt und technische Anfrageinformationen. Lizenzdatei, lokale Dateiinhalte und FTP-Kennwörter werden nicht zur eigenen Updatequelle gesendet. Microsoft-/Windows-Laufzeitprüfungen nutzen die dafür eingerichteten Microsoft-/Windows-Updatequellen; Windows-Installationen sind ein eigener Schritt. Anbieterbedingungen und zulässige eigene Quellen des Anwenders bleiben zu beachten.
+
+HOSTING UND SUPPORT
+Der eigene Updatehost verwendet Sites von OpenAI mit Cloudflare-Infrastruktur; GitHub liefert die bisherigen öffentlichen Programmdateien. Es gibt dort keine eigene Kunden-/Lizenzdatenbank, keine eingebauten Werbe-/Analyseskripte und keine Appbericht-Uploadfunktion. Hostinganbieter können technische Betriebs-/Sicherheitsdaten nach ihren Regeln verarbeiten, gegebenenfalls mit Drittlandbezug. Die bestehende öffentliche Website-Datenschutzerklärung erläutert den tatsächlich aktiven Updatehost. Rechtsgrundlage für nötige Betriebssicherheit/Bereitstellung ist insbesondere Art. 6 Abs. 1 lit. f DSGVO; bei Kundenvertrag und Support kommen je nach konkretem Vorgang Art. 6 Abs. 1 lit. b/c DSGVO hinzu. Vor Verkauf Auftragsverarbeitung, Dienstleisterbedingungen und konkrete Übermittlungsgrundlagen passend zur tatsächlichen Kontovertragsart abschließend prüfen.
+Der Supportbericht wird erst auf Anforderung lokal erstellt. Er enthält Vorgangsnummer, Zeitpunkt, Produkt-/System-/Laufzeitstand, Kopierweg und Status. Bekannte Pfad-, Adress- und Zugangsdatenmuster werden entfernt; unbekannte persönliche Angaben können verbleiben. Vorschau vor Weitergabe prüfen/bearbeiten. Keine vollständigen Logarchive oder Dateiinhalte sind standardmäßig enthalten. Die eigene Übersendung an Maurice erfolgt durch den Kunden, ohne automatischen Versand aus der App. Nur für Bearbeitung erforderliche Daten übersenden; keine Kennwörter, Lizenzdateien oder Original-Kundendateien.
+
+AUFBEWAHRUNG UND RECHTE
+Lokale Dateien bleiben bis zur kontrollierten Entfernung durch den Nutzer bzw. entsprechend den tatsächlich implementierten Aufbewahrungsfunktionen auf dessen PC. Keine pauschale Frist oder automatische vollständige Spurenlöschung versprechen. Für bei Maurice eingegangene Anfragen/Vertrags- und Rechnungsdaten vor Verkauf ein konkretes Lösch-/Aufbewahrungskonzept nach Zweck, gesetzlichen Fristen und etwaiger Anspruchssicherung umsetzen. Eine feste pauschale Hosting-Logfrist wird nicht behauptet. Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und gegebenenfalls Datenübertragbarkeit sowie Beschwerde bei der zuständigen Datenschutzaufsicht bleiben bestehen; Kontakt wie oben. Diese Vorbereitung ist kein anwaltliches Datenschutztestat.
+
+Quellen und Anbieterhinweise:
+https://updates.pc-und-handyservice-augsburg.com/datenschutz
+https://openai.com/policies/privacy-policy/
+https://www.cloudflare.com/privacypolicy/
+https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
+https://www.microsoft.com/de-de/privacy/privacystatement

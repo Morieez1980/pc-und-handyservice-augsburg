@@ -1,98 +1,98 @@
-// Development preview; features are planned, not a released product or measured speed promise.
+// Product preview; online release is enabled separately after acceptance.
 export const copyProgramPreview = {
   "de": [
-    "In Entwicklung: mein Kopierprogramm",
-    "Dateien aller Formate lokal und im Netzwerk kopieren – mit automatischer Hardware-Erkennung und Grundeinstellung. Tempo und Fortschritt im Blick, Auswahl und Optionen anpassbar. Geschützte Ordner nur mit vorhandenen Zugriffsrechten. Ein Veröffentlichungstermin steht noch nicht fest.",
-    "Fragen oder Interesse? Schreiben Sie mir"
+    "Keil@Copy · Kopieren mit Überblick",
+    "Neben Reparaturen entwickle ich eigene Windows-Apps. Keil@Copy bringt Kopierfortschritt und Dateiprüfung zusammen; die Veröffentlichung ist noch in Vorbereitung. Wünsche für diese oder eine neue App sind willkommen.",
+    "Apps & Ideen ansehen"
   ],
   "en": [
-    "In development: my file-copying program",
-    "Copy files of any format locally and across networks, with automatic hardware detection and basic setup. Track speed and progress; customise selection and options. Protected folders require existing access rights. A release date has not yet been set.",
-    "Questions or interested? Contact me"
+    "Keil@Copy · File copying at a glance",
+    "Alongside repairs, I develop my own Windows apps. Keil@Copy combines copy progress and file verification; its release is still being prepared. Ideas for this app or a new one are welcome.",
+    "Explore apps & ideas"
   ],
   "tr": [
-    "Geliştiriliyor: dosya kopyalama programım",
-    "Her formattaki dosyayı yerel olarak ve ağda kopyalayın; donanım algılama ve temel ayarlar otomatiktir. Hızı ve ilerlemeyi izleyin, seçimleri ve seçenekleri özelleştirin. Korumalı klasörler için erişim hakkı gerekir. Henüz bir yayımlanma tarihi belirlenmedi.",
-    "Sorunuz mu var, ilgileniyor musunuz? Bana yazın"
+    "Keil@Copy · Windows",
+    "Onarım hizmetinin yanında kendi Windows uygulamalarımı geliştiriyorum. Keil@Copy, kopyalama ilerlemesini ve dosya kontrolünü bir araya getirir; yayın hazırlığı sürüyor. Bu uygulama veya yeni bir uygulama için fikirlerinizi bekliyorum.",
+    "Uygulamalar ve fikirler"
   ],
   "ro": [
-    "În dezvoltare: programul meu de copiere",
-    "Copiați fișiere de orice format local și în rețea, cu detectare hardware și configurare de bază automate. Urmăriți viteza și progresul; selecția și opțiunile sunt configurabile. Folderele protejate necesită drepturi de acces existente. Data lansării nu a fost încă stabilită.",
-    "Întrebări sau interes? Scrieți-mi"
+    "Keil@Copy · Windows",
+    "Pe lângă reparații, dezvolt aplicații proprii pentru Windows. Keil@Copy reunește progresul copierii și verificarea fișierelor; lansarea este în pregătire. Ideile pentru această aplicație sau una nouă sunt binevenite.",
+    "Aplicații și idei"
   ],
   "uk": [
-    "У розробці: моя програма копіювання файлів",
-    "Копіювання файлів будь-якого формату локально й мережею з автоматичним визначенням обладнання та базовими налаштуваннями. Контроль швидкості й перебігу, змінні параметри та вибір файлів. Захищені папки потребують наявних прав доступу. Дату випуску ще не визначено.",
-    "Маєте запитання або зацікавилися? Напишіть мені"
+    "Keil@Copy · Windows",
+    "Крім ремонту, я розробляю власні програми для Windows. Keil@Copy поєднує перебіг копіювання та перевірку файлів; випуск ще готується. Вітаю побажання для цієї або нової програми.",
+    "Програми та ідеї"
   ],
   "es": [
-    "En desarrollo: mi programa de copia de archivos",
-    "Copie archivos de cualquier formato en local y en red, con detección de hardware y configuración básica automáticas. Consulte velocidad y progreso; personalice selección y opciones. Las carpetas protegidas requieren permisos existentes. Aún no se ha fijado una fecha de lanzamiento.",
-    "¿Preguntas o interés? Escríbame"
+    "Keil@Copy · Windows",
+    "Además de reparaciones, desarrollo aplicaciones propias para Windows. Keil@Copy reúne el progreso de copia y la comprobación de archivos; su lanzamiento sigue en preparación. Tus ideas para esta aplicación o una nueva son bienvenidas.",
+    "Ver aplicaciones e ideas"
   ],
   "sv": [
-    "Under utveckling: mitt filkopieringsprogram",
-    "Kopiera filer i alla format lokalt och i nätverk, med automatisk maskinvaruidentifiering och grundinställning. Följ hastighet och förlopp; anpassa urval och alternativ. Skyddade mappar kräver befintlig åtkomstbehörighet. Något lanseringsdatum är ännu inte fastställt.",
-    "Frågor eller intresserad? Skriv till mig"
+    "Keil@Copy · Windows",
+    "Utöver reparationer utvecklar jag egna Windows-appar. Keil@Copy samlar kopieringsförlopp och filkontroll; lanseringen förbereds fortfarande. Önskemål för den här appen eller en ny är välkomna.",
+    "Se appar och idéer"
   ],
   "da": [
-    "Under udvikling: mit filkopieringsprogram",
-    "Kopiér filer i alle formater lokalt og på netværk med automatisk hardwaregenkendelse og grundindstilling. Følg hastighed og fremdrift; tilpas valg og indstillinger. Beskyttede mapper kræver eksisterende adgangsrettigheder. Der er endnu ikke fastsat en udgivelsesdato.",
-    "Spørgsmål eller interesse? Skriv til mig"
+    "Keil@Copy · Windows",
+    "Ud over reparationer udvikler jeg egne Windows-apps. Keil@Copy samler kopieringsforløb og filkontrol; udgivelsen er stadig under forberedelse. Ønsker til denne app eller en ny er velkomne.",
+    "Se apps og idéer"
   ],
   "ru": [
-    "В разработке: моя программа копирования файлов",
-    "Копирование файлов любого формата локально и по сети с автоматическим определением оборудования и базовыми настройками. Контроль скорости и хода передачи, настраиваемые выбор файлов и параметры. Для защищённых папок нужны имеющиеся права доступа. Дата выпуска пока не определена.",
-    "Есть вопросы или интерес? Напишите мне"
+    "Keil@Copy · Windows",
+    "Кроме ремонта, я разрабатываю собственные приложения для Windows. Keil@Copy объединяет ход копирования и проверку файлов; выпуск ещё готовится. Буду рад идеям для этого или нового приложения.",
+    "Приложения и идеи"
   ],
   "zh": [
-    "开发中：我的文件复制程序",
-    "在本地和网络中复制各种格式的文件，自动识别硬件并完成基本设置。随时查看速度和进度，文件选择和选项可自行调整。受保护文件夹需要已有的访问权限。发布日期尚未确定。",
-    "有问题或感兴趣？欢迎联系我"
+    "Keil@Copy · Windows",
+    "除维修服务外，我也开发自己的 Windows 应用。Keil@Copy 将复制进度与文件校验整合在一起，目前仍在准备发布。欢迎提出对这款应用或新应用的想法。",
+    "查看应用与创意"
   ],
   "ja": [
-    "開発中：ファイルコピープログラム",
-    "あらゆる形式のファイルをローカルやネットワークでコピー。ハードウェア検出と基本設定は自動です。速度と進捗を確認でき、ファイル選択や設定も調整可能。保護フォルダーには既存のアクセス権が必要です。公開日はまだ決まっていません。",
-    "ご質問やご興味があればご連絡ください"
+    "Keil@Copy · Windows",
+    "修理サービスに加え、独自の Windows アプリも開発しています。Keil@Copy はコピーの進捗とファイル検証をまとめたアプリで、現在は公開準備中です。このアプリへの機能要望や新しいアプリのアイデアを歓迎します。",
+    "アプリとアイデアを見る"
   ],
   "pl": [
-    "W przygotowaniu: mój program do kopiowania plików",
-    "Kopiowanie plików dowolnego formatu lokalnie i w sieci, z automatycznym rozpoznawaniem sprzętu i konfiguracją podstawową. Widoczna szybkość i postęp; wybór plików i opcje można dostosować. Chronione foldery wymagają istniejących uprawnień. Data publikacji nie została jeszcze ustalona.",
-    "Pytania lub zainteresowanie? Napisz do mnie"
+    "Keil@Copy · Windows",
+    "Oprócz napraw tworzę własne aplikacje dla Windows. Keil@Copy łączy postęp kopiowania i weryfikację plików; publikacja jest jeszcze w przygotowaniu. Pomysły na tę lub nową aplikację są mile widziane.",
+    "Aplikacje i pomysły"
   ],
   "it": [
-    "In sviluppo: il mio programma di copia dei file",
-    "Copia di file di qualsiasi formato, in locale e in rete, con riconoscimento hardware e configurazione di base automatici. Velocità e avanzamento visibili; selezione e opzioni personalizzabili. Le cartelle protette richiedono permessi esistenti. La data di pubblicazione non è ancora stata fissata.",
-    "Domande o interesse? Mi scriva"
+    "Keil@Copy · Windows",
+    "Oltre alle riparazioni, sviluppo applicazioni Windows. Keil@Copy riunisce avanzamento della copia e verifica dei file; la pubblicazione è ancora in preparazione. Sono benvenute idee per questa app o per una nuova.",
+    "App e idee"
   ],
   "fr": [
-    "En développement : mon logiciel de copie de fichiers",
-    "Copiez des fichiers de tout format en local et en réseau, avec détection du matériel et réglages de base automatiques. Suivez débit et progression ; personnalisez sélection et options. Les dossiers protégés nécessitent des droits existants. La date de publication n’est pas encore fixée.",
-    "Des questions ou intéressé ? Écrivez-moi"
+    "Keil@Copy · Windows",
+    "En plus des réparations, je développe mes propres applications Windows. Keil@Copy réunit progression de copie et vérification des fichiers ; sa publication est encore en préparation. Vos idées pour cette application ou une nouvelle sont les bienvenues.",
+    "Applications et idées"
   ],
   "bg": [
-    "В разработка: моята програма за копиране на файлове",
-    "Копиране на файлове от всякакъв формат локално и по мрежа, с автоматично разпознаване на хардуера и основни настройки. Следете скоростта и напредъка; изборът и опциите се настройват. Защитените папки изискват налични права за достъп. Дата на публикуване все още не е определена.",
-    "Въпроси или интерес? Пишете ми"
+    "Keil@Copy · Windows",
+    "Освен ремонти разработвам собствени приложения за Windows. Keil@Copy съчетава напредъка на копиране и проверката на файлове; публикуването още се подготвя. Идеите за това или ново приложение са добре дошли.",
+    "Приложения и идеи"
   ],
   "hr": [
-    "U razvoju: moj program za kopiranje datoteka",
-    "Kopiranje datoteka svih formata lokalno i mrežno, uz automatsko prepoznavanje hardvera i osnovne postavke. Pratite brzinu i napredak; prilagodite odabir i opcije. Za zaštićene mape potrebna su postojeća prava pristupa. Datum objave još nije određen.",
-    "Pitanja ili interes? Pišite mi"
+    "Keil@Copy · Windows",
+    "Uz popravke razvijam vlastite Windows aplikacije. Keil@Copy objedinjuje napredak kopiranja i provjeru datoteka; objava se još priprema. Prijedlozi za ovu ili novu aplikaciju su dobrodošli.",
+    "Aplikacije i ideje"
   ],
   "el": [
-    "Υπό ανάπτυξη: το πρόγραμμά μου για αντιγραφή αρχείων",
-    "Αντιγραφή αρχείων κάθε μορφής τοπικά και μέσω δικτύου, με αυτόματη αναγνώριση υλικού και βασικές ρυθμίσεις. Παρακολουθείτε ταχύτητα και πρόοδο, προσαρμόζετε επιλογές και αρχεία. Οι προστατευμένοι φάκελοι απαιτούν υπάρχοντα δικαιώματα πρόσβασης. Δεν έχει οριστεί ακόμη ημερομηνία κυκλοφορίας.",
-    "Ερωτήσεις ή ενδιαφέρον; Γράψτε μου"
+    "Keil@Copy · Windows",
+    "Εκτός από επισκευές, αναπτύσσω δικές μου εφαρμογές Windows. Το Keil@Copy συνδυάζει πρόοδο αντιγραφής και έλεγχο αρχείων· η κυκλοφορία του ακόμη προετοιμάζεται. Ιδέες για αυτή ή μια νέα εφαρμογή είναι ευπρόσδεκτες.",
+    "Εφαρμογές και ιδέες"
   ],
   "ar": [
-    "قيد التطوير: برنامجي لنسخ الملفات",
-    "نسخ ملفات بجميع الصيغ محليًا وعبر الشبكة، مع التعرف على العتاد والإعداد الأساسي تلقائيًا. تابعوا السرعة والتقدم وخصصوا الاختيار والخيارات. المجلدات المحمية تتطلب صلاحيات وصول موجودة. لم يُحدَّد موعد النشر بعد.",
-    "لديكم أسئلة أو اهتمام؟ راسلوني"
+    "Keil@Copy · Windows",
+    "إلى جانب الإصلاحات، أطوّر تطبيقاتي الخاصة لنظام Windows. يجمع Keil@Copy بين تقدّم النسخ والتحقق من الملفات، وما زال إصداره قيد الإعداد. أرحّب بأفكاركم لهذا التطبيق أو لتطبيق جديد.",
+    "التطبيقات والأفكار"
   ],
   "fa": [
-    "در حال توسعه: برنامه کپی فایل من",
-    "کپی فایل با هر قالبی، محلی و در شبکه، با تشخیص سخت‌افزار و تنظیمات پایه خودکار. سرعت و پیشرفت را ببینید و انتخاب‌ها و گزینه‌ها را تنظیم کنید. پوشه‌های محافظت‌شده به مجوز دسترسی موجود نیاز دارند. تاریخ انتشار هنوز مشخص نشده است.",
-    "پرسش دارید یا علاقه‌مندید؟ به من پیام دهید"
+    "Keil@Copy · Windows",
+    "در کنار تعمیرات، برنامه‌های ویندوز خودم را توسعه می‌دهم. Keil@Copy پیشرفت کپی و بررسی فایل‌ها را یکجا نشان می‌دهد؛ انتشار آن هنوز در حال آماده‌سازی است. از ایده‌های شما برای این برنامه یا یک برنامه جدید استقبال می‌کنم.",
+    "برنامه‌ها و ایده‌ها"
   ]
 };
