@@ -1,98 +1,98 @@
-// Development preview; features are planned, not a released product or measured speed promise.
+// Release target supplied by the owner on 2026-11-06; announcement only, no download or sales activation.
 export const copyProgramPreview = {
   "de": [
-    "In Entwicklung: mein Kopierprogramm",
-    "Dateien aller Formate lokal und im Netzwerk kopieren – mit automatischer Hardware-Erkennung und Grundeinstellung. Tempo und Fortschritt im Blick, Auswahl und Optionen anpassbar. Geschützte Ordner nur mit vorhandenen Zugriffsrechten. Ein Veröffentlichungstermin steht noch nicht fest.",
-    "Fragen oder Interesse? Schreiben Sie mir"
+    "Demnächst: Keil@Copy",
+    "Start in ein bis zwei Wochen geplant – spätestens am 20. November 2026. Schnell und komfortabel kopieren: mehrere Ordner, lokale und Netzwerkziele, automatische Grundeinstellungen sowie Tempo und Fortschritt live im Blick. Ich bin Ihr Ansprechpartner für Fragen und Korrekturen. Nach dem Test freue ich mich auf Kritik, Funktionswünsche für Updates und Ideen für weitere Apps.",
+    "Fragen, Wünsche oder Ideen? Schreiben Sie mir"
   ],
   "en": [
-    "In development: my file-copying program",
-    "Copy files of any format locally and across networks, with automatic hardware detection and basic setup. Track speed and progress; customise selection and options. Protected folders require existing access rights. A release date has not yet been set.",
-    "Questions or interested? Contact me"
+    "Coming soon: Keil@Copy",
+    "Launch planned within one to two weeks, by 20 November 2026. Built for fast, convenient copying: multiple folders, local and network destinations, automatic basic settings, and live speed and progress. I am your personal contact for questions and fixes. After testing, I welcome feedback, update requests and ideas for more apps.",
+    "Questions, requests or ideas? Contact me"
   ],
   "tr": [
-    "Geliştiriliyor: dosya kopyalama programım",
-    "Her formattaki dosyayı yerel olarak ve ağda kopyalayın; donanım algılama ve temel ayarlar otomatiktir. Hızı ve ilerlemeyi izleyin, seçimleri ve seçenekleri özelleştirin. Korumalı klasörler için erişim hakkı gerekir. Henüz bir yayımlanma tarihi belirlenmedi.",
-    "Sorunuz mu var, ilgileniyor musunuz? Bana yazın"
+    "Yakında: Keil@Copy",
+    "Yayın bir iki hafta içinde, en geç 20 Kasım 2026 için planlanıyor. Hızlı ve kolay kopyalama: birden fazla klasör, yerel ve ağ hedefleri, otomatik temel ayarlar, canlı hız ve ilerleme. Sorularınız ve düzeltmeler için doğrudan benimle görüşebilirsiniz. Deneme sonrasında eleştirilerinizi, güncelleme isteklerinizi ve yeni uygulama fikirlerinizi bekliyorum.",
+    "Sorular, istekler veya fikirler? Bana yazın"
   ],
   "ro": [
-    "În dezvoltare: programul meu de copiere",
-    "Copiați fișiere de orice format local și în rețea, cu detectare hardware și configurare de bază automate. Urmăriți viteza și progresul; selecția și opțiunile sunt configurabile. Folderele protejate necesită drepturi de acces existente. Data lansării nu a fost încă stabilită.",
-    "Întrebări sau interes? Scrieți-mi"
+    "În curând: Keil@Copy",
+    "Lansare planificată în una-două săptămâni, cel târziu la 20 noiembrie 2026. Copiere rapidă și comodă: mai multe foldere, destinații locale și în rețea, setări de bază automate, viteză și progres în timp real. Vă răspund personal la întrebări și sesizări. După testare, aștept critici, funcții dorite pentru actualizări și idei pentru alte aplicații.",
+    "Întrebări, dorințe sau idei? Scrieți-mi"
   ],
   "uk": [
-    "У розробці: моя програма копіювання файлів",
-    "Копіювання файлів будь-якого формату локально й мережею з автоматичним визначенням обладнання та базовими налаштуваннями. Контроль швидкості й перебігу, змінні параметри та вибір файлів. Захищені папки потребують наявних прав доступу. Дату випуску ще не визначено.",
-    "Маєте запитання або зацікавилися? Напишіть мені"
+    "Незабаром: Keil@Copy",
+    "Випуск заплановано протягом одного-двох тижнів, не пізніше 20 листопада 2026 року. Швидке й зручне копіювання: кілька папок, локальні та мережеві цілі, автоматичні базові налаштування, швидкість і перебіг наживо. Я особисто відповідаю на запитання та повідомлення про помилки. Після тестування чекаю на критику, побажання до оновлень та ідеї нових застосунків.",
+    "Запитання, побажання чи ідеї? Напишіть мені"
   ],
   "es": [
-    "En desarrollo: mi programa de copia de archivos",
-    "Copie archivos de cualquier formato en local y en red, con detección de hardware y configuración básica automáticas. Consulte velocidad y progreso; personalice selección y opciones. Las carpetas protegidas requieren permisos existentes. Aún no se ha fijado una fecha de lanzamiento.",
-    "¿Preguntas o interés? Escríbame"
+    "Próximamente: Keil@Copy",
+    "Lanzamiento previsto en una o dos semanas, como máximo el 20 de noviembre de 2026. Copia rápida y cómoda: varias carpetas, destinos locales y de red, ajustes básicos automáticos, velocidad y progreso en directo. Soy su contacto personal para dudas y correcciones. Tras probarlo, agradezco críticas, funciones deseadas para futuras actualizaciones e ideas para otras aplicaciones.",
+    "¿Preguntas, sugerencias o ideas? Escríbame"
   ],
   "sv": [
-    "Under utveckling: mitt filkopieringsprogram",
-    "Kopiera filer i alla format lokalt och i nätverk, med automatisk maskinvaruidentifiering och grundinställning. Följ hastighet och förlopp; anpassa urval och alternativ. Skyddade mappar kräver befintlig åtkomstbehörighet. Något lanseringsdatum är ännu inte fastställt.",
-    "Frågor eller intresserad? Skriv till mig"
+    "Snart: Keil@Copy",
+    "Lansering planeras inom en till två veckor, senast den 20 november 2026. Snabb och smidig kopiering: flera mappar, lokala mål och nätverksmål, automatiska grundinställningar samt hastighet och förlopp i realtid. Jag hjälper dig personligen med frågor och fel. Efter testet välkomnar jag kritik, funktionsönskemål för uppdateringar och idéer till fler appar.",
+    "Frågor, önskemål eller idéer? Skriv till mig"
   ],
   "da": [
-    "Under udvikling: mit filkopieringsprogram",
-    "Kopiér filer i alle formater lokalt og på netværk med automatisk hardwaregenkendelse og grundindstilling. Følg hastighed og fremdrift; tilpas valg og indstillinger. Beskyttede mapper kræver eksisterende adgangsrettigheder. Der er endnu ikke fastsat en udgivelsesdato.",
-    "Spørgsmål eller interesse? Skriv til mig"
+    "Snart: Keil@Copy",
+    "Lancering er planlagt inden for en til to uger, senest 20. november 2026. Hurtig og nem kopiering: flere mapper, lokale mål og netværksmål, automatiske grundindstillinger samt hastighed og fremdrift i realtid. Jeg er din personlige kontakt ved spørgsmål og fejl. Efter testen modtager jeg gerne kritik, ønsker til opdateringer og idéer til flere apps.",
+    "Spørgsmål, ønsker eller idéer? Skriv til mig"
   ],
   "ru": [
-    "В разработке: моя программа копирования файлов",
-    "Копирование файлов любого формата локально и по сети с автоматическим определением оборудования и базовыми настройками. Контроль скорости и хода передачи, настраиваемые выбор файлов и параметры. Для защищённых папок нужны имеющиеся права доступа. Дата выпуска пока не определена.",
-    "Есть вопросы или интерес? Напишите мне"
+    "Скоро: Keil@Copy",
+    "Выпуск запланирован через одну-две недели, не позднее 20 ноября 2026 года. Быстрое и удобное копирование: несколько папок, локальные и сетевые цели, автоматические базовые настройки, скорость и ход передачи в реальном времени. Я лично отвечаю на вопросы и сообщения об ошибках. После тестирования жду критику, пожелания к обновлениям и идеи новых приложений.",
+    "Вопросы, пожелания или идеи? Напишите мне"
   ],
   "zh": [
-    "开发中：我的文件复制程序",
-    "在本地和网络中复制各种格式的文件，自动识别硬件并完成基本设置。随时查看速度和进度，文件选择和选项可自行调整。受保护文件夹需要已有的访问权限。发布日期尚未确定。",
-    "有问题或感兴趣？欢迎联系我"
+    "即将推出：Keil@Copy",
+    "计划在一至两周内发布，最迟于2026年11月20日上线。专为快速、便捷的复制而设计：多个文件夹、本地和网络目标、自动基本设置，以及实时速度和进度显示。我会亲自解答问题并处理故障反馈。试用后，欢迎提出批评、更新功能需求，以及其他应用的创意。",
+    "有问题、需求或创意？欢迎联系我"
   ],
   "ja": [
-    "開発中：ファイルコピープログラム",
-    "あらゆる形式のファイルをローカルやネットワークでコピー。ハードウェア検出と基本設定は自動です。速度と進捗を確認でき、ファイル選択や設定も調整可能。保護フォルダーには既存のアクセス権が必要です。公開日はまだ決まっていません。",
-    "ご質問やご興味があればご連絡ください"
+    "近日公開：Keil@Copy",
+    "1～2週間以内、遅くとも2026年11月20日の公開を予定しています。速く快適なコピーのために、複数フォルダー、ローカル・ネットワークの保存先、自動基本設定、速度と進捗のライブ表示に対応。ご質問や不具合には私が直接対応します。お試し後のご意見、更新でほしい機能、別のアプリのアイデアも歓迎します。",
+    "ご質問・ご要望・アイデアをお寄せください"
   ],
   "pl": [
-    "W przygotowaniu: mój program do kopiowania plików",
-    "Kopiowanie plików dowolnego formatu lokalnie i w sieci, z automatycznym rozpoznawaniem sprzętu i konfiguracją podstawową. Widoczna szybkość i postęp; wybór plików i opcje można dostosować. Chronione foldery wymagają istniejących uprawnień. Data publikacji nie została jeszcze ustalona.",
-    "Pytania lub zainteresowanie? Napisz do mnie"
+    "Wkrótce: Keil@Copy",
+    "Premiera planowana w ciągu jednego–dwóch tygodni, najpóźniej 20 listopada 2026 r. Szybkie i wygodne kopiowanie: wiele folderów, cele lokalne i sieciowe, automatyczne ustawienia podstawowe oraz podgląd szybkości i postępu. Osobiście odpowiadam na pytania i zgłoszenia błędów. Po testach chętnie przyjmę krytykę, propozycje funkcji do aktualizacji i pomysły na kolejne aplikacje.",
+    "Pytania, życzenia lub pomysły? Napisz do mnie"
   ],
   "it": [
-    "In sviluppo: il mio programma di copia dei file",
-    "Copia di file di qualsiasi formato, in locale e in rete, con riconoscimento hardware e configurazione di base automatici. Velocità e avanzamento visibili; selezione e opzioni personalizzabili. Le cartelle protette richiedono permessi esistenti. La data di pubblicazione non è ancora stata fissata.",
-    "Domande o interesse? Mi scriva"
+    "In arrivo: Keil@Copy",
+    "Pubblicazione prevista entro una o due settimane, al più tardi il 20 novembre 2026. Copia rapida e comoda: più cartelle, destinazioni locali e di rete, impostazioni di base automatiche, velocità e avanzamento in tempo reale. Rispondo personalmente a domande e segnalazioni. Dopo la prova, accolgo critiche, richieste di funzioni per gli aggiornamenti e idee per altre app.",
+    "Domande, richieste o idee? Mi scriva"
   ],
   "fr": [
-    "En développement : mon logiciel de copie de fichiers",
-    "Copiez des fichiers de tout format en local et en réseau, avec détection du matériel et réglages de base automatiques. Suivez débit et progression ; personnalisez sélection et options. Les dossiers protégés nécessitent des droits existants. La date de publication n’est pas encore fixée.",
-    "Des questions ou intéressé ? Écrivez-moi"
+    "Bientôt : Keil@Copy",
+    "Lancement prévu dans une à deux semaines, au plus tard le 20 novembre 2026. Une copie rapide et pratique : plusieurs dossiers, destinations locales et réseau, réglages de base automatiques, débit et progression en direct. Je réponds personnellement aux questions et aux problèmes. Après votre essai, vos critiques, souhaits de fonctions pour les mises à jour et idées d’autres applications sont les bienvenus.",
+    "Questions, souhaits ou idées ? Écrivez-moi"
   ],
   "bg": [
-    "В разработка: моята програма за копиране на файлове",
-    "Копиране на файлове от всякакъв формат локално и по мрежа, с автоматично разпознаване на хардуера и основни настройки. Следете скоростта и напредъка; изборът и опциите се настройват. Защитените папки изискват налични права за достъп. Дата на публикуване все още не е определена.",
-    "Въпроси или интерес? Пишете ми"
+    "Скоро: Keil@Copy",
+    "Пускането е планирано до една-две седмици, най-късно на 20 ноември 2026 г. Бързо и удобно копиране: няколко папки, локални и мрежови цели, автоматични основни настройки, скорост и напредък на живо. Лично отговарям на въпроси и сигнали за грешки. След теста очаквам критика, желания за функции в обновяванията и идеи за още приложения.",
+    "Въпроси, желания или идеи? Пишете ми"
   ],
   "hr": [
-    "U razvoju: moj program za kopiranje datoteka",
-    "Kopiranje datoteka svih formata lokalno i mrežno, uz automatsko prepoznavanje hardvera i osnovne postavke. Pratite brzinu i napredak; prilagodite odabir i opcije. Za zaštićene mape potrebna su postojeća prava pristupa. Datum objave još nije određen.",
-    "Pitanja ili interes? Pišite mi"
+    "Uskoro: Keil@Copy",
+    "Objava je planirana za jedan do dva tjedna, najkasnije 20. studenoga 2026. Brzo i jednostavno kopiranje: više mapa, lokalna i mrežna odredišta, automatske osnovne postavke te brzina i napredak uživo. Osobno odgovaram na pitanja i prijave pogrešaka. Nakon isprobavanja dobrodošle su kritike, želje za funkcijama u nadogradnjama i ideje za nove aplikacije.",
+    "Pitanja, želje ili ideje? Pišite mi"
   ],
   "el": [
-    "Υπό ανάπτυξη: το πρόγραμμά μου για αντιγραφή αρχείων",
-    "Αντιγραφή αρχείων κάθε μορφής τοπικά και μέσω δικτύου, με αυτόματη αναγνώριση υλικού και βασικές ρυθμίσεις. Παρακολουθείτε ταχύτητα και πρόοδο, προσαρμόζετε επιλογές και αρχεία. Οι προστατευμένοι φάκελοι απαιτούν υπάρχοντα δικαιώματα πρόσβασης. Δεν έχει οριστεί ακόμη ημερομηνία κυκλοφορίας.",
-    "Ερωτήσεις ή ενδιαφέρον; Γράψτε μου"
+    "Σύντομα: Keil@Copy",
+    "Η δημοσίευση προγραμματίζεται σε μία έως δύο εβδομάδες, το αργότερο στις 20 Νοεμβρίου 2026. Γρήγορη και εύκολη αντιγραφή: πολλοί φάκελοι, τοπικοί και δικτυακοί προορισμοί, αυτόματες βασικές ρυθμίσεις, ταχύτητα και πρόοδος ζωντανά. Απαντώ προσωπικά σε ερωτήσεις και αναφορές σφαλμάτων. Μετά τη δοκιμή, καλωσορίζω κριτική, επιθυμητές λειτουργίες για ενημερώσεις και ιδέες για άλλες εφαρμογές.",
+    "Ερωτήσεις, προτάσεις ή ιδέες; Γράψτε μου"
   ],
   "ar": [
-    "قيد التطوير: برنامجي لنسخ الملفات",
-    "نسخ ملفات بجميع الصيغ محليًا وعبر الشبكة، مع التعرف على العتاد والإعداد الأساسي تلقائيًا. تابعوا السرعة والتقدم وخصصوا الاختيار والخيارات. المجلدات المحمية تتطلب صلاحيات وصول موجودة. لم يُحدَّد موعد النشر بعد.",
-    "لديكم أسئلة أو اهتمام؟ راسلوني"
+    "قريبًا: Keil@Copy",
+    "الإطلاق مخطط خلال أسبوع إلى أسبوعين، في موعد أقصاه 20 نوفمبر 2026. نسخ سريع ومريح: مجلدات متعددة، وجهات محلية وشبكية، إعدادات أساسية تلقائية، وعرض مباشر للسرعة والتقدم. أنا جهة اتصالكم الشخصية للأسئلة وتصحيح الأخطاء. بعد التجربة يسعدني تلقي النقد وطلبات مزايا للتحديثات وأفكار لتطبيقات أخرى.",
+    "أسئلة أو طلبات أو أفكار؟ راسلوني"
   ],
   "fa": [
-    "در حال توسعه: برنامه کپی فایل من",
-    "کپی فایل با هر قالبی، محلی و در شبکه، با تشخیص سخت‌افزار و تنظیمات پایه خودکار. سرعت و پیشرفت را ببینید و انتخاب‌ها و گزینه‌ها را تنظیم کنید. پوشه‌های محافظت‌شده به مجوز دسترسی موجود نیاز دارند. تاریخ انتشار هنوز مشخص نشده است.",
-    "پرسش دارید یا علاقه‌مندید؟ به من پیام دهید"
+    "به‌زودی: Keil@Copy",
+    "انتشار برای یک تا دو هفته آینده، حداکثر تا ۲۰ نوامبر ۲۰۲۶ برنامه‌ریزی شده است. کپی سریع و راحت: چند پوشه، مقصدهای محلی و شبکه، تنظیمات پایه خودکار و نمایش زنده سرعت و پیشرفت. برای پرسش‌ها و رفع خطاها شخصاً پاسخ‌گو هستم. پس از آزمایش، از نقدها، درخواست قابلیت برای به‌روزرسانی و ایده‌های برنامه‌های دیگر استقبال می‌کنم.",
+    "پرسش، درخواست یا ایده‌ای دارید؟ به من پیام دهید"
   ]
 };
