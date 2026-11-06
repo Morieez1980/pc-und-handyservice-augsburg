@@ -2,9 +2,10 @@ const mailAddress='keil.maurice1980@gmail.com';
 fetch('/app-offer.json').then(r=>{
  if(!r.ok)throw Error('not available');return r.json();
 }).then(data=>{
- if(data.published)document.querySelectorAll('[data-preview-notice]').forEach(n=>n.remove());
+ const ready=data.published===true&&data.legalReviewComplete===true&&data.practicalAcceptanceComplete===true;
+ if(ready)document.querySelectorAll('[data-preview-notice]').forEach(n=>n.remove());
  const link=document.querySelector('[data-demo-download]');
- if(link&&data.published&&data.legalReviewComplete&&data.practicalAcceptanceComplete&&data.demo.url&&/^https:\/\//.test(data.demo.url)){
+ if(link&&ready&&data.demo?.url&&/^https:\/\//.test(data.demo.url)){
   link.href=data.demo.url;link.removeAttribute('aria-disabled');
   document.querySelector('#download-status').textContent='30 Tage · 5 TB geplanter Auftragsumfang.';
  }
