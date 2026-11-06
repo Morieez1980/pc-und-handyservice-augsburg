@@ -233,7 +233,9 @@ for (const marker of [
 }
 if (/optional-address-details/.test(requestPage)) errors.push('reparaturanfrage.html: veraltete freiwillige Formularangaben vorhanden');
 if (/data-imei-field hidden/.test(requestPage)) errors.push('reparaturanfrage.html: IMEI muss bei allen Gerätetypen sichtbar sein');
-if (requestPage.includes('Contacts.Mailing Country') || requestPage.includes('Contacts.Mailing State')) {
+const billingCountryField = requestPage.match(/<input\b[^>]*\bid="country"[^>]*>/)?.[0] || '';
+const explicitBillingCountry = /\bname="Contacts\.Mailing Country"/.test(billingCountryField) && /\btype="text"/.test(billingCountryField) && /\brequired(?:\s|>)/.test(billingCountryField) && !/\bvalue="[^\"]+"/.test(billingCountryField) && !/\bhidden(?:\s|>)/.test(billingCountryField);
+if ((requestPage.includes('Contacts.Mailing Country') && !explicitBillingCountry) || requestPage.includes('Contacts.Mailing State')) {
   errors.push('reparaturanfrage.html: nicht eingegebene Adressdaten werden weiterhin automatisch ergänzt');
 }
 if (!requestPage.includes('Ein kostenpflichtiger Auftrag entsteht erst nach Ihrer Freigabe')) {
