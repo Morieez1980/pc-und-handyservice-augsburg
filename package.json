@@ -2,8 +2,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tools/test-repair-reports.mjs tools/test-google-reviews.mjs tools/test-repair-confirmation.mjs tools/test-analytics-consent.mjs tools/test-site-audit.mjs tools/test-locales.mjs tools/test-workshop-documentation.mjs",
+    "test": "node --test tools/test-repair-reports.mjs tools/test-google-reviews.mjs tools/test-repair-confirmation.mjs tools/test-analytics-consent.mjs tools/test-site-audit.mjs tools/test-locales.mjs tools/test-workshop-documentation.mjs tools/test-marketing-permission.mjs",
     "validate": "node tools/validate.mjs",
-    "build:locales": "node tools/build-locales.mjs"
+    "build:locales": "node tools/build-locales.mjs",
+    "test:marketing:browser": "node tools/test-marketing-preferences-browser.mjs"
   }
 }

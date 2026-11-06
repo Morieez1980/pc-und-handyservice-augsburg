@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "consentTextVersion": "marketing-v1-20261106",
+  "topic": "apps-software-reparatur-it",
+  "provider": "zoho-campaigns",
+  "providerReady": false,
+  "providerStatus": "not-active",
+  "signupUrl": null,
+  "unsubscribeUrl": null,
+  "doubleOptInRequired": true,
+  "marketingSendingEnabled": false,
+  "existingCustomerImportEnabled": false,
+  "source": "https://help.zoho.com/portal/en/kb/campaigns-3-0/user-guide/audience/forms/articles/v3-how-to-create-forms"
+}

@@ -216,3 +216,6 @@ function syncGeneratedLd() {
   if(generatedLd){const allowedLd='sha256-'+createHash('sha256').update(generatedLd.replace(/\r\n/g,'\n')).digest('base64');write('_headers',read('_headers').replace(/(script-src 'self' )'sha256-[A-Za-z0-9+/=]+'/,(_,prefix)=>prefix+"'"+allowedLd+"'"));}
 }
 syncGeneratedLd();
+
+// Keep the independent marketing choice separate from repair permissions.
+const {buildMarketingPreferences}=await import('./build-marketing-preferences.mjs');buildMarketingPreferences();

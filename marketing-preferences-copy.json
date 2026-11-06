@@ -1,0 +1,211 @@
+{
+  "de": [
+    "E-Mail-Werbung – freiwillig",
+    "Bitte auswählen",
+    "Nein, keine Werbe-E-Mails",
+    "Ja, ich möchte Neuigkeiten und Angebote",
+    "Apps/Software sowie Reparatur- und IT-Dienstleistungen von PC & Handyservice Augsburg. Ihre Auswahl hat keinen Einfluss auf Ihren Auftrag.",
+    "Ein Ja ist zunächst nur ein Anmeldewunsch. Werbung erst nach gesonderter Bestätigung per E-Mail. Jederzeit widerrufbar.",
+    "E-Mail-Wünsche verwalten",
+    "Die automatische Anmeldung wird noch eingerichtet. Bis zur bestätigten Anmeldung erhalten Sie keine Werbung.",
+    "Ohne bestätigte Einwilligung keine Werbung. Notwendige Auftrags- und Rechnungsnachrichten bleiben davon unabhängig."
+  ],
+  "en": [
+    "Marketing emails – optional",
+    "Please choose",
+    "No marketing emails",
+    "Yes, I would like news and offers",
+    "Apps/software and repair and IT services from PC & Handyservice Augsburg. Your choice does not affect your service order.",
+    "Yes is initially a signup request. Marketing requires a separate email confirmation. You can withdraw at any time.",
+    "Manage email preferences",
+    "Automatic signup is still being set up. No marketing until your signup is confirmed.",
+    "No marketing without confirmed consent. Necessary order and invoice messages are independent of this choice."
+  ],
+  "tr": [
+    "Tanıtım e-postaları – isteğe bağlı",
+    "Lütfen seçin",
+    "Hayır, tanıtım e-postası istemiyorum",
+    "Evet, haber ve teklifler almak istiyorum",
+    "PC & Handyservice Augsburg'un uygulama/yazılım, onarım ve BT hizmetleri. Seçiminiz servis talebinizi etkilemez.",
+    "Evet, önce yalnızca kayıt talebidir. Tanıtım için ayrıca e-posta onayı gerekir. İstediğiniz zaman geri çekebilirsiniz.",
+    "E-posta tercihlerini yönet",
+    "Otomatik kayıt henüz hazırlanıyor. Kaydınız onaylanana kadar tanıtım gönderilmez.",
+    "Onaylı izin olmadan tanıtım yoktur. Gerekli sipariş ve fatura mesajları bu seçimden bağımsızdır."
+  ],
+  "ro": [
+    "E-mailuri publicitare – opțional",
+    "Vă rugăm să alegeți",
+    "Nu doresc e-mailuri publicitare",
+    "Da, doresc noutăți și oferte",
+    "Aplicații/software și servicii de reparații și IT de la PC & Handyservice Augsburg. Alegerea nu afectează comanda.",
+    "Da reprezintă inițial doar o cerere de înscriere. Publicitatea necesită o confirmare separată prin e-mail. Puteți retrage acordul oricând.",
+    "Gestionați preferințele de e-mail",
+    "Înscrierea automată este în pregătire. Nu primiți publicitate până la confirmarea înscrierii.",
+    "Fără publicitate fără acord confirmat. Mesajele necesare despre comandă și factură sunt independente de această alegere."
+  ],
+  "uk": [
+    "Рекламні листи – добровільно",
+    "Виберіть",
+    "Ні, без рекламних листів",
+    "Так, хочу новини та пропозиції",
+    "Програми/ПЗ, ремонт та ІТ-послуги від PC & Handyservice Augsburg. Вибір не впливає на ваше замовлення.",
+    "Так спочатку означає лише запит на підписку. Реклама можлива після окремого підтвердження електронною поштою. Згоду можна відкликати будь-коли.",
+    "Налаштування електронної пошти",
+    "Автоматична підписка ще готується. До підтвердження підписки рекламу не надсилатимуть.",
+    "Без підтвердженої згоди реклами немає. Необхідні листи щодо замовлення та рахунків від цього вибору не залежать."
+  ],
+  "es": [
+    "Correos publicitarios – opcional",
+    "Selecciona una opción",
+    "No quiero correos publicitarios",
+    "Sí, quiero noticias y ofertas",
+    "Aplicaciones/software y servicios de reparación e informática de PC & Handyservice Augsburg. Tu elección no afecta al encargo.",
+    "Sí es inicialmente una solicitud de suscripción. La publicidad requiere una confirmación separada por correo. Puedes retirar tu consentimiento cuando quieras.",
+    "Gestionar preferencias de correo",
+    "La suscripción automática está en preparación. No recibirás publicidad hasta confirmar tu suscripción.",
+    "Sin consentimiento confirmado no hay publicidad. Los mensajes necesarios sobre encargos y facturas son independientes."
+  ],
+  "sv": [
+    "Reklam via e-post – frivilligt",
+    "Välj ett alternativ",
+    "Nej, ingen reklam via e-post",
+    "Ja, jag vill ha nyheter och erbjudanden",
+    "Appar/programvara samt reparationer och IT-tjänster från PC & Handyservice Augsburg. Ditt val påverkar inte ditt uppdrag.",
+    "Ja är först bara en anmälningsbegäran. Reklam kräver separat bekräftelse via e-post. Du kan återkalla när som helst.",
+    "Hantera e-postval",
+    "Automatisk anmälan förbereds fortfarande. Ingen reklam skickas innan du har bekräftat din anmälan.",
+    "Ingen reklam utan bekräftat samtycke. Nödvändiga meddelanden om uppdrag och fakturor är oberoende av valet."
+  ],
+  "da": [
+    "Reklame via e-mail – frivilligt",
+    "Vælg venligst",
+    "Nej, ingen reklamemails",
+    "Ja, jeg ønsker nyheder og tilbud",
+    "Apps/software samt reparationer og IT-service fra PC & Handyservice Augsburg. Dit valg påvirker ikke din ordre.",
+    "Ja er først kun en tilmeldingsanmodning. Reklame kræver separat bekræftelse via e-mail. Du kan til enhver tid trække samtykket tilbage.",
+    "Administrer e-mailvalg",
+    "Automatisk tilmelding er stadig under opsætning. Ingen reklame før bekræftet tilmelding.",
+    "Ingen reklame uden bekræftet samtykke. Nødvendige ordre- og fakturabeskeder er uafhængige af valget."
+  ],
+  "ru": [
+    "Рекламные письма — добровольно",
+    "Выберите вариант",
+    "Нет, без рекламных писем",
+    "Да, хочу новости и предложения",
+    "Приложения/ПО, ремонт и ИТ-услуги PC & Handyservice Augsburg. Выбор не влияет на ваш заказ.",
+    "Да сначала означает только запрос на подписку. Реклама возможна после отдельного подтверждения по почте. Согласие можно отозвать в любой момент.",
+    "Настройки электронной почты",
+    "Автоматическая подписка ещё настраивается. До подтверждения подписки рекламы не будет.",
+    "Без подтверждённого согласия рекламы нет. Необходимые письма по заказам и счетам от выбора не зависят."
+  ],
+  "zh": [
+    "营销邮件（自愿）",
+    "请选择",
+    "不，我不想接收营销邮件",
+    "是，我想接收新闻和优惠",
+    "PC & Handyservice Augsburg 的应用软件、维修和 IT 服务。您的选择不影响服务订单。",
+    "选择“是”仅代表申请订阅。必须另外通过电子邮件确认后才会收到营销邮件。您可随时撤回同意。",
+    "管理邮件偏好",
+    "自动订阅功能仍在设置中。订阅确认前不会发送营销邮件。",
+    "没有确认同意就不会发送营销邮件。必要的订单和发票邮件不受此选择影响。"
+  ],
+  "ja": [
+    "広告メール（任意）",
+    "選択してください",
+    "いいえ、広告メールは不要です",
+    "はい、新着情報や案内を希望します",
+    "PC & Handyservice Augsburg のアプリ・ソフトウェア、修理、IT サービスのご案内です。選択はご依頼に影響しません。",
+    "「はい」は最初は登録希望のみです。広告配信には別途メールでの確認が必要です。同意はいつでも撤回できます。",
+    "メール設定を管理",
+    "自動登録は準備中です。登録が確認されるまで広告メールは送信されません。",
+    "確認済みの同意なしに広告を送りません。依頼や請求に必要なメールはこの選択と無関係です。"
+  ],
+  "pl": [
+    "E-maile reklamowe – dobrowolnie",
+    "Proszę wybrać",
+    "Nie chcę e-maili reklamowych",
+    "Tak, chcę wiadomości i oferty",
+    "Aplikacje/oprogramowanie oraz usługi napraw i IT od PC & Handyservice Augsburg. Wybór nie wpływa na zlecenie.",
+    "Tak oznacza najpierw tylko prośbę o zapis. Reklama wymaga osobnego potwierdzenia e-mailem. Zgodę można wycofać w każdej chwili.",
+    "Zarządzaj preferencjami e-mail",
+    "Automatyczny zapis jest przygotowywany. Do potwierdzenia zapisu nie wysyłamy reklam.",
+    "Bez potwierdzonej zgody nie ma reklam. Niezbędne wiadomości o zleceniu i fakturach są niezależne."
+  ],
+  "it": [
+    "Email pubblicitarie – facoltative",
+    "Seleziona un'opzione",
+    "No, non desidero email pubblicitarie",
+    "Sì, desidero novità e offerte",
+    "App/software e servizi di riparazione e informatica di PC & Handyservice Augsburg. La scelta non influisce sull'incarico.",
+    "Sì è inizialmente solo una richiesta d'iscrizione. La pubblicità richiede una conferma separata via email. Puoi revocare in qualsiasi momento.",
+    "Gestisci preferenze email",
+    "L'iscrizione automatica è ancora in preparazione. Nessuna pubblicità prima della conferma.",
+    "Nessuna pubblicità senza consenso confermato. I messaggi necessari su incarichi e fatture sono indipendenti."
+  ],
+  "fr": [
+    "E-mails publicitaires – facultatif",
+    "Veuillez choisir",
+    "Non, pas d'e-mails publicitaires",
+    "Oui, je souhaite des nouvelles et des offres",
+    "Applications/logiciels et services de réparation et d'informatique de PC & Handyservice Augsburg. Votre choix n'affecte pas votre commande.",
+    "Oui est d'abord une demande d'inscription. La publicité nécessite une confirmation séparée par e-mail. Vous pouvez retirer votre accord à tout moment.",
+    "Gérer les préférences e-mail",
+    "L'inscription automatique est encore en préparation. Aucune publicité avant confirmation.",
+    "Aucune publicité sans consentement confirmé. Les messages nécessaires sur les commandes et factures sont indépendants."
+  ],
+  "bg": [
+    "Рекламни имейли – доброволно",
+    "Моля, изберете",
+    "Не желая рекламни имейли",
+    "Да, желая новини и оферти",
+    "Приложения/софтуер, ремонти и IT услуги от PC & Handyservice Augsburg. Изборът не влияе на поръчката ви.",
+    "Да първоначално е само заявка за записване. Реклама се изпраща след отделно потвърждение по имейл. Можете да оттеглите съгласието по всяко време.",
+    "Настройки за имейли",
+    "Автоматичното записване още се подготвя. Няма реклама до потвърждение на записването.",
+    "Без потвърдено съгласие няма реклама. Необходимите съобщения за поръчки и фактури са независими."
+  ],
+  "hr": [
+    "Reklamne e-poruke – dobrovoljno",
+    "Molimo odaberite",
+    "Ne želim reklamne e-poruke",
+    "Da, želim novosti i ponude",
+    "Aplikacije/softver te popravci i IT usluge PC & Handyservice Augsburg. Odabir ne utječe na vaš nalog.",
+    "Da je najprije samo zahtjev za prijavu. Reklame zahtijevaju zasebnu potvrdu e-poštom. Privolu možete povući bilo kada.",
+    "Upravljanje e-poštom",
+    "Automatska prijava još se priprema. Nema reklama do potvrđene prijave.",
+    "Bez potvrđene privole nema reklama. Nužne poruke o nalozima i računima ne ovise o ovom odabiru."
+  ],
+  "el": [
+    "Διαφημιστικά email – προαιρετικά",
+    "Παρακαλώ επιλέξτε",
+    "Όχι, δεν θέλω διαφημιστικά email",
+    "Ναι, θέλω νέα και προσφορές",
+    "Εφαρμογές/λογισμικό, επισκευές και υπηρεσίες IT από το PC & Handyservice Augsburg. Η επιλογή δεν επηρεάζει την παραγγελία.",
+    "Το Ναι είναι αρχικά μόνο αίτημα εγγραφής. Η διαφήμιση απαιτεί ξεχωριστή επιβεβαίωση μέσω email. Μπορείτε να ανακαλέσετε οποτεδήποτε.",
+    "Διαχείριση προτιμήσεων email",
+    "Η αυτόματη εγγραφή ακόμη προετοιμάζεται. Καμία διαφήμιση πριν επιβεβαιωθεί η εγγραφή.",
+    "Χωρίς επιβεβαιωμένη συγκατάθεση δεν υπάρχει διαφήμιση. Τα απαραίτητα μηνύματα για παραγγελίες και τιμολόγια είναι ανεξάρτητα."
+  ],
+  "ar": [
+    "رسائل إعلانية بالبريد – اختياري",
+    "يرجى الاختيار",
+    "لا أريد رسائل إعلانية",
+    "نعم، أريد الأخبار والعروض",
+    "تطبيقات وبرامج وخدمات إصلاح وتقنية معلومات من PC & Handyservice Augsburg. اختيارك لا يؤثر على طلب الخدمة.",
+    "نعم تعني أولاً طلب اشتراك فقط. يلزم تأكيد منفصل بالبريد قبل الإعلانات. يمكنك سحب الموافقة في أي وقت.",
+    "إدارة تفضيلات البريد",
+    "الاشتراك التلقائي ما زال قيد الإعداد. لا إعلانات حتى تأكيد الاشتراك.",
+    "لا إعلانات دون موافقة مؤكدة. رسائل الطلبات والفواتير الضرورية مستقلة عن هذا الاختيار."
+  ],
+  "fa": [
+    "ایمیل تبلیغاتی – اختیاری",
+    "لطفاً انتخاب کنید",
+    "خیر، ایمیل تبلیغاتی نمی‌خواهم",
+    "بله، اخبار و پیشنهادها را می‌خواهم",
+    "برنامه‌ها و نرم‌افزار و خدمات تعمیر و فناوری اطلاعات از PC & Handyservice Augsburg. انتخاب شما بر سفارش اثری ندارد.",
+    "بله در ابتدا فقط درخواست عضویت است. تبلیغات به تأیید جداگانه از راه ایمیل نیاز دارد. هر زمان می‌توانید رضایت را پس بگیرید.",
+    "مدیریت ترجیحات ایمیل",
+    "عضویت خودکار هنوز در حال آماده‌سازی است. تا تأیید عضویت تبلیغی ارسال نمی‌شود.",
+    "بدون رضایت تأییدشده تبلیغی ارسال نمی‌شود. پیام‌های ضروری سفارش و صورتحساب مستقل از این انتخاب هستند."
+  ]
+}
