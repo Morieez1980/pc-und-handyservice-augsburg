@@ -15,7 +15,7 @@
   toggle.addEventListener('click', () => setOpen(panel.hidden));
   close.addEventListener('click', () => setOpen(false));
   document.addEventListener('keydown', event => {
-   if (event.key === 'Escape' && !panel.hidden) {event.preventDefault();setOpen(false);}
+   if (event.key === 'Escape' && !panel.hidden) {event.preventDefault();setOpen(false, helper.contains(document.activeElement));}
   });
   document.addEventListener('pointerdown', event => {
    if (!panel.hidden && !helper.contains(event.target)) setOpen(false, false);
