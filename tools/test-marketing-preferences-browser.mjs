@@ -1,7 +1,7 @@
 import fs from'node:fs';import path from'node:path';import http from'node:http';import assert from'node:assert/strict';import{createRequire}from'node:module';import{fileURLToPath}from'node:url';
 import{languages}from'../locales/content.mjs';
 const require=createRequire(import.meta.url),{chromium}=require('C:/Users/Maurice/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),evidence=path.resolve(root,'../Werbeeinwilligung-Pruefung-20261106');
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),evidence=process.env.KEILCOPY_CONSENT_EVIDENCE||path.resolve(root,'../Werbeeinwilligung-Pruefung-20261106');
 fs.mkdirSync(evidence,{recursive:true});
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml'};
 const server=http.createServer((req,res)=>{let rel=new URL(req.url,'http://localhost').pathname;if(rel.endsWith('/'))rel+='index.html';if(!path.extname(rel))rel+='.html';const p=path.resolve(root,'.'+rel);if(!p.startsWith(root+path.sep)||!fs.existsSync(p)||!fs.statSync(p).isFile())return res.writeHead(404).end();res.setHeader('Content-Type',types[path.extname(p)]||'application/octet-stream');fs.createReadStream(p).pipe(res);});
@@ -52,15 +52,15 @@ try{
   await page.goto(base+'/reparaturanfrage');await page.locator('#marketing-preference').waitFor();
   await page.waitForTimeout(2600);
   await page.locator('#device-type').selectOption('Sonstiges');
-  for(const[id,value]of Object.entries({'device-name':'TESTDATEN Geraet','description':'Abgefangener lokaler Formulartest ohne echten Versand.','serial-number':'TEST-1234','first-name':'TESTDATEN','last-name':'Beispiel','email':'test@example.invalid','phone':'+4915123456789','street':'Teststrasse 1','postcode':'10000','city':'Testort'}))await page.locator('#'+id).fill(value);
+  for(const[id,value]of Object.entries({'device-name':'TESTDATEN Geraet','description':'Abgefangener lokaler Formulartest ohne echten Versand.','serial-number':'TEST-1234','first-name':'TESTDATEN','last-name':'Beispiel','email':'test@example.invalid','phone':'+4915123456789','street':'Teststrasse 1','postcode':'10000','city':'Testort','country':'Deutschland'}))await page.locator('#'+id).fill(value);
   await page.locator('#privacy-acknowledged').check();
   const before=captured.length;
   await page.locator('[data-submit]').click();
   assert.equal(captured.length,before,'Missing explicit marketing choice does not silently subscribe');
   await page.locator('#marketing-preference').selectOption(choice);
-  const posted=new Promise(resolve=>{resolveCapture=resolve;});
-  await page.locator('[data-submit]').click();await posted;
-  assert.equal(captured.length,before+1);
+  let postTimer;const posted=new Promise((resolve,reject)=>{resolveCapture=resolve;postTimer=setTimeout(()=>reject(Error('Synthetic form submission was not captured')),10000);});
+  try{await page.locator('[data-submit]').click();await posted;}finally{clearTimeout(postTimer);resolveCapture=null;}
+  assert.equal(captured.length,before+1);assert.ok(captured.at(-1).includes('Deutschland'),'Explicit billing country must be preserved');
   assert.ok(captured.at(-1).includes(choice==='no'?'ABGELEHNT':'ANGEFRAGT_UNBESTAETIGT'));
   assert.ok(!captured.at(-1).includes('name="marketing-preference"'));
 
