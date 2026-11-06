@@ -1,158 +1,158 @@
 const copy={
   "de": [
-    "Frage zur Reparatur?",
-    "Hallo! Was braucht Ihr Gerät?",
+    "Klick mich",
+    "Technik zickt? Ich schaue nach.",
     "Beschreiben Sie mir kurz Ihr Anliegen. Ich melde mich persönlich. Termine nach Vereinbarung.",
     "Schließen",
     "Reparatur anfragen",
     "Anrufen"
   ],
   "en": [
-    "Repair question?",
-    "Hello! What does your device need?",
+    "Click me",
+    "Tech acting up? I will take a look.",
     "Tell me briefly what is wrong. I will reply personally. Visits by appointment.",
     "Close",
     "Request a repair",
     "Call"
   ],
   "tr": [
-    "Onarım sorunuz mu var?",
-    "Merhaba! Cihazınızın neye ihtiyacı var?",
+    "Bana tıklayın",
+    "Cihaz naz mı yapıyor? Bir bakalım.",
     "Sorununuzu kısaca anlatın. Size şahsen yanıt vereceğim. Ziyaretler randevuyla yapılır.",
     "Kapat",
     "Onarım talebi",
     "Ara"
   ],
   "ro": [
-    "Întrebare despre reparație?",
-    "Bună! Ce problemă are dispozitivul?",
+    "Apăsați aici",
+    "Tehnica face figuri? Mă uit eu.",
     "Descrieți pe scurt problema. Vă voi răspunde personal. Vizite cu programare.",
     "Închide",
     "Solicită reparație",
     "Sună"
   ],
   "uk": [
-    "Питання щодо ремонту?",
-    "Вітаю! Що потрібно вашому пристрою?",
+    "Натисніть тут",
+    "Техніка вередує? Я перевірю.",
     "Коротко опишіть проблему. Я відповім особисто. Візити за записом.",
     "Закрити",
     "Запит на ремонт",
     "Зателефонувати"
   ],
   "es": [
-    "¿Dudas sobre una reparación?",
-    "¡Hola! ¿Qué necesita su equipo?",
+    "Pulse aquí",
+    "¿La tecnología se rebela? Le echo un vistazo.",
     "Describa brevemente el problema. Le responderé personalmente. Visitas con cita.",
     "Cerrar",
     "Solicitar reparación",
     "Llamar"
   ],
   "sv": [
-    "Fråga om reparation?",
-    "Hej! Vad behöver din enhet?",
+    "Klicka här",
+    "Tekniken krånglar? Jag tar en titt.",
     "Beskriv problemet kort. Jag svarar personligen. Besök efter tidsbokning.",
     "Stäng",
     "Begär reparation",
     "Ring"
   ],
   "da": [
-    "Spørgsmål om reparation?",
-    "Hej! Hvad har din enhed brug for?",
+    "Klik her",
+    "Driller teknikken? Jeg tager et kig.",
     "Beskriv kort problemet. Jeg svarer personligt. Besøg efter aftale.",
     "Luk",
     "Anmod om reparation",
     "Ring"
   ],
   "ru": [
-    "Вопрос о ремонте?",
-    "Здравствуйте! Что нужно вашему устройству?",
+    "Нажмите здесь",
+    "Техника капризничает? Я посмотрю.",
     "Кратко опишите проблему. Я отвечу лично. Визиты по записи.",
     "Закрыть",
     "Запрос на ремонт",
     "Позвонить"
   ],
   "zh": [
-    "有维修问题？",
-    "您好！您的设备需要什么帮助？",
+    "点我联系",
+    "设备闹脾气？我来看看。",
     "请简要说明问题，我会亲自回复。到访须提前预约。",
     "关闭",
     "申请维修",
     "致电"
   ],
   "ja": [
-    "修理のご相談",
-    "こんにちは。機器のお困りごとは？",
+    "クリックしてね",
+    "機器がご機嫌ななめ？私が見てみます。",
     "症状を簡単にお知らせください。私が直接ご返信します。ご来訪は予約制です。",
     "閉じる",
     "修理を依頼",
     "電話"
   ],
   "pl": [
-    "Pytanie o naprawę?",
-    "Dzień dobry! Czego potrzebuje urządzenie?",
+    "Kliknij tutaj",
+    "Technika kaprysi? Przyjrzę się temu.",
     "Proszę krótko opisać problem. Odpowiem osobiście. Wizyty po umówieniu.",
     "Zamknij",
     "Zleć naprawę",
     "Zadzwoń"
   ],
   "it": [
-    "Domande sulla riparazione?",
-    "Salve! Di cosa ha bisogno il dispositivo?",
+    "Clicca qui",
+    "La tecnologia fa i capricci? Ci do un’occhiata.",
     "Descriva brevemente il problema. Risponderò personalmente. Visite su appuntamento.",
     "Chiudi",
     "Richiedi riparazione",
     "Chiama"
   ],
   "fr": [
-    "Une question sur une réparation ?",
-    "Bonjour ! Que faut-il à votre appareil ?",
+    "Cliquez ici",
+    "La technique fait des siennes ? Je regarde.",
     "Décrivez brièvement le problème. Je vous répondrai personnellement. Visites sur rendez-vous.",
     "Fermer",
     "Demander une réparation",
     "Appeler"
   ],
   "bg": [
-    "Въпрос за ремонт?",
-    "Здравейте! От какво се нуждае устройството?",
+    "Натиснете тук",
+    "Техниката се инати? Ще погледна.",
     "Опишете накратко проблема. Ще ви отговоря лично. Посещения с уговорен час.",
     "Затвори",
     "Заявка за ремонт",
     "Обаждане"
   ],
   "hr": [
-    "Pitanje o popravku?",
-    "Pozdrav! Što treba vašem uređaju?",
+    "Kliknite ovdje",
+    "Tehnika se buni? Pogledat ću.",
     "Ukratko opišite problem. Odgovorit ću osobno. Posjeti uz dogovoreni termin.",
     "Zatvori",
     "Zatraži popravak",
     "Nazovi"
   ],
   "el": [
-    "Ερώτηση για επισκευή;",
-    "Γεια σας! Τι χρειάζεται η συσκευή σας;",
+    "Πατήστε εδώ",
+    "Η τεχνολογία κάνει νάζια; Θα το κοιτάξω.",
     "Περιγράψτε σύντομα το πρόβλημα. Θα απαντήσω προσωπικά. Επισκέψεις με ραντεβού.",
     "Κλείσιμο",
     "Αίτημα επισκευής",
     "Κλήση"
   ],
   "ar": [
-    "سؤال عن الإصلاح؟",
-    "مرحبًا! ماذا يحتاج جهازك؟",
+    "اضغط هنا",
+    "الجهاز يعاند؟ سألقي نظرة.",
     "اشرح المشكلة باختصار. سأرد عليك شخصيًا. الزيارات بموعد مسبق.",
     "إغلاق",
     "طلب إصلاح",
     "اتصال"
   ],
   "fa": [
-    "پرسشی درباره تعمیر؟",
-    "سلام! دستگاه شما چه مشکلی دارد؟",
+    "اینجا کلیک کنید",
+    "دستگاه بدقلقی می‌کند؟ بررسی می‌کنم.",
     "مشکل را کوتاه توضیح دهید. شخصاً پاسخ می‌دهم. مراجعه با وقت قبلی است.",
     "بستن",
     "درخواست تعمیر",
     "تماس"
   ]
 };
-const avatar="<svg class=\"repair-avatar\" viewBox=\"0 0 64 64\" aria-hidden=\"true\"><rect class=\"avatar-frame\" x=\"7\" y=\"10\" width=\"46\" height=\"38\" rx=\"13\"/><path class=\"avatar-feet\" d=\"M24 49v6m14-6v6M20 56h22\"/><path class=\"avatar-face\" d=\"M20 26h1m18 0h1M23 34q7 8 14 0\"/><path class=\"avatar-tool\" d=\"m49 44 8-8m-5-4a6 6 0 0 0 8 8l-4-3 1-4-4 1Z\"/></svg>";
+const avatar='<img class="repair-avatar" src="/bilder/maurice-reparatur-avatar.png" width="96" height="112" alt="" aria-hidden="true" decoding="async">';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
 export function repairHelper(lang){
  const c=copy[lang];if(!c)throw Error('Missing contact helper locale: '+lang);
