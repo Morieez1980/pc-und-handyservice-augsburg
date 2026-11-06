@@ -8,11 +8,12 @@ const body = await response.json();
 
 assert.equal(response.status, 200);
 assert.equal(body.rating, 4.9);
-assert.equal(body.reviewCount, 92);
+assert.equal(body.reviewCount, 97);
 assert.equal(body.source, 'verified-fallback');
+assert.equal(body.updatedAt, '2026-11-06T11:06:09Z');
 assert.match(response.headers.get('Cache-Control'), /s-maxage=86400/);
 
-console.log('Google-Bewertungsfunktion: geprüfter Ausfallwert 4,9 / 92 ist gültig.');
+console.log('Google-Bewertungsfunktion: geprüfter Ausfallwert 4,9 / 97 ist gültig.');
 
 const unconfiguredResponse = await getGoogleReviews({ env: {} });
 const unconfiguredBody = await unconfiguredResponse.json();
@@ -152,6 +153,9 @@ const originalFallbackBlock = browserScript.slice(
   browserScript.indexOf('const createGoogleReview =')
 );
 assert.equal((originalFallbackBlock.match(/\{ author:/g) ?? []).length, 12);
+assert.doesNotMatch(originalFallbackBlock, /dateLabel: 'vor /);
+assert.match(pageMarkup, /data-google-review-count>97</);
+assert.match(pageMarkup, /data-google-review-date>6\. November 2026</);
 for (const author of [
   'Seba', 'aTOMteilchen', 'Peter Bender', 'Katja Obermaier', 'Anna Oko', 'charlie S',
   'Fritz Allar', 'Arda Aytac', 'I. Huber', 'Daniela Scholz', 'Renate Weber', 'Ebru Coskun'

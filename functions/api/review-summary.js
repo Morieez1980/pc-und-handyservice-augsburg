@@ -2,8 +2,8 @@ import { fetchGoogleReviewSummary } from './google-reviews.js';
 
 const FALLBACK = Object.freeze({
   rating: 4.9,
-  reviewCount: 92,
-  updatedAt: '2026-09-28T00:00:00+02:00'
+  reviewCount: 97,
+  updatedAt: '2026-11-06T11:06:09Z'
 });
 
 const responseHeaders = {
