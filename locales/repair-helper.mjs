@@ -152,10 +152,17 @@ const copy={
     "تماس"
   ]
 };
-const avatar='<span class="repair-avatar" aria-hidden="true"><img src="/bilder/reparatur-avatar-werkbank-ruhe-20261107.png" width="96" height="128" alt="" decoding="async"><span class="repair-avatar-frames"></span></span>';
+// Articulated layers reuse the approved portrait. Only the arm and head move;
+// the body, laptop and workbench stay fixed instead of jumping between poses.
+const head='M.286,.012 L.549,.012 L.549,.199 L.489,.260 L.412,.269 L.299,.221 Z';
+const arm='M.145,.401 L.219,.401 L.286,.430 L.340,.432 L.397,.447 L.429,.490 L.491,.550 L.476,.566 L.409,.519 L.372,.507 L.342,.516 L.298,.503 L.229,.493 L.177,.483 L.142,.459 Z';
+function avatar(part){
+ const id='repair-rig-'+part;
+ return '<span class="repair-avatar" aria-hidden="true"><img src="/bilder/reparatur-avatar-werkbank-ruhe-20261107.png" width="96" height="128" alt="" decoding="async"><span class="repair-avatar-frames"><svg class="repair-rig-defs" width="0" height="0" focusable="false"><defs><clipPath id="'+id+'-body" clipPathUnits="objectBoundingBox"><path clip-rule="evenodd" d="M0,0H1V1H0Z '+head+' '+arm+'"/></clipPath><clipPath id="'+id+'-head" clipPathUnits="objectBoundingBox"><path d="'+head+'"/></clipPath><clipPath id="'+id+'-arm" clipPathUnits="objectBoundingBox"><path d="'+arm+'"/></clipPath></defs></svg><span class="repair-rig-shirt"></span><span class="repair-rig-piece repair-rig-body" style="clip-path:url(#'+id+'-body)"></span><span class="repair-rig-piece repair-rig-head" style="clip-path:url(#'+id+'-head)"></span><span class="repair-rig-piece repair-rig-arm" style="clip-path:url(#'+id+'-arm)"></span></span></span>';
+}
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
 export function repairHelper(lang){
  const c=copy[lang];if(!c)throw Error('Missing contact helper locale: '+lang);
  const request=lang==='de'?'/reparaturanfrage':'/'+lang+'/reparaturanfrage';
- return '<div class="repair-helper" data-repair-helper><button type="button" class="repair-helper-toggle" aria-expanded="false" aria-controls="repair-helper-panel" hidden>'+avatar+'<span>'+esc(c[0])+'</span></button><div class="repair-helper-panel" id="repair-helper-panel" role="dialog" aria-modal="false" aria-labelledby="repair-helper-title" hidden><button type="button" class="repair-helper-close" aria-label="'+esc(c[3])+'">×</button>'+avatar+'<p class="repair-helper-owner">Maurice Keil · PC &amp; Handyservice</p><h2 id="repair-helper-title">'+esc(c[1])+'</h2><p>'+esc(c[2])+'</p><div class="repair-helper-contacts"><a href="'+request+'">'+esc(c[4])+' →</a><a href="tel:+4915254530080">'+esc(c[5])+' · 0152 54530080</a><a href="https://wa.me/4915254530080" rel="noopener noreferrer">WhatsApp →</a></div></div></div>';
+ return '<div class="repair-helper" data-repair-helper><button type="button" class="repair-helper-toggle" aria-expanded="false" aria-controls="repair-helper-panel" hidden>'+avatar('toggle')+'<span>'+esc(c[0])+'</span></button><div class="repair-helper-panel" id="repair-helper-panel" role="dialog" aria-modal="false" aria-labelledby="repair-helper-title" hidden><button type="button" class="repair-helper-close" aria-label="'+esc(c[3])+'">×</button>'+avatar('panel')+'<p class="repair-helper-owner">Maurice Keil · PC &amp; Handyservice</p><h2 id="repair-helper-title">'+esc(c[1])+'</h2><p>'+esc(c[2])+'</p><div class="repair-helper-contacts"><a href="'+request+'">'+esc(c[4])+' →</a><a href="tel:+4915254530080">'+esc(c[5])+' · 0152 54530080</a><a href="https://wa.me/4915254530080" rel="noopener noreferrer">WhatsApp →</a></div></div></div>';
 }

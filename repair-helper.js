@@ -102,7 +102,7 @@
   });
   if (mascot && frames) {
    const sprite = new Image();
-   sprite.src = '/bilder/reparatur-avatar-werkbank-8s-20261107.png';
+   sprite.src = '/bilder/reparatur-avatar-gelenke-20261107.png';
    sprite.decode().then(() => {
     spriteReady = true;
     updateMotionControl();
