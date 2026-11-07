@@ -141,6 +141,64 @@ jobs:
             assert.ok(match, `${label}: link missing from production HTML`);
             return match[1];
           }
+          // BEGIN APP DOWNLOAD GATE PROBE: run the delivered script with inert form/network adapters.
+          async function observeDownloadGate(source, html, offer) {
+            const tag = html.match(/<a\b[^>]*\bdata-demo-download\b[^>]*>/i)?.[0];
+            assert.ok(tag, 'Demo download control missing');
+            const attributes = new Map([...tag.slice(2, -1).matchAll(/([^\s=/>]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g)].map(m => [m[1].toLowerCase(), m[2] ?? m[3] ?? m[4] ?? '']));
+            const initialHref = attributes.get('href') || '';
+            const clicks = [];
+            const link = {
+              get href() { return attributes.get('href') || ''; },
+              set href(value) { attributes.set('href', String(value)); },
+              getAttribute(name) { return attributes.get(name) ?? null; },
+              removeAttribute(name) { attributes.delete(name); },
+              addEventListener(type, handler) { if (type === 'click') clicks.push(handler); }
+            };
+            const notices = [...html.matchAll(/\bdata-preview-notice\b/g)].map(() => ({removed: false, remove() { this.removed = true; }}));
+            const status = {textContent: ''};
+            let requests = 0;
+            const document = {
+              body: {dataset: {}},
+              querySelector(selector) { return selector === '[data-demo-download]' ? link : selector === '#download-status' ? status : null; },
+              querySelectorAll(selector) {
+                if (selector === '[data-preview-notice]') return notices;
+                if (selector === 'a[aria-disabled=true]') return link.getAttribute('aria-disabled') === 'true' ? [link] : [];
+                return [];
+              }
+            };
+            new Script(source, {filename: 'production-apps.js'}).runInNewContext({document, URL, URLSearchParams, location: {search: ''}, navigator: {}, fetch: async path => {
+              assert.equal(path, '/app-offer.json', 'Unexpected request from app download probe');
+              requests++;
+              return {ok: true, json: async () => offer};
+            }}, {timeout: 1000});
+            await new Promise(resolve => setImmediate(resolve));
+            assert.equal(requests, 1, 'App script did not request its download configuration');
+            let clickPrevented = false;
+            for (const handler of clicks) handler({preventDefault() { clickPrevented = true; }});
+            return {href: link.href, initialHref, disabled: link.getAttribute('aria-disabled'), notices: notices.map(n => n.removed), clickPrevented, status: status.textContent};
+          }
+          async function verifyDownloadGate(source, html, offer) {
+            const state = await observeDownloadGate(source, html, offer);
+            const released = offer.published === true && offer.legalReviewComplete === true && offer.practicalAcceptanceComplete === true;
+            if (released) {
+              let target;
+              try { target = new URL(offer.demo.url); } catch { /* Report the configuration failure below. */ }
+              assert.ok(target && target.protocol === 'https:' && !target.username && !target.password, 'Released demo URL must be valid HTTPS without credentials');
+              assert.equal(state.href, target.href, 'Released demo control has the wrong target');
+              assert.equal(state.disabled, null, 'Released demo control is still disabled');
+              assert.equal(state.clickPrevented, false, 'Released demo click is still blocked');
+              assert.ok(state.notices.every(removed => removed), 'Released preview notice was not removed');
+            } else {
+              assert.equal(offer.demo.url, null, 'Unreleased demo URL must remain unset');
+              assert.equal(offer.purchaseDownloadUrl, null, 'Unreleased purchase URL must remain unset');
+              assert.equal(state.href, state.initialHref, 'Unreleased demo target changed');
+              assert.equal(state.disabled, 'true', 'Unreleased demo control is not disabled');
+              assert.equal(state.clickPrevented, true, 'Unreleased demo click is not blocked');
+              assert.ok(state.notices.every(removed => !removed), 'Unreleased preview notice was removed');
+            }
+          }
+          // END APP DOWNLOAD GATE PROBE
           async function check() {
             const [homeBytes, appBytes, licenseBytes] = await Promise.all([read('/', /^text\/html\b/i), read('/apps', /^text\/html\b/i), read('/apps-lizenz', /^text\/html\b/i)]);
             const home = homeBytes.toString(), apps = appBytes.toString(), license = licenseBytes.toString();
@@ -166,18 +224,15 @@ jobs:
             assert.equal(offer.product, 'Keil@Copy', 'Unexpected app offer');
             for (const flag of ['published', 'legalReviewComplete', 'practicalAcceptanceComplete']) assert.equal(typeof offer[flag], 'boolean', `App offer flag missing: ${flag}`);
             assert.ok(offer.demo && Object.hasOwn(offer.demo, 'url') && Object.hasOwn(offer, 'purchaseDownloadUrl'), 'Download gate fields missing');
-            if (!(offer.published && offer.legalReviewComplete && offer.practicalAcceptanceComplete)) {
-              assert.equal(offer.demo.url, null, 'Unreleased demo URL must remain unset');
-              assert.equal(offer.purchaseDownloadUrl, null, 'Unreleased purchase URL must remain unset');
-              const button = apps.match(/<a\b[^>]*data-demo-download[^>]*>/)?.[0] || '';
-              assert.match(button, /aria-disabled=["']true["']/, 'Unreleased demo control is not disabled');
-            }
+            await verifyDownloadGate(app, apps, offer);
             const sprite = linked(helper, /sprite\.src\s*=\s*["']([^"']+)["']/, 'Avatar sprite');
             assert.ok(css.includes(sprite), 'Avatar script and stylesheet use different sprites');
             const portrait = linked(home, /class=["']repair-avatar["'][^>]*>\s*<img[^>]*src=["']([^"']+)["']/, 'Avatar portrait');
             for (const path of [sprite, portrait]) {
               const bytes = await read(path, /^image\/png\b/i);
               assert.ok(bytes.length >= 24 && bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), `${path}: invalid PNG signature`);
+              const maxBytes = path === sprite ? 384 * 1024 : 64 * 1024;
+              assert.ok(bytes.length <= maxBytes, `${path}: avatar asset exceeds ${maxBytes} bytes`);
             }
             console.log('App hub, license page, JavaScript syntax, release gates and avatar assets passed. Browser interaction is covered separately.');
           }

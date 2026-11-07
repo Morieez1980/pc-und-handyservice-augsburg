@@ -102,7 +102,7 @@
   });
   if (mascot && frames) {
    const sprite = new Image();
-   sprite.src = '/bilder/reparatur-avatar-bewegung-20261107.png';
+   sprite.src = '/bilder/reparatur-avatar-animation-web-20261107.png';
    sprite.decode().then(() => {
     spriteReady = true;
     updateMotionControl();

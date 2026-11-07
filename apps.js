@@ -10,10 +10,10 @@ function safeHttps(value){
 }
 fetch('/app-offer.json').then(r=>{if(!r.ok)throw Error('not available');return r.json();}).then(data=>{
  const ready=data.published===true&&data.legalReviewComplete===true&&data.practicalAcceptanceComplete===true;
- if(ready)document.querySelectorAll('[data-preview-notice]').forEach(n=>n.remove());
  const url=safeHttps(data.demo?.url),link=document.querySelector('[data-demo-download]');
  if(ready&&url&&link){
   link.href=url;link.removeAttribute('aria-disabled');
+  document.querySelectorAll('[data-preview-notice]').forEach(n=>n.remove());
   document.querySelector('#download-status').textContent='30 Tage · 5 TB geplanter Auftragsumfang. Produktinformationen vor Einsatz lesen.';
  }
 }).catch(()=>{});
