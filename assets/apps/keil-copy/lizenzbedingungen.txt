@@ -1,0 +1,46 @@
+Keil@Copy · Stand 06.11.2026 · Unterlagenfassung 2026-11-06.1
+
+LIZENZ- UND VERTRAGSBEDINGUNGEN
+
+1. Anbieter und Vertragsabschluss
+Maurice Keil · PC & Handyservice Augsburg
+Stätzlinger Straße 99 · 86165 Augsburg · Deutschland
+Telefon +49 152 54530080 · keil.maurice1980@gmail.com
+
+Diese Bedingungen beschreiben das persönliche Angebot für die kompilierte Anwendung. Die Website lädt zu einer unverbindlichen Anfrage ein; sie löst weder Kauf noch Zahlung aus. Der Kunde erhält das konkrete Angebot samt Produktinformationen, diesen Bedingungen, Datenschutz und gegebenenfalls Widerrufsbelehrung auf einem dauerhaften Datenträger per E-Mail. Der Vertrag kommt durch die fristgerechte Annahme dieses Angebots zustande. Individuelle Abreden gehen vor. Verbrauchereigenschaft richtet sich nach dem tatsächlichen Vertragszweck, nicht allein nach dem Namen der Edition. Angebotssprache Deutsch; zunächst Rechnungsadressen in Deutschland.
+
+2. Nutzungsumfang, Preis und Dauer
+Privat: 35 Euro Gesamtpreis einmalig; eine benannte natürliche Person auf einem eigenen PC für ihre privaten eigenen Daten. Bei einem Gerätewechsel ist die Nutzung auf dem bisherigen Gerät einzustellen; die benötigte Sicherungskopie bleibt erlaubt.
+Techniker: 65 Euro Gesamtpreis einmalig; eine benannte Serviceperson darf die App auf eigenen und wechselnden, vom Kunden autorisierten Rechnern für ihre Kundenaufträge einsetzen. Die persönliche Lizenz darf dort nicht dauerhaft zur weiteren Nutzung durch Kunden oder weitere Mitarbeiter zurückbleiben. Weitere selbständige Nutzer benötigen eigene Nutzungsrechte.
+Beide Editionen haben denselben Kopierkern und dieselben Sicherheitsfunktionen. Keine Begrenzung des Kopiervolumens der bezahlten Version. Das Nutzungsrecht der gekauften Version ist zeitlich unbefristet. Kein Abonnement, keine automatische Verlängerung und kein Kauf durch Ablauf der Demo. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Abweichende individuelle Vereinbarungen müssen vor Annahme eindeutig benannt sein.
+
+3. Lieferung und Zahlung
+Digitaler Download und persönliche signierte Lizenzdatei, keine Lieferung eines Datenträgers. PayPal als Waren-/Dienstleistungszahlung oder Revolut Pro/SEPA nach den Zahlungsdaten des persönlichen Angebots; keine Aufforderung zu PayPal-Freunde-Zahlungen. Die Lizenz wird binnen zwei Werktagen (Montag bis Freitag, ausgenommen gesetzliche Feiertage in Bayern) nach bestätigtem vollständigem Zahlungseingang per E-Mail geliefert. Abweichende Liefertermine stehen vor Vertragsschluss im Angebot. Lizenzimport startet keinen Kopierauftrag. Die signierte Lizenzprüfung erfolgt offline, ohne Hardwarebindung oder Online-Aktivierung. Kopien der Vertragsunterlagen selbst aufbewahren.
+
+4. Demo
+Kostenlose Erprobung für 30 Tage und insgesamt 5.000.000.000.000 Byte geplanten Auftragsumfang. Maßgeblich ist die zuerst erreichte Grenze. Der geplante Umfang wird vor dem jeweiligen Auftrag reserviert; auch Abbrüche oder Fehler können dieses Budget verbrauchen. Kein Rückschluss auf ein tatsächlich erfolgreich übertragenes Datenvolumen. Keine automatische Demo-Verlängerung, Zahlung oder Übernahme in ein Abonnement. Der Ablauf beendet keinen bereits laufenden Kopierauftrag. Programmupdates innerhalb der App erfordern eine gültige Kauf-/Inhaberlizenz; Windows-/Laufzeitprüfung und Diagnose bleiben erreichbar. Eine aktuelle Demo kann gesondert bereitgestellt werden.
+
+5. Eigene Anwendung und Fremdkomponenten
+Der Kunde erhält ein einfaches Nutzungsrecht im vereinbarten Umfang. Die eigene Anwendung wird proprietär vertrieben; Quellcode und eine allgemeine Bearbeitungs-, Unterlizenzierungs- oder Vertriebserlaubnis gehören nicht zur Lieferung. Eine Open-Source-Lizenz des eigenen Anwendungscodes wird nicht erteilt. Erforderliche Installations- und Sicherungskopien bleiben erlaubt. Darüber hinausgehende öffentliche Bereitstellung oder Vervielfältigung benötigt die entsprechenden Rechte.
+Beigefügte Originalbedingungen fremder Bestandteile gelten für diese Bestandteile vorrangig. Insbesondere .NET-/Microsoft- und Open-Source-Komponenten werden nicht als ausschließlich eigene Erfindung oder ausschließlich eigene Rechte angeboten. Gesetzliche Rechte insbesondere aus §§ 69d, 69e und 69g UrhG sowie die gesetzliche Erschöpfung und deren Voraussetzungen bleiben unberührt. Kein pauschales Verbot gesetzlich zulässiger Untersuchung, Interoperabilität oder Weiterveräußerung.
+
+6. Eigenschaften und sichere Nutzung
+Funktionsumfang, Systemvoraussetzungen und bekannte Grenzen ergeben sich aus den vor Kauf übergebenen Produktinformationen. Keine feste Geschwindigkeit, universelle Gerätekompatibilität, Virenfreiheit oder vollständige Wiederherstellung aller Daten zugesagt. Keil@Copy ist ein Kopier- und Prüfwerkzeug, kein vollständiges Systemabbild oder versionsführendes Backup.
+Quelle, Ziel und Optionen sind vor Start zu prüfen; wichtige Daten angemessen unabhängig sichern. Vorhandene Zieldateien können nach gewähltem Modus aktualisiert oder ersetzt werden. Rechte, Dateisperren, laufende Änderungen, Datenträger und Verbindungen können die Kopie begrenzen. Der Kunde muss zu Quell- und Zielnutzung berechtigt sein. Administratorrechte umgehen weder Verschlüsselung noch sämtliche Sperren oder Sicherheitsentscheidungen. Diese Hinweise lassen gesetzliche Rechte bei Programmfehlern unberührt.
+
+7. Updates, Support und Wünsche
+Für die erworbene 1.x-Linie werden bereitgestellte Programmupdates ohne zusätzliche Updategebühr angeboten. Die unbefristete Nutzung der erworbenen Version endet nicht mit einem Supportzeitraum. Eine neue kostenpflichtige Hauptversion wird nicht automatisch gekauft; ihr Erwerb ist gesondert zu vereinbaren.
+Zusätzlich 12 Monate persönliche E-Mail-Fehleranalyse ab Lizenzbereitstellung: Version, nachvollziehbare Schritte und nötige Fehlermeldung prüfen; geeignete Abhilfe oder Hinweise im Rahmen des Produkts anbieten. Keine feste Reaktions-/Lösungsfrist, keine 24-Stunden-Bereitschaft, keine allgemeine Windows-Reparatur, Fernwartung oder Datenrettung als pauschale Inklusivleistung. Gesetzliche Mängelrechte und erforderliche Aktualisierungen, insbesondere Sicherheitsaktualisierungen nach § 327f BGB, bestehen unabhängig von diesen freiwilligen Leistungen.
+Bei aktivierter Automatik tägliche Prüfung während laufender App im Leerlauf; Paketübernahme beim regulären Schließen oder nach ausdrücklicher Installation. Laufende Kopien werden dafür nicht beendet. Bei geschlossener App wird eine fällige Prüfung beim nächsten Start nachgeholt. Keine tägliche neue Version und keine automatische Aktualisierung sämtlicher Windows-Programme oder Treiber zugesagt.
+Kritik, Fehlerhinweise und Funktionswünsche sind willkommen. Maurice prüft Machbarkeit, Nutzen, Sicherheit und Häufigkeit der Wünsche. Eine bestimmte Umsetzung, Veröffentlichung oder ein Termin wird erst durch eine konkrete Zusage verbindlich. Eine Kontaktanfrage ist keine Werbeeinwilligung und kein kostenpflichtiger Entwicklungsauftrag.
+
+8. Mängelrechte und Haftung
+Es gelten die gesetzlichen Mängelrechte. Der Anbieter haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit, bei Verletzung von Leben, Körper oder Gesundheit, bei Arglist, im Umfang übernommener Garantien und nach zwingender gesetzlicher Haftung, insbesondere dem Produkthaftungsrecht.
+Bei einfacher Fahrlässigkeit haftet der Anbieter bei Verletzung einer wesentlichen Vertragspflicht, deren Erfüllung die ordnungsgemäße Vertragsdurchführung erst ermöglicht und auf deren Einhaltung der Kunde regelmäßig vertrauen darf; die Haftung ist dann auf den bei Vertragsschluss vorhersehbaren, vertragstypischen Schaden begrenzt. Im Übrigen ist die Haftung für einfache Fahrlässigkeit ausgeschlossen, soweit rechtlich zulässig. Die zuvor genannten unbeschränkten Haftungsfälle bleiben stets unberührt.
+Kein pauschaler Haftungsausschluss für Datenverlust, keine Begrenzung aller Schäden auf den Kaufpreis und kein Verzicht auf zwingende Verbraucherrechte. Eine Sicherungsempfehlung beseitigt nicht die Verantwortung für zurechenbare eigene Fehler.
+
+9. Datenschutz, Widerruf und bestehende Rechte
+Die gesonderten Datenschutzinformationen erläutern lokale Verarbeitung, Updateabrufe, Support und Vertragsdaten. Kein automatischer Versand von Kopierdateien oder Supportberichten an Maurice. Verbraucher erhalten die Widerrufsbelehrung und das Musterformular vor Vertragsschluss. Im vorgesehenen persönlichen Angebotsweg wird kein vorzeitiger Verlust des Widerrufsrechts durch bloßen Download, Zahlung oder Lizenzimport beansprucht.
+Früher wirksam eingeräumte Rechte werden durch diese Fassung nicht rückwirkend entzogen. Gesetzlich zwingende Rechte bleiben bestehen; keine ausschließliche Gerichtsstandsvereinbarung zulasten von Verbrauchern. Deutsche Rechtswahl im Angebot nimmt Verbrauchern nicht den zwingenden Schutz ihres gewöhnlichen Aufenthaltsorts.
+
+Kontakt für Vertrag, Support, Kritik und Sicherheitsmeldungen: keil.maurice1980@gmail.com.

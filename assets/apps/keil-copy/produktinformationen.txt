@@ -1,0 +1,30 @@
+Keil@Copy · Stand 06.11.2026 · Unterlagenfassung 2026-11-06.1
+
+PRODUKTINFORMATIONEN UND KONTAKT
+Maurice Keil · PC & Handyservice Augsburg
+Stätzlinger Straße 99 · 86165 Augsburg · Deutschland
+Telefon +49 152 54530080 · keil.maurice1980@gmail.com
+
+Keil@Copy kopiert und prüft ausgewählte Dateien und mehrere Quellordner auf lokale Laufwerke/USB, Windows-Netzwerkordner oder erreichbare FTP-Ziele. Live-Übersicht, Dateipfade, Tempo, Ergebnis und Fehlerhinweise helfen, einen Auftrag zu kontrollieren. Die Prüfung bezieht sich auf den tatsächlich gewählten Modus; ausgelassene oder gesperrte Dateien sind kein bestätigtes Backup.
+
+System und Grenzen
+Windows-Desktop-App mit eingebetteter .NET-Laufzeit; kein zusätzliches .NET-Abonnement. Vor Kauf die kostenlose Demo auf dem vorgesehenen Rechner und mit entbehrlichen Dateien prüfen. Aktuell x64 und x86 nativ auf dem Entwicklungsrechner geprüft; ARM64-Paket gebaut, native ARM64-Abnahme offen. Für einen kommerziellen Einsatz ein unterstütztes, aktuell gehaltenes Windows verwenden; ein älteres Windows wird durch die App nicht wieder in Herstellersupport versetzt. Erreichbare Ziele, ausreichender freier Platz und passende Windows-/Serverrechte sind nötig. Virenschutz- und Dateisperren bleiben wirksam. Kein macOS-/Linux-Produkt, kein SFTP/FTPS und kein vollständiges Windows-Systemabbild. FTP ohne TLS überträgt Dateien und Anmeldedaten unverschlüsselt; nur in entsprechend vertrauenswürdigen Netzen verwenden.
+
+Sicherheit und vorhandene Zieldaten
+Schneller Standard prüft die Bereitschaft des aktiven Windows-Defender-Echtzeitschutzes einschließlich Aktualität. Er führt keinen zusätzlichen vollständigen Dateivorabscan aus. Unter Technik ist die zusätzliche Defender-Vorprüfung vor einem Auftrag wählbar. Schutzprüfung und ausgeführter Scan werden getrennt angezeigt. Einzelne blockierte Dateien können ausgelassen werden, damit geeignete übrige Dateien weiter kopiert werden; globale Schutzprobleme oder gefährliche Zielzustände können einen Auftrag stoppen. Eine bewusste Einzelfreigabe ist kein Unbedenklichkeitsnachweis und schaltet Windows-Sicherheit nicht aus. Bestehende Zieldateien können je nach gewähltem Modus ersetzt werden. Quelle/Ziel/Optionen und das vollständige Ergebnis prüfen.
+
+Editionen und Preis
+Privat: 35 Euro Gesamtpreis einmalig, eine benannte Person auf einem eigenen PC für private eigene Daten; Gerätewechsel gemäß Lizenzbedingungen.
+Techniker: 65 Euro Gesamtpreis einmalig, eine benannte Serviceperson für autorisierte Kundenarbeiten auf wechselnden PCs; keine dauerhafte Überlassung an weitere Nutzer.
+Gleiche Kopier- und Sicherheitsfunktionen, bezahlte Versionen ohne Kopiervolumenlimit. Kein Abonnement. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.
+Demo: 30 Tage und 5 TB geplanter Umfang (dezimal), die zuerst erreichte Grenze zählt. Reservierung vor Auftrag; Fehler/Abbruch können Budget verbrauchen.
+
+Kauf, Lieferung, Updates
+Persönliches E-Mail-Angebot mit vollständigen Unterlagen vor Annahme/Zahlung; noch kein Kauf durch das Kontaktformular. PayPal Waren/Dienstleistungen oder Revolut Pro/SEPA gemäß Angebot. Lieferung digital binnen zwei Werktagen nach bestätigter Zahlung, abweichender Termin nur im konkreten Angebot. Signierte Lizenzdatei offline importieren; keine Hardwarebindung und kein Online-Aktivierungszwang. Erworbenes Nutzungsrecht unbefristet.
+Bereitgestellte Updates der gekauften 1.x-Linie ohne zusätzliche Updategebühr; zusätzliche persönliche E-Mail-Fehleranalyse 12 Monate ab Lizenzbereitstellung. Gesetzliche Rechte und nötige Aktualisierungen bleiben davon unabhängig. Tägliche Prüfung bei aktivierter Automatik während laufender App, Installation beim regulären Schließen oder ausdrücklich. Keine laufende Kopie für ein Update unterbrechen. Windows-/Treiberinstallationen bleiben eigene Windows-Vorgänge.
+
+Mitgestalten
+Kritik, Fehler und Funktionswünsche bitte an keil.maurice1980@gmail.com. Maurice prüft Vorschläge persönlich. Häufige Wünsche fließen in die Priorisierung ein, neben Nutzen, Sicherheit und Machbarkeit. Keine automatische Umsetzungszusage; geplante Funktionen sind erst mit ausdrücklicher Zusage verbindlich. Fragen zu eigenen neuen Apps sind ebenfalls willkommen; ein Entwicklungsauftrag entsteht erst nach gesonderter Vereinbarung.
+Bitte Version, erwartetes/tatsächliches Verhalten und nötige Schritte nennen. Supportbericht in Hilfe zuerst lokal prüfen und persönliche Angaben entfernen. Keine Kennwörter, Lizenzdateien oder Original-Kundendaten senden. Kein automatischer Supportversand und keine Werbeanmeldung durch eine Anfrage.
+
+Die folgenden Dokumente gehören zusammen: Lizenzbedingungen, Produkt-Datenschutz, Sicher arbeiten sowie Widerrufsbelehrung mit Musterformular. Ein Angebot muss diese Fassung vor Vertragsschluss tatsächlich zugänglich machen und dauerhaft bestätigen.

@@ -1,0 +1,19 @@
+Keil@Copy · Stand 06.11.2026 · Unterlagenfassung 2026-11-06.1
+
+SICHER MIT DATEN ARBEITEN
+Kontakt: keil.maurice1980@gmail.com
+
+Vor Start Quelle, Ziel, ausgewählte Ordner und Kopieroptionen kontrollieren. Wichtige Daten unabhängig sichern; neue Abläufe zuerst mit entbehrlichen Dateien erproben. Vorhandene Zieldateien können je nach Modus aktualisiert oder ersetzt werden. Ein erfolgreich geprüfter Auftrag ist kein vollständiges Systemabbild, keine Versionshistorie und keine Garantie aller Wiederherstellungsfälle.
+
+Zugriffsrechte, Dateisperren, laufende Änderungen, Datenträgerzustand und Netzwerke begrenzen den Auftrag. Administratorrechte machen nicht jede aktive oder verschlüsselte Datei lesbar. Sperren, Sicherheitsfunde, ausgelassene und nicht geprüfte Dateien im Ergebnis beachten. Ein Teilauftrag bestätigt keine vollständige Sicherung. Keine unbefugten Quell-/Zielzugriffe ausführen.
+
+Windows-Sicherheit bleibt zuständig. Der schnelle Standard prüft den aktiven und aktuellen Defender-Echtzeitschutz; er behauptet keinen vollständigen Dateivorabscan. Den zusätzlichen Defender-Scan unter Technik ausdrücklich wählen, wenn gewünscht. Schutzbereitschaft und tatsächlich ausgeführter Scan werden unterschiedlich protokolliert. Kein Produkt kann Virenfreiheit garantieren.
+Einzelne durch den Schutz blockierte Dateien werden gemäß Sicherheitsentscheidung ausgelassen; geeignete übrige Dateien können weiterbearbeitet werden. Globale Schutzfehler können einen Auftrag stoppen. Eine bewusste Freigabe gilt nur für die betroffene Datei/den Auftrag, ist kein Beweis der Ungefährlichkeit und hebt Windows-Sperren nicht auf. Keil@Copy richtet keine pauschalen Windows-Defender-Ausnahmen ein. Quarantäne und Behandlung erfolgen über Windows-Sicherheit; Schutz nicht abschalten, um eine Kopie zu erzwingen.
+
+FTP ohne TLS überträgt Anmeldedaten und Dateien unverschlüsselt. Nur entsprechend vertrauenswürdige Netze und berechtigte Ziele verwenden. SHA256 bestätigt im vorgesehenen Vergleich die Übereinstimmung der geprüften Inhalte, keine Authentizität des Ursprungs und keine Schadsoftwarefreiheit.
+
+Updates: Bei aktivierter Automatik tägliche Prüfung im Leerlauf auf bereitgestellte signierte Versionen, Installation beim regulären Schließen oder ausdrücklich. Fällige Prüfung bei geschlossenem Programm beim nächsten Start nachholen. Tägliche Prüfung ist keine tägliche neue Version. Laufende Kopien werden dafür nicht beendet. Windows-/Treiberinstallationen sind separate Windows-Vorgänge. Nur vertrauenswürdige Quellen verwenden. Eine Paketsignatur ist eine technische Echtheitsprüfung mit dem eingebetteten Schlüssel und kein amtliches Sicherheitszertifikat oder automatisch eine Microsoft-Authenticode-Signatur.
+
+Fehleranalyse: Hilfe → Fehleranalyse / Supportbericht. Bericht lokal prüfen und persönliche Angaben entfernen, bevor er selbst an keil.maurice1980@gmail.com gesendet wird. Keine Kennwörter, Lizenzdateien oder Original-Kundendateien senden. Kein automatischer Berichtversand. Für mögliche Sicherheitslücken bitte eine vertrauliche Nachricht mit Produktversion, Beschreibung und nachvollziehbaren Schritten schicken; keine fremden Systeme angreifen oder Zugangsdaten mitsenden.
+
+Die Hinweise ersetzen keine gesetzlichen Mängelrechte oder nötigen Sicherheitsaktualisierungen und stellen keinen vollständigen Haftungsausschluss dar. Zwingende Haftung, insbesondere für Vorsatz, grobe Fahrlässigkeit, Leben, Körper und Gesundheit, bleibt unberührt. Eine Sicherungsempfehlung beseitigt keine Verantwortung für eigene Fehler.

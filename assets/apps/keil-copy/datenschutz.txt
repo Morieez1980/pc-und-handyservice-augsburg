@@ -1,0 +1,37 @@
+Keil@Copy · Stand 06.11.2026 · Unterlagenfassung 2026-11-06.1
+Kontakt und Support: keil.maurice1980@gmail.com
+
+Keil@Copy · PRODUKT-DATENSCHUTZHINWEISE
+Anbieter/Verantwortlicher: Maurice Keil · PC & Handyservice Augsburg, Stätzlinger Straße 99, 86165 Augsburg, Deutschland. Kontakt: keil.maurice1980@gmail.com, +49 152 54530080.
+
+LOKALE APPDATEN
+Die App verarbeitet ausgewählte Datei-/Ordnerpfade, Größen, Zeitstempel und gegebenenfalls Prüfsummen, soweit der gewählte Kopier-/Prüfauftrag das benötigt. Ziel und Kopierweg bestimmt der Nutzer. Lokale Profile/Einstellungen, Fortschritts-/Wiederaufnahmedaten und Protokolle können Pfade und Fehler enthalten. Sie verbleiben auf dem verwendeten PC, standardmäßig unter dem lokalen Benutzerbereich RoboCopyKompakt in LocalAppData; ein ausdrücklich konfigurierter lokaler Protokollordner kann davon abweichen; Supportexporte werden am ausdrücklich gewählten Ort gespeichert. Die App lädt diese Protokolle/Dateiinhalte nicht automatisch zu Maurice hoch.
+
+LIZENZ UND DEMO
+Eine importierte signierte Lizenz kann den Namen des Lizenznehmers, zufällige Lizenzkennung, Lizenzart, vereinbarten Geräteumfang sowie Ausstellungs-/gegebenenfalls Testablauf- und Supportangaben enthalten. Sie wird offline geprüft. Keine eingebaute Hardwarekennung oder Onlineaktivierungsanfrage. Der lokale Demo-Status speichert Beginn, letzte Beobachtung und reservierten geplanten Auftragsumfang (30 Tage / 5 TB); dies ist kein zentraler Kundenbestand. Die Signatur verhindert keine missbräuchliche Weitergabe einer gültigen Lizenzdatei. Gesetzliche Rechte werden nicht durch diese Beschreibung verkürzt.
+
+NETZWERKVERBINDUNGEN
+Gewählte Windows-Netzwerk-/FTP-Ziele erhalten die für den Auftrag nötigen Dateien und Anmeldedaten. FTP ohne TLS ist unverschlüsselt. FTP-Kennwörter werden nicht im Profil gespeichert und nach dem Auftrag aus dem Eingabefeld entfernt. Zielgeräte/Netzwerkserver werden vom Nutzer ausgewählt und verantwortet.
+Die Updateprüfung verwendet den eigenen Dienst https://updates.pc-und-handyservice-augsburg.com/ bzw. eine konfigurierte HTTPS-Quelle. Für Programmdateien kann die bestehende GitHub-Releasequelle bzw. die signiert benannte Paketquelle kontaktiert werden. Die Gegenstellen erhalten nötige Verbindungsdaten wie IP-Adresse, Zeitpunkt und technische Anfrageinformationen. Lizenzdatei, lokale Dateiinhalte und FTP-Kennwörter werden nicht zur eigenen Updatequelle gesendet. Microsoft-/Windows-Laufzeitprüfungen nutzen die dafür eingerichteten Microsoft-/Windows-Updatequellen; Windows-Installationen sind ein eigener Schritt. Anbieterbedingungen und zulässige eigene Quellen des Anwenders bleiben zu beachten.
+
+HOSTING UND SUPPORT
+Der eigene Updatehost verwendet Sites von OpenAI mit Cloudflare-Infrastruktur; GitHub liefert die bisherigen öffentlichen Programmdateien. Es gibt dort keine eigene Kunden-/Lizenzdatenbank, keine eingebauten Werbe-/Analyseskripte und keine Appbericht-Uploadfunktion. Hostinganbieter können technische Betriebs-/Sicherheitsdaten nach ihren Regeln verarbeiten, gegebenenfalls mit Drittlandbezug. Die bestehende öffentliche Website-Datenschutzerklärung erläutert den tatsächlich aktiven Updatehost. Rechtsgrundlage für nötige Betriebssicherheit/Bereitstellung ist insbesondere Art. 6 Abs. 1 lit. f DSGVO; bei Kundenvertrag und Support kommen je nach konkretem Vorgang Art. 6 Abs. 1 lit. b/c DSGVO hinzu. Bei den Hostingdiensten können Verarbeitungen außerhalb des EWR stattfinden. Die nachfolgend verlinkten Anbieterinformationen beschreiben Empfänger und Übermittlungsmechanismen. Der dokumentierte Stand der konkreten Anbieter-Vertragsgrundlagen wird vor kommerzieller Veröffentlichung gesondert geprüft.
+Der Supportbericht wird erst auf Anforderung lokal erstellt. Er enthält Vorgangsnummer, Zeitpunkt, Produkt-/System-/Laufzeitstand, Kopierweg und Status. Bekannte Pfad-, Adress- und Zugangsdatenmuster werden entfernt; unbekannte persönliche Angaben können verbleiben. Vorschau vor Weitergabe prüfen/bearbeiten. Keine vollständigen Logarchive oder Dateiinhalte sind standardmäßig enthalten. Die eigene Übersendung an Maurice erfolgt durch den Kunden, ohne automatischen Versand aus der App. Nur für Bearbeitung erforderliche Daten übersenden; keine Kennwörter, Lizenzdateien oder Original-Kundendateien.
+
+AUFBEWAHRUNG UND RECHTE
+Lokale Dateien bleiben bis zur kontrollierten Entfernung durch den Nutzer bzw. entsprechend den tatsächlich implementierten Aufbewahrungsfunktionen auf dessen PC. Keine pauschale Frist oder automatische vollständige Spurenlöschung versprechen. Bei Maurice eingegangene Anfragen und freiwillige Funktionswünsche werden zur Bearbeitung und Antwort verarbeitet (Art. 6 Abs. 1 lit. b DSGVO bei Vertragsanbahnung/Support, sonst lit. f mit dem Interesse an Bearbeitung und Produktverbesserung). Kein öffentlicher Eintrag und keine Werbeeinwilligung durch eine Anfrage. Keine Pflicht, eine Idee einzureichen. Ohne erforderliche Kontaktangaben kann eine Antwort unmöglich sein. Abschlusslose Anfragen und nicht mehr benötigte identifizierbare Vorschläge werden spätestens zwölf Monate nach letzter inhaltlicher Bearbeitung gelöscht oder für die Produktplanung ohne Personenbezug zusammengefasst, sofern kein anderer konkreter Aufbewahrungsgrund besteht. Benötigte Support-/Anspruchsnachweise werden zweckbezogen bis zum Wegfall des Nachweisbedarfs aufbewahrt; regelmäßige Prüfung mindestens jährlich. Vertrags-/Geschäftskorrespondenz wird bei gesetzlicher Pflicht grundsätzlich sechs Jahre, Rechnungen acht Jahre ab Ende des jeweiligen Kalenderjahres aufbewahrt; gesetzliche Verlängerungsgründe bleiben unberührt. Zahlung über PayPal oder Revolut Pro erfolgt nach dem persönlichen Angebot unter deren Datenschutzbedingungen. Für Rechnungs-/Kundenverwaltung kann Zoho Books/Bigin im vorhandenen EU-Konto eingesetzt werden. Eine Weitergabe erfolgt nur im notwendigen Umfang. Zahlungszugangsdaten verarbeitet Maurice nicht über das App-Formular. Eine feste pauschale Hosting-Logfrist wird nicht behauptet. Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und gegebenenfalls Datenübertragbarkeit sowie Beschwerde bei der zuständigen Datenschutzaufsicht bleiben bestehen; Kontakt wie oben. Beschwerden können insbesondere an das Bayerische Landesamt für Datenschutzaufsicht (https://www.lda.bayern.de/) gerichtet werden. Gesetzliche Einschränkungen einzelner Rechte bleiben unberührt. Eine gesonderte Einwilligung kann jederzeit für die Zukunft widerrufen werden; die Rechtmäßigkeit vorheriger Verarbeitung bleibt unberührt. Keine ausschließlich automatisierte Entscheidung mit rechtlicher Wirkung oder Profilbildung durch die App.
+
+Quellen und Anbieterhinweise:
+https://updates.pc-und-handyservice-augsburg.com/datenschutz
+https://openai.com/policies/privacy-policy/
+https://www.cloudflare.com/privacypolicy/
+https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
+https://www.microsoft.com/de-de/privacy/privacystatement
+
+WINDOWS-SICHERHEIT
+Der schnelle Standard fragt den Defender-Schutzzustand ab. Ein zusätzlicher Dateivorabscan wird nur bei Wahl der Zusatzprüfung ausgeführt. Microsoft-/Windows-Sicherheitsverarbeitung richtet sich auch nach den Geräteeinstellungen und Microsoft-Hinweisen. Die App übermittelt Scanberichte nicht automatisch an Maurice.
+
+Weitere Anbieterinformationen:
+https://www.paypal.com/de/legalhub/paypal/privacy-full
+https://www.revolut.com/de-DE/legal/privacy/
+https://www.zoho.com/privacy.html
