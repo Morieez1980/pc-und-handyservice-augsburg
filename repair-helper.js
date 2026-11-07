@@ -47,8 +47,8 @@
    if (!canAnimate()) return;
    mascot.classList.add('is-greeting');
    helper.classList.add('is-animating');
-   // Keep the static portrait usable even if an animationend event is lost.
-   greetingTimer = window.setTimeout(finishGreeting, 5500);
+   // Allow the full eight-second repair sequence; recover if animationend is lost.
+   greetingTimer = window.setTimeout(finishGreeting, 8500);
   };
   const scheduleGreeting = () => {
    stopGreeting();
@@ -102,7 +102,7 @@
   });
   if (mascot && frames) {
    const sprite = new Image();
-   sprite.src = '/bilder/reparatur-avatar-arbeiten-20261107.png';
+   sprite.src = '/bilder/reparatur-avatar-werkbank-8s-20261107.png';
    sprite.decode().then(() => {
     spriteReady = true;
     updateMotionControl();

@@ -35,13 +35,13 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 @media print{.repair-helper{display:none!important}}
 
 .repair-helper-toggle{gap:6px;padding:4px 12px 4px 4px;border:1px solid #477787;border-radius:24px;background:linear-gradient(135deg,#1c3a48,#102530);box-shadow:inset 0 1px 0 #b3f1ff20,0 10px 28px #0007}.repair-helper-toggle:hover{background:#214451}.repair-helper-toggle>.repair-avatar{width:104px;height:132px}.repair-helper-toggle>span:not(.repair-avatar){max-width:100px;font-size:14px;line-height:1.25;color:#a4e3ed}.repair-helper-panel{max-height:calc(100dvh - 210px)}
-/* Five-second walk, wave and laptop repair, two-second rest; locally pausable, no tracking. */
+/* Eight seconds at the workbench, two-second rest; locally pausable, no tracking. */
 .repair-helper .repair-avatar{position:relative;display:inline-block;fill:initial;stroke:initial}
 .repair-avatar>img{display:block;width:100%;height:100%;object-fit:contain}
-.repair-avatar-frames{display:none;position:absolute;inset:0;pointer-events:none;background-image:url('/bilder/reparatur-avatar-arbeiten-20261107.png');background-repeat:no-repeat;background-size:400% 300%}
+.repair-avatar-frames{display:none;position:absolute;inset:0;pointer-events:none;background-image:url('/bilder/reparatur-avatar-werkbank-8s-20261107.png');background-repeat:no-repeat;background-size:400% 100%}
 .repair-avatar.is-greeting>img{visibility:hidden}
-.repair-avatar.is-greeting>.repair-avatar-frames{display:block;animation:repair-avatar-actions 5s steps(1,end) 1}
-.repair-helper.is-animating .repair-helper-toggle{animation:repair-avatar-beacon 2.5s ease-in-out 2}
+.repair-avatar.is-greeting>.repair-avatar-frames{display:block;animation:repair-avatar-actions 8s steps(1,end) 1}
+.repair-helper.is-animating .repair-helper-toggle{animation:repair-avatar-beacon 4s ease-in-out 2}
 .repair-helper-motion{display:grid;place-items:center;flex:none;margin-inline-start:6px;width:36px;height:44px;padding:0;border:1px solid #477787;border-radius:14px;background:#102530;color:#a4e3ed;font:700 15px/1 system-ui;cursor:pointer;box-shadow:0 6px 18px #0005}
 .repair-helper-motion:hover{background:#214451;color:#fff}
 @keyframes repair-avatar-beacon{0%,100%{box-shadow:inset 0 1px 0 #b3f1ff20,0 10px 28px #0007}50%{box-shadow:inset 0 1px 0 #b3f1ff50,0 0 16px #67c6df50,0 10px 28px #0007}}
@@ -50,7 +50,9 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 .home-intro .repair-helper-panel h2{font-size:21px;line-height:1.25}
 .home-intro .repair-helper-panel p{font-size:14px;line-height:1.45}
 .repair-helper-contacts{clear:both;margin-top:14px}
-@keyframes repair-avatar-actions{0%{background-position:0 0}5%{background-position:33.333333% 0}10%{background-position:66.666667% 0}15%{background-position:100% 0}20%{background-position:0 50%}25%{background-position:33.333333% 50%}30%{background-position:66.666667% 50%}35%{background-position:100% 50%}40%{background-position:0 100%}55%{background-position:33.333333% 100%}70%{background-position:66.666667% 100%}85%,100%{background-position:100% 100%}}
+/* Small turns of the screwdriver, lift the tool to inspect, then a final check.
+   All four poses are laptop-repair poses; walking and waving are not in this strip. */
+@keyframes repair-avatar-actions{0%,8%{background-position:0 0}12%{background-position:33.333333% 0}16%{background-position:66.666667% 0}20%{background-position:33.333333% 0}24%{background-position:0 0}28%{background-position:33.333333% 0}32%{background-position:66.666667% 0}36%{background-position:33.333333% 0}40%{background-position:0 0}44%{background-position:33.333333% 0}48%{background-position:66.666667% 0}52%{background-position:33.333333% 0}56%{background-position:0 0}60%,70%{background-position:100% 0}74%{background-position:66.666667% 0}78%{background-position:33.333333% 0}82%{background-position:0 0}86%{background-position:33.333333% 0}90%{background-position:66.666667% 0}94%,100%{background-position:0 0}}
 @media(max-width:700px){.repair-helper-toggle>.repair-avatar{width:88px;height:112px}.repair-helper-panel{left:14px;right:auto;max-height:calc(100dvh - 256px - env(safe-area-inset-bottom))}.repair-helper-panel>.repair-avatar{width:68px;height:92px}}
 @media(prefers-reduced-motion:reduce){.repair-avatar.is-greeting>img{visibility:visible}.repair-avatar.is-greeting>.repair-avatar-frames{display:none;animation:none!important}.repair-helper.is-animating .repair-helper-toggle{animation:none!important}}
 

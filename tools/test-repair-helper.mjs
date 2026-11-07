@@ -24,9 +24,10 @@ function setup({reduced = false, imageFails = false, lang = 'de'} = {}) {
  return {helper,toggle,panel,close,mascot,frames,doc,media,fire,tick,active:()=>mascot.classList.contains('is-greeting'),ready:async()=>{await Promise.resolve();await Promise.resolve();}};
 }
 
-test('greeting is not cut short, rests, then starts again', async()=>{
+test('the eight-second repair sequence is not cut short, rests, then starts again', async()=>{
  const h=setup();await h.ready();assert.equal(h.active(),true);
- h.tick(5000);assert.equal(h.active(),true);
+ h.tick(7999);assert.equal(h.active(),true);
+ h.tick(1);assert.equal(h.active(),true);
  h.fire(h.frames,'animationend',{animationName:'repair-avatar-actions'});
  assert.equal(h.active(),false);h.tick(1999);assert.equal(h.active(),false);
  h.tick(1);assert.equal(h.active(),true);
@@ -58,5 +59,6 @@ test('failed sprite leaves the static contact button available', async()=>{
 });
 test('motion control follows the page language and lost animation events recover', async()=>{
  const h=setup({lang:'en'});await h.ready();assert.equal(h.helper.motion.attrs['aria-label'],'Pause animation');
- h.tick(5500);assert.equal(h.active(),false);h.tick(2000);assert.equal(h.active(),true);
+ h.tick(8499);assert.equal(h.active(),true);
+ h.tick(1);assert.equal(h.active(),false);h.tick(2000);assert.equal(h.active(),true);
 });
