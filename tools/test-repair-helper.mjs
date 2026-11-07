@@ -32,6 +32,15 @@ test('the eight-second repair sequence is not cut short, rests, then starts agai
  assert.equal(h.active(),false);h.tick(1999);assert.equal(h.active(),false);
  h.tick(1);assert.equal(h.active(),true);
 });
+test('finishing a moving arm or head does not interrupt the full repair cycle', async()=>{
+ const h=setup();await h.ready();h.tick(4000);
+ h.fire(h.frames,'animationend',{target:{},animationName:'repair-avatar-arm'});
+ h.fire(h.frames,'animationend',{target:{},animationName:'repair-avatar-head'});
+ assert.equal(h.active(),true);
+ h.tick(3999);assert.equal(h.active(),true);
+ h.fire(h.frames,'animationend',{animationName:'repair-avatar-actions'});
+ assert.equal(h.active(),false);
+});
 test('pause persists across cycles and tab visibility; resume is explicit', async()=>{
  const h=setup();await h.ready();h.fire(h.helper.motion,'click');
  assert.equal(h.active(),false);assert.equal(h.helper.motion.attrs['aria-label'],'Animation fortsetzen');
