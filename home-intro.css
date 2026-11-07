@@ -35,12 +35,16 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 @media print{.repair-helper{display:none!important}}
 
 .repair-helper-toggle{gap:6px;padding:4px 12px 4px 4px;border:1px solid #477787;border-radius:24px;background:linear-gradient(135deg,#1c3a48,#102530);box-shadow:inset 0 1px 0 #b3f1ff20,0 10px 28px #0007}.repair-helper-toggle:hover{background:#214451}.repair-helper-toggle>.repair-avatar{width:104px;height:132px}.repair-helper-toggle>span:not(.repair-avatar){max-width:100px;font-size:14px;line-height:1.25;color:#a4e3ed}.repair-helper-panel{max-height:calc(100dvh - 210px)}
-/* Fictional technician mascot: a short greeting, then still; no tracking or external service. */
+/* Five-second greeting, two-second rest; locally pausable, no tracking. */
 .repair-helper .repair-avatar{position:relative;display:inline-block;fill:initial;stroke:initial}
 .repair-avatar>img{display:block;width:100%;height:100%;object-fit:contain}
 .repair-avatar-frames{display:none;position:absolute;inset:0;pointer-events:none;background-image:url('/bilder/reparatur-avatar-bewegung-20261107.png');background-repeat:no-repeat;background-size:400% 200%}
 .repair-avatar.is-greeting>img{visibility:hidden}
-.repair-avatar.is-greeting>.repair-avatar-frames{display:block;animation:repair-avatar-actions 2.4s steps(1,end) 1}
+.repair-avatar.is-greeting>.repair-avatar-frames{display:block;animation:repair-avatar-actions 5s steps(1,end) 1}
+.repair-helper.is-animating .repair-helper-toggle{animation:repair-avatar-beacon 2.5s ease-in-out 2}
+.repair-helper-motion{display:grid;place-items:center;flex:none;margin-inline-start:6px;width:36px;height:44px;padding:0;border:1px solid #477787;border-radius:14px;background:#102530;color:#a4e3ed;font:700 15px/1 system-ui;cursor:pointer;box-shadow:0 6px 18px #0005}
+.repair-helper-motion:hover{background:#214451;color:#fff}
+@keyframes repair-avatar-beacon{0%,100%{box-shadow:inset 0 1px 0 #b3f1ff20,0 10px 28px #0007}50%{box-shadow:inset 0 1px 0 #b3f1ff50,0 0 16px #67c6df50,0 10px 28px #0007}}
 .repair-helper-panel{width:310px;max-width:calc(100% - 28px);padding:20px}
 .repair-helper-panel>.repair-avatar{float:inline-start;width:76px;height:100px;margin:0 12px 8px 0}
 .home-intro .repair-helper-panel h2{font-size:21px;line-height:1.25}
@@ -48,7 +52,7 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 .repair-helper-contacts{clear:both;margin-top:14px}
 @keyframes repair-avatar-actions{0%,25%{background-position:0 0}6.25%,31.25%{background-position:33.333333% 0}12.5%,37.5%{background-position:66.666667% 0}18.75%,43.75%{background-position:100% 0}50%,75%{background-position:0 100%}56.25%,81.25%{background-position:33.333333% 100%}62.5%,87.5%{background-position:66.666667% 100%}68.75%,93.75%,100%{background-position:100% 100%}}
 @media(max-width:700px){.repair-helper-toggle>.repair-avatar{width:88px;height:112px}.repair-helper-panel{left:14px;right:auto;max-height:calc(100dvh - 256px - env(safe-area-inset-bottom))}.repair-helper-panel>.repair-avatar{width:68px;height:92px}}
-@media(prefers-reduced-motion:reduce){.repair-avatar.is-greeting>img{visibility:visible}.repair-avatar.is-greeting>.repair-avatar-frames{display:none;animation:none!important}}
+@media(prefers-reduced-motion:reduce){.repair-avatar.is-greeting>img{visibility:visible}.repair-avatar.is-greeting>.repair-avatar-frames{display:none;animation:none!important}.repair-helper.is-animating .repair-helper-toggle{animation:none!important}}
 
 /* Explain the non-binding intake next to the primary enquiry action. */
 .home-intro-action-group{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px 20px;min-width:0}
