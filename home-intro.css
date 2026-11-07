@@ -38,16 +38,19 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 /* Eight seconds at the workbench, two-second rest; locally pausable, no tracking. */
 .repair-helper .repair-avatar{position:relative;display:inline-block;fill:initial;stroke:initial}
 .repair-avatar>img{display:block;width:100%;height:100%;object-fit:contain}
-.repair-avatar-frames{--repair-avatar-source:url('/bilder/reparatur-avatar-gelenke-20261107.png');display:none;position:absolute;inset:0;pointer-events:none}
+.repair-avatar-frames{--repair-avatar-source:url('/bilder/reparatur-avatar-staerke-bewegung-20261107.png');display:none;position:absolute;inset:0;pointer-events:none}
 .repair-rig-defs{position:absolute;width:0;height:0;overflow:hidden}
 .repair-rig-piece{position:absolute;inset:0;background-image:var(--repair-avatar-source);background-size:100% 100%;background-repeat:no-repeat;transform:rotate(0deg)}
-.repair-rig-shirt{position:absolute;inset:0;background:linear-gradient(125deg,#303436,#262b2e);clip-path:polygon(21% 41%,39% 43%,41% 52%,21% 50%)}
-.repair-rig-arm{transform-origin:18% 44%;will-change:transform}
-.repair-rig-head{transform-origin:41% 25%;will-change:transform}
+.repair-rig-shirt{position:absolute;inset:0;background:linear-gradient(125deg,#303436,#262b2e);clip-path:polygon(23% 41%,44% 42%,46% 49%,23% 47%)}
+.repair-rig-shirt-flex{position:absolute;inset:0;background:#2b3034;clip-path:polygon(59% 18%,64% 18%,64% 28%,59% 28%)}
+.repair-rig-arm{transform-origin:19% 40%;will-change:transform}
+.repair-rig-head{transform-origin:39% 21%;will-change:transform}
+.repair-rig-strength{transform-origin:62% 23%;will-change:transform}
 .repair-avatar.is-greeting>img{visibility:hidden}
 .repair-avatar.is-greeting>.repair-avatar-frames{display:block;animation:repair-avatar-actions 8s linear 1}
 .repair-avatar.is-greeting .repair-rig-arm{animation:repair-avatar-arm 8s cubic-bezier(.45,0,.55,1) 1}
 .repair-avatar.is-greeting .repair-rig-head{animation:repair-avatar-head 8s ease-in-out 1}
+.repair-avatar.is-greeting .repair-rig-strength{animation:repair-avatar-strength 8s ease-in-out 1}
 .repair-helper.is-animating .repair-helper-toggle{animation:repair-avatar-beacon 4s ease-in-out 2}
 .repair-helper-motion{display:grid;place-items:center;flex:none;margin-inline-start:6px;width:36px;height:44px;padding:0;border:1px solid #477787;border-radius:14px;background:#102530;color:#a4e3ed;font:700 15px/1 system-ui;cursor:pointer;box-shadow:0 6px 18px #0005}
 .repair-helper-motion:hover{background:#214451;color:#fff}
@@ -60,8 +63,9 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 /* Continuous joint motion, not sprite stepping or cross-fades. The root animation
    is the eight-second cycle clock; only the clipped head/arm layers transform. */
 @keyframes repair-avatar-actions{from,to{opacity:1}}
-@keyframes repair-avatar-arm{0%,100%{transform:rotate(0deg)}8%{transform:rotate(-1deg)}14%{transform:rotate(1.5deg)}20%{transform:rotate(-2deg)}26%{transform:rotate(1deg)}32%{transform:rotate(-1.8deg)}38%{transform:rotate(1deg)}44%{transform:rotate(-2deg)}50%{transform:rotate(.8deg)}60%{transform:rotate(-8deg)}68%{transform:rotate(-9.5deg)}78%{transform:rotate(-3deg)}87%{transform:rotate(1deg)}94%{transform:rotate(-1deg)}}
+@keyframes repair-avatar-arm{0%,100%{transform:rotate(0deg)}8%{transform:rotate(-.5deg)}14%{transform:rotate(.5deg)}20%{transform:rotate(-1deg)}26%{transform:rotate(1deg)}32%{transform:rotate(-1.8deg)}38%{transform:rotate(1deg)}44%{transform:rotate(-2deg)}50%{transform:rotate(.8deg)}60%{transform:rotate(-4deg)}68%{transform:rotate(-5.5deg)}78%{transform:rotate(-3deg)}87%{transform:rotate(1deg)}94%{transform:rotate(-1deg)}}
 @keyframes repair-avatar-head{0%,100%{transform:rotate(0deg)}20%{transform:rotate(.8deg)}40%{transform:rotate(.2deg)}60%,70%{transform:rotate(-1.4deg)}88%{transform:rotate(.4deg)}}
+@keyframes repair-avatar-strength{0%,28%,100%{transform:rotate(0deg)}9%{transform:rotate(-3deg)}18%{transform:rotate(1.5deg)}}
 @media(max-width:700px){.repair-helper-toggle>.repair-avatar{width:88px;height:112px}.repair-helper-panel{left:14px;right:auto;max-height:calc(100dvh - 256px - env(safe-area-inset-bottom))}.repair-helper-panel>.repair-avatar{width:68px;height:92px}}
 @media(prefers-reduced-motion:reduce){.repair-avatar.is-greeting>img{visibility:visible}.repair-avatar.is-greeting>.repair-avatar-frames{display:none;animation:none!important}.repair-helper.is-animating .repair-helper-toggle{animation:none!important}}
 

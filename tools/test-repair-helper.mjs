@@ -36,6 +36,7 @@ test('finishing a moving arm or head does not interrupt the full repair cycle', 
  const h=setup();await h.ready();h.tick(4000);
  h.fire(h.frames,'animationend',{target:{},animationName:'repair-avatar-arm'});
  h.fire(h.frames,'animationend',{target:{},animationName:'repair-avatar-head'});
+ h.fire(h.frames,'animationend',{target:{},animationName:'repair-avatar-strength'});
  assert.equal(h.active(),true);
  h.tick(3999);assert.equal(h.active(),true);
  h.fire(h.frames,'animationend',{animationName:'repair-avatar-actions'});
