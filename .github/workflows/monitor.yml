@@ -280,8 +280,9 @@ jobs:
             const app = appJs.toString(), helper = helperJs.toString(), css = cssBytes.toString();
             for (const [path, source] of [[appPath, app], [helperPath, helper]]) new Script(source, {filename: path});
             for (const marker of ['#app-enquiry', '#app-idea', 'app-offer.json', 'data-demo-download', 'practicalAcceptanceComplete']) assert.ok(app.includes(marker), `App script marker missing: ${marker}`);
-            for (const marker of ['data-repair-helper', 'repair-avatar-actions', 'prefers-reduced-motion', 'restartTimer']) assert.ok(helper.includes(marker), `Avatar script marker missing: ${marker}`);
+            for (const marker of ['data-repair-helper', 'canAnimate', 'prefers-reduced-motion', 'pageshow', 'motionOptIn']) assert.ok(helper.includes(marker), `Avatar script marker missing: ${marker}`);
             assert.ok(css.includes('@keyframes repair-avatar-actions'), 'Avatar keyframes missing');
+            assert.ok(css.includes('animation:repair-avatar-actions 24s linear infinite'), 'Continuous repair loop missing');
             assert.ok(appCss.toString().includes('.app-page'), 'App stylesheet marker missing');
             assert.ok(legalCss.toString().includes('.legal-document'), 'License stylesheet marker missing');
             const offer = JSON.parse(offerBytes.toString());
