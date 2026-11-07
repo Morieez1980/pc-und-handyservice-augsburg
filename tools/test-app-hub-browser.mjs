@@ -17,7 +17,8 @@ const aliases=[
  {route:'/apps-kontakt',hash:'#mitgestalten'},
  {route:'/apps-rechtliches',hash:'#bedingungen'}
 ];
-const checks=[],pageErrors=[],blockedExternal=[],unexpectedPosts=[],mailAttempts=[],windowOpenAttempts=[];
+const checks=[],pageErrors=[],blockedExternal=[],unexpectedPosts=[],mailAttempts=[],windowOpenAttempts=[],contrastSamples=[];
+const darkMode=process.env.KEILCOPY_APP_HUB_DARK==='1';
 let browser,primaryPage,base;
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.webm':'video/webm','.mp4':'video/mp4','.woff2':'font/woff2','.ico':'image/x-icon'};
 const server=http.createServer((req,res)=>{
@@ -89,6 +90,52 @@ async function layout(page,route,width){
  assert.deepEqual(dimensions.broken,[],route+' visible image assets');
  record('layout',{route,width,horizontalOverflow:false});
 }
+async function contrast(page,width){
+ const result=await page.evaluate(()=>{
+  const parse=value=>{
+   const parts=value.match(/^rgba?\(([^)]+)\)$/)?.[1].split(/\s*[,/]\s*|\s+/).map(Number);
+   return parts&&parts.length>=3&&parts.every(Number.isFinite)?[...parts.slice(0,3),parts[3]??1]:null;
+  };
+  const over=(front,back)=>front.slice(0,3).map((channel,index)=>channel*front[3]+back[index]*(1-front[3]));
+  const luminance=color=>color.map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;}).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+  const ratio=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+  function backdrop(element){
+   const ancestors=[];for(let node=element;node;node=node.parentElement)ancestors.push(node);
+   let background=[255,255,255];const gradients=[];
+   for(const node of ancestors.reverse()){
+    const style=getComputedStyle(node),color=parse(style.backgroundColor);
+    if(color)background=over(color,background);
+    if(style.backgroundImage!=='none')gradients.push(style.backgroundImage);
+   }
+   return {background,gradients};
+  }
+  const samples=[];
+  for(const element of document.querySelectorAll('h1,h2,h3,p,li,label,legend,a,button,.card-label,.eyebrow,.app-hero em,input,select,textarea')){
+   const style=getComputedStyle(element),rect=element.getBoundingClientRect();
+   if(!rect.width||!rect.height||style.visibility!=='visible'||Number(style.opacity)===0||element.closest('[hidden],[aria-disabled="true"]')||element.matches(':disabled'))continue;
+   const text=(element.textContent||element.getAttribute('placeholder')||'').trim().replace(/\s+/g,' ').slice(0,90);
+   if(!text&&!element.matches('input,select,textarea'))continue;
+   const foreground=parse(style.color);if(!foreground)continue;
+   const {background,gradients}=backdrop(element),effective=over(foreground,background);
+   const large=parseFloat(style.fontSize)>=24||(parseFloat(style.fontSize)>=18.66&&parseInt(style.fontWeight,10)>=700);
+   const threshold=large?3:4.5;
+   samples.push({element:element.id?'#'+element.id:element.tagName.toLowerCase()+'.'+[...element.classList].join('.'),text,color:style.color,background:background.map(Math.round),ratio:Number(ratio(effective,background).toFixed(3)),minimum:threshold,gradientBackground:gradients.length>0});
+   if(element.getAttribute('placeholder')){
+    const placeholder=getComputedStyle(element,'::placeholder'),color=parse(placeholder.color);
+    if(color)samples.push({element:'#'+element.id+'::placeholder',text:element.getAttribute('placeholder'),color:placeholder.color,background:background.map(Math.round),ratio:Number(ratio(over([color[0],color[1],color[2],color[3]*Number(placeholder.opacity)],background),background).toFixed(3)),minimum:4.5,gradientBackground:gradients.length>0});
+   }
+  }
+  const body=backdrop(document.body).background;
+  return {samples,bodyBackground:body.map(Math.round),bodyLuminance:luminance(body)};
+ });
+ const failures=result.samples.filter(sample=>!sample.gradientBackground&&sample.ratio+.01<sample.minimum);
+ contrastSamples.push({width,...result,failures});
+ assert.ok(result.bodyLuminance<.15,'dark page background at '+width);
+ assert.ok(result.samples.some(sample=>!sample.gradientBackground),'solid backgrounds available for numeric contrast checks');
+ assert.deepEqual(failures,[],'text contrast on solid backgrounds at '+width);
+ record('dark contrast',{width,samples:result.samples.length,solidSamples:result.samples.filter(s=>!s.gradientBackground).length,gradientSamplesForVisualReview:result.samples.filter(s=>s.gradientBackground).length,bodyBackground:result.bodyBackground});
+}
+
 async function inertForms(page,label){
  for(const id of ['app-enquiry','app-idea']){
   const form=page.locator('#'+id);
@@ -161,6 +208,7 @@ try{
    assert.ok((await page.locator('#'+id).getAttribute('action'))?.trim());
   }
   await layout(page,'/apps',width);
+  if(darkMode)await contrast(page,width);
   await page.screenshot({path:path.join(evidence,`Apps-${width}.png`),fullPage:true});
   if([390,1366].includes(width))for(const [name,selector] of [['Hero','.app-hero'],['Preise','#lizenzen'],['Kaufanfrage','#app-enquiry'],['Rueckmeldung','#app-idea']]){
    await page.locator(selector).screenshot({path:path.join(evidence,`Apps-${name}-${width}.png`)});
@@ -264,12 +312,12 @@ try{
  assert.deepEqual(unexpectedPosts,[],'no form POST or PII GET fallback');
  assert.deepEqual(mailAttempts,[],'no mail application opened');assert.deepEqual(windowOpenAttempts,[],'no external window opened');
  assert.deepEqual(pageErrors,[],'browser JavaScript errors');
- const result={checkedAt:new Date().toISOString(),passed:true,layoutCases:checks.filter(c=>c.name==='layout').length,supportedHomepages:langs.length,widths,checks,pageErrors,blockedExternal:[...new Set(blockedExternal)],realEmails:0,realPayments:0,realSubmissions:0,clipboard:'mocked only',downloadLinksFollowed:0,published:false};
+ const result={checkedAt:new Date().toISOString(),passed:true,layoutCases:checks.filter(c=>c.name==='layout').length,supportedHomepages:langs.length,widths,checks,contrastSamples,pageErrors,blockedExternal:[...new Set(blockedExternal)],realEmails:0,realPayments:0,realSubmissions:0,clipboard:'mocked only',downloadLinksFollowed:0,published:false};
  fs.writeFileSync(path.join(evidence,'Ergebnis.json'),JSON.stringify(result,null,2));
  console.log(JSON.stringify({passed:true,layoutCases:result.layoutCases,checks:checks.length,gateCases:gateCases.length,realEmails:0,realPayments:0,realSubmissions:0,evidence}));
 }catch(error){
  if(primaryPage&&!primaryPage.isClosed())await primaryPage.screenshot({path:path.join(evidence,'Fehler.png'),fullPage:true}).catch(()=>{});
- fs.writeFileSync(path.join(evidence,'Ergebnis.json'),JSON.stringify({checkedAt:new Date().toISOString(),passed:false,error:error.stack||String(error),checks,pageErrors,blockedExternal:[...new Set(blockedExternal)],unexpectedPosts,mailAttempts,windowOpenAttempts,realEmails:0,realPayments:0,realSubmissions:0,published:false},null,2));
+ fs.writeFileSync(path.join(evidence,'Ergebnis.json'),JSON.stringify({checkedAt:new Date().toISOString(),passed:false,error:error.stack||String(error),checks,contrastSamples,pageErrors,blockedExternal:[...new Set(blockedExternal)],unexpectedPosts,mailAttempts,windowOpenAttempts,realEmails:0,realPayments:0,realSubmissions:0,published:false},null,2));
  throw error;
 }finally{
  if(browser)await browser.close();
