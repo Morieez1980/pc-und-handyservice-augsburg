@@ -152,7 +152,7 @@ const copy={
     "تماس"
   ]
 };
-const avatar='<img class="repair-avatar" src="/bilder/maurice-reparatur-avatar.png" width="96" height="112" alt="" aria-hidden="true" decoding="async">';
+const avatar='<span class="repair-avatar" aria-hidden="true"><img src="/bilder/maurice-reparatur-avatar-v2.png" width="96" height="112" alt="" decoding="async"><span class="repair-avatar-frames"></span></span>';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
 export function repairHelper(lang){
  const c=copy[lang];if(!c)throw Error('Missing contact helper locale: '+lang);
