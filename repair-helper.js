@@ -20,42 +20,32 @@
   const mascot = toggle.querySelector('.repair-avatar');
   const frames = mascot?.querySelector('.repair-avatar-frames');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let greetingTimer;
-  let restartTimer;
   let spriteReady = false;
   let userPaused = false;
+  let motionOptIn = false;
   const motion = document.createElement('button');
   motion.type = 'button';
   motion.className = 'repair-helper-motion';
   motion.hidden = true;
   const labels = motionCopy[document.documentElement.lang.split('-')[0]] || motionCopy.en;
   const updateMotionControl = () => {
-   motion.textContent = userPaused ? '▶' : 'Ⅱ';
-   motion.setAttribute('aria-label', labels[userPaused ? 1 : 0]);
-   motion.title = labels[userPaused ? 1 : 0];
-   motion.hidden = !spriteReady || reducedMotion.matches;
+   const paused = userPaused || (reducedMotion.matches && !motionOptIn);
+   motion.textContent = paused ? '▶' : 'Ⅱ';
+   motion.setAttribute('aria-label', labels[paused ? 1 : 0]);
+   motion.title = labels[paused ? 1 : 0];
+   motion.hidden = !spriteReady;
   };
   const stopGreeting = () => {
-   window.clearTimeout(greetingTimer);
-   window.clearTimeout(restartTimer);
    mascot?.classList.remove('is-greeting');
    helper.classList.remove('is-animating');
   };
-  const canAnimate = () => spriteReady && !userPaused && !reducedMotion.matches && !document.hidden && panel.hidden;
+  const canAnimate = () => spriteReady && !userPaused && (!reducedMotion.matches || motionOptIn) && !document.hidden && panel.hidden;
   const startGreeting = () => {
-   stopGreeting();
-   if (!canAnimate()) return;
+   if (!canAnimate()) {stopGreeting();return;}
+   // Keep the same CSS loop running. Restoring a tab no longer depends on
+   // a JavaScript timer restarting the decoration after every sequence.
    mascot.classList.add('is-greeting');
    helper.classList.add('is-animating');
-   // Allow the full eight-second repair sequence; recover if animationend is lost.
-   greetingTimer = window.setTimeout(finishGreeting, 8500);
-  };
-  const scheduleGreeting = () => {
-   stopGreeting();
-   if (canAnimate()) restartTimer = window.setTimeout(startGreeting, 2000);
-  };
-  const finishGreeting = () => {
-   scheduleGreeting();
   };
   const setOpen = (open, restoreFocus = true) => {
    if (open) stopGreeting();
@@ -64,7 +54,7 @@
    if (open) close.focus({preventScroll:true});
    else {
     if (restoreFocus) toggle.focus({preventScroll:true});
-    scheduleGreeting();
+    startGreeting();
    }
   };
   toggle.hidden = false;
@@ -82,24 +72,28 @@
   if (mascot && frames) {
    helper.append(motion);
    motion.addEventListener('click', () => {
-    userPaused = !userPaused;
+    if (userPaused || (reducedMotion.matches && !motionOptIn)) {
+     userPaused = false;
+     motionOptIn = true;
+     helper.classList.add('motion-opt-in');
+    } else userPaused = true;
     updateMotionControl();
     if (userPaused) stopGreeting();
     else startGreeting();
    });
   }
-  frames?.addEventListener('animationend', event => {
-   if (event.target === frames && event.animationName === 'repair-avatar-actions') finishGreeting();
-  });
   reducedMotion.addEventListener('change', () => {
+   motionOptIn = false;
+   helper.classList.remove('motion-opt-in');
    updateMotionControl();
-   if (reducedMotion.matches) stopGreeting();
-   else scheduleGreeting();
+   startGreeting();
   });
   document.addEventListener('visibilitychange', () => {
    if (document.hidden) stopGreeting();
-   else scheduleGreeting();
+   else startGreeting();
   });
+  window.addEventListener('pageshow', startGreeting);
+  window.addEventListener('focus', startGreeting);
   if (mascot && frames) {
    const sprite = new Image();
    sprite.src = '/bilder/reparatur-avatar-schlanker-bewegung-20261107.png';
