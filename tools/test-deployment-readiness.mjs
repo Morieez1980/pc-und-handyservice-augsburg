@@ -46,7 +46,8 @@ test('the current checkout passes and preserves every existing endpoint check', 
 });
 
 test('a still-successful old deployment is waited out until current version references arrive', async () => {
-  const oldHome = files.get('/').replaceAll('20261107-avatar-web3', 'old-avatar').replaceAll('maurice-reparatur-avatar-web-20261107.png', 'old-portrait.png');
+  const oldHome = files.get('/').replaceAll(expected.helper, '/repair-helper.js?v=old-avatar').replaceAll(expected.css, '/home-intro.css?v=old-avatar');
+  assert.notEqual(oldHome, files.get('/'), 'The stale fixture must replace current asset references');
   const timer = clock();
   let reads = 0;
   const attempts = await waitForDeployment(() => checkDeployment(expected, fixture(++reads === 1 ? {'/': oldHome} : {})), timer);
@@ -57,7 +58,10 @@ test('a still-successful old deployment is waited out until current version refe
 
 test('an indefinitely old deployment fails at the bounded deadline instead of checking old PNG budgets', async () => {
   const timer = clock();
-  const oldApps = files.get('/apps').replace('20261107-download-gate2', 'old-app');
+  const appScript = expected.pages[1].refs.find(ref => /^\/(?:apps|app-hub)\.js\?/.test(ref));
+  assert.ok(appScript, 'Current app script reference is required');
+  const oldApps = files.get('/apps').replaceAll(appScript, '/apps.js?v=old-app');
+  assert.notEqual(oldApps, files.get('/apps'), 'The stale fixture must replace the current app reference');
   const requests = [];
   await assert.rejects(waitForDeployment(() => checkDeployment(expected, fixture({'/apps': oldApps}, requests)), timer), /did not become ready.*current frontend reference/);
   assert.equal(timer.now(), 25);
@@ -72,13 +76,16 @@ test('HTML formatting transformations do not require a byte-identical deployment
 });
 
 test('a stale portrait is not accepted when script and CSS version tokens are current', async () => {
-  const home = files.get('/').replaceAll('maurice-reparatur-avatar-web-20261107.png', 'old-portrait.png');
+  let home = files.get('/');
+  for (const portrait of expected.portraitRefs) home = home.replaceAll(portrait, '/bilder/old-portrait.png');
+  assert.notEqual(home, files.get('/'), 'The stale fixture must replace current portraits');
   await assert.rejects(checkDeployment(expected, fixture({'/': home})), /current avatar portrait/);
 });
 
 for (const [label, asset] of [['script', expected.helper], ['CSS', expected.css]]) {
   test(`current HTML with an old avatar ${label} body is retried`, async () => {
-    const staleAsset = files.get(asset).replaceAll('reparatur-avatar-animation-web-20261107.png', 'reparatur-avatar-bewegung-20261107.png');
+    const staleAsset = files.get(asset).replaceAll(expected.sprite, '/bilder/old-avatar-sprite.png');
+    assert.notEqual(staleAsset, files.get(asset), 'The stale fixture must replace the current sprite');
     await assert.rejects(checkDeployment(expected, fixture({[asset]: staleAsset})), /waiting for the current sprite/);
     const timer = clock();
     let attempts = 0;
