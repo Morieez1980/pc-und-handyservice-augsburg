@@ -24,41 +24,105 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:
-      - name: Wait for deployment and check endpoints
-        shell: bash
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Wait for current deployment and check endpoints
+        shell: node {0}
         run: |
-          set -euo pipefail
-          base="${MONITOR_BASE}"
-          endpoints=("/" "/apps" "/apps-lizenz" "/apps-legal.css" "/app-offer.json" "/api/google-reviews" "/api/review-summary" "/reparaturanfrage" "/reparaturberichte" "/datenschutz" "/impressum.html" "/qr-reparaturanfrage.png?v=20260902-1" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js" "/repair-form.js" "/vendor/intl-tel-input/css/intlTelInput.min.css" "/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js" "/vendor/intl-tel-input/img/flags.webp" "/vendor/intl-tel-input/img/flags@2x.webp")
-          for attempt in {1..18}; do
-            all_ready=true
-            failed_endpoint=""
-            for endpoint in "${endpoints[@]}"; do
-              code="$(curl --silent --show-error --location --retry 2 --output /dev/null --write-out '%{http_code}' "${base}${endpoint}" || true)"
-              if [[ "$code" != "200" ]]; then
-                all_ready=false
-                failed_endpoint="${endpoint} (HTTP ${code})"
-                break
-              fi
-            done
-            page="$(curl --silent --show-error --location --retry 2 "${base}/" || true)"
-            request_page="$(curl --silent --show-error --location --retry 2 "${base}/reparaturanfrage" || true)"
-            apps_page="$(curl --silent --show-error --location --retry 2 "${base}/apps" || true)"
-            home_marker=false
-            request_marker=false
-            apps_marker=false
-            if grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page"; then home_marker=true; fi
-            if grep --fixed-strings --quiet 'repair-form.js?v=' <<< "$request_page"; then request_marker=true; fi
-            if grep --fixed-strings --quiet 'id="app-enquiry"' <<< "$apps_page" && grep --fixed-strings --quiet 'id="app-idea"' <<< "$apps_page"; then apps_marker=true; fi
-            if [[ "$all_ready" == "true" && "$home_marker" == "true" && "$request_marker" == "true" && "$apps_marker" == "true" ]]; then
-              echo "Deployment is ready after attempt ${attempt}."
-              exit 0
-            fi
-            echo "Deployment not ready yet (attempt ${attempt}/18): failed endpoint=${failed_endpoint:-none}; home marker=${home_marker}; repair form marker=${request_marker}; apps marker=${apps_marker}."
-            sleep 10
-          done
-          echo "Production deployment did not become ready in time."
-          exit 1
+          const assert = require('node:assert/strict');
+          const {readFileSync} = require('node:fs');
+          // BEGIN DEPLOYMENT READINESS: compare references, not potentially transformed HTML bytes.
+          const endpoints = ['/', '/apps', '/apps-lizenz', '/apps-legal.css', '/app-offer.json', '/api/google-reviews', '/api/review-summary', '/reparaturanfrage', '/reparaturberichte', '/datenschutz', '/impressum.html', '/qr-reparaturanfrage.png?v=20260902-1', '/robots.txt', '/sitemap.xml', '/site.webmanifest', '/og-image.png', '/icon-192.png', '/clarity-consent.min.js', '/repair-form.js', '/vendor/intl-tel-input/css/intlTelInput.min.css', '/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js', '/vendor/intl-tel-input/img/flags.webp', '/vendor/intl-tel-input/img/flags@2x.webp'];
+          function assetRef(value, route = '/') {
+            const url = new URL(value.replace(/&amp;/g, '&'), new URL(route, 'https://deployment.invalid'));
+            assert.equal(url.origin, 'https://deployment.invalid', `Unexpected frontend asset origin: ${value}`);
+            return url.pathname + url.search;
+          }
+          function versionedRefs(html, route) {
+            const refs = [];
+            for (const tag of html.matchAll(/<(?:script|link)\b[^>]*>/gi)) {
+              if (/^<link\b/i.test(tag[0]) && !/\brel\s*=\s*["']stylesheet["']/i.test(tag[0])) continue;
+              const value = tag[0].match(/\b(?:src|href)\s*=\s*["']([^"']+)["']/i)?.[1];
+              if (!value || /^(?:https?:)?\/\//i.test(value)) continue;
+              const ref = assetRef(value, route), url = new URL(ref, 'https://deployment.invalid');
+              if (/\.(?:js|css)$/.test(url.pathname) && url.searchParams.has('v')) refs.push(ref);
+            }
+            return [...new Set(refs)].sort();
+          }
+          function portraits(html) {
+            return [...new Set([...html.matchAll(/class=["']repair-avatar["'][^>]*>\s*<img\b[^>]*\bsrc=["']([^"']+)["']/gi)].map(match => assetRef(match[1])))].sort();
+          }
+          function spriteRef(source) {
+            const value = source.match(/sprite\.src\s*=\s*["']([^"']+)["']/)?.[1];
+            assert.ok(value, 'Avatar script sprite reference missing');
+            return assetRef(value);
+          }
+          function cssRefs(source, route) {
+            return [...new Set([...source.matchAll(/url\(\s*["']?([^\s"')]+)["']?\s*\)/g)].map(match => assetRef(match[1], route)))].sort();
+          }
+          function expectedDeployment(readFile) {
+            const pages = [{route: '/', file: 'index.html'}, {route: '/apps', file: 'apps.html'}].map(page => ({...page, refs: versionedRefs(readFile(page.file), page.route)}));
+            const home = readFile('index.html'), portraitRefs = portraits(home);
+            assert.ok(portraitRefs.length, 'Checked-out homepage portrait reference missing');
+            const helper = pages[0].refs.find(ref => ref.startsWith('/repair-helper.js?'));
+            const css = pages[0].refs.find(ref => ref.startsWith('/home-intro.css?'));
+            assert.ok(helper && css && pages[1].refs.length, 'Checked-out frontend references missing');
+            const sprite = spriteRef(readFile(new URL(helper, 'https://deployment.invalid').pathname.slice(1)));
+            const spriteCss = cssRefs(readFile(new URL(css, 'https://deployment.invalid').pathname.slice(1)), css);
+            assert.ok(spriteCss.includes(sprite), 'Checked-out avatar script and CSS use different sprites');
+            return {pages, portraitRefs, helper, css, sprite, spriteCss};
+          }
+          async function checkDeployment(expected, read) {
+            const [home, apps, request] = await Promise.all(['/', '/apps', '/reparaturanfrage'].map(path => read(path, true)));
+            for (const [page, html] of [[expected.pages[0], home], [expected.pages[1], apps]]) {
+              const refs = versionedRefs(html, page.route);
+              for (const ref of page.refs) assert.ok(refs.includes(ref), `${page.route}: waiting for current frontend reference ${ref}`);
+            }
+            assert.deepEqual(portraits(home), expected.portraitRefs, 'Homepage is waiting for the current avatar portrait');
+            assert.ok(home.includes('script.min.js?v='), 'Homepage script marker missing');
+            assert.ok(request.includes('repair-form.js?v='), 'Repair form script marker missing');
+            assert.ok(apps.includes('id="app-enquiry"') && apps.includes('id="app-idea"'), 'App enquiry markers missing');
+            const alreadyRead = new Set(['/', '/apps', '/reparaturanfrage']);
+            const [helper, css] = await Promise.all([
+              read(expected.helper, true), read(expected.css, true),
+              ...endpoints.filter(path => !alreadyRead.has(path)).map(path => read(path, false))
+            ]);
+            assert.equal(spriteRef(helper), expected.sprite, 'Avatar script is waiting for the current sprite');
+            assert.deepEqual(cssRefs(css, expected.css), expected.spriteCss, 'Avatar CSS is waiting for the current sprite');
+          }
+          async function waitForDeployment(check, {now, sleep, log, budgetMs = 150000, pollMs = 8000}) {
+            const deadline = now() + budgetMs;
+            let lastError, attempt = 0;
+            while (now() < deadline) {
+              attempt++;
+              try {
+                await check(deadline);
+                return attempt;
+              } catch (error) {
+                lastError = error;
+                log(`Deployment not current yet (attempt ${attempt}): ${error.message}`);
+              }
+              const remaining = deadline - now();
+              if (remaining > 0) await sleep(Math.min(pollMs, remaining));
+            }
+            throw new Error(`Current deployment did not become ready within ${budgetMs / 1000}s: ${lastError?.message || 'deadline reached'}`);
+          }
+          // END DEPLOYMENT READINESS
+          const base = new URL(process.env.MONITOR_BASE);
+          const expected = expectedDeployment(file => readFileSync(file, 'utf8'));
+          waitForDeployment(async deadline => {
+            await checkDeployment(expected, async (path, text) => {
+              const url = new URL(path, base);
+              assert.equal(url.origin, base.origin, `Unexpected asset origin: ${url}`);
+              const timeout = Math.min(6000, Math.max(1, deadline - Date.now()));
+              const response = await fetch(url, {headers: {'cache-control': 'no-cache'}, signal: AbortSignal.timeout(timeout)});
+              assert.equal(response.status, 200, `${path}: HTTP ${response.status}`);
+              if (text) return response.text();
+              await response.body?.cancel();
+            });
+          }, {now: Date.now, sleep: ms => new Promise(resolve => setTimeout(resolve, ms)), log: console.log})
+            .then(attempts => console.log(`Current deployment is ready after attempt ${attempts}.`))
+            .catch(error => {console.error(error.message); process.exitCode = 1;});
 
       - name: Check security and cache headers
         shell: bash
