@@ -29,7 +29,7 @@ jobs:
         run: |
           set -euo pipefail
           base="${MONITOR_BASE}"
-          endpoints=("/" "/api/google-reviews" "/api/review-summary" "/reparaturanfrage" "/reparaturberichte" "/datenschutz" "/impressum.html" "/qr-reparaturanfrage.png?v=20260902-1" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js" "/repair-form.js" "/vendor/intl-tel-input/css/intlTelInput.min.css" "/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js" "/vendor/intl-tel-input/img/flags.webp" "/vendor/intl-tel-input/img/flags@2x.webp")
+          endpoints=("/" "/apps" "/apps-lizenz" "/apps-legal.css" "/app-offer.json" "/api/google-reviews" "/api/review-summary" "/reparaturanfrage" "/reparaturberichte" "/datenschutz" "/impressum.html" "/qr-reparaturanfrage.png?v=20260902-1" "/robots.txt" "/sitemap.xml" "/site.webmanifest" "/og-image.png" "/icon-192.png" "/clarity-consent.min.js" "/repair-form.js" "/vendor/intl-tel-input/css/intlTelInput.min.css" "/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js" "/vendor/intl-tel-input/img/flags.webp" "/vendor/intl-tel-input/img/flags@2x.webp")
           for attempt in {1..18}; do
             all_ready=true
             failed_endpoint=""
@@ -43,15 +43,18 @@ jobs:
             done
             page="$(curl --silent --show-error --location --retry 2 "${base}/" || true)"
             request_page="$(curl --silent --show-error --location --retry 2 "${base}/reparaturanfrage" || true)"
+            apps_page="$(curl --silent --show-error --location --retry 2 "${base}/apps" || true)"
             home_marker=false
             request_marker=false
+            apps_marker=false
             if grep --fixed-strings --quiet 'script.min.js?v=' <<< "$page"; then home_marker=true; fi
             if grep --fixed-strings --quiet 'repair-form.js?v=' <<< "$request_page"; then request_marker=true; fi
-            if [[ "$all_ready" == "true" && "$home_marker" == "true" && "$request_marker" == "true" ]]; then
+            if grep --fixed-strings --quiet 'id="app-enquiry"' <<< "$apps_page" && grep --fixed-strings --quiet 'id="app-idea"' <<< "$apps_page"; then apps_marker=true; fi
+            if [[ "$all_ready" == "true" && "$home_marker" == "true" && "$request_marker" == "true" && "$apps_marker" == "true" ]]; then
               echo "Deployment is ready after attempt ${attempt}."
               exit 0
             fi
-            echo "Deployment not ready yet (attempt ${attempt}/18): failed endpoint=${failed_endpoint:-none}; home marker=${home_marker}; repair form marker=${request_marker}."
+            echo "Deployment not ready yet (attempt ${attempt}/18): failed endpoint=${failed_endpoint:-none}; home marker=${home_marker}; repair form marker=${request_marker}; apps marker=${apps_marker}."
             sleep 10
           done
           echo "Production deployment did not become ready in time."
@@ -118,6 +121,67 @@ jobs:
             echo "Legacy Zoho CRM form is still present in production"
             exit 1
           fi
+
+      - name: Check app hub and avatar asset contents
+        shell: node {0}
+        run: |
+          const assert = require('node:assert/strict');
+          const {Script} = require('node:vm');
+          const base = new URL(process.env.MONITOR_BASE);
+          async function read(path, mime) {
+            const url = new URL(path, base);
+            assert.equal(url.origin, base.origin, `Unexpected asset origin: ${url}`);
+            const response = await fetch(url, {signal: AbortSignal.timeout(20000)});
+            assert.equal(response.status, 200, `${path}: HTTP ${response.status}`);
+            assert.match(response.headers.get('content-type') || '', mime, `${path}: unexpected content type`);
+            return Buffer.from(await response.arrayBuffer());
+          }
+          function linked(html, pattern, label) {
+            const match = html.match(pattern);
+            assert.ok(match, `${label}: link missing from production HTML`);
+            return match[1];
+          }
+          async function check() {
+            const [homeBytes, appBytes, licenseBytes] = await Promise.all([read('/', /^text\/html\b/i), read('/apps', /^text\/html\b/i), read('/apps-lizenz', /^text\/html\b/i)]);
+            const home = homeBytes.toString(), apps = appBytes.toString(), license = licenseBytes.toString();
+            for (const marker of ['id="app-enquiry"', 'id="app-idea"', 'data-demo-download']) assert.ok(apps.includes(marker), `App hub marker missing: ${marker}`);
+            assert.ok(home.includes('data-repair-helper'), 'Avatar contact control missing');
+            const appPath = linked(apps, /src=["'](\/(?:apps|app-hub)\.js(?:\?[^"']*)?)["']/, 'App script');
+            const appCssPath = linked(apps, /href=["'](\/apps\.css(?:\?[^"']*)?)["']/, 'App stylesheet');
+            const legalCssPath = linked(license, /href=["'](\/apps-legal\.css(?:\?[^"']*)?)["']/, 'License stylesheet');
+            for (const id of ['lizenz', 'produkt', 'widerruf', 'datenschutz', 'sicherheit', 'urheberrecht']) assert.ok(license.includes(`id="${id}"`), `License section missing: ${id}`);
+            for (const document of ['lizenzbedingungen', 'produktinformationen', 'widerruf', 'datenschutz', 'datensicherheit']) assert.ok(license.includes(`/assets/apps/keil-copy/${document}.txt`), `Original document link missing: ${document}`);
+            const helperPath = linked(home, /src=["'](\/repair-helper\.js(?:\?[^"']*)?)["']/, 'Avatar script');
+            const cssPath = linked(home, /href=["'](\/home-intro\.css(?:\?[^"']*)?)["']/, 'Avatar stylesheet');
+            const jsMime = /^(?:application|text)\/javascript\b/i;
+            const [appJs, helperJs, cssBytes, offerBytes, appCss, legalCss] = await Promise.all([read(appPath, jsMime), read(helperPath, jsMime), read(cssPath, /^text\/css\b/i), read('/app-offer.json', /^application\/json\b/i), read(appCssPath, /^text\/css\b/i), read(legalCssPath, /^text\/css\b/i)]);
+            const app = appJs.toString(), helper = helperJs.toString(), css = cssBytes.toString();
+            for (const [path, source] of [[appPath, app], [helperPath, helper]]) new Script(source, {filename: path});
+            for (const marker of ['#app-enquiry', '#app-idea', 'app-offer.json', 'data-demo-download', 'practicalAcceptanceComplete']) assert.ok(app.includes(marker), `App script marker missing: ${marker}`);
+            for (const marker of ['data-repair-helper', 'repair-avatar-actions', 'prefers-reduced-motion', 'restartTimer']) assert.ok(helper.includes(marker), `Avatar script marker missing: ${marker}`);
+            assert.ok(css.includes('@keyframes repair-avatar-actions'), 'Avatar keyframes missing');
+            assert.ok(appCss.toString().includes('.app-page'), 'App stylesheet marker missing');
+            assert.ok(legalCss.toString().includes('.legal-document'), 'License stylesheet marker missing');
+            const offer = JSON.parse(offerBytes.toString());
+            assert.equal(offer.product, 'Keil@Copy', 'Unexpected app offer');
+            for (const flag of ['published', 'legalReviewComplete', 'practicalAcceptanceComplete']) assert.equal(typeof offer[flag], 'boolean', `App offer flag missing: ${flag}`);
+            assert.ok(offer.demo && Object.hasOwn(offer.demo, 'url') && Object.hasOwn(offer, 'purchaseDownloadUrl'), 'Download gate fields missing');
+            if (!(offer.published && offer.legalReviewComplete && offer.practicalAcceptanceComplete)) {
+              assert.equal(offer.demo.url, null, 'Unreleased demo URL must remain unset');
+              assert.equal(offer.purchaseDownloadUrl, null, 'Unreleased purchase URL must remain unset');
+              const button = apps.match(/<a\b[^>]*data-demo-download[^>]*>/)?.[0] || '';
+              assert.match(button, /aria-disabled=["']true["']/, 'Unreleased demo control is not disabled');
+            }
+            const sprite = linked(helper, /sprite\.src\s*=\s*["']([^"']+)["']/, 'Avatar sprite');
+            assert.ok(css.includes(sprite), 'Avatar script and stylesheet use different sprites');
+            const portrait = linked(home, /class=["']repair-avatar["'][^>]*>\s*<img[^>]*src=["']([^"']+)["']/, 'Avatar portrait');
+            for (const path of [sprite, portrait]) {
+              const bytes = await read(path, /^image\/png\b/i);
+              assert.ok(bytes.length >= 24 && bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), `${path}: invalid PNG signature`);
+            }
+            console.log('App hub, license page, JavaScript syntax, release gates and avatar assets passed. Browser interaction is covered separately.');
+          }
+          check().catch(error => { console.error(error); process.exitCode = 1; });
 
       - name: Check APIs and invalid confirmation
         shell: bash
