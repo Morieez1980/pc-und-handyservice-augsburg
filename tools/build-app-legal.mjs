@@ -34,7 +34,7 @@ ${sections}
 `;
 const output = path.join(root, 'apps-lizenz.html');
 if (process.argv.includes('--check')) {
-  if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8') !== html) {
+  if (!fs.existsSync(output) || fs.readFileSync(output, 'utf8').replaceAll('\r\n', '\n') !== html) {
     throw new Error('Die HTML-App-Unterlagen stimmen nicht mit den aktuellen Originaldokumenten überein. Bitte node tools/build-app-legal.mjs ausführen.');
   }
   console.log('HTML-App-Unterlagen stimmen mit den Originaldokumenten überein.');
