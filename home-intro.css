@@ -125,3 +125,32 @@ body .home-intro-actions{box-shadow:inset 0 1px 0 #b4f0ff12,0 5px 0 -3px #020911
 
 /* Separate available program updates from future paid features. */
 .copy-preview-planned{margin-top:10px;padding-top:10px;border-top:1px solid #2e4b5e}.copy-preview-planned>strong{display:block;font-size:14px;line-height:1.4;color:#eaf5fb}.home-intro .copy-preview-planned p{margin-top:6px}
+
+/* An additional contact bubble, outside document flow. The first-screen layout
+   and its original avatar remain unchanged. No external media or tracking. */
+body>.repair-helper-floating{position:fixed;inset:auto auto 18px 14px;z-index:139;display:grid;grid-template-columns:44px 44px;justify-items:center;align-items:center;gap:2px 4px;width:106px;padding:7px 6px 4px;border:1px solid #477787;border-radius:28px;background:linear-gradient(145deg,#1b3c4b,#102530);box-shadow:inset 0 1px 0 #b3f1ff20,0 12px 34px #0008;color:#d7eef5;box-sizing:border-box;isolation:isolate}
+body>.repair-helper-floating[hidden]{display:none!important}
+.repair-helper-floating .repair-helper-toggle{grid-column:1/-1;flex-direction:column;gap:0;min-width:0;width:100%;padding:0 0 3px;border:0;border-radius:21px;background:transparent;box-shadow:none;text-align:center}
+.repair-helper-floating .repair-helper-toggle>.repair-avatar{width:78px;height:96px}
+.repair-helper-floating .repair-helper-toggle>span:not(.repair-avatar){max-width:none;font-size:12px;line-height:1.2}
+.repair-helper-floating .repair-helper-motion,.repair-helper-floating .repair-helper-dismiss{display:grid;place-items:center;width:44px;height:44px;min-height:44px;margin:0;padding:0;border:1px solid #375d6e;border-radius:14px;background:#102530;color:#a4e3ed;font:700 16px/1 system-ui;box-shadow:none;cursor:pointer}
+.repair-helper-floating .repair-helper-motion[hidden]{display:none!important}
+.repair-helper-floating .repair-helper-dismiss{font-size:25px}
+.repair-helper-floating .repair-helper-dismiss:hover,.repair-helper-floating .repair-helper-motion:hover{background:#214451;color:#fff}
+.repair-helper-floating .repair-helper-panel{inset:auto auto 200px 14px;width:310px;max-width:calc(100vw - 28px);max-height:calc(100dvh - 218px);box-sizing:border-box;text-align:start}
+.repair-helper-floating .repair-helper-panel h2{margin:8px 0 10px;font-size:21px;line-height:1.25;letter-spacing:-.02em;color:#fff}
+.repair-helper-floating .repair-helper-panel p{margin:0;font-size:14px;line-height:1.45;color:#c7dbe5}
+.repair-helper-floating .repair-helper-panel .repair-helper-owner{font-size:12px;line-height:1.4;color:#67c6df;font-weight:650;padding-inline-end:16px}
+.repair-helper-floating .repair-helper-contacts a{display:flex;align-items:center;min-height:44px;padding:10px 14px;border:1px solid #375d6e;border-radius:13px;font-size:14px;font-weight:700;text-decoration:none;color:#67c6df}
+.repair-helper-floating .repair-helper-contacts a:first-child{background:#2fb6ad;border-color:#69d3cc;color:#052d2a}
+@media(max-width:1000px){body:has(>.repair-helper-floating) .home-intro .repair-helper{display:none}}
+@media(max-width:700px){
+ body>.repair-helper-floating{left:10px;bottom:calc(86px + env(safe-area-inset-bottom));width:98px;border-radius:25px;gap:0;padding-inline:2px}
+ .repair-helper-floating .repair-helper-toggle>.repair-avatar{width:64px;height:80px}
+ .repair-helper-floating .repair-helper-panel{left:10px;bottom:calc(256px + env(safe-area-inset-bottom));max-width:calc(100vw - 20px);max-height:calc(100dvh - 274px - env(safe-area-inset-bottom))}
+}
+@media(max-height:550px){
+ .repair-helper-floating .repair-helper-toggle>.repair-avatar{width:52px;height:64px}
+ .repair-helper-floating .repair-helper-panel{top:12px;bottom:auto;max-height:calc(100dvh - 24px)}
+}
+@media print{body>.repair-helper-floating{display:none!important}}
