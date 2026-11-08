@@ -1,3 +1,4 @@
+import {compactGermanHome} from '../locales/compact-home.mjs';
 import {createHash} from 'node:crypto';
 import {homeIntro} from '../locales/home-intro.mjs';
 import {calibratedFees,calibratedScope} from '../locales/price-calibration.mjs';
@@ -149,6 +150,8 @@ for(const [lang,c] of Object.entries(localeContent)){
     const startLinkedHtml=html
       .replace('</head>','<link rel="stylesheet" href="/brand-theme.css?v=20261105-bubbles1"></head>')
       .replace('</head>',!legal&&!formPage?'<link rel="stylesheet" href="/site-presentation.css?v=20261031-1"></head>':'</head>')
+      .replace('</head>',!legal&&!formPage?'<link rel="stylesheet" href="/screen-overview.css?v=20261108-1"></head>':'</head>')
+      .replace('</head>',!route?'<script defer src="/price-tabs.js?v=20261108-1"></script></head>':'</head>')
       .replace(/(<html lang="[^"]+")/,'$1 id="top"')
       .replace('<a class="brand" href="'+url(lang)+'"','<a class="brand" href="'+url(lang)+'#top"');
     write(lang+'/'+(route||'index')+'.html',withAppsNavigation(startLinkedHtml,lang));
@@ -194,7 +197,7 @@ for(const route of routes){
   if(route&&routes.slice(0,6).includes(route))html=html.replace(/(<main\b[^>]*>)/,'$1'+arrivalWayfinder('de'));
   if(!route){
    const intro=homeIntro('de',{title:'PC-, Handy- & Konsolenreparatur in Augsburg.',requestLabel:'Reparatur anfragen',serviceLabels:['PC & Laptop','MacBook','Handy & Tablet','Konsolen'],programPreview:copyPreviewBanner('de')});
-   html=html.replace(/<section class="(?:hero|home-intro)"[\s\S]*?<\/section>/,intro);
+   html=html.replace(/<!-- home-first-screen:start -->[\s\S]*?<!-- home-first-screen:end -->|<section class="(?:hero|home-intro)"[\s\S]*?<\/section>/,intro);
    html=html.replace(/home-intro\.css\?v=[^"']+/g,'home-intro.css?v=20261107-repair-loop1');
    html=html.replace(/<script defer src="\/repair-helper\.js[^"]*"><\/script>/g,'').replace('</head>','<script defer src="/repair-helper.js?v=20261107-repair-loop1"></script></head>');
    if(!html.includes('/home-intro.css'))html=html.replace('</head>','<link rel="stylesheet" href="/home-intro.css?v=20261107-repair-loop1">\n</head>');
@@ -206,6 +209,8 @@ for(const route of routes){
   html=html.replace(/<aside class="service-card hardware-sales"[\s\S]*?<\/aside>/g,hardwareSalesSection('de'))
     .replace(/<aside class="specialist-notice"[\s\S]*?<\/aside>/g,specialistServiceSection('de'))
     .replace(/\/offers\.css\?v=[^"']+/g,'/offers.css?v=20261104-1');
+  if(routes.slice(0,5).includes(route))html=html.replace(/<link rel="stylesheet" href="\/screen-overview\.css[^"]*">/g,'').replace('</head>','<link rel="stylesheet" href="/screen-overview.css?v=20261108-1"></head>');
+  if(!route)html=compactGermanHome(html).replace(/<script defer src="\/price-tabs\.js[^"]*"><\/script>/g,'').replace('</head>','<script defer src="/price-tabs.js?v=20261108-1"></script></head>');
   write(file,withAppsNavigation(html,'de'));
 }
 let sitemap=read('sitemap.xml').replace(/<!-- locales:start -->[\s\S]*?<!-- locales:end -->\s*/g,'');
