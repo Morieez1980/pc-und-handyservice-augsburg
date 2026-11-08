@@ -173,16 +173,22 @@
      // Prefer the lower-left corner, then nearby space above it. Hide only when
      // none of these positions can avoid the page's interactive controls.
      let space = false;
-     helper.style.setProperty('--repair-lift','0px');
-     const baseBox=helper.getBoundingClientRect();
      const controlBoxes=controls.map(node=>node.getBoundingClientRect());
-     const lifts=[...new Set([0,80,160,...controlBoxes.flatMap(r=>[baseBox.top-r.bottom-3,baseBox.top-r.top+baseBox.height+3])])].filter(n=>n>=0&&n<=innerHeight).sort((a,b)=>a-b);
-     for (const lift of lifts) {
-      helper.style.setProperty('--repair-lift',lift+'px');
-      const box = helper.getBoundingClientRect();
-      if (box.top<92) continue;
-      const overlaps = controlBoxes.some(r=>box.left<r.right-2&&box.right>r.left+2&&box.top<r.bottom-2&&box.bottom>r.top+2);
-      if (!overlaps) {space=true;break;}
+     // A compact first-screen card keeps the animation available when the
+     // large portrait cannot fit between controls. Targets remain 44px.
+     for (const compact of [false,true]) {
+      helper.classList.toggle('repair-helper-compact',compact);
+      helper.style.setProperty('--repair-lift','0px');
+      const baseBox=helper.getBoundingClientRect();
+      const lifts=[...new Set([0,80,160,...controlBoxes.flatMap(r=>[baseBox.top-r.bottom-3,baseBox.top-r.top+baseBox.height+3])])].filter(n=>n>=0&&n<=innerHeight).sort((a,b)=>a-b);
+      for (const lift of lifts) {
+       helper.style.setProperty('--repair-lift',lift+'px');
+       const box = helper.getBoundingClientRect();
+       if (box.top<92) continue;
+       const overlaps = controlBoxes.some(r=>box.left<r.right-2&&box.right>r.left+2&&box.top<r.bottom-2&&box.bottom>r.top+2);
+       if (!overlaps) {space=true;break;}
+      }
+      if (space) break;
      }
      helper.hidden = !space;
     }

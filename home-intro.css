@@ -242,3 +242,10 @@ body>.repair-helper-floating{width:190px;grid-template-columns:82px 82px;gap:3px
 @media(min-width:1500px){body>.repair-helper-floating{width:210px;grid-template-columns:92px 92px;padding-inline:8px}.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:192px;height:192px}}
 @media(max-width:700px){body>.repair-helper-floating{width:146px;grid-template-columns:62px 62px;padding-inline:6px}.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:132px;height:132px;border-radius:14px}.repair-helper-slogan strong{font-size:12px}.repair-helper-floating .repair-helper-toggle>.repair-helper-slogan{font-size:10px}.repair-helper-floating .repair-helper-toggle>.repair-helper-result{font-size:10px;min-height:27px}.repair-helper-floating .repair-helper-panel{bottom:calc(86px + env(safe-area-inset-bottom) + var(--repair-lift,0px));max-height:calc(100dvh - 178px - env(safe-area-inset-bottom) - var(--repair-lift,0px))}}
 @media(max-height:550px){body>.repair-helper-floating{width:142px;grid-template-columns:60px 60px}.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:100px;height:100px}.repair-helper-floating .repair-helper-panel{top:12px;bottom:auto;max-height:calc(100dvh - 24px)}}
+
+/* Keep the first-screen greeting visible without covering contact controls. */
+body>.repair-helper-floating.repair-helper-compact{width:142px;grid-template-columns:60px 60px;padding:5px 6px 4px;gap:2px 4px}
+.repair-helper-compact .repair-helper-toggle>.repair-working-avatar{width:112px;height:112px;border-radius:14px}
+.repair-helper-compact .repair-helper-toggle>.repair-helper-slogan{display:none}
+.repair-helper-compact .repair-helper-toggle>.repair-helper-result{min-height:27px;margin:3px 0 1px;font-size:10px}
+.repair-helper-compact .repair-helper-toggle>.repair-helper-cta{font-size:12px}
