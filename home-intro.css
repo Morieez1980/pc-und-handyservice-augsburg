@@ -207,3 +207,26 @@ body>.repair-helper-floating{bottom:calc(18px + var(--repair-lift,0px))}
 .repair-working-avatar .repair-working-arm,.repair-working-avatar .repair-working-head{animation:none!important;transform-origin:0 0;will-change:auto}
 @media(max-width:700px){.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:84px;height:84px}}
 @media(max-height:550px){.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:72px;height:72px}}
+
+/* Larger, complete anatomical illustration; preserve the floating layout. */
+body>.repair-helper-floating{left:2px;width:142px;grid-template-columns:60px 60px;gap:2px 4px;padding:6px 6px 4px}
+.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:128px;height:128px}
+.repair-helper-floating .repair-helper-toggle>span:not(.repair-avatar){font-size:13px;line-height:1.25}
+.arrival-entrance{margin:20px 0 0;min-width:0}
+.arrival-entrance>a{display:block}
+.arrival-entrance img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;border:1px solid #365969;border-radius:16px;background:#102530}
+.arrival-entrance figcaption{margin-top:8px;font-size:14px;line-height:1.5;color:#c5d9e6}
+.arrival-entrance figcaption a{color:#67c6df;text-underline-offset:3px}
+@media(max-width:700px){body>.repair-helper-floating{left:4px;width:126px;grid-template-columns:54px 54px;padding-inline:6px}.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:112px;height:112px}.repair-helper-floating .repair-helper-toggle>span:not(.repair-avatar){font-size:12px}}
+@media(max-height:550px){body>.repair-helper-floating{width:110px;grid-template-columns:44px 44px}.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:96px;height:96px}}
+
+/* Keep real entrance and route diagram together in a balanced media column. */
+body .arrival-guide:has(.arrival-media){grid-template-columns:minmax(0,.95fr) minmax(0,1.45fr)}
+.arrival-media{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start;min-width:0}
+.arrival-media .arrival-entrance{margin:0}
+body .arrival-media .arrival-photo{grid-row:auto;max-width:none;width:auto;margin:0}
+body .arrival-media .arrival-photo img{height:auto;max-height:330px;object-fit:contain}
+@media(max-width:1000px){body .arrival-guide:has(.arrival-media){grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.arrival-media{grid-template-columns:minmax(0,1fr);max-width:420px;margin-inline:auto}body .arrival-media .arrival-photo{max-width:380px;margin-inline:auto}body .arrival-media .arrival-photo img{max-height:475px}}
+@media(min-width:1001px){.arrival-notice:has(.arrival-media) .arrival-closing{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:28px;align-items:start}.arrival-notice:has(.arrival-media) .arrival-closing p:nth-child(3){grid-column:2;grid-row:1/span 2;text-align:end}}
+@media(min-width:1500px){body>.repair-helper-floating{left:4px;width:170px;grid-template-columns:74px 74px;padding-inline:8px}.repair-helper-floating .repair-helper-toggle>.repair-working-avatar{width:156px;height:156px}}
