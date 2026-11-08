@@ -13,7 +13,7 @@ const expected = expectedDeployment(readFile);
 const files = new Map([
   ['/', readFile('index.html')], ['/apps', readFile('apps.html')],
   ['/reparaturanfrage', readFile('reparaturanfrage.html')],
-  [expected.helper, readFile('repair-helper.js')], [expected.css, readFile('home-intro.css')]
+  [expected.helper, readFile('repair-helper.js')], [expected.css, readFile('home-intro.css')], [expected.scene, readFile('repair-work-scene.js')]
 ]);
 
 function fixture(changes = {}, requests = []) {
@@ -43,6 +43,7 @@ test('the current checkout passes and preserves every existing endpoint check', 
   for (const endpoint of endpoints) assert.ok(requests.includes(endpoint), 'Endpoint was not checked: ' + endpoint);
   assert.ok(requests.includes(expected.helper));
   assert.ok(requests.includes(expected.css));
+  assert.ok(requests.includes(expected.scene));
 });
 
 test('a still-successful old deployment is waited out until current version references arrive', async () => {
@@ -84,14 +85,20 @@ test('a stale portrait is not accepted when script and CSS version tokens are cu
 
 for (const [label, asset] of [['script', expected.helper], ['CSS', expected.css]]) {
   test(`current HTML with an old avatar ${label} body is retried`, async () => {
-    const staleAsset = files.get(asset).replaceAll(expected.sprite, '/bilder/old-avatar-sprite.png');
+    const staleAsset = label === 'script' ? files.get(asset).replaceAll(expected.sprite, '/bilder/old-avatar-sprite.png') : files.get(asset).replaceAll('.repair-working-avatar.rig-ready', '.previous-avatar');
     assert.notEqual(staleAsset, files.get(asset), 'The stale fixture must replace the current sprite');
-    await assert.rejects(checkDeployment(expected, fixture({[asset]: staleAsset})), /waiting for the current sprite/);
+    await assert.rejects(checkDeployment(expected, fixture({[asset]: staleAsset})), /waiting for the current (sprite|work-scene styles)/);
     const timer = clock();
     let attempts = 0;
     assert.equal(await waitForDeployment(() => checkDeployment(expected, fixture(++attempts === 1 ? {[asset]: staleAsset} : {})), timer), 2);
   });
 }
+
+test('a stale articulated work scene is rejected even when HTML and controller are current', async () => {
+  const oldScene = files.get(expected.scene).replace("const duration = '12s'", "const duration = '4s'");
+  assert.notEqual(oldScene, files.get(expected.scene));
+  await assert.rejects(checkDeployment(expected, fixture({[expected.scene]: oldScene})), /current articulated work scene/);
+});
 
 test('endpoint errors remain a readiness failure and can recover on a later attempt', async () => {
   const timer = clock();

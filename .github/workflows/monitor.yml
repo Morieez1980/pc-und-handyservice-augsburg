@@ -65,12 +65,15 @@ jobs:
             const home = readFile('index.html'), portraitRefs = portraits(home);
             assert.ok(portraitRefs.length, 'Checked-out homepage portrait reference missing');
             const helper = pages[0].refs.find(ref => ref.startsWith('/repair-helper.js?'));
+            const scene = pages[0].refs.find(ref => ref.startsWith('/repair-work-scene.js?'));
             const css = pages[0].refs.find(ref => ref.startsWith('/home-intro.css?'));
-            assert.ok(helper && css && pages[1].refs.length, 'Checked-out frontend references missing');
+            assert.ok(helper && scene && css && pages[1].refs.length, 'Checked-out frontend references missing');
             const sprite = spriteRef(readFile(new URL(helper, 'https://deployment.invalid').pathname.slice(1)));
-            const spriteCss = cssRefs(readFile(new URL(css, 'https://deployment.invalid').pathname.slice(1)), css);
-            assert.ok(spriteCss.includes(sprite), 'Checked-out avatar script and CSS use different sprites');
-            return {pages, portraitRefs, helper, css, sprite, spriteCss};
+            const sceneSource = readFile(new URL(scene, 'https://deployment.invalid').pathname.slice(1)).replace(/\r\n/g, '\n').trim();
+            const cssSource = readFile(new URL(css, 'https://deployment.invalid').pathname.slice(1)).replace(/\r\n/g, '\n').trim();
+            const spriteCss = cssRefs(cssSource, css);
+            assert.ok(sceneSource.includes(sprite), 'Checked-out controller and work scene use different backgrounds');
+            return {pages, portraitRefs, helper, scene, sceneSource, css, cssSource, sprite, spriteCss};
           }
           async function checkDeployment(expected, read) {
             const [home, apps, request] = await Promise.all(['/', '/apps', '/reparaturanfrage'].map(path => read(path, true)));
@@ -83,12 +86,14 @@ jobs:
             assert.ok(request.includes('repair-form.js?v='), 'Repair form script marker missing');
             assert.ok(apps.includes('id="app-enquiry"') && apps.includes('id="app-idea"'), 'App enquiry markers missing');
             const alreadyRead = new Set(['/', '/apps', '/reparaturanfrage']);
-            const [helper, css] = await Promise.all([
-              read(expected.helper, true), read(expected.css, true),
+            const [helper, css, scene] = await Promise.all([
+              read(expected.helper, true), read(expected.css, true), read(expected.scene, true),
               ...endpoints.filter(path => !alreadyRead.has(path)).map(path => read(path, false))
             ]);
             assert.equal(spriteRef(helper), expected.sprite, 'Avatar script is waiting for the current sprite');
             assert.deepEqual(cssRefs(css, expected.css), expected.spriteCss, 'Avatar CSS is waiting for the current sprite');
+            assert.equal(css.replace(/\r\n/g, '\n').trim(), expected.cssSource, 'Avatar CSS is waiting for the current work-scene styles');
+            assert.equal(scene.replace(/\r\n/g, '\n').trim(), expected.sceneSource, 'Avatar is waiting for the current articulated work scene');
           }
           async function waitForDeployment(check, {now, sleep, log, budgetMs = 150000, pollMs = 8000}) {
             const deadline = now() + budgetMs;
@@ -274,15 +279,18 @@ jobs:
             for (const id of ['lizenz', 'produkt', 'widerruf', 'datenschutz', 'sicherheit', 'urheberrecht']) assert.ok(license.includes(`id="${id}"`), `License section missing: ${id}`);
             for (const document of ['lizenzbedingungen', 'produktinformationen', 'widerruf', 'datenschutz', 'datensicherheit']) assert.ok(license.includes(`/assets/apps/keil-copy/${document}.txt`), `Original document link missing: ${document}`);
             const helperPath = linked(home, /src=["'](\/repair-helper\.js(?:\?[^"']*)?)["']/, 'Avatar script');
+            const scenePath = linked(home, /src=["'](\/repair-work-scene\.js(?:\?[^"']*)?)["']/, 'Avatar work scene');
             const cssPath = linked(home, /href=["'](\/home-intro\.css(?:\?[^"']*)?)["']/, 'Avatar stylesheet');
             const jsMime = /^(?:application|text)\/javascript\b/i;
             const [appJs, helperJs, cssBytes, offerBytes, appCss, legalCss] = await Promise.all([read(appPath, jsMime), read(helperPath, jsMime), read(cssPath, /^text\/css\b/i), read('/app-offer.json', /^application\/json\b/i), read(appCssPath, /^text\/css\b/i), read(legalCssPath, /^text\/css\b/i)]);
             const app = appJs.toString(), helper = helperJs.toString(), css = cssBytes.toString();
-            for (const [path, source] of [[appPath, app], [helperPath, helper]]) new Script(source, {filename: path});
+            const scene = (await read(scenePath, jsMime)).toString();
+            for (const [path, source] of [[appPath, app], [helperPath, helper], [scenePath, scene]]) new Script(source, {filename: path});
             for (const marker of ['#app-enquiry', '#app-idea', 'app-offer.json', 'data-demo-download', 'practicalAcceptanceComplete']) assert.ok(app.includes(marker), `App script marker missing: ${marker}`);
             for (const marker of ['data-repair-helper', 'canAnimate', 'prefers-reduced-motion', 'pageshow', 'motionOptIn']) assert.ok(helper.includes(marker), `Avatar script marker missing: ${marker}`);
-            assert.ok(css.includes('@keyframes repair-avatar-actions'), 'Avatar keyframes missing');
-            assert.ok(css.includes('animation:repair-avatar-actions 24s linear infinite'), 'Continuous repair loop missing');
+            assert.ok(scene.includes("const duration = '12s'") && scene.includes('repeatCount="indefinite"'), 'Continuous component-exchange timeline missing');
+            for (const marker of ['pauseAnimations', 'unpauseAnimations', 'repair-held-old', 'repair-held-new', 'repair-installed-component']) assert.ok(scene.includes(marker), `Work-scene marker missing: ${marker}`);
+            assert.ok(css.includes('.repair-working-avatar.rig-ready'), 'Ready work-scene styling missing');
             assert.ok(appCss.toString().includes('.app-page'), 'App stylesheet marker missing');
             assert.ok(legalCss.toString().includes('.legal-document'), 'License stylesheet marker missing');
             const offer = JSON.parse(offerBytes.toString());
@@ -291,11 +299,12 @@ jobs:
             assert.ok(offer.demo && Object.hasOwn(offer.demo, 'url') && Object.hasOwn(offer, 'purchaseDownloadUrl'), 'Download gate fields missing');
             await verifyDownloadGate(app, apps, offer);
             const sprite = linked(helper, /sprite\.src\s*=\s*["']([^"']+)["']/, 'Avatar sprite');
-            assert.ok(css.includes(sprite), 'Avatar script and stylesheet use different sprites');
+            assert.ok(scene.includes(sprite), 'Avatar controller and work scene use different backgrounds');
             const portrait = linked(home, /class=["']repair-avatar["'][^>]*>\s*<img[^>]*src=["']([^"']+)["']/, 'Avatar portrait');
             for (const path of [sprite, portrait]) {
-              const bytes = await read(path, /^image\/png\b/i);
-              assert.ok(bytes.length >= 24 && bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), `${path}: invalid PNG signature`);
+              const webp = /\.webp(?:\?|$)/i.test(path);
+              const bytes = await read(path, webp ? /^image\/webp\b/i : /^image\/png\b/i);
+              assert.ok(bytes.length >= 24 && (webp ? bytes.subarray(0, 4).toString() === 'RIFF' && bytes.subarray(8, 12).toString() === 'WEBP' : bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))), `${path}: invalid avatar image signature`);
               const maxBytes = path === sprite ? 384 * 1024 : 64 * 1024;
               assert.ok(bytes.length <= maxBytes, `${path}: avatar asset exceeds ${maxBytes} bytes`);
             }

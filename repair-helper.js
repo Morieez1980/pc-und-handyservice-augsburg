@@ -28,6 +28,7 @@
   original.querySelector('.repair-helper-panel > .repair-avatar')?.remove();
   document.body.append(original);
  }
+ let rigSequence = 0;
  for (const helper of document.querySelectorAll('[data-repair-helper]')) {
   const toggle = helper.querySelector('.repair-helper-toggle');
   const panel = helper.querySelector('.repair-helper-panel');
@@ -35,13 +36,12 @@
   if (!toggle || !panel || !close) continue;
   const mascot = toggle.querySelector('.repair-avatar');
   const frames = mascot?.querySelector('.repair-avatar-frames');
-  if (typeof frames?.append === 'function') {
-   for (const name of ['repair-case-panel','repair-screwdriver','repair-screen-test']) {
-    const part = document.createElement('span');part.className = name;part.setAttribute('aria-hidden','true');frames.append(part);
-   }
-   const stages = document.createElement('span');stages.className='repair-work-stages';stages.setAttribute('aria-hidden','true');
-   for (const name of ['inspect','screw','test']) {const step=document.createElement('span');step.className='repair-step repair-step-'+name;stages.append(step);}
-   toggle.append(stages);
+  let workScene = null;
+  if (typeof frames?.replaceChildren === 'function' && typeof window.PCRepairWorkScene === 'function') {
+   try {
+    workScene = window.PCRepairWorkScene(frames,'repair-working-'+(++rigSequence));
+    mascot.classList.add('repair-working-avatar');
+   } catch { frames.replaceChildren(); }
   }
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let spriteReady = false;
@@ -61,6 +61,7 @@
    motion.hidden = !spriteReady;
   };
   const stopGreeting = () => {
+   workScene?.stop();
    mascot?.classList.remove('is-greeting');
    helper.classList.remove('is-animating');
   };
@@ -71,6 +72,7 @@
    // a JavaScript timer restarting the decoration after every sequence.
    mascot.classList.add('is-greeting');
    helper.classList.add('is-animating');
+   workScene?.start();
   };
   const setOpen = (open, restoreFocus = true) => {
    if (open) stopGreeting();
@@ -121,9 +123,10 @@
   window.addEventListener('focus', startGreeting);
   if (mascot && frames) {
    const sprite = new Image();
-   sprite.src = '/bilder/reparatur-avatar-schlanker-bewegung-20261107.png';
+   sprite.src = '/bilder/reparatur-avatar-hintergrund-20261108.webp';
    sprite.decode().then(() => {
-    spriteReady = true;
+    spriteReady = Boolean(workScene) || typeof frames?.replaceChildren !== 'function';
+    if (workScene) mascot.classList.add('rig-ready');
     updateMotionControl();
     startGreeting();
    }).catch(() => {/* The static portrait remains available if the animation cannot load. */});
