@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: Check JavaScript syntax
-        run: node --check script.js && node --check script.min.js && node --check repair-form.js && node --check repair-form.min.js && node --check clarity-consent.js && node --check clarity-consent.min.js && node --check repair-helper.js
+        run: node --check script.js && node --check script.min.js && node --check repair-form.js && node --check repair-form.min.js && node --check clarity-consent.js && node --check clarity-consent.min.js && node --check repair-helper.js && node --check price-tabs.js
       - name: Check repair avatar, app download gate and deployment readiness
         run: node --test tools/test-repair-helper.mjs tools/test-app-download-gate.mjs tools/test-deployment-readiness.mjs
       - name: Check readable app terms against original documents
