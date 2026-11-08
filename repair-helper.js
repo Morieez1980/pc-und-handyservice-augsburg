@@ -156,7 +156,10 @@
    const refresh = () => {
     frame = 0;
     if (!ready || dismissed) return;
-    const blocked = [...document.querySelectorAll('.consent-banner,dialog[open],[role="dialog"],.nav.open,#locale-nav.open')]
+    // The expanded state is authoritative even during the menu's opening
+    // transition, when its measured height can still be zero.
+    const menuOpen = [...document.querySelectorAll('.nav-toggle[aria-expanded="true"],.locale-toggle[aria-expanded="true"]')].some(visible);
+    const blocked = menuOpen || [...document.querySelectorAll('.consent-banner,dialog[open],[role="dialog"],.nav.open,#locale-nav.open')]
      .some(node=>!node.closest('[data-repair-helper]') && visible(node));
     const formFocused = document.activeElement?.closest('form');
     if (blocked || formFocused) {
