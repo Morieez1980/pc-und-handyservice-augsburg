@@ -6,7 +6,7 @@
  // The neutral start/end and zero end velocities give a seamless repeat.
  // No synthetic stick arm, floating memory cards or cartridge receptacle.
  window.PCRepairWorkScene = (frames, id) => {
-  const source = '/bilder/reparatur-avatar-praezision-20261108.webp';
+  const source = '/bilder/reparatur-avatar-tattoo65-20261108.webp';
   const duration = '12s';
   const field = `<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254"><defs><radialGradient id="hand"><stop stop-color="#ff8080"/><stop offset=".46" stop-color="#df8080"/><stop offset="1" stop-color="#808080"/></radialGradient><radialGradient id="head"><stop stop-color="#808e80"/><stop offset="1" stop-color="#808080"/></radialGradient></defs><rect width="1254" height="1254" fill="#808080"/><ellipse cx="525" cy="892" rx="220" ry="132" fill="url(#hand)"/><ellipse cx="725" cy="230" rx="175" ry="210" fill="url(#head)"/></svg>`;
   const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
