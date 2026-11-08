@@ -148,6 +148,9 @@
     stopGreeting();
    });
    const visible = node => {
+    // Closed language menus can retain off-screen or transformed rectangles.
+    // Only controls actually painted by the browser reserve floating space.
+    if (typeof node.checkVisibility === 'function' && !node.checkVisibility({checkOpacity:true,checkVisibilityCSS:true})) return false;
     const rect = node.getBoundingClientRect();
     const style = getComputedStyle(node);
     return rect.width>1 && rect.height>1 && rect.bottom>0 && rect.top<innerHeight && style.visibility!=='hidden' && style.display!=='none';
