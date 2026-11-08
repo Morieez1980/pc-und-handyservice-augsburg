@@ -156,7 +156,7 @@ const strengthTitle={de:'Stark für Ihre Technik.',en:'Strong support for your t
 // The working rig is installed once by repair-helper.js. Keep a static
 // close-view fallback for slow connections and reduced-motion preferences.
 function avatar(){
- return '<span class="repair-avatar" aria-hidden="true"><img src="/bilder/reparatur-avatar-praezision-klein-20261108.webp" width="128" height="128" alt="" decoding="async"><span class="repair-avatar-frames"></span></span>';
+ return '<span class="repair-avatar" aria-hidden="true"><img src="/bilder/reparatur-avatar-tattoo65-klein-20261108.webp" width="128" height="128" alt="" decoding="async"><span class="repair-avatar-frames"></span></span>';
 }
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
 export function repairHelper(lang){

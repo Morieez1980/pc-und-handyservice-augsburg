@@ -123,7 +123,7 @@
   window.addEventListener('focus', startGreeting);
   if (mascot && frames) {
    const sprite = new Image();
-   sprite.src = '/bilder/reparatur-avatar-praezision-20261108.webp';
+   sprite.src = '/bilder/reparatur-avatar-tattoo65-20261108.webp';
    sprite.decode().then(() => {
     spriteReady = Boolean(workScene) || typeof frames?.replaceChildren !== 'function';
     if (workScene) mascot.classList.add('rig-ready');
