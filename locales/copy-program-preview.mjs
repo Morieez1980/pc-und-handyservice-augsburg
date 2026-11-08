@@ -2,97 +2,97 @@
 export const copyProgramPreview = {
   "de": [
     "Demnächst: Keil@Copy",
-    "Für Windows: Dateien auf Laufwerke, USB und Netzwerkordner kopieren. Fehlende ergänzen, neuere aktualisieren oder vorhandene gezielt ersetzen. Mit Hardware-Analyse, Pause/Fortsetzen und Dateiprüfung. Start bis 20.11.2026 geplant. Privat 35 € · Techniker 65 € einmalig.",
+    "Für Windows: Dateien auf Laufwerke, USB und Netzwerkordner kopieren. Fehlende ergänzen, neuere aktualisieren oder vorhandene gezielt ersetzen. Mit Hardware-Analyse, Pause/Fortsetzen und Dateiprüfung. Start bis 20.11.2026 geplant. Privat 35 € · Techniker 65 € einmalig. Technischer Prüfstand 1.9.98: aktuelle Restzeit und Endzeit, weichere Live-Kurve.",
     "Zur App-Übersicht"
   ],
   "en": [
     "Coming soon: Keil@Copy",
-    "For Windows: copy files to drives, USB and network folders. Add missing files, update newer versions or deliberately replace existing files. Hardware analysis, pause/resume and file verification included. Launch planned by 20 Nov 2026. Personal €35 · Technician €65 once.",
+    "For Windows: copy files to drives, USB and network folders. Add missing files, update newer versions or deliberately replace existing files. Hardware analysis, pause/resume and file verification included. Launch planned by 20 Nov 2026. Personal €35 · Technician €65 once. Technical test version 1.9.98: current remaining time and finish estimate, smoother live graph.",
     "View the app"
   ],
   "tr": [
     "Yakında: Keil@Copy",
-    "Windows için: disklere, USB’ye ve ağ klasörlerine dosya kopyalama. Eksikleri ekleme, yeni sürümleri güncelleme veya mevcut dosyaları seçerek değiştirme. Donanım analizi, duraklat/devam et ve dosya doğrulama. Çıkış hedefi 20.11.2026. Kişisel 35 € · Teknisyen 65 €, tek seferlik.",
+    "Windows için: disklere, USB’ye ve ağ klasörlerine dosya kopyalama. Eksikleri ekleme, yeni sürümleri güncelleme veya mevcut dosyaları seçerek değiştirme. Donanım analizi, duraklat/devam et ve dosya doğrulama. Çıkış hedefi 20.11.2026. Kişisel 35 € · Teknisyen 65 €, tek seferlik. Teknik test sürümü 1.9.98: güncel kalan süre ve tahmini bitiş, daha yumuşak canlı grafik.",
     "Uygulamayı incele"
   ],
   "ro": [
     "În curând: Keil@Copy",
-    "Pentru Windows: copiere pe discuri, USB și foldere de rețea. Adaugi fișierele lipsă, actualizezi versiunile mai noi sau înlocuiești intenționat fișiere existente. Analiză hardware, pauză/reluare și verificare. Lansare planificată până la 20.11.2026. Personal 35 € · Tehnician 65 €, o singură dată.",
+    "Pentru Windows: copiere pe discuri, USB și foldere de rețea. Adaugi fișierele lipsă, actualizezi versiunile mai noi sau înlocuiești intenționat fișiere existente. Analiză hardware, pauză/reluare și verificare. Lansare planificată până la 20.11.2026. Personal 35 € · Tehnician 65 €, o singură dată. Versiunea de test tehnic 1.9.98: timp rămas și final estimat actualizate, grafic live mai lin.",
     "Vezi aplicația"
   ],
   "uk": [
     "Незабаром: Keil@Copy",
-    "Для Windows: копіювання на диски, USB та мережеві папки. Додавання відсутніх, оновлення новіших або вибіркова заміна наявних файлів. Аналіз обладнання, пауза/продовження та перевірка файлів. Запуск заплановано до 20.11.2026. Особиста ліцензія 35 € · Технік 65 €, одноразово.",
+    "Для Windows: копіювання на диски, USB та мережеві папки. Додавання відсутніх, оновлення новіших або вибіркова заміна наявних файлів. Аналіз обладнання, пауза/продовження та перевірка файлів. Запуск заплановано до 20.11.2026. Особиста ліцензія 35 € · Технік 65 €, одноразово. Технічна тестова версія 1.9.98: актуальний залишок часу й прогноз завершення, плавніший графік.",
     "Огляд програми"
   ],
   "es": [
     "Próximamente: Keil@Copy",
-    "Para Windows: copia a discos, USB y carpetas de red. Añade archivos que faltan, actualiza versiones más recientes o sustituye los existentes de forma selectiva. Análisis de hardware, pausa/reanudación y verificación. Lanzamiento previsto hasta el 20/11/2026. Personal 35 € · Técnico 65 €, pago único.",
+    "Para Windows: copia a discos, USB y carpetas de red. Añade archivos que faltan, actualiza versiones más recientes o sustituye los existentes de forma selectiva. Análisis de hardware, pausa/reanudación y verificación. Lanzamiento previsto hasta el 20/11/2026. Personal 35 € · Técnico 65 €, pago único. Versión de prueba técnica 1.9.98: tiempo restante y final estimado actualizados, gráfica más suave.",
     "Ver la aplicación"
   ],
   "sv": [
     "Snart: Keil@Copy",
-    "För Windows: kopiera till diskar, USB och nätverksmappar. Lägg till saknade filer, uppdatera nyare versioner eller ersätt befintliga filer medvetet. Hårdvaruanalys, paus/fortsätt och filkontroll. Planerad lansering senast 20/11 2026. Privat 35 € · Tekniker 65 €, engångspris.",
+    "För Windows: kopiera till diskar, USB och nätverksmappar. Lägg till saknade filer, uppdatera nyare versioner eller ersätt befintliga filer medvetet. Hårdvaruanalys, paus/fortsätt och filkontroll. Planerad lansering senast 20/11 2026. Privat 35 € · Tekniker 65 €, engångspris. Teknisk testversion 1.9.98: aktuell återstående tid och beräknat slut, mjukare livekurva.",
     "Se appen"
   ],
   "da": [
     "Snart: Keil@Copy",
-    "Til Windows: kopiér til drev, USB og netværksmapper. Tilføj manglende filer, opdatér nyere versioner eller erstat eksisterende filer målrettet. Hardwareanalyse, pause/fortsæt og filkontrol. Lancering planlagt senest 20.11.2026. Privat 35 € · Tekniker 65 €, engangspris.",
+    "Til Windows: kopiér til drev, USB og netværksmapper. Tilføj manglende filer, opdatér nyere versioner eller erstat eksisterende filer målrettet. Hardwareanalyse, pause/fortsæt og filkontrol. Lancering planlagt senest 20.11.2026. Privat 35 € · Tekniker 65 €, engangspris. Teknisk testversion 1.9.98: aktuel resttid og forventet sluttid, blødere livekurve.",
     "Se appen"
   ],
   "ru": [
     "Скоро: Keil@Copy",
-    "Для Windows: копирование на диски, USB и сетевые папки. Добавление отсутствующих, обновление более новых или выборочная замена имеющихся файлов. Анализ оборудования, пауза/продолжение и проверка файлов. Запуск запланирован до 20.11.2026. Личная лицензия 35 € · Техник 65 €, однократно.",
+    "Для Windows: копирование на диски, USB и сетевые папки. Добавление отсутствующих, обновление более новых или выборочная замена имеющихся файлов. Анализ оборудования, пауза/продолжение и проверка файлов. Запуск запланирован до 20.11.2026. Личная лицензия 35 € · Техник 65 €, однократно. Техническая тестовая версия 1.9.98: актуальное оставшееся время и прогноз завершения, более плавный график.",
     "Обзор приложения"
   ],
   "zh": [
     "即将推出：Keil@Copy",
-    "适用于 Windows：将文件复制到硬盘、USB 和网络文件夹。补充缺失文件、更新较新版本，或有选择地替换已有文件。支持硬件分析、暂停/继续及文件校验。计划于 2026 年 11 月 20 日前推出。个人许可 35 欧元 · 技术人员许可 65 欧元，一次性付费。",
+    "适用于 Windows：将文件复制到硬盘、USB 和网络文件夹。补充缺失文件、更新较新版本，或有选择地替换已有文件。支持硬件分析、暂停/继续及文件校验。计划于 2026 年 11 月 20 日前推出。个人许可 35 欧元 · 技术人员许可 65 欧元，一次性付费。 技术测试版 1.9.98：更新剩余时间和预计完成时间，实时曲线更平滑。",
     "查看应用"
   ],
   "ja": [
     "近日公開：Keil@Copy",
-    "Windows 向け。ドライブ・USB・ネットワークフォルダーへコピー。不足ファイルの追加、新しい版への更新、既存ファイルの選択的な置き換えができます。ハードウェア分析、一時停止・再開、ファイル検証に対応。2026年11月20日までの公開を予定。個人35 €・技術者65 €、買い切り。",
+    "Windows 向け。ドライブ・USB・ネットワークフォルダーへコピー。不足ファイルの追加、新しい版への更新、既存ファイルの選択的な置き換えができます。ハードウェア分析、一時停止・再開、ファイル検証に対応。2026年11月20日までの公開を予定。個人35 €・技術者65 €、買い切り。 技術テスト版1.9.98：残り時間と終了予測を随時更新し、ライブグラフをより滑らかに表示。",
     "アプリの概要を見る"
   ],
   "pl": [
     "Wkrótce: Keil@Copy",
-    "Dla Windows: kopiowanie na dyski, USB i do folderów sieciowych. Dodawanie brakujących plików, aktualizacja nowszych lub świadome zastępowanie istniejących. Analiza sprzętu, pauza/wznowienie i weryfikacja. Premiera planowana do 20.11.2026. Osobista 35 € · Technik 65 €, jednorazowo.",
+    "Dla Windows: kopiowanie na dyski, USB i do folderów sieciowych. Dodawanie brakujących plików, aktualizacja nowszych lub świadome zastępowanie istniejących. Analiza sprzętu, pauza/wznowienie i weryfikacja. Premiera planowana do 20.11.2026. Osobista 35 € · Technik 65 €, jednorazowo. Techniczna wersja testowa 1.9.98: bieżący pozostały czas i prognoza zakończenia, płynniejszy wykres.",
     "Zobacz aplikację"
   ],
   "it": [
     "In arrivo: Keil@Copy",
-    "Per Windows: copia su dischi, USB e cartelle di rete. Aggiungi i file mancanti, aggiorna quelli più recenti o sostituisci quelli esistenti in modo mirato. Analisi hardware, pausa/ripresa e verifica. Uscita prevista entro il 20/11/2026. Personale 35 € · Tecnico 65 €, una tantum.",
+    "Per Windows: copia su dischi, USB e cartelle di rete. Aggiungi i file mancanti, aggiorna quelli più recenti o sostituisci quelli esistenti in modo mirato. Analisi hardware, pausa/ripresa e verifica. Uscita prevista entro il 20/11/2026. Personale 35 € · Tecnico 65 €, una tantum. Versione di test tecnico 1.9.98: tempo residuo e fine stimata aggiornati, grafico più fluido.",
     "Scopri l’app"
   ],
   "fr": [
     "Bientôt : Keil@Copy",
-    "Pour Windows : copie vers disques, USB et dossiers réseau. Ajouter les fichiers manquants, actualiser les plus récents ou remplacer les existants de façon ciblée. Analyse matérielle, pause/reprise et vérification. Sortie prévue au plus tard le 20/11/2026. Particulier 35 € · Technicien 65 €, paiement unique.",
+    "Pour Windows : copie vers disques, USB et dossiers réseau. Ajouter les fichiers manquants, actualiser les plus récents ou remplacer les existants de façon ciblée. Analyse matérielle, pause/reprise et vérification. Sortie prévue au plus tard le 20/11/2026. Particulier 35 € · Technicien 65 €, paiement unique. Version de test technique 1.9.98 : durée restante et fin estimée actualisées, courbe plus fluide.",
     "Découvrir l’application"
   ],
   "bg": [
     "Скоро: Keil@Copy",
-    "За Windows: копиране към дискове, USB и мрежови папки. Добавяне на липсващи, обновяване на по-нови или целенасочена замяна на налични файлове. Анализ на хардуера, пауза/продължаване и проверка. Планирано пускане до 20.11.2026. Личен лиценз 35 € · Техник 65 €, еднократно.",
+    "За Windows: копиране към дискове, USB и мрежови папки. Добавяне на липсващи, обновяване на по-нови или целенасочена замяна на налични файлове. Анализ на хардуера, пауза/продължаване и проверка. Планирано пускане до 20.11.2026. Личен лиценз 35 € · Техник 65 €, еднократно. Техническа тестова версия 1.9.98: актуално оставащо време и прогнозен край, по-плавна графика.",
     "Преглед на приложението"
   ],
   "hr": [
     "Uskoro: Keil@Copy",
-    "Za Windows: kopiranje na diskove, USB i mrežne mape. Dodavanje datoteka koje nedostaju, ažuriranje novijih ili ciljano zamjenjivanje postojećih. Analiza hardvera, pauza/nastavak i provjera datoteka. Izlazak planiran do 20.11.2026. Osobna 35 € · Tehničar 65 €, jednokratno.",
+    "Za Windows: kopiranje na diskove, USB i mrežne mape. Dodavanje datoteka koje nedostaju, ažuriranje novijih ili ciljano zamjenjivanje postojećih. Analiza hardvera, pauza/nastavak i provjera datoteka. Izlazak planiran do 20.11.2026. Osobna 35 € · Tehničar 65 €, jednokratno. Tehnička testna verzija 1.9.98: ažurno preostalo vrijeme i procijenjeni završetak, glađi graf.",
     "Pregled aplikacije"
   ],
   "el": [
     "Σύντομα: Keil@Copy",
-    "Για Windows: αντιγραφή σε δίσκους, USB και φακέλους δικτύου. Προσθήκη αρχείων που λείπουν, ενημέρωση νεότερων ή επιλεκτική αντικατάσταση υπαρχόντων. Ανάλυση υλικού, παύση/συνέχιση και έλεγχος αρχείων. Κυκλοφορία έως 20/11/2026 σύμφωνα με το σχέδιο. Προσωπική 35 € · Τεχνικού 65 €, εφάπαξ.",
+    "Για Windows: αντιγραφή σε δίσκους, USB και φακέλους δικτύου. Προσθήκη αρχείων που λείπουν, ενημέρωση νεότερων ή επιλεκτική αντικατάσταση υπαρχόντων. Ανάλυση υλικού, παύση/συνέχιση και έλεγχος αρχείων. Κυκλοφορία έως 20/11/2026 σύμφωνα με το σχέδιο. Προσωπική 35 € · Τεχνικού 65 €, εφάπαξ. Τεχνική δοκιμαστική έκδοση 1.9.98: ενημερωμένος υπόλοιπος χρόνος και εκτίμηση λήξης, ομαλότερη καμπύλη.",
     "Δείτε την εφαρμογή"
   ],
   "ar": [
     "قريبًا: Keil@Copy",
-    "لنظام Windows: نسخ الملفات إلى الأقراص وUSB ومجلدات الشبكة. إضافة المفقود وتحديث الأحدث أو استبدال الموجود بشكل محدد. تحليل الأجهزة، إيقاف مؤقت/استئناف وفحص الملفات. الإطلاق مخطط بحلول 20‏/11‏/2026. شخصي 35 € · فني 65 €، دفعة واحدة.",
+    "لنظام Windows: نسخ الملفات إلى الأقراص وUSB ومجلدات الشبكة. إضافة المفقود وتحديث الأحدث أو استبدال الموجود بشكل محدد. تحليل الأجهزة، إيقاف مؤقت/استئناف وفحص الملفات. الإطلاق مخطط بحلول 20‏/11‏/2026. شخصي 35 € · فني 65 €، دفعة واحدة. نسخة الاختبار التقني 1.9.98: تحديث الوقت المتبقي وموعد الانتهاء المتوقع، ومنحنى مباشر أكثر سلاسة.",
     "عرض التطبيق"
   ],
   "fa": [
     "به‌زودی: Keil@Copy",
-    "برای Windows: کپی روی دیسک، USB و پوشه‌های شبکه. افزودن فایل‌های جاافتاده، به‌روزرسانی نسخه‌های جدیدتر یا جایگزینی هدفمند فایل‌های موجود. تحلیل سخت‌افزار، توقف/ادامه و بررسی فایل‌ها. انتشار تا ۲۰ نوامبر ۲۰۲۶ برنامه‌ریزی شده است. شخصی ۳۵ € · تکنسین ۶۵ €، یک‌باره.",
+    "برای Windows: کپی روی دیسک، USB و پوشه‌های شبکه. افزودن فایل‌های جاافتاده، به‌روزرسانی نسخه‌های جدیدتر یا جایگزینی هدفمند فایل‌های موجود. تحلیل سخت‌افزار، توقف/ادامه و بررسی فایل‌ها. انتشار تا ۲۰ نوامبر ۲۰۲۶ برنامه‌ریزی شده است. شخصی ۳۵ € · تکنسین ۶۵ €، یک‌باره. نسخه آزمایش فنی 1.9.98: زمان باقی‌مانده و پایان تخمینی به‌روز، نمودار زنده روان‌تر.",
     "مشاهده برنامه"
   ]
 };
