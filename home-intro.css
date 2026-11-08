@@ -155,3 +155,43 @@ body:has(.nav-toggle[aria-expanded="true"],.locale-toggle[aria-expanded="true"])
  .repair-helper-floating .repair-helper-panel{top:12px;bottom:auto;max-height:calc(100dvh - 24px)}
 }
 @media print{body>.repair-helper-floating{display:none!important}}
+
+/* One floating character only; the removed hero portrait leaves no empty slot. */
+body .home-first-screen .home-intro .home-intro-copy{padding-inline-start:16px}
+body>.repair-helper-floating{bottom:calc(18px + var(--repair-lift,0px))}
+.repair-helper-floating .repair-helper-toggle>.repair-avatar{width:84px;height:112px}
+.repair-helper-floating .repair-helper-toggle>span:not(.repair-avatar){max-width:100%;overflow-wrap:anywhere}
+.repair-helper-floating .repair-helper-panel{bottom:calc(244px + var(--repair-lift,0px));max-height:calc(100dvh - 262px - var(--repair-lift,0px))}
+.repair-work-stages{display:flex;justify-content:center;gap:8px;padding:5px 0 2px;align-items:center;min-height:23px}
+.repair-step{position:relative;display:block;width:17px;height:17px;border:1px solid currentColor;border-radius:50%;color:#6d9eae;opacity:.45;box-sizing:border-box}
+.repair-step-inspect:before{content:"";position:absolute;left:4px;top:3px;width:6px;height:6px;border:1px solid currentColor;border-radius:50%}
+.repair-step-inspect:after{content:"";position:absolute;left:10px;top:9px;width:4px;height:1px;background:currentColor;transform:rotate(45deg);transform-origin:left}
+.repair-step-screw:before{content:"";position:absolute;left:7px;top:2px;width:3px;height:6px;border-radius:1px;background:currentColor;box-shadow:0 6px 0 -1px currentColor;transform:rotate(35deg)}
+.repair-step-test:before{content:"";position:absolute;left:3px;top:3px;width:9px;height:7px;border:1px solid currentColor;border-radius:1px}
+.repair-step-test:after{content:"✓";position:absolute;left:5px;top:2px;font:700 9px/1.1 system-ui}
+.is-greeting .repair-screwdriver{position:absolute;left:50%;top:42%;width:3%;height:14%;z-index:2;border-radius:2px;background:linear-gradient(#2fb6ad 0 40%,#acdde7 40% 90%,#d9faff 90%);transform-origin:50% 96%;opacity:0;animation:repair-driver 36s linear infinite}
+.is-greeting .repair-case-panel{position:absolute;left:38%;top:52%;width:29%;height:12%;z-index:1;box-sizing:border-box;border:1px solid #9cdef0;border-radius:2px;box-shadow:0 0 3px #67c6df;transform:skew(-14deg) rotate(-5deg);opacity:0;animation:repair-case 36s ease-in-out infinite}
+.repair-case-panel:before,.repair-case-panel:after{content:"";position:absolute;top:2px;width:2px;height:2px;border-radius:50%;background:#d9faff}.repair-case-panel:before{left:2px}.repair-case-panel:after{right:2px}
+.is-greeting .repair-screen-test{position:absolute;left:57%;top:37%;width:23%;height:15%;z-index:1;border-radius:2px;background:linear-gradient(135deg,#2fb6ad60,#67c6df30);box-shadow:inset 0 0 3px #67c6df;transform:skew(-12deg);opacity:0;animation:repair-screen 36s ease-in-out infinite}
+.repair-screen-test:after{content:"✓";display:grid;place-items:center;height:100%;color:#8ff2d4;font:700 10px/1 system-ui}
+.repair-avatar.is-greeting>.repair-avatar-frames{animation-duration:36s}
+.repair-avatar.is-greeting .repair-rig-arm{animation:repair-work-arm 36s cubic-bezier(.45,0,.55,1) infinite}
+.repair-avatar.is-greeting .repair-rig-head{animation:repair-work-head 36s ease-in-out infinite}
+.repair-avatar.is-greeting .repair-rig-strength{animation-duration:36s}
+.repair-avatar-frames:after{animation:repair-work-inspect 36s ease-in-out infinite}
+.repair-avatar-frames:before{animation:repair-work-test 36s ease-in-out infinite}
+.is-animating .repair-step-inspect{animation:repair-phase-inspect 36s linear infinite}
+.is-animating .repair-step-screw{animation:repair-phase-screw 36s linear infinite}
+.is-animating .repair-step-test{animation:repair-phase-test 36s linear infinite}
+@keyframes repair-work-arm{0%,100%{transform:rotate(0deg)}3%{transform:rotate(-7deg)}9%{transform:rotate(-3deg)}16%{transform:rotate(-9deg)}24%{transform:rotate(-3deg)}30%{transform:rotate(0deg)}34%,40%,46%,52%,58%,64%{transform:rotate(-3deg)}37%,43%,49%,55%,61%,67%{transform:rotate(2deg)}72%{transform:rotate(-7deg)}80%{transform:rotate(-11deg)}88%{transform:rotate(-5deg)}95%{transform:rotate(-2deg)}}
+@keyframes repair-work-head{0%,100%{transform:rotate(0deg)}4%,24%{transform:rotate(5deg) translateY(1%)}32%,68%{transform:rotate(7deg) translateY(1%)}74%,90%{transform:rotate(-4deg) translateY(1%)}95%{transform:rotate(-1deg)}}
+@keyframes repair-work-inspect{0%,29%,100%{opacity:0;transform:scale(.6)}4%,10%,18%,23%{opacity:.9;transform:scale(1.15)}14%,26%{opacity:.2;transform:scale(.8)}32%,96%{opacity:0}}
+@keyframes repair-work-test{0%,70%,99%,100%{opacity:0;transform:scale(.75)}78%,92%{opacity:1;transform:scale(1)}}
+@keyframes repair-driver{0%,30%,70%,100%{opacity:0;transform:rotate(-36deg)}33%,39%,45%,51%,57%,63%,68%{opacity:1;transform:rotate(-42deg)}36%,42%,48%,54%,60%,66%{opacity:1;transform:rotate(-30deg)}}
+@keyframes repair-case{0%,31%,71%,100%{opacity:0;transform:skew(-14deg) rotate(-5deg)}34%,63%{opacity:.65;transform:skew(-14deg) rotate(-5deg)}68%{opacity:.8;transform:skew(-14deg) rotate(-8deg) translateY(-10%)}}
+@keyframes repair-screen{0%,69%,99%,100%{opacity:0}75%,92%{opacity:1}}
+@keyframes repair-phase-inspect{0%,30%{opacity:1;color:#9cecf2}33%,100%{opacity:.4;color:#6d9eae}}
+@keyframes repair-phase-screw{0%,30%,70%,100%{opacity:.4;color:#6d9eae}33%,67%{opacity:1;color:#9cecf2}}
+@keyframes repair-phase-test{0%,69%,99%,100%{opacity:.4;color:#6d9eae}73%,95%{opacity:1;color:#6ce6bf}}
+@media(max-width:700px){body>.repair-helper-floating{bottom:calc(86px + env(safe-area-inset-bottom) + var(--repair-lift,0px))}.repair-helper-floating .repair-helper-toggle>.repair-avatar{width:64px;height:80px}.repair-helper-floating .repair-helper-panel{bottom:calc(276px + env(safe-area-inset-bottom) + var(--repair-lift,0px));max-height:calc(100dvh - 294px - env(safe-area-inset-bottom) - var(--repair-lift,0px))}}
+@media(max-height:550px){.repair-helper-floating .repair-helper-toggle>.repair-avatar{width:52px;height:64px}.repair-helper-floating .repair-helper-panel{top:12px;bottom:auto;max-height:calc(100dvh - 24px)}}

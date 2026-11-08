@@ -19,26 +19,14 @@
   pl:'Ukryj dymek kontaktowy',it:'Nascondi il fumetto di contatto',el:'Απόκρυψη πλαισίου επικοινωνίας',
   bg:'Скриване на балончето за контакт',hr:'Sakrij oblačić za kontakt',ar:'إخفاء فقاعة التواصل',fa:'پنهان کردن حباب تماس'
  };
- // Reuse the translated contacts and the existing repair rig. Keep the original
- // overview untouched; remap every SVG/ARIA reference in the additional bubble.
+ // Move the existing translated helper instead of cloning it: exactly one
+ // character, one animation controller and one set of contact controls.
  const original = document.querySelector('.home-intro [data-repair-helper]');
- if (original && typeof original.cloneNode === 'function' && document.body) {
-  const floating = original.cloneNode(true);
-  floating.classList.add('repair-helper-floating');
-  floating.hidden = true;
-  const ids = new Map();
-  for (const node of floating.querySelectorAll('[id]')) {
-   const next = 'floating-' + node.id;
-   ids.set(node.id, next);
-   node.id = next;
-  }
-  for (const node of floating.querySelectorAll('[aria-controls],[aria-labelledby],[aria-describedby],[style]')) {
-   for (const attr of ['aria-controls','aria-labelledby','aria-describedby']) {
-    if (node.hasAttribute(attr)) node.setAttribute(attr,node.getAttribute(attr).split(/\s+/).map(id=>ids.get(id)||id).join(' '));
-   }
-   if (node.hasAttribute('style')) node.setAttribute('style',node.getAttribute('style').replace(/url\(#([^)]+)\)/g,(match,id)=>ids.has(id)?'url(#'+ids.get(id)+')':match));
-  }
-  document.body.append(floating);
+ if (original && document.body) {
+  original.classList.add('repair-helper-floating');
+  original.hidden = true;
+  original.querySelector('.repair-helper-panel > .repair-avatar')?.remove();
+  document.body.append(original);
  }
  for (const helper of document.querySelectorAll('[data-repair-helper]')) {
   const toggle = helper.querySelector('.repair-helper-toggle');
@@ -47,6 +35,14 @@
   if (!toggle || !panel || !close) continue;
   const mascot = toggle.querySelector('.repair-avatar');
   const frames = mascot?.querySelector('.repair-avatar-frames');
+  if (typeof frames?.append === 'function') {
+   for (const name of ['repair-case-panel','repair-screwdriver','repair-screen-test']) {
+    const part = document.createElement('span');part.className = name;part.setAttribute('aria-hidden','true');frames.append(part);
+   }
+   const stages = document.createElement('span');stages.className='repair-work-stages';stages.setAttribute('aria-hidden','true');
+   for (const name of ['inspect','screw','test']) {const step=document.createElement('span');step.className='repair-step repair-step-'+name;stages.append(step);}
+   toggle.append(stages);
+  }
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let spriteReady = false;
   let userPaused = false;
@@ -170,14 +166,18 @@
     }
     helper.hidden = false;
     if (panel.hidden) {
-     const box = helper.getBoundingClientRect();
-     // Yield to real page controls instead of covering a repair/phone/form link.
-     const overlaps = [...document.querySelectorAll('a[href],button,input,select,textarea,summary')].some(node=>{
-      if (node.closest('[data-repair-helper]') || !visible(node)) return false;
-      const r = node.getBoundingClientRect();
-      return box.left<r.right-2 && box.right>r.left+2 && box.top<r.bottom-2 && box.bottom>r.top+2;
-     });
-     helper.hidden = overlaps;
+     const controls = [...document.querySelectorAll('a[href],button,input,select,textarea,summary')].filter(node=>!node.closest('[data-repair-helper]')&&visible(node));
+     // Prefer the lower-left corner, then nearby space above it. Hide only when
+     // none of these positions can avoid the page's interactive controls.
+     let space = false;
+     for (const lift of [0,80,160]) {
+      helper.style.setProperty('--repair-lift',lift+'px');
+      const box = helper.getBoundingClientRect();
+      if (box.top<92) continue;
+      const overlaps = controls.some(node=>{const r=node.getBoundingClientRect();return box.left<r.right-2&&box.right>r.left+2&&box.top<r.bottom-2&&box.bottom>r.top+2;});
+      if (!overlaps) {space=true;break;}
+     }
+     helper.hidden = !space;
     }
     if (helper.hidden) stopGreeting();
     else startGreeting();
