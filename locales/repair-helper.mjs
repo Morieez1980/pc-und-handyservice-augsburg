@@ -1,7 +1,7 @@
 import {standingCaption} from './standing-avatar.mjs';
 const copy={
   "de": [
-    "Klick mich",
+    "Kontakt zu mir",
     "Technik zickt? Ich schaue nach.",
     "Beschreiben Sie mir kurz Ihr Anliegen. Ich melde mich persönlich. Termine nach Vereinbarung.",
     "Schließen",
@@ -9,7 +9,7 @@ const copy={
     "Anrufen"
   ],
   "en": [
-    "Click me",
+    "Contact me",
     "Tech acting up? I will take a look.",
     "Tell me briefly what is wrong. I will reply personally. Visits by appointment.",
     "Close",
@@ -17,7 +17,7 @@ const copy={
     "Call"
   ],
   "tr": [
-    "Bana tıklayın",
+    "Bana ulaşın",
     "Cihaz naz mı yapıyor? Bir bakalım.",
     "Sorununuzu kısaca anlatın. Size şahsen yanıt vereceğim. Ziyaretler randevuyla yapılır.",
     "Kapat",
@@ -25,7 +25,7 @@ const copy={
     "Ara"
   ],
   "ro": [
-    "Apăsați aici",
+    "Contactați-mă",
     "Tehnica face figuri? Mă uit eu.",
     "Descrieți pe scurt problema. Vă voi răspunde personal. Vizite cu programare.",
     "Închide",
@@ -33,7 +33,7 @@ const copy={
     "Sună"
   ],
   "uk": [
-    "Натисніть тут",
+    "Зв’язатися зі мною",
     "Техніка вередує? Я перевірю.",
     "Коротко опишіть проблему. Я відповім особисто. Візити за записом.",
     "Закрити",
@@ -41,7 +41,7 @@ const copy={
     "Зателефонувати"
   ],
   "es": [
-    "Pulse aquí",
+    "Contacte conmigo",
     "¿La tecnología se rebela? Le echo un vistazo.",
     "Describa brevemente el problema. Le responderé personalmente. Visitas con cita.",
     "Cerrar",
@@ -49,7 +49,7 @@ const copy={
     "Llamar"
   ],
   "sv": [
-    "Klicka här",
+    "Kontakta mig",
     "Tekniken krånglar? Jag tar en titt.",
     "Beskriv problemet kort. Jag svarar personligen. Besök efter tidsbokning.",
     "Stäng",
@@ -57,7 +57,7 @@ const copy={
     "Ring"
   ],
   "da": [
-    "Klik her",
+    "Kontakt mig",
     "Driller teknikken? Jeg tager et kig.",
     "Beskriv kort problemet. Jeg svarer personligt. Besøg efter aftale.",
     "Luk",
@@ -65,7 +65,7 @@ const copy={
     "Ring"
   ],
   "ru": [
-    "Нажмите здесь",
+    "Связаться со мной",
     "Техника капризничает? Я посмотрю.",
     "Кратко опишите проблему. Я отвечу лично. Визиты по записи.",
     "Закрыть",
@@ -73,7 +73,7 @@ const copy={
     "Позвонить"
   ],
   "zh": [
-    "点我联系",
+    "联系我",
     "设备闹脾气？我来看看。",
     "请简要说明问题，我会亲自回复。到访须提前预约。",
     "关闭",
@@ -81,7 +81,7 @@ const copy={
     "致电"
   ],
   "ja": [
-    "クリックしてね",
+    "お問い合わせ",
     "機器がご機嫌ななめ？私が見てみます。",
     "症状を簡単にお知らせください。私が直接ご返信します。ご来訪は予約制です。",
     "閉じる",
@@ -89,7 +89,7 @@ const copy={
     "電話"
   ],
   "pl": [
-    "Kliknij tutaj",
+    "Kontakt ze mną",
     "Technika kaprysi? Przyjrzę się temu.",
     "Proszę krótko opisać problem. Odpowiem osobiście. Wizyty po umówieniu.",
     "Zamknij",
@@ -97,7 +97,7 @@ const copy={
     "Zadzwoń"
   ],
   "it": [
-    "Clicca qui",
+    "Contattami",
     "La tecnologia fa i capricci? Ci do un’occhiata.",
     "Descriva brevemente il problema. Risponderò personalmente. Visite su appuntamento.",
     "Chiudi",
@@ -105,7 +105,7 @@ const copy={
     "Chiama"
   ],
   "fr": [
-    "Cliquez ici",
+    "Me contacter",
     "La technique fait des siennes ? Je regarde.",
     "Décrivez brièvement le problème. Je vous répondrai personnellement. Visites sur rendez-vous.",
     "Fermer",
@@ -113,7 +113,7 @@ const copy={
     "Appeler"
   ],
   "bg": [
-    "Натиснете тук",
+    "Свържете се с мен",
     "Техниката се инати? Ще погледна.",
     "Опишете накратко проблема. Ще ви отговоря лично. Посещения с уговорен час.",
     "Затвори",
@@ -121,7 +121,7 @@ const copy={
     "Обаждане"
   ],
   "hr": [
-    "Kliknite ovdje",
+    "Kontaktiraj me",
     "Tehnika se buni? Pogledat ću.",
     "Ukratko opišite problem. Odgovorit ću osobno. Posjeti uz dogovoreni termin.",
     "Zatvori",
@@ -129,7 +129,7 @@ const copy={
     "Nazovi"
   ],
   "el": [
-    "Πατήστε εδώ",
+    "Μιλήστε μου",
     "Η τεχνολογία κάνει νάζια; Θα το κοιτάξω.",
     "Περιγράψτε σύντομα το πρόβλημα. Θα απαντήσω προσωπικά. Επισκέψεις με ραντεβού.",
     "Κλείσιμο",
@@ -137,7 +137,7 @@ const copy={
     "Κλήση"
   ],
   "ar": [
-    "اضغط هنا",
+    "تواصل معي",
     "الجهاز يعاند؟ سألقي نظرة.",
     "اشرح المشكلة باختصار. سأرد عليك شخصيًا. الزيارات بموعد مسبق.",
     "إغلاق",
@@ -145,7 +145,7 @@ const copy={
     "اتصال"
   ],
   "fa": [
-    "اینجا کلیک کنید",
+    "تماس با من",
     "دستگاه بدقلقی می‌کند؟ بررسی می‌کنم.",
     "مشکل را کوتاه توضیح دهید. شخصاً پاسخ می‌دهم. مراجعه با وقت قبلی است.",
     "بستن",

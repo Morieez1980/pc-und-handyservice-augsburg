@@ -45,9 +45,13 @@
   const startGreeting=()=>{if(!canAnimate()){stopGreeting();return;}mascot?.classList.add('is-greeting');helper.classList.add('is-animating');workScene?.start();};
   const positionPanel=()=>{
    if(panel.hidden)return;
+   const bar=document.querySelector('.mobile-contact-bar,.locale-mobile-contact');
+   const barBox=bar?.getBoundingClientRect();
+   const bottom=barBox?.height>0&&getComputedStyle(bar).display!=='none'?Math.min(innerHeight,barBox.top):innerHeight;
+   panel.style.maxHeight=Math.max(120,bottom-24)+'px';
    const anchor=toggle.getBoundingClientRect(),box=panel.getBoundingClientRect();
    panel.style.left=Math.max(12,Math.min(anchor.right-box.width,innerWidth-box.width-12))+'px';
-   panel.style.top=Math.max(12,Math.min(anchor.bottom+8,innerHeight-box.height-12))+'px';
+   panel.style.top=Math.max(12,Math.min(anchor.bottom+8,bottom-box.height-12))+'px';
   };
   const setOpen=(open,restoreFocus=true)=>{
    stopGreeting();panel.hidden=!open;toggle.setAttribute('aria-expanded',String(open));
@@ -66,6 +70,6 @@
   document.addEventListener('visibilitychange',startGreeting);window.addEventListener('pageshow',startGreeting);window.addEventListener('focus',startGreeting);
   window.addEventListener('resize',positionPanel);
   window.addEventListener('scroll',()=>{if(panel.hidden)return;const anchor=toggle.getBoundingClientRect();if(anchor.bottom<0||anchor.top>innerHeight)setOpen(false,false);else positionPanel();},{passive:true});
-  if(mascot&&frames){const sprite=new Image();sprite.src='/bilder/reparatur-avatar-stehend-20261109.webp';sprite.decode().then(()=>{spriteReady=Boolean(workScene)||typeof frames?.replaceChildren!=='function';if(workScene)mascot.classList.add('rig-ready');updateMotionControl();startGreeting();}).catch(()=>{/* Keep the original still and usable contact dialog. */});}
+  if(mascot&&frames){const sprite=new Image();sprite.src='/bilder/reparatur-avatar-stehend-20261109.webp';sprite.decode().then(()=>{spriteReady=Boolean(workScene)||typeof frames?.replaceChildren!=='function';if(workScene)mascot.classList.add('rig-ready');updateMotionControl();positionPanel();startGreeting();}).catch(()=>{/* Keep the original still and usable contact dialog. */});}
  }
 })();
