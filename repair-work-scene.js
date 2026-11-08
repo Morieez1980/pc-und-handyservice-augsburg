@@ -2,7 +2,7 @@
  'use strict';
  window.PCRepairWorkScene = (frames,id) => {
   const source = '/bilder/reparatur-avatar-stehend-20261109.webp';
-  const duration = '24s';
+  const duration = '16s';
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.setAttribute('viewBox','0 0 1254 1254');svg.setAttribute('class','repair-working-scene');svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');
   svg.innerHTML=`
@@ -40,7 +40,7 @@
   const helper=frames.closest('[data-repair-helper]');
   const result=helper?.querySelector('[data-repair-result]');
   const introduction=[...(helper?.querySelector('.repair-helper-slogan')?.children||[])].map(node=>node.textContent.trim()).join(' ');let raf=0,phase='';
-  const tick=()=>{raf=0;const t=svg.getCurrentTime()%24;const compact=helper?.classList.contains('repair-helper-compact');const next=t>=16&&t<23.25?'complete':t>=8&&t<16?'quip':compact?'intro':'idle';if(next!==phase){phase=next;if(result){result.textContent=next==='complete'?result.dataset.complete:next==='quip'?result.dataset.quip:next==='intro'?introduction:'\u00a0';result.dataset.phase=next;}}raf=requestAnimationFrame(tick);};
-  return {svg,start:()=>{svg.unpauseAnimations();if(!raf)tick();},stop:()=>{svg.pauseAnimations();if(raf)cancelAnimationFrame(raf);raf=0;}};
+  const tick=()=>{raf=0;const t=svg.getCurrentTime()%16;const next=t>=32/3&&t<15.5?'complete':t>=16/3&&t<32/3?'quip':'idle';if(next!==phase){phase=next;if(result){result.textContent=next==='complete'?result.dataset.complete:next==='quip'?result.dataset.quip:next==='intro'?introduction:'\u00a0';result.dataset.phase=next;}}raf=requestAnimationFrame(tick);};
+  return {svg,restartAtQuip:()=>{svg.setCurrentTime(16/3+.05);},start:()=>{svg.unpauseAnimations();if(!raf)tick();},stop:()=>{svg.pauseAnimations();if(raf)cancelAnimationFrame(raf);raf=0;}};
  };
 })();
