@@ -95,7 +95,7 @@ for (const [label, asset] of [['script', expected.helper], ['CSS', expected.css]
 }
 
 test('a stale articulated work scene is rejected even when HTML and controller are current', async () => {
-  const oldScene = files.get(expected.scene).replace("const duration = '24s'", "const duration = '4s'");
+  const oldScene = files.get(expected.scene).replace("const duration = '16s'", "const duration = '4s'");
   assert.notEqual(oldScene, files.get(expected.scene));
   await assert.rejects(checkDeployment(expected, fixture({[expected.scene]: oldScene})), /current articulated work scene/);
 });

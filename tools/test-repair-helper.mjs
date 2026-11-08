@@ -2,89 +2,26 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
-
-const source = await readFile(new URL('../repair-helper.js', import.meta.url), 'utf8');
-function setup({reduced = false, imageFails = false, lang = 'de', hidden = false} = {}) {
- const listeners = new WeakMap();
- const element = () => ({hidden:false,attrs:{},classList:{values:new Set(),add(v){this.values.add(v);},remove(v){this.values.delete(v);},contains(v){return this.values.has(v);}},setAttribute(k,v){this.attrs[k]=v;},focus(){},addEventListener(k,fn){const map=listeners.get(this)||{};(map[k]??=[]).push(fn);listeners.set(this,map);}});
- const toggle=element(),panel=element(),close=element(),mascot=element(),frames=element(),helper=element();
- panel.hidden=true;
- toggle.querySelector=()=>mascot; mascot.querySelector=()=>frames;
- helper.querySelector=s=>({'.repair-helper-toggle':toggle,'.repair-helper-panel':panel,'.repair-helper-close':close}[s]);
- helper.contains=el=>[toggle,panel,close,helper.motion].includes(el);
- helper.append=el=>{helper.motion=el;};
- const doc=element();doc.hidden=hidden;doc.documentElement={lang};
- doc.querySelectorAll=()=>[helper];doc.querySelector=()=>null;doc.createElement=element;
- const media=element();media.matches=reduced;
- let now=0,next=0;const timers=new Map();
- const win=Object.assign(element(),{matchMedia:()=>media,setTimeout(fn,ms){const id=++next;timers.set(id,{fn,at:now+ms});return id;},clearTimeout(id){timers.delete(id);}});
- const fire=(target,name,extra={})=>{for(const fn of listeners.get(target)?.[name]??[])fn({target,...extra});};
- const tick=ms=>{const end=now+ms;for(;;){const first=[...timers].filter(([,t])=>t.at<=end).sort((a,b)=>a[1].at-b[1].at)[0];if(!first)break;now=first[1].at;timers.delete(first[0]);first[1].fn();}now=end;};
- runInNewContext(source,{document:doc,window:win,Image:class{decode(){return imageFails?Promise.reject(new Error('offline')):Promise.resolve();}}});
- return {helper,toggle,panel,close,mascot,frames,doc,win,media,fire,tick,active:()=>mascot.classList.contains('is-greeting'),ready:async()=>{await Promise.resolve();await Promise.resolve();}};
+const source=await readFile(new URL('../repair-helper.js',import.meta.url),'utf8');
+function setup({reduced=false,imageFails=false,lang='de',hidden=false}={}){
+ const listeners=new WeakMap();let activeElement=null;
+ const element=()=>({hidden:false,attrs:{},style:{},children:[],dataset:{quip:'No panic',phase:'idle'},classList:{values:new Set(),add(v){this.values.add(v)},remove(v){this.values.delete(v)},contains(v){return this.values.has(v)}},setAttribute(k,v){this.attrs[k]=v},focus(){activeElement=this},getBoundingClientRect(){return {left:900,right:1012,top:120,bottom:250,width:340,height:440}},closest(){return null},append(...nodes){this.children.push(...nodes);for(const n of nodes)n.parentNode=this},prepend(...nodes){this.children.unshift(...nodes);for(const n of nodes)n.parentNode=this},insertBefore(n){this.append(n)},contains(n){return n===this||this.children.some(c=>c.contains?.(n))},querySelector(){return null},addEventListener(k,fn){const map=listeners.get(this)||{};(map[k]??=[]).push(fn);listeners.set(this,map)}});
+ const toggle=element(),panel=element(),close=element(),mascot=element(),frames=element(),helper=element(),result=element(),slogan=element();panel.hidden=true;
+ toggle.querySelector=()=>mascot;mascot.querySelector=()=>frames;
+ helper.querySelector=s=>({'.repair-helper-toggle':toggle,'.repair-helper-panel':panel,'.repair-helper-close':close,'.repair-helper-slogan':slogan,'[data-repair-result]':result}[s]);
+ helper.append(toggle,panel);panel.append(close);
+ const doc=element();doc.body=element();doc.hidden=hidden;doc.documentElement={lang};Object.defineProperty(doc,'activeElement',{get:()=>activeElement});doc.querySelectorAll=()=>[helper];doc.querySelector=()=>null;doc.createElement=element;
+ const media=element();media.matches=reduced;const win=Object.assign(element(),{matchMedia:()=>media});
+ const fire=(target,name,extra={})=>{for(const fn of listeners.get(target)?.[name]??[])fn({target,...extra})};
+ runInNewContext(source,{document:doc,window:win,innerWidth:1366,innerHeight:740,Image:class{decode(){return imageFails?Promise.reject(new Error('offline')):Promise.resolve()}}});
+ return {helper,toggle,panel,close,mascot,frames,result,doc,win,media,fire,get motion(){return panel.children.find(x=>x.className==='repair-helper-motion')},get focus(){return activeElement},active:()=>mascot.classList.contains('is-greeting'),ready:async()=>{await Promise.resolve();await Promise.resolve()}};
 }
-
-test('the repair loop stays active across several cycles without timer restarts', async()=>{
- const h=setup();await h.ready();assert.equal(h.active(),true);
- h.tick(24000);assert.equal(h.active(),true);
- h.fire(h.frames,'animationend',{animationName:'repair-avatar-actions'});
- h.tick(96000);assert.equal(h.active(),true);
-});
-test('finishing a moving arm or head does not interrupt the full repair cycle', async()=>{
- const h=setup();await h.ready();h.tick(4000);
- h.fire(h.frames,'animationend',{target:{},animationName:'repair-avatar-arm'});
- h.fire(h.frames,'animationend',{target:{},animationName:'repair-avatar-head'});
- h.fire(h.frames,'animationend',{target:{},animationName:'repair-avatar-strength'});
- assert.equal(h.active(),true);
- h.tick(20000);assert.equal(h.active(),true);
- h.fire(h.frames,'animationend',{animationName:'repair-avatar-actions'});
- assert.equal(h.active(),true);
-});
-test('pause persists across cycles and tab visibility; resume is explicit', async()=>{
- const h=setup();await h.ready();h.fire(h.helper.motion,'click');
- assert.equal(h.active(),false);assert.equal(h.helper.motion.attrs['aria-label'],'Animation fortsetzen');
- h.doc.hidden=true;h.fire(h.doc,'visibilitychange');h.doc.hidden=false;h.fire(h.doc,'visibilitychange');
- h.tick(60000);assert.equal(h.active(),false);
- h.fire(h.helper.motion,'click');assert.equal(h.active(),true);
-});
-test('opening contacts stops movement; close and Escape preserve usable controls', async()=>{
- const h=setup();await h.ready();h.fire(h.toggle,'click');
- assert.equal(h.panel.hidden,false);assert.equal(h.active(),false);h.tick(20000);assert.equal(h.active(),false);
- h.fire(h.close,'click');assert.equal(h.active(),true);
- h.fire(h.toggle,'click');h.fire(h.doc,'keydown',{key:'Escape',preventDefault(){}});
- assert.equal(h.panel.hidden,true);assert.equal(h.toggle.attrs['aria-expanded'],'false');
-});
-test('reduced motion is static by default with an explicit play option', async()=>{
- const h=setup({reduced:true});await h.ready();assert.equal(h.active(),false);assert.equal(h.helper.motion.hidden,false);
- assert.equal(h.helper.motion.attrs['aria-label'],'Animation fortsetzen');
- h.fire(h.helper.motion,'click');assert.equal(h.active(),true);assert.ok(h.helper.classList.contains('motion-opt-in'));
- h.fire(h.helper.motion,'click');assert.equal(h.active(),false);
- h.media.matches=false;h.fire(h.media,'change');assert.equal(h.active(),false,'An explicit pause survives a preference change');
- h.fire(h.helper.motion,'click');assert.equal(h.active(),true);
- h.doc.hidden=true;h.fire(h.doc,'visibilitychange');h.tick(20000);assert.equal(h.active(),false);
- h.doc.hidden=false;h.fire(h.doc,'visibilitychange');assert.equal(h.active(),true);
- h.media.matches=true;h.fire(h.media,'change');assert.equal(h.active(),false);
- assert.equal(h.helper.classList.contains('motion-opt-in'),false);
-});
-test('failed sprite leaves the static contact button available', async()=>{
- const h=setup({imageFails:true});await h.ready();assert.equal(h.active(),false);assert.equal(h.toggle.hidden,false);assert.equal(h.helper.motion.hidden,true);
- h.fire(h.toggle,'click');assert.equal(h.panel.hidden,false);
-});
-test('motion control follows the page language and focus restores a visible tab', async()=>{
- const h=setup({lang:'en'});await h.ready();assert.equal(h.helper.motion.attrs['aria-label'],'Pause animation');
- h.doc.hidden=true;h.fire(h.doc,'visibilitychange');assert.equal(h.active(),false);
- h.doc.hidden=false;h.fire(h.win,'focus');assert.equal(h.active(),true);
-});
-
-test('a page loaded in a hidden tab starts on pageshow without a repair-button click', async()=>{
- const h=setup({hidden:true});await h.ready();assert.equal(h.active(),false);
- h.doc.hidden=false;h.fire(h.win,'pageshow');assert.equal(h.active(),true);
- h.fire(h.helper.motion,'click');h.fire(h.win,'pageshow');assert.equal(h.active(),false,'Pageshow must preserve user pause');
-});
-
-test('a hidden contact bubble stops moving and resumes only when visible', async()=>{
- const h=setup();await h.ready();assert.equal(h.active(),true);
- h.helper.hidden=true;h.fire(h.win,'focus');assert.equal(h.active(),false);
- h.fire(h.win,'pageshow');assert.equal(h.active(),false);
- h.helper.hidden=false;h.fire(h.win,'focus');assert.equal(h.active(),true);
-});
+test('closed preview stays static; opening starts the repair scene',async()=>{const h=setup();await h.ready();assert.equal(h.active(),false);h.fire(h.toggle,'click');assert.equal(h.panel.hidden,false);assert.equal(h.active(),true);assert.equal(h.result.textContent,'No panic');h.fire(h.close,'click');assert.equal(h.active(),false)});
+test('reopening reuses the portrait and preserves the chosen motion pause',async()=>{const h=setup();await h.ready();h.fire(h.toggle,'click');h.fire(h.motion,'click');h.fire(h.close,'click');h.fire(h.toggle,'click');assert.equal(h.active(),false);assert.equal(h.motion.attrs['aria-label'],'Animation fortsetzen');h.fire(h.motion,'click');assert.equal(h.active(),true)});
+test('pause persists across tab visibility changes; resuming is explicit',async()=>{const h=setup();await h.ready();h.fire(h.toggle,'click');h.fire(h.motion,'click');h.doc.hidden=true;h.fire(h.doc,'visibilitychange');h.doc.hidden=false;h.fire(h.doc,'visibilitychange');assert.equal(h.active(),false);h.fire(h.motion,'click');assert.equal(h.active(),true)});
+test('Escape closes contacts and returns focus to the original preview',async()=>{const h=setup();await h.ready();h.fire(h.toggle,'click');assert.equal(h.focus,h.close);h.fire(h.doc,'keydown',{key:'Escape',preventDefault(){}});assert.equal(h.panel.hidden,true);assert.equal(h.active(),false);assert.equal(h.toggle.attrs['aria-expanded'],'false');assert.equal(h.focus,h.toggle)});
+test('reduced motion requires opt-in inside the opened dialog',async()=>{const h=setup({reduced:true});await h.ready();h.fire(h.toggle,'click');assert.equal(h.active(),false);assert.equal(h.motion.hidden,false);assert.equal(h.motion.attrs['aria-label'],'Animation fortsetzen');h.fire(h.motion,'click');assert.equal(h.active(),true);h.fire(h.motion,'click');assert.equal(h.active(),false);h.media.matches=false;h.fire(h.media,'change');assert.equal(h.active(),false);h.fire(h.motion,'click');assert.equal(h.active(),true);h.media.matches=true;h.fire(h.media,'change');assert.equal(h.active(),false)});
+test('failed animated image still leaves preview, text and contacts usable',async()=>{const h=setup({imageFails:true});await h.ready();assert.equal(h.toggle.hidden,false);assert.equal(h.motion.hidden,true);h.fire(h.toggle,'click');assert.equal(h.panel.hidden,false);assert.equal(h.result.textContent,'No panic');assert.equal(h.active(),false)});
+test('motion labels follow the page language and hidden tabs pause',async()=>{const h=setup({lang:'en'});await h.ready();h.fire(h.toggle,'click');assert.equal(h.motion.attrs['aria-label'],'Pause animation');h.doc.hidden=true;h.fire(h.doc,'visibilitychange');assert.equal(h.active(),false);h.doc.hidden=false;h.fire(h.win,'focus');assert.equal(h.active(),true)});
+test('pageshow resumes an open dialog but never animates a closed preview',async()=>{const h=setup({hidden:true});await h.ready();h.fire(h.toggle,'click');assert.equal(h.active(),false);h.doc.hidden=false;h.fire(h.win,'pageshow');assert.equal(h.active(),true);h.fire(h.close,'click');h.fire(h.win,'pageshow');assert.equal(h.active(),false)});
+test('clicks inside the moved dialog remain usable; outside clicks close it',async()=>{const h=setup();await h.ready();h.fire(h.toggle,'click');h.fire(h.doc,'pointerdown',{target:h.close});assert.equal(h.panel.hidden,false);h.fire(h.doc,'pointerdown',{target:{}});assert.equal(h.panel.hidden,true);assert.equal(h.active(),false)});

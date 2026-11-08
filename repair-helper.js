@@ -12,199 +12,60 @@
   hr:['Pauziraj animaciju','Nastavi animaciju'], ar:['إيقاف الحركة مؤقتًا','استئناف الحركة'],
   fa:['توقف پویانمایی','ادامه پویانمایی']
  };
- const dismissCopy = {
-  de:'Kontaktblase ausblenden',en:'Hide contact bubble',tr:'İletişim balonunu gizle',ro:'Ascunde bula de contact',
-  uk:'Сховати контактну бульбашку',es:'Ocultar burbuja de contacto',sv:'Dölj kontaktbubblan',da:'Skjul kontaktboblen',
-  ru:'Скрыть контактный виджет',zh:'隐藏联系气泡',ja:'連絡バブルを閉じる',fr:'Masquer la bulle de contact',
-  pl:'Ukryj dymek kontaktowy',it:'Nascondi il fumetto di contatto',el:'Απόκρυψη πλαισίου επικοινωνίας',
-  bg:'Скриване на балончето за контакт',hr:'Sakrij oblačić za kontakt',ar:'إخفاء فقاعة التواصل',fa:'پنهان کردن حباب تماس'
- };
- // Move the existing translated helper instead of cloning it: exactly one
- // character, one animation controller and one set of contact controls.
- const original = document.querySelector('.home-intro [data-repair-helper]');
- if (original && document.body) {
-  original.classList.add('repair-helper-floating');
-  original.hidden = true;
-  original.querySelector('.repair-helper-panel > .repair-avatar')?.remove();
-  document.body.append(original);
- }
- let rigSequence = 0;
- for (const helper of document.querySelectorAll('[data-repair-helper]')) {
-  const toggle = helper.querySelector('.repair-helper-toggle');
-  const panel = helper.querySelector('.repair-helper-panel');
-  const close = helper.querySelector('.repair-helper-close');
-  if (!toggle || !panel || !close) continue;
-  const mascot = toggle.querySelector('.repair-avatar');
-  const frames = mascot?.querySelector('.repair-avatar-frames');
-  let workScene = null;
-  if (typeof frames?.replaceChildren === 'function' && typeof window.PCRepairWorkScene === 'function') {
-   try {
-    workScene = window.PCRepairWorkScene(frames,'repair-working-'+(++rigSequence));
-    mascot.classList.add('repair-working-avatar');
-   } catch { frames.replaceChildren(); }
+
+ // One static preview in the upper-right hero card. The existing portrait,
+ // translated copy and contacts are reused in one click-open dialog.
+ let rigSequence=0;
+ for(const helper of document.querySelectorAll('[data-repair-helper]')){
+  const toggle=helper.querySelector('.repair-helper-toggle');
+  const panel=helper.querySelector('.repair-helper-panel');
+  const close=helper.querySelector('.repair-helper-close');
+  if(!toggle||!panel||!close)continue;
+  const card=helper.closest('.home-intro')?.querySelector('.home-intro-copy');
+  card?.append(helper);helper.classList.add('repair-helper-head');helper.hidden=false;
+  const mascot=toggle.querySelector('.repair-avatar'),frames=mascot?.querySelector('.repair-avatar-frames');
+  const slogan=helper.querySelector('.repair-helper-slogan'),result=helper.querySelector('[data-repair-result]');
+  let workScene=null;
+  if(typeof frames?.replaceChildren==='function'&&typeof window.PCRepairWorkScene==='function'){
+   try{workScene=window.PCRepairWorkScene(frames,'repair-working-'+(++rigSequence));mascot.classList.add('repair-working-avatar');}catch{frames.replaceChildren();}
   }
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let spriteReady = false;
-  let userPaused = false;
-  let motionOptIn = false;
-  const floating = helper.classList.contains('repair-helper-floating');
-  const motion = document.createElement('button');
-  motion.type = 'button';
-  motion.className = 'repair-helper-motion';
-  motion.hidden = true;
-  const labels = motionCopy[document.documentElement.lang.split('-')[0]] || motionCopy.en;
-  const updateMotionControl = () => {
-   const paused = userPaused || (reducedMotion.matches && !motionOptIn);
-   motion.textContent = paused ? '▶' : 'Ⅱ';
-   motion.setAttribute('aria-label', labels[paused ? 1 : 0]);
-   motion.title = labels[paused ? 1 : 0];
-   motion.hidden = !spriteReady;
+  const showcase=document.createElement('div');showcase.className='repair-helper-showcase';
+  if(mascot)showcase.append(mascot);if(slogan)showcase.append(slogan);if(result)showcase.append(result);
+  panel.insertBefore(showcase,panel.querySelector('.repair-helper-contacts'));
+  panel.classList.add('repair-helper-dialog');document.body?.append(panel);
+  const preview=document.createElement('span');preview.className='repair-helper-preview';preview.setAttribute('aria-hidden','true');
+  const image=document.createElement('img');image.src='/bilder/reparatur-avatar-stehend-klein-20261109.webp';image.width=128;image.height=128;image.alt='';image.decoding='async';preview.append(image);toggle.prepend(preview);
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let spriteReady=false,userPaused=false,motionOptIn=false;
+  const motion=document.createElement('button');motion.type='button';motion.className='repair-helper-motion';motion.hidden=true;panel.append(motion);
+  const labels=motionCopy[document.documentElement.lang.split('-')[0]]||motionCopy.en;
+  const updateMotionControl=()=>{const paused=userPaused||(reducedMotion.matches&&!motionOptIn);motion.textContent=paused?'▶':'Ⅱ';motion.setAttribute('aria-label',labels[paused?1:0]);motion.title=labels[paused?1:0];motion.hidden=!spriteReady;};
+  const stopGreeting=()=>{workScene?.stop();mascot?.classList.remove('is-greeting');helper.classList.remove('is-animating');};
+  const canAnimate=()=>spriteReady&&!helper.hidden&&!panel.hidden&&!userPaused&&(!reducedMotion.matches||motionOptIn)&&!document.hidden;
+  const startGreeting=()=>{if(!canAnimate()){stopGreeting();return;}mascot?.classList.add('is-greeting');helper.classList.add('is-animating');workScene?.start();};
+  const positionPanel=()=>{
+   if(panel.hidden)return;
+   const anchor=toggle.getBoundingClientRect(),box=panel.getBoundingClientRect();
+   panel.style.left=Math.max(12,Math.min(anchor.right-box.width,innerWidth-box.width-12))+'px';
+   panel.style.top=Math.max(12,Math.min(anchor.bottom+8,innerHeight-box.height-12))+'px';
   };
-  const stopGreeting = () => {
-   workScene?.stop();
-   mascot?.classList.remove('is-greeting');
-   helper.classList.remove('is-animating');
+  const setOpen=(open,restoreFocus=true)=>{
+   stopGreeting();panel.hidden=!open;toggle.setAttribute('aria-expanded',String(open));
+   if(open){
+    if(result){result.textContent=result.dataset.quip;result.dataset.phase='quip';}
+    workScene?.restartAtQuip?.();positionPanel();close.focus({preventScroll:true});startGreeting();
+   }else if(restoreFocus)toggle.focus({preventScroll:true});
   };
-  const canAnimate = () => spriteReady && !helper.hidden && !userPaused && (!reducedMotion.matches || motionOptIn) && !document.hidden && panel.hidden;
-  const startGreeting = () => {
-   if (!canAnimate()) {stopGreeting();return;}
-   // Keep the same CSS loop running. Restoring a tab no longer depends on
-   // a JavaScript timer restarting the decoration after every sequence.
-   mascot.classList.add('is-greeting');
-   helper.classList.add('is-animating');
-   workScene?.start();
-  };
-  const setOpen = (open, restoreFocus = true) => {
-   if (open) stopGreeting();
-   panel.hidden = !open;
-   toggle.setAttribute('aria-expanded', String(open));
-   if (open) close.focus({preventScroll:true});
-   else {
-    if (restoreFocus) toggle.focus({preventScroll:true});
-    startGreeting();
-   }
-  };
-  toggle.hidden = false;
-  toggle.addEventListener('click', () => setOpen(panel.hidden));
-  close.addEventListener('click', () => setOpen(false));
-  document.addEventListener('keydown', event => {
-   if (event.key === 'Escape' && !panel.hidden) {event.preventDefault();setOpen(false, helper.contains(document.activeElement));}
-  });
-  document.addEventListener('pointerdown', event => {
-   if (!panel.hidden && !helper.contains(event.target)) setOpen(false, false);
-  });
-  const nav = document.querySelector('[data-nav-toggle], .nav-toggle, .locale-toggle');
-  nav?.addEventListener('click', () => {if (!panel.hidden) setOpen(false, false);});
-  // Animate only the decoration. Contact actions remain fixed and usable.
-  if (mascot && frames) {
-   helper.append(motion);
-   motion.addEventListener('click', () => {
-    if (userPaused || (reducedMotion.matches && !motionOptIn)) {
-     userPaused = false;
-     motionOptIn = true;
-     helper.classList.add('motion-opt-in');
-    } else userPaused = true;
-    updateMotionControl();
-    if (userPaused) stopGreeting();
-    else startGreeting();
-   });
-  }
-  reducedMotion.addEventListener('change', () => {
-   motionOptIn = false;
-   helper.classList.remove('motion-opt-in');
-   updateMotionControl();
-   startGreeting();
-  });
-  document.addEventListener('visibilitychange', () => {
-   if (document.hidden) stopGreeting();
-   else startGreeting();
-  });
-  window.addEventListener('pageshow', startGreeting);
-  window.addEventListener('focus', startGreeting);
-  if (mascot && frames) {
-   const sprite = new Image();
-   sprite.src = '/bilder/reparatur-avatar-stehend-20261109.webp';
-   sprite.decode().then(() => {
-    spriteReady = Boolean(workScene) || typeof frames?.replaceChildren !== 'function';
-    if (workScene) mascot.classList.add('rig-ready');
-    updateMotionControl();
-    startGreeting();
-   }).catch(() => {/* The static portrait remains available if the animation cannot load. */});
-  }
-  if (floating) {
-   let dismissed = false;
-   let ready = false;
-   let frame = 0;
-   const dismiss = document.createElement('button');
-   dismiss.type = 'button';
-   dismiss.className = 'repair-helper-dismiss';
-   dismiss.textContent = '×';
-   dismiss.setAttribute('aria-label',dismissCopy[document.documentElement.lang.split('-')[0]]||dismissCopy.en);
-   helper.append(dismiss);
-   dismiss.addEventListener('click',()=>{
-    dismissed = true;
-    setOpen(false,false);
-    helper.hidden = true;
-    stopGreeting();
-   });
-   const visible = node => {
-    // Closed language menus can retain off-screen or transformed rectangles.
-    // Only controls actually painted by the browser reserve floating space.
-    if (typeof node.checkVisibility === 'function' && !node.checkVisibility({checkOpacity:true,checkVisibilityCSS:true})) return false;
-    const rect = node.getBoundingClientRect();
-    const style = getComputedStyle(node);
-    return rect.width>1 && rect.height>1 && rect.bottom>0 && rect.top<innerHeight && style.visibility!=='hidden' && style.display!=='none';
-   };
-   const refresh = () => {
-    frame = 0;
-    if (!ready || dismissed) return;
-    // The expanded state is authoritative even during the menu's opening
-    // transition, when its measured height can still be zero.
-    const menuOpen = [...document.querySelectorAll('.nav-toggle[aria-expanded="true"],.locale-toggle[aria-expanded="true"]')].some(visible);
-    const blocked = menuOpen || [...document.querySelectorAll('.consent-banner,dialog[open],[role="dialog"],.nav.open,#locale-nav.open')]
-     .some(node=>!node.closest('[data-repair-helper]') && visible(node));
-    const formFocused = document.activeElement?.closest('form');
-    if (blocked || formFocused) {
-     if (!panel.hidden) setOpen(false,false);
-     helper.hidden = true;
-     stopGreeting();
-     return;
-    }
-    helper.hidden = false;
-    if (panel.hidden) {
-     const controls = [...document.querySelectorAll('a[href],button,input,select,textarea,summary')].filter(node=>!node.closest('[data-repair-helper]')&&visible(node));
-     // Prefer the lower-left corner, then nearby space above it. Hide only when
-     // none of these positions can avoid the page's interactive controls.
-     let space = false;
-     const controlBoxes=controls.map(node=>node.getBoundingClientRect());
-     // A compact first-screen card keeps the animation available when the
-     // large portrait cannot fit between controls. Targets remain 44px.
-     for (const compact of [false,true]) {
-      helper.classList.toggle('repair-helper-compact',compact);
-      helper.style.setProperty('--repair-lift','0px');
-      const baseBox=helper.getBoundingClientRect();
-      const lifts=[...new Set([0,80,160,...controlBoxes.flatMap(r=>[baseBox.top-r.bottom-3,baseBox.top-r.top+baseBox.height+3])])].filter(n=>n>=0&&n<=innerHeight).sort((a,b)=>a-b);
-      for (const lift of lifts) {
-       helper.style.setProperty('--repair-lift',lift+'px');
-       const box = helper.getBoundingClientRect();
-       if (box.top<92) continue;
-       const overlaps = controlBoxes.some(r=>box.left<r.right-2&&box.right>r.left+2&&box.top<r.bottom-2&&box.bottom>r.top+2);
-       if (!overlaps) {space=true;break;}
-      }
-      if (space) break;
-     }
-     helper.hidden = !space;
-    }
-    if (helper.hidden) stopGreeting();
-    else startGreeting();
-   };
-   const queue = () => {if (!frame) frame = window.requestAnimationFrame(refresh);};
-   window.addEventListener('scroll',queue,{passive:true});
-   window.addEventListener('resize',queue);
-   document.addEventListener('click',queue);
-   document.addEventListener('focusin',queue);
-   document.addEventListener('focusout',queue);
-   window.setTimeout(()=>{ready=true;queue();},1200);
-  }
+  toggle.hidden=false;toggle.addEventListener('click',()=>setOpen(panel.hidden));
+  close.addEventListener('click',()=>setOpen(false));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!panel.hidden){event.preventDefault();setOpen(false,helper.contains(document.activeElement)||panel.contains(document.activeElement));}});
+  document.addEventListener('pointerdown',event=>{if(!panel.hidden&&!helper.contains(event.target)&&!panel.contains(event.target))setOpen(false,false);});
+  document.querySelector('[data-nav-toggle], .nav-toggle, .locale-toggle')?.addEventListener('click',()=>{if(!panel.hidden)setOpen(false,false);});
+  motion.addEventListener('click',()=>{if(userPaused||(reducedMotion.matches&&!motionOptIn)){userPaused=false;motionOptIn=true;helper.classList.add('motion-opt-in');}else userPaused=true;updateMotionControl();startGreeting();});
+  reducedMotion.addEventListener('change',()=>{motionOptIn=false;helper.classList.remove('motion-opt-in');updateMotionControl();startGreeting();});
+  document.addEventListener('visibilitychange',startGreeting);window.addEventListener('pageshow',startGreeting);window.addEventListener('focus',startGreeting);
+  window.addEventListener('resize',positionPanel);
+  window.addEventListener('scroll',()=>{if(panel.hidden)return;const anchor=toggle.getBoundingClientRect();if(anchor.bottom<0||anchor.top>innerHeight)setOpen(false,false);else positionPanel();},{passive:true});
+  if(mascot&&frames){const sprite=new Image();sprite.src='/bilder/reparatur-avatar-stehend-20261109.webp';sprite.decode().then(()=>{spriteReady=Boolean(workScene)||typeof frames?.replaceChildren!=='function';if(workScene)mascot.classList.add('rig-ready');updateMotionControl();startGreeting();}).catch(()=>{/* Keep the original still and usable contact dialog. */});}
  }
 })();

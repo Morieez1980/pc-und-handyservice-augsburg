@@ -288,7 +288,7 @@ jobs:
             for (const [path, source] of [[appPath, app], [helperPath, helper], [scenePath, scene]]) new Script(source, {filename: path});
             for (const marker of ['#app-enquiry', '#app-idea', 'app-offer.json', 'data-demo-download', 'practicalAcceptanceComplete']) assert.ok(app.includes(marker), `App script marker missing: ${marker}`);
             for (const marker of ['data-repair-helper', 'canAnimate', 'prefers-reduced-motion', 'pageshow', 'motionOptIn']) assert.ok(helper.includes(marker), `Avatar script marker missing: ${marker}`);
-            assert.ok(scene.includes("const duration = '24s'") && scene.includes('repeatCount="indefinite"'), 'Continuous anatomical repair timeline missing');
+            assert.ok(scene.includes("const duration = '16s'") && scene.includes('repeatCount="indefinite"'), 'Continuous anatomical repair timeline missing');
             for (const marker of ['pauseAnimations', 'unpauseAnimations', 'repair-precision-illustration', 'repair-precision-motion', 'feDisplacementMap']) assert.ok(scene.includes(marker), `Work-scene marker missing: ${marker}`);
             assert.ok(css.includes('.repair-working-avatar.rig-ready'), 'Ready work-scene styling missing');
             assert.ok(appCss.toString().includes('.app-page'), 'App stylesheet marker missing');
