@@ -1,3 +1,4 @@
+import {standingCaption} from './standing-avatar.mjs';
 const copy={
   "de": [
     "Klick mich",
@@ -156,11 +157,11 @@ const strengthTitle={de:'Stark für Ihre Technik.',en:'Strong support for your t
 // The working rig is installed once by repair-helper.js. Keep a static
 // close-view fallback for slow connections and reduced-motion preferences.
 function avatar(){
- return '<span class="repair-avatar" aria-hidden="true"><img src="/bilder/reparatur-avatar-tattoo65-klein-20261108.webp" width="128" height="128" alt="" decoding="async"><span class="repair-avatar-frames"></span></span>';
+ return '<span class="repair-avatar" aria-hidden="true"><img src="/bilder/reparatur-avatar-stehend-klein-20261109.webp" width="128" height="128" alt="" decoding="async"><span class="repair-avatar-frames"></span></span>';
 }
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
 export function repairHelper(lang){
  const c=copy[lang];if(!c)throw Error('Missing contact helper locale: '+lang);
  const request=lang==='de'?'/reparaturanfrage':'/'+lang+'/reparaturanfrage';
- return '<div class="repair-helper" data-repair-helper><button type="button" class="repair-helper-toggle" aria-expanded="false" aria-controls="repair-helper-panel" hidden>'+avatar()+'<span>'+esc(c[0])+'</span></button><div class="repair-helper-panel" id="repair-helper-panel" role="dialog" aria-modal="false" aria-labelledby="repair-helper-title" hidden><button type="button" class="repair-helper-close" aria-label="'+esc(c[3])+'">×</button>'+'<p class="repair-helper-owner">Maurice Keil · PC &amp; Handyservice</p><h2 id="repair-helper-title">'+esc(strengthTitle[lang]||c[1])+'</h2><p>'+esc(c[2])+'</p><div class="repair-helper-contacts"><a href="'+request+'">'+esc(c[4])+' →</a><a href="tel:+4915254530080">'+esc(c[5])+' · 0152 54530080</a><a href="https://wa.me/4915254530080" rel="noopener noreferrer">WhatsApp →</a></div></div></div>';
+ return '<div class="repair-helper" data-repair-helper><button type="button" class="repair-helper-toggle" aria-expanded="false" aria-controls="repair-helper-panel" hidden>'+avatar()+standingCaption(lang)+'<span class="repair-helper-cta">'+esc(c[0])+'</span></button><div class="repair-helper-panel" id="repair-helper-panel" role="dialog" aria-modal="false" aria-labelledby="repair-helper-title" hidden><button type="button" class="repair-helper-close" aria-label="'+esc(c[3])+'">×</button>'+'<p class="repair-helper-owner">Maurice Keil · PC &amp; Handyservice</p><h2 id="repair-helper-title">'+esc(strengthTitle[lang]||c[1])+'</h2><p>'+esc(c[2])+'</p><div class="repair-helper-contacts"><a href="'+request+'">'+esc(c[4])+' →</a><a href="tel:+4915254530080">'+esc(c[5])+' · 0152 54530080</a><a href="https://wa.me/4915254530080" rel="noopener noreferrer">WhatsApp →</a></div></div></div>';
 }
