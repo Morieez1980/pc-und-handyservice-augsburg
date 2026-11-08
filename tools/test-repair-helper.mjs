@@ -81,3 +81,10 @@ test('a page loaded in a hidden tab starts on pageshow without a repair-button c
  h.doc.hidden=false;h.fire(h.win,'pageshow');assert.equal(h.active(),true);
  h.fire(h.helper.motion,'click');h.fire(h.win,'pageshow');assert.equal(h.active(),false,'Pageshow must preserve user pause');
 });
+
+test('a hidden contact bubble stops moving and resumes only when visible', async()=>{
+ const h=setup();await h.ready();assert.equal(h.active(),true);
+ h.helper.hidden=true;h.fire(h.win,'focus');assert.equal(h.active(),false);
+ h.fire(h.win,'pageshow');assert.equal(h.active(),false);
+ h.helper.hidden=false;h.fire(h.win,'focus');assert.equal(h.active(),true);
+});
