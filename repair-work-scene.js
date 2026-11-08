@@ -37,8 +37,10 @@
   svg.querySelector('[id$="wave-field"]').setAttribute('href',field('wave',380,255,115,210,'#ff8080'));
   svg.querySelector('[id$="tool-field"]').setAttribute('href',field('tool',795,785,75,145,'#ff9480'));
   frames.replaceChildren(svg);svg.pauseAnimations();svg.setCurrentTime(0);
-  const result=frames.closest('[data-repair-helper]')?.querySelector('[data-repair-result]');let raf=0,phase='';
-  const tick=()=>{raf=0;const t=svg.getCurrentTime()%24;const next=t>=16&&t<23.25?'complete':t>=8&&t<16?'quip':'idle';if(next!==phase){phase=next;if(result){result.textContent=next==='complete'?result.dataset.complete:next==='quip'?result.dataset.quip:'\u00a0';result.dataset.phase=next;}}raf=requestAnimationFrame(tick);};
+  const helper=frames.closest('[data-repair-helper]');
+  const result=helper?.querySelector('[data-repair-result]');
+  const introduction=[...(helper?.querySelector('.repair-helper-slogan')?.children||[])].map(node=>node.textContent.trim()).join(' ');let raf=0,phase='';
+  const tick=()=>{raf=0;const t=svg.getCurrentTime()%24;const compact=helper?.classList.contains('repair-helper-compact');const next=t>=16&&t<23.25?'complete':t>=8&&t<16?'quip':compact?'intro':'idle';if(next!==phase){phase=next;if(result){result.textContent=next==='complete'?result.dataset.complete:next==='quip'?result.dataset.quip:next==='intro'?introduction:'\u00a0';result.dataset.phase=next;}}raf=requestAnimationFrame(tick);};
   return {svg,start:()=>{svg.unpauseAnimations();if(!raf)tick();},stop:()=>{svg.pauseAnimations();if(raf)cancelAnimationFrame(raf);raf=0;}};
  };
 })();
