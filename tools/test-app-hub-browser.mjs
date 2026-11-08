@@ -11,7 +11,7 @@ const {chromium}=require('C:/Users/Maurice/.cache/codex-runtimes/codex-primary-r
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const evidence=process.env.KEILCOPY_APP_HUB_EVIDENCE||'D:/ChatGPT/Keil-Copy/Entwicklung/Aenderungen/1.9.89/Apps-Seite-20261107/Browser-Pruefung';
 const widths=[320,360,390,1366];
-const sections=['funktionen','testen','lizenzen','kaufanfrage','updates','mitgestalten','bedingungen'];
+const sections=['funktionen','testen','lizenzen','kaufanfrage','updates','upgrades','mitgestalten','bedingungen'];
 const aliases=[
  {route:'/apps-bestellen?edition=technician',hash:'#kaufanfrage',edition:'technician'},
  {route:'/apps-kontakt',hash:'#mitgestalten'},
@@ -199,10 +199,12 @@ try{
   for(const lang of langs){
    const route=lang==='de'?'/':'/'+lang+'/';await goto(page,route);await layout(page,route,width);
    const overview=page.locator('[data-app-overview-link]');assert.ok(await overview.count()>=1,route+' app overview button');
-   for(const link of await overview.all())assert.equal(await link.getAttribute('href'),'/apps',route+' overview leads to one page');
+   for(const link of await overview.all())assert.equal(await link.getAttribute('href'),'/apps#upgrades',route+' overview leads to the planned-upgrades section');
   }
   await goto(page,'/apps');await ready(page);
   for(const id of sections)assert.equal(await page.locator('#'+id).count(),1,'one-page section '+id);
+  assert.equal(await page.locator('#upgrades [data-upgrade-id]').count(),3,'three planned upgrade cards');
+  assert.equal(await page.locator('#upgrades a[href],#upgrades button').count(),0,'planned upgrades have no purchase or download action');
   for(const id of ['app-enquiry','app-idea']){
    assert.equal((await page.locator('#'+id).getAttribute('method'))?.toLowerCase(),'post');
    assert.ok((await page.locator('#'+id).getAttribute('action'))?.trim());
@@ -210,7 +212,7 @@ try{
   await layout(page,'/apps',width);
   if(darkMode)await contrast(page,width);
   await page.screenshot({path:path.join(evidence,`Apps-${width}.png`),fullPage:true});
-  if([390,1366].includes(width))for(const [name,selector] of [['Hero','.app-hero'],['Preise','#lizenzen'],['Kaufanfrage','#app-enquiry'],['Rueckmeldung','#app-idea']]){
+  if([390,1366].includes(width))for(const [name,selector] of [['Hero','.app-hero'],['Preise','#lizenzen'],['Upgrades','#upgrades'],['Kaufanfrage','#app-enquiry'],['Rueckmeldung','#app-idea']]){
    await page.locator(selector).screenshot({path:path.join(evidence,`Apps-${name}-${width}.png`)});
    record('section screenshot',{section:name,width});
   }

@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "product": "Keil@Copy",
+  "status": "planned",
+  "saleEnabled": false,
+  "implemented": false,
+  "pricingStatus": "prepared-proposal",
+  "currency": "EUR",
+  "billing": "one-time",
+  "subscription": false,
+  "baseLicenseRequired": true,
+  "eligibleEditions": [
+    "personal",
+    "technician"
+  ],
+  "existingLicenseRightsReduced": false,
+  "existingProgramUpdateTermsChanged": false,
+  "paidUpgradeIsNotRequiredForSecurityOrBugFixes": true,
+  "features": [
+    {
+      "id": "move-v1",
+      "name": "Ausschneiden / Verschieben",
+      "priceCents": 1000,
+      "status": "planned",
+      "implemented": false,
+      "downloadUrl": null,
+      "purchaseUrl": null,
+      "scopeStatus": "specified-for-implementation",
+      "description": "Ausgewählte Dateien nach bestätigter Zielkopie und vollständigem Inhaltsabgleich am ursprünglichen Ort entfernen. Bei Unsicherheit bleibt die Quelle erhalten."
+    },
+    {
+      "id": "share-v1",
+      "name": "Teilen",
+      "priceCents": 1000,
+      "status": "planned",
+      "implemented": false,
+      "downloadUrl": null,
+      "purchaseUrl": null,
+      "scopeStatus": "needs-definition",
+      "description": "Zusätzliche Möglichkeiten zum Teilen von Dateien. Der genaue Umfang wird vor einem Angebot festgelegt."
+    }
+  ],
+  "bundle": {
+    "id": "move-and-share",
+    "name": "Beide Zusatzfunktionen",
+    "priceCents": 1500,
+    "featureIds": [
+      "move-v1",
+      "share-v1"
+    ],
+    "status": "planned",
+    "purchaseUrl": null
+  },
+  "deliveryDate": null,
+  "supportTerms": "Im späteren persönlichen Angebot festlegen; bestehende Ansprüche und gekaufte Nutzungsrechte bleiben erhalten."
+}
