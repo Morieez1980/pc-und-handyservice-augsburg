@@ -123,7 +123,7 @@
   window.addEventListener('focus', startGreeting);
   if (mascot && frames) {
    const sprite = new Image();
-   sprite.src = '/bilder/reparatur-avatar-tattoo65-20261108.webp';
+   sprite.src = '/bilder/reparatur-avatar-stehend-20261109.webp';
    sprite.decode().then(() => {
     spriteReady = Boolean(workScene) || typeof frames?.replaceChildren !== 'function';
     if (workScene) mascot.classList.add('rig-ready');
@@ -148,6 +148,9 @@
     stopGreeting();
    });
    const visible = node => {
+    // Closed language menus can retain off-screen or transformed rectangles.
+    // Only controls actually painted by the browser reserve floating space.
+    if (typeof node.checkVisibility === 'function' && !node.checkVisibility({checkOpacity:true,checkVisibilityCSS:true})) return false;
     const rect = node.getBoundingClientRect();
     const style = getComputedStyle(node);
     return rect.width>1 && rect.height>1 && rect.bottom>0 && rect.top<innerHeight && style.visibility!=='hidden' && style.display!=='none';
@@ -173,12 +176,22 @@
      // Prefer the lower-left corner, then nearby space above it. Hide only when
      // none of these positions can avoid the page's interactive controls.
      let space = false;
-     for (const lift of [0,80,160]) {
-      helper.style.setProperty('--repair-lift',lift+'px');
-      const box = helper.getBoundingClientRect();
-      if (box.top<92) continue;
-      const overlaps = controls.some(node=>{const r=node.getBoundingClientRect();return box.left<r.right-2&&box.right>r.left+2&&box.top<r.bottom-2&&box.bottom>r.top+2;});
-      if (!overlaps) {space=true;break;}
+     const controlBoxes=controls.map(node=>node.getBoundingClientRect());
+     // A compact first-screen card keeps the animation available when the
+     // large portrait cannot fit between controls. Targets remain 44px.
+     for (const compact of [false,true]) {
+      helper.classList.toggle('repair-helper-compact',compact);
+      helper.style.setProperty('--repair-lift','0px');
+      const baseBox=helper.getBoundingClientRect();
+      const lifts=[...new Set([0,80,160,...controlBoxes.flatMap(r=>[baseBox.top-r.bottom-3,baseBox.top-r.top+baseBox.height+3])])].filter(n=>n>=0&&n<=innerHeight).sort((a,b)=>a-b);
+      for (const lift of lifts) {
+       helper.style.setProperty('--repair-lift',lift+'px');
+       const box = helper.getBoundingClientRect();
+       if (box.top<92) continue;
+       const overlaps = controlBoxes.some(r=>box.left<r.right-2&&box.right>r.left+2&&box.top<r.bottom-2&&box.bottom>r.top+2);
+       if (!overlaps) {space=true;break;}
+      }
+      if (space) break;
      }
      helper.hidden = !space;
     }
