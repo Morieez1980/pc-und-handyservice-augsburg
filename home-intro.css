@@ -292,3 +292,20 @@ body .home-first-screen .repair-helper-head .repair-helper-toggle>.repair-helper
 
 /* All information is readable at once; only the illustration changes. */
 .repair-helper-dialog .repair-helper-quip{grid-column:2;margin:5px 0;font-size:13px;line-height:1.4;color:#e7f1f4;overflow-wrap:anywhere}
+
+
+/* The last standing greeting, now as an unboxed, dimensional cutout. */
+.repair-helper-preview{background:transparent;overflow:visible;border-radius:0;filter:drop-shadow(0 5px 6px #0006)}
+.repair-helper-dialog{width:440px;background:linear-gradient(145deg,#1b303b,#10212b);border:1px solid #51717c;box-shadow:0 24px 70px #0007,inset 0 1px 0 #b8e6ed24;overflow-x:hidden;isolation:isolate}
+.repair-helper-showcase{grid-template-columns:190px minmax(0,1fr);column-gap:15px;position:relative;min-height:284px;padding:4px 0;border-block:0;margin:8px 0 4px;perspective:900px}
+.repair-helper-dialog .repair-avatar{width:190px;height:284px;overflow:visible;border-radius:0;background:transparent;filter:drop-shadow(0 12px 10px #0008);transform-origin:50% 85%;align-self:center}
+.repair-helper-dialog .repair-avatar::after{content:'';position:absolute;inset:auto 12% 1% 12%;height:10px;border-radius:50%;background:#4ac9c525;filter:blur(6px);z-index:-1}
+.repair-helper-dialog:not([hidden]) .repair-avatar{animation:repair-figure-appear .48s cubic-bezier(.18,.75,.25,1) both}
+.repair-helper-dialog .repair-helper-slogan{font-size:14px;line-height:1.4}
+.repair-helper-dialog .repair-helper-slogan strong{font-size:17px}
+.repair-helper-dialog .repair-helper-quip{font-size:14px;line-height:1.45}
+.repair-helper-dialog .repair-helper-result{font-size:13px;min-height:32px}
+.repair-helper-dialog .repair-helper-contacts{margin-top:8px}
+@keyframes repair-figure-appear{from{opacity:0;transform:translateY(20px) scale(.88) rotateX(10deg)}to{opacity:1;transform:translateY(0) scale(1) rotateX(0)}}
+@media(max-width:700px){.repair-helper-dialog{padding:16px}.repair-helper-showcase{grid-template-columns:142px minmax(0,1fr);gap:10px;min-height:228px}.repair-helper-dialog .repair-avatar{width:142px;height:228px}.repair-helper-dialog .repair-helper-slogan{font-size:12px}.repair-helper-dialog .repair-helper-slogan strong{font-size:14px}.repair-helper-dialog .repair-helper-quip{font-size:12px}.repair-helper-dialog .repair-helper-result{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.repair-helper-dialog:not([hidden]) .repair-avatar{animation:none}}
