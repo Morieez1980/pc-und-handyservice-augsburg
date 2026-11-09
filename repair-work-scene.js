@@ -1,10 +1,10 @@
 (() => {
  'use strict';
  window.PCRepairWorkScene = (frames,id) => {
-  const source = '/bilder/reparatur-avatar-stehend-20261109.webp';
+  const source = '/bilder/reparatur-avatar-frei-20261109.webp';
   const duration = '12s';
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.setAttribute('viewBox','0 0 1254 1254');svg.setAttribute('class','repair-working-scene');svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');
+  svg.setAttribute('viewBox','250 -15 800 1284');svg.setAttribute('class','repair-working-scene');svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');
   svg.innerHTML=`
 <defs>
 <filter id="SCENE_ID-motion" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
@@ -20,7 +20,7 @@
 </feDisplacementMap>
 </filter>
 </defs>
-<image class="repair-precision-illustration" href="/bilder/reparatur-avatar-stehend-20261109.webp" width="1254" height="1254" filter="url(#SCENE_ID-motion)"/>
+<image class="repair-precision-illustration" href="/bilder/reparatur-avatar-frei-20261109.webp" width="1254" height="1254" filter="url(#SCENE_ID-motion)"/>
 <g transform="translate(925 880)" aria-hidden="true" opacity="0">
 <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.31;.34;.97;.99;1" dur="8s" repeatCount="indefinite"/>
 <rect x="-75" y="-60" width="170" height="112" rx="12" fill="#24363b" stroke="#708b8d" stroke-width="7"/>
