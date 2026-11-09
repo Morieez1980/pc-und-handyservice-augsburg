@@ -56,8 +56,8 @@
   const setOpen=(open,restoreFocus=true)=>{
    stopGreeting();panel.hidden=!open;toggle.setAttribute('aria-expanded',String(open));
    if(open){
-    if(result){result.textContent=result.dataset.quip;result.dataset.phase='quip';}
-    workScene?.restartAtQuip?.();positionPanel();close.focus({preventScroll:true});startGreeting();
+    if(result){result.textContent='\u00a0';result.dataset.phase='idle';}
+    workScene?.restartFromBeginning?.();positionPanel();close.focus({preventScroll:true});startGreeting();
    }else if(restoreFocus)toggle.focus({preventScroll:true});
   };
   toggle.hidden=false;toggle.addEventListener('click',()=>setOpen(panel.hidden));
