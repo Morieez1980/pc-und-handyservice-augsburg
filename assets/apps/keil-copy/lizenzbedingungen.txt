@@ -1,4 +1,4 @@
-Keil@Copy · Stand 06.11.2026 · Unterlagenfassung 2026-11-06.1
+Keil@Copy · Stand 09.11.2026 · Unterlagenfassung 2026-11-09.support6
 
 LIZENZ- UND VERTRAGSBEDINGUNGEN
 
@@ -30,7 +30,8 @@ Quelle, Ziel und Optionen sind vor Start zu prüfen; wichtige Daten angemessen u
 
 7. Updates, Support und Wünsche
 Für die erworbene 1.x-Linie werden bereitgestellte Programmupdates ohne zusätzliche Updategebühr angeboten. Die unbefristete Nutzung der erworbenen Version endet nicht mit einem Supportzeitraum. Eine neue kostenpflichtige Hauptversion wird nicht automatisch gekauft; ihr Erwerb ist gesondert zu vereinbaren.
-Zusätzlich 12 Monate persönliche E-Mail-Fehleranalyse ab Lizenzbereitstellung: Version, nachvollziehbare Schritte und nötige Fehlermeldung prüfen; geeignete Abhilfe oder Hinweise im Rahmen des Produkts anbieten. Keine feste Reaktions-/Lösungsfrist, keine 24-Stunden-Bereitschaft, keine allgemeine Windows-Reparatur, Fernwartung oder Datenrettung als pauschale Inklusivleistung. Gesetzliche Mängelrechte und erforderliche Aktualisierungen, insbesondere Sicherheitsaktualisierungen nach § 327f BGB, bestehen unabhängig von diesen freiwilligen Leistungen.
+Die sechs Monate Zusatzsupport gelten für künftige Neuverträge auf Grundlage dieser Fassung. Bereits vereinbarte längere Supportzeiträume bleiben bestehen. Gesetzliche Mängelrechte und erforderliche Aktualisierungen bleiben unberührt.
+Zusätzlich 6 Monate persönliche E-Mail-Fehleranalyse ab Lizenzbereitstellung: Version, nachvollziehbare Schritte und nötige Fehlermeldung prüfen; geeignete Abhilfe oder Hinweise im Rahmen des Produkts anbieten. Keine feste Reaktions-/Lösungsfrist, keine 24-Stunden-Bereitschaft, keine allgemeine Windows-Reparatur, Fernwartung oder Datenrettung als pauschale Inklusivleistung. Gesetzliche Mängelrechte und erforderliche Aktualisierungen, insbesondere Sicherheitsaktualisierungen nach § 327f BGB, bestehen unabhängig von diesen freiwilligen Leistungen.
 Bei aktivierter Automatik tägliche Prüfung während laufender App im Leerlauf; Paketübernahme beim regulären Schließen oder nach ausdrücklicher Installation. Laufende Kopien werden dafür nicht beendet. Bei geschlossener App wird eine fällige Prüfung beim nächsten Start nachgeholt. Keine tägliche neue Version und keine automatische Aktualisierung sämtlicher Windows-Programme oder Treiber zugesagt.
 Kritik, Fehlerhinweise und Funktionswünsche sind willkommen. Maurice prüft Machbarkeit, Nutzen, Sicherheit und Häufigkeit der Wünsche. Eine bestimmte Umsetzung, Veröffentlichung oder ein Termin wird erst durch eine konkrete Zusage verbindlich. Eine Kontaktanfrage ist keine Werbeeinwilligung und kein kostenpflichtiger Entwicklungsauftrag.
 
