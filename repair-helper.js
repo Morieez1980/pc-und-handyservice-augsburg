@@ -30,7 +30,7 @@
    try{workScene=window.PCRepairWorkScene(frames,'repair-working-'+(++rigSequence));mascot.classList.add('repair-working-avatar');}catch{frames.replaceChildren();}
   }
   const showcase=document.createElement('div');showcase.className='repair-helper-showcase';
-  if(mascot)showcase.append(mascot);if(slogan)showcase.append(slogan);if(result)showcase.append(result);
+  if(mascot)showcase.append(mascot);if(slogan)showcase.append(slogan);const quip=document.createElement('p');quip.className='repair-helper-quip';quip.textContent=result?.dataset.quip||'';showcase.append(quip);if(result)showcase.append(result);
   panel.insertBefore(showcase,panel.querySelector('.repair-helper-contacts'));
   panel.classList.add('repair-helper-dialog');document.body?.append(panel);
   const preview=document.createElement('span');preview.className='repair-helper-preview';preview.setAttribute('aria-hidden','true');
@@ -56,7 +56,7 @@
   const setOpen=(open,restoreFocus=true)=>{
    stopGreeting();panel.hidden=!open;toggle.setAttribute('aria-expanded',String(open));
    if(open){
-    if(result){result.textContent='\u00a0';result.dataset.phase='idle';}
+    if(result){result.textContent=result.dataset.complete;result.dataset.phase='idle';}
     workScene?.restartFromBeginning?.();positionPanel();close.focus({preventScroll:true});startGreeting();
    }else if(restoreFocus)toggle.focus({preventScroll:true});
   };

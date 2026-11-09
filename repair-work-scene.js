@@ -2,7 +2,7 @@
  'use strict';
  window.PCRepairWorkScene = (frames,id) => {
   const source = '/bilder/reparatur-avatar-stehend-20261109.webp';
-  const duration = '16s';
+  const duration = '12s';
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.setAttribute('viewBox','0 0 1254 1254');svg.setAttribute('class','repair-working-scene');svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');
   svg.innerHTML=`
@@ -39,8 +39,8 @@
   frames.replaceChildren(svg);svg.pauseAnimations();svg.setCurrentTime(0);
   const helper=frames.closest('[data-repair-helper]');
   const result=helper?.querySelector('[data-repair-result]');
-  const introduction=[...(helper?.querySelector('.repair-helper-slogan')?.children||[])].map(node=>node.textContent.trim()).join(' ');let raf=0,phase='';
-  const tick=()=>{raf=0;const t=svg.getCurrentTime()%16;const next=t>=32/3&&t<15.5?'complete':t>=16/3&&t<32/3?'quip':'idle';if(next!==phase){phase=next;if(result){result.textContent=next==='complete'?result.dataset.complete:next==='quip'?result.dataset.quip:next==='intro'?introduction:'\u00a0';result.dataset.phase=next;}}raf=requestAnimationFrame(tick);};
+  let raf=0,phase='';
+  const tick=()=>{raf=0;const t=svg.getCurrentTime()%12;const next=t>=8&&t<11.625?'complete':t>=4&&t<8?'quip':'idle';if(next!==phase){phase=next;if(result){result.textContent=result.dataset.complete;result.dataset.phase=next;}}raf=requestAnimationFrame(tick);};
   return {svg,restartFromBeginning:()=>{svg.setCurrentTime(0);},start:()=>{svg.unpauseAnimations();if(!raf)tick();},stop:()=>{svg.pauseAnimations();if(raf)cancelAnimationFrame(raf);raf=0;}};
  };
 })();
