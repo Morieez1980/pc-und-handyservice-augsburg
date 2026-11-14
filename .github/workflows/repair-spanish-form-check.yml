@@ -229,5 +229,6 @@ jobs:
         with:
           name: spanish-preview-${{ github.sha }}
           path: .spanish-preview-results/
-          if-no-files-found: warn
+          include-hidden-files: true
+          if-no-files-found: error
           retention-days: 7
