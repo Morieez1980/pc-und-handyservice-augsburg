@@ -15,6 +15,54 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  production-baseline-readonly:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/copilot/inhaltskonsistenz-20261114-d7c3b226'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      BASELINE: d7c3b22664f23247e6184519d63bfbcda4993e66
+      MONITOR_BASE: https://pc-und-handyservice-augsburg.pages.dev
+    steps:
+      - name: Checkout correction branch without stored credentials
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify and isolate the unchanged production baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse refs/remotes/origin/main)" = "$BASELINE"
+          mkdir .production-baseline
+          git archive --format=tar "$BASELINE" | tar -xf - -C .production-baseline
+      - name: Diagnose existing production endpoint readiness without deployment
+        shell: node {0}
+        run: |
+          const assert = require('node:assert/strict');
+          const {readFileSync, appendFileSync} = require('node:fs');
+          const {spawnSync} = require('node:child_process');
+          const {Script} = require('node:vm');
+          const workflow = readFileSync('.production-baseline/.github/workflows/monitor.yml', 'utf8');
+          const prefix = '      - name: Wait for current deployment and check endpoints\n        shell: node {0}\n        run: |\n';
+          assert.equal(workflow.split(prefix).length, 2, 'Expected exactly one existing readiness step');
+          const block = workflow.split(prefix)[1].split('\n      - name:')[0];
+          const source = block.split('\n').map(line => {
+            assert.ok(!line.trim() || line.startsWith('          '), 'Unexpected monitor indentation');
+            return line.slice(10);
+          }).join('\n');
+          new Script(source, {filename: 'existing-production-readiness.js'});
+          assert.equal(process.env.MONITOR_BASE, 'https://pc-und-handyservice-augsburg.pages.dev');
+          const result = spawnSync(process.execPath, ['-e', source], {
+            cwd: '.production-baseline', env: process.env, encoding: 'utf8', timeout: 190000
+          });
+          process.stdout.write(result.stdout || '');
+          process.stderr.write(result.stderr || '');
+          const details = [result.error?.message, result.stderr, result.stdout].filter(Boolean).join('\n');
+          const message = `Baseline ${process.env.BASELINE}; existing production readiness exit ${result.status}: ${details}`;
+          const escape = value => value.replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A');
+          console.log((result.status === 0 ? '::notice::' : '::error::') + escape(message));
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### Existing production baseline, read-only\nBaseline: ${process.env.BASELINE}\nEndpoint: ${process.env.MONITOR_BASE}\nExit: ${result.status}\nNo deployment, form submission, app release or marketing activation.\n`);
+          assert.equal(result.status, 0, 'Existing production readiness remains a release gate; inspect the diagnostic annotation');
   preview-qa:
     if: github.event_name == 'push' && github.ref == 'refs/heads/copilot/inhaltskonsistenz-20261114-d7c3b226'
     runs-on: ubuntu-latest
