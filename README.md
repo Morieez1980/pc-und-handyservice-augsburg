@@ -10,6 +10,8 @@ python -m http.server 4173
 
 Danach `http://localhost:4173` öffnen.
 
+`npm test` führt die vorhandenen Unit-Tests sowie Regressionstests für spanische Preise und Terminangaben, die Gerätekennungs-Ausnahme und abgelaufene Schließhinweise aus. `npm run validate` prüft anschließend die Website. Beide Prüfungen benötigen den vollständigen Checkout einschließlich der Bilddateien; fehlende Assets dürfen nicht durch Platzhalter ersetzt werden. Änderungen an `locales/` mit `npm run build:locales` erzeugen und generierte Änderungen vor dem Commit auf unbeabsichtigte Abweichungen prüfen.
+
 ## Cloudflare Pages
 
 - Production branch: `main`
