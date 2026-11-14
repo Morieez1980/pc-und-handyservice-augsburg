@@ -145,8 +145,8 @@ jobs:
           const fs=require('node:fs');
           const {execFileSync}=require('node:child_process');
           const {chromium}=require(process.cwd()+'/.spanish-preview-deps/node_modules/playwright');
-          const origin='https://e9e53b52.pc-und-handyservice-augsburg.pages.dev';
-          const content='75191934dac7aa9c13bba6287872f959b4b3bbcb';
+          const origin='https://0bc5bdc9.pc-und-handyservice-augsburg.pages.dev';
+          const content='198430e3e02b690bf3914836b8b1a1e4b63a9974';
           const allowedApis=new Set(['/api/review-summary','/api/google-reviews']);
           const evidence='.spanish-preview-results';
           fs.mkdirSync(evidence,{recursive:true});
