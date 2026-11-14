@@ -24,3 +24,5 @@ export const repairPlainTranslations = Object.fromEntries(Object.entries(rows).m
   if(values.length !== keys.length) throw Error('Incomplete plain-language form translations: ' + lang);
   return [lang, Object.fromEntries(keys.map((key, i)=>[key, values[i]]))];
 }));
+// Match the current sole-owner heading in the German form template.
+repairPlainTranslations.es['Was darf ich für Sie reparieren?'] = '¿Qué necesita reparar?';
