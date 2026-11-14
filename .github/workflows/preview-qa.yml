@@ -1,0 +1,71 @@
+name: Pinned correction preview QA
+
+on:
+  push:
+    branches: [copilot/inhaltskonsistenz-20261114-d7c3b226]
+    paths:
+      - .github/workflows/preview-qa.yml
+      - tools/test-preview-qa.mjs
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pinned-correction-preview-qa
+  cancel-in-progress: true
+
+jobs:
+  preview-qa:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/copilot/inhaltskonsistenz-20261114-d7c3b226'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.preview-qa-browsers
+    steps:
+      - name: Checkout correction branch commit
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify pinned preview content and JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          content=7e3f1f8a4053782be435b6d96931f366bce15730
+          git merge-base --is-ancestor "$content" HEAD
+          unexpected="$(git diff --name-only "$content" HEAD -- . ':!README.md' ':!.github/workflows/preview-qa.yml' ':!tools/test-preview-qa.mjs')"
+          if [[ -n "$unexpected" ]]; then
+            echo 'Pinned preview no longer represents all website changes. Review and repin explicitly.'
+            exit 1
+          fi
+          node --check tools/test-preview-qa.mjs
+      - name: Install isolated free browser test dependency in CI only
+        run: |
+          npm install --prefix .preview-qa-deps --no-save --package-lock=false --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          node .preview-qa-deps/node_modules/playwright/cli.js install --only-shell chromium
+      - name: Read-only desktop and mobile preview smoke tests
+        run: node tools/test-preview-qa.mjs
+      - name: Record exact content and QA association
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Pinned correction preview QA'
+            echo 'Preview: https://67c1001a.pc-und-handyservice-augsburg.pages.dev/'
+            echo 'Website content: 7e3f1f8a4053782be435b6d96931f366bce15730 (Cloudflare deployment 67c1001a-9394-4fd3-9e75-d3cdc18464bd)'
+            printf 'QA workflow commit: %s\n' "$GITHUB_SHA"
+            echo 'Results/screenshots: preview-qa artifact; only a successful browser step is a passing UI result.'
+            echo 'No production merge or production monitoring changes.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload preview QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-qa-${{ github.sha }}
+          path: preview-qa-results/
+          if-no-files-found: warn
+          retention-days: 7
