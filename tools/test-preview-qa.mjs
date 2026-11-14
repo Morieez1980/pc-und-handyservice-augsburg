@@ -28,7 +28,11 @@ function permitted(value) {
 }
 async function record(label, check) {
   try { await check(); result.checks.push({label, passed: true}); }
-  catch (error) { result.failures.push({label, message: error.message}); console.error(label + ': ' + error.message); }
+  catch (error) {
+    result.failures.push({label, message: error.message});
+    const message = (label + ': ' + error.message).replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A');
+    console.error('::error::' + message);
+  }
 }
 try {
   browser = await chromium.launch({headless: true});
@@ -66,8 +70,10 @@ try {
     assert.equal(response.status(), 200, url.pathname + ': HTTP ' + response.status());
     return response;
   }
+  // A failed initial connection must not cause hundreds of repeated network probes.
+  const initialResponse = await request('/');
   await record('security headers', async () => {
-    const response = await request('/');
+    const response = initialResponse;
     const headers = response.headers();
     for (const header of ['strict-transport-security', 'content-security-policy', 'x-content-type-options', 'referrer-policy', 'permissions-policy'])
       assert.ok(headers[header], 'Missing ' + header);
@@ -148,6 +154,9 @@ try {
   for (const path of [...links].sort()) await record('link/asset ' + path, () => request(path, 'HEAD'));
   await record('no form or consent submissions', async () => assert.equal(result.blockedWrites, 0));
   await context.close();
+} catch (error) {
+  result.failures.push({label: 'fatal browser/preflight failure', message: error.message});
+  throw error;
 } finally {
   if (browser) await browser.close();
   result.passed = result.failures.length === 0;
