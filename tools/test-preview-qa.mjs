@@ -15,7 +15,7 @@ const {chromium} = require('../.preview-qa-deps/node_modules/playwright');
 const evidence = 'preview-qa-results';
 await mkdir(evidence, {recursive: true});
 const result = {preview: PREVIEW, contentCommit: CONTENT_COMMIT, qaCommit: process.env.GITHUB_SHA || null,
-  checks: [], failures: [], blockedExternalRequests: 0, blockedWrites: 0, apiSources: {}};
+  checks: [], failures: [], headFallbacks: [], blockedExternalRequests: 0, blockedWrites: 0, apiSources: {}};
 const links = new Set(['/robots.txt', '/sitemap.xml', '/site.webmanifest', '/og-image.png']);
 const apiPaths = new Set(['/api/review-summary', '/api/google-reviews']);
 let browser;
@@ -66,6 +66,11 @@ try {
       const location = response.headers().location;
       assert.ok(location, 'Missing redirect location');
       return request(permitted(new URL(location, url).href).href, method, redirects + 1);
+    }
+    // Public dynamic routes may implement GET without a matching HEAD handler.
+    if (method === 'HEAD' && [404, 405, 501].includes(response.status())) {
+      result.headFallbacks.push({path: url.pathname, headStatus: response.status()});
+      return request(url.href, 'GET', redirects);
     }
     assert.equal(response.status(), 200, url.pathname + ': HTTP ' + response.status());
     return response;
@@ -161,6 +166,6 @@ try {
   if (browser) await browser.close();
   result.passed = result.failures.length === 0;
   await writeFile(`${evidence}/results.json`, JSON.stringify(result, null, 2));
-  console.log(JSON.stringify({preview: PREVIEW, contentCommit: CONTENT_COMMIT, checks: result.checks.length, failures: result.failures.length, blockedWrites: result.blockedWrites}));
+  console.log('::notice::' + JSON.stringify({preview: PREVIEW, contentCommit: CONTENT_COMMIT, checks: result.checks.length, failures: result.failures.length, blockedWrites: result.blockedWrites, headFallbacks: result.headFallbacks, apiSources: result.apiSources}));
 }
 assert.equal(result.failures.length, 0, 'Preview QA failed; inspect preview-qa-results/results.json');
