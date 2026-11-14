@@ -1,0 +1,5 @@
+
+# Lokale Test- und Cloudflare-Artefakte
+node_modules/
+.wrangler/
+test-results/

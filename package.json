@@ -5,5 +5,10 @@
     "test": "node --test tools/test-repair-reports.mjs tools/test-google-reviews.mjs tools/test-repair-confirmation.mjs tools/test-analytics-consent.mjs tools/test-site-audit.mjs tools/test-locales.mjs tools/test-workshop-documentation.mjs",
     "validate": "node tools/validate.mjs",
     "build:locales": "node tools/build-locales.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "http-server": "^14.1.1",
+    "wrangler": "^4.162.0"
   }
 }
