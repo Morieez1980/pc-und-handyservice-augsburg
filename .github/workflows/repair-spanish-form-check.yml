@@ -11,7 +11,7 @@ jobs:
   local-checks:
     if: github.event.repository.private == false && github.ref == 'refs/heads/copilot/fix-spanish-form-heading-20261114'
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 10
     steps:
       - name: Checkout repair branch without stored credentials
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -22,13 +22,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify exact repair content and test-only change
+      - name: Verify bounded repair scope and rollback ancestor
         shell: bash
         run: |
           set -euo pipefail
-          base=4caa5295d916a34849b06706236f4cf27c641c8d
+          base=62b2ff74912479f6542775aa16a28ee49930fd5c
           git merge-base --is-ancestor "$base" HEAD
-          test "$(git diff --name-only "$base" HEAD)" = '.github/workflows/repair-spanish-form-check.yml'
+          unexpected="$(git diff --name-only "$base" HEAD | grep -vE '^(es/(form-i18n\.js|reparaturanfrage\.html)|\.github/workflows/repair-spanish-form-check\.yml)$' || true)"
+          test -z "$unexpected"
       - name: Syntax checks with no network or inherited environment
         run: |
           sudo unshare --net -- env -i PATH="$PATH" node --check locales/repair-plain.mjs
@@ -37,14 +38,19 @@ jobs:
       - name: Existing local locale and content regression tests offline
         if: always()
         run: sudo unshare --net -- env -i PATH="$PATH" node --test tools/test-locales.mjs tools/test-content-consistency.mjs
-      - name: Isolated generator consistency and original-baseline comparison
+      - name: Complete existing npm test suite offline
+        if: always()
+        run: sudo unshare --net -- env -i PATH="$PATH" npm test
+      - name: Complete existing validation offline
+        if: always()
+        run: sudo unshare --net -- env -i PATH="$PATH" npm run validate
+      - name: Strict byte-for-byte generator consistency and original-baseline comparison
         if: always()
         shell: node {0}
         run: |
           const assert = require('node:assert/strict');
           const fs = require('node:fs');
           const path = require('node:path');
-          const os = require('node:os');
           const {spawnSync, execFileSync} = require('node:child_process');
           const original = '0dddc1c0b13da719f8001a951d055959cb892d3e';
           const files = ['locales/repair-plain.mjs','es/form-i18n.js','es/reparaturanfrage.html'];
@@ -61,6 +67,7 @@ jobs:
             'Für die Online-Reparaturanfrage ist JavaScript erforderlich. Bitte aktivieren Sie JavaScript oder rufen Sie mich unter',
             'an. So kann ich die Geräteangaben gemeinsam vollständig erfassen.'
           ];
+          // Review dates come from premisesReviewLink in tools/build-locales.mjs: 2026-11-05, not the run date.
           const expected = dictionary(read('.',files[1]));
           assert.equal(expected[keys[0]], '¿Qué necesita reparar?');
           const verifyRepair = dir => {
@@ -78,7 +85,8 @@ jobs:
           verifyRepair('.');
           let failed = false;
           for (const [label,ref] of [['repair','HEAD'],['original-baseline',original]]) {
-            const dir = fs.mkdtempSync(path.join(os.tmpdir(),'spanish-'+label+'-'));
+            const dir = path.join(process.cwd(),'.qa-generator',label);
+            fs.mkdirSync(dir,{recursive:true});
             const archive = execFileSync('git',['archive','--format=tar',ref],{maxBuffer:128*1024*1024});
             const unpack = spawnSync('tar',['-xf','-','-C',dir],{input:archive});
             assert.equal(unpack.status,0,'Temporary archive extraction failed');
@@ -97,12 +105,18 @@ jobs:
             console.log(label+' HTML text-identical: '+(a===b));
             if(a!==b){let i=0;while(i<Math.min(a.length,b.length)&&a[i]===b[i])i++;console.log(label+' first text drift before: '+a.slice(Math.max(0,i-80),i+500));console.log(label+' first text drift after: '+b.slice(Math.max(0,i-80),i+500));}
             if(label==='repair'){
-              try { verifyRepair(dir); assert.equal(sorted(oldMap),sorted(newMap),'Generator dictionary semantic drift'); assert.equal(a,b,'Generator HTML text drift remains'); }
+              try {
+                verifyRepair(dir);
+                for(const file of files) assert.equal(read(dir,file),before[file],'Generator byte drift: '+file);
+                assert.equal(sorted(oldMap),sorted(newMap),'Generator dictionary semantic drift');
+                assert.equal(a,b,'Generator HTML text drift remains');
+                console.log('STRICT ES GENERATOR CHECK PASSED: all three files byte-identical');
+              }
               catch(error){console.log(error.message);failed=true;}
             } else {
               const tests=spawnSync('sudo',['unshare','--net','--','env','-i','PATH='+process.env.PATH,process.execPath,'--test','tools/test-locales.mjs','tools/test-content-consistency.mjs'],{cwd:dir,encoding:'utf8',timeout:60000,maxBuffer:4*1024*1024});
               console.log('Original baseline tests after generator exit: '+tests.status);console.log(tests.stdout||'');console.log(tests.stderr||'');
             }
           }
-          console.log('No files copied back, committed, pushed or deployed. No dependencies installed. Full npm test and validate not run by this bounded workflow.');
+          console.log('No files copied back, committed, pushed or deployed. No dependencies installed. Full npm test and validate have independent steps above.');
           if(failed)process.exitCode=1;
