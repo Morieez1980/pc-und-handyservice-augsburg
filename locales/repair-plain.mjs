@@ -26,3 +26,13 @@ export const repairPlainTranslations = Object.fromEntries(Object.entries(rows).m
 }));
 // Match the current sole-owner heading in the German form template.
 repairPlainTranslations.es['Was darf ich für Sie reparieren?'] = '¿Qué necesita reparar?';
+// Reuse existing Spanish copy for the current sole-owner template variants.
+Object.assign(repairPlainTranslations.es, {
+  'Ihre Reparaturanfrage wurde übermittelt. Ich melde mich schnellstmöglich bei Ihnen.': 'Su solicitud se ha enviado. Nos pondremos en contacto lo antes posible.',
+  'PIN / Passwort': 'PIN / contraseña',
+  'Ich bespreche Prüfung, Kosten und Reparatur mit Ihnen. Kostenpflichtige Arbeiten nur nach Ihrer Freigabe.': rows.es[5],
+  'Zahlung erst nach Vereinbarung: per SEPA-Echtzeitüberweisung. Ersatzteile bestelle ich nach Zahlungseingang. Abholung nach vollständiger Bezahlung.': rows.es[6],
+  'Bitte sichern Sie Ihre Daten vor der Abgabe. Eine erfolgreiche Datenrettung kann ich nicht garantieren.': rows.es[7],
+  'Für die Online-Reparaturanfrage ist JavaScript erforderlich. Bitte aktivieren Sie JavaScript oder rufen Sie mich unter': 'El formulario requiere JavaScript. Actívelo o llame al',
+  'an. So kann ich die Geräteangaben gemeinsam vollständig erfassen.': 'para que registremos juntos los datos del dispositivo.'
+});
