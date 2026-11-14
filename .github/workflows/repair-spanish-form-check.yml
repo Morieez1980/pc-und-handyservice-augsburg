@@ -120,3 +120,114 @@ jobs:
           }
           console.log('No files copied back, committed, pushed or deployed. No dependencies installed. Full npm test and validate have independent steps above.');
           if(failed)process.exitCode=1;
+
+  spanish-preview-readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.spanish-preview-browsers
+      TMPDIR: ${{ github.workspace }}/.spanish-preview-tmp
+    steps:
+      - name: Checkout QA commit without stored credentials
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Prepare isolated preview browser dependency
+        run: |
+          mkdir -p .spanish-preview-tmp
+          node -e "require.resolve('./.spanish-preview-deps/node_modules/playwright')" || npm install --prefix .spanish-preview-deps --no-save --package-lock=false --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          node .spanish-preview-deps/node_modules/playwright/cli.js install --only-shell chromium
+      - name: Actual GET-only ES desktop mobile headers links assets and API checks
+        shell: node {0}
+        run: |
+          const assert=require('node:assert/strict');
+          const fs=require('node:fs');
+          const {execFileSync}=require('node:child_process');
+          const {chromium}=require(process.cwd()+'/.spanish-preview-deps/node_modules/playwright');
+          const origin='https://e9e53b52.pc-und-handyservice-augsburg.pages.dev';
+          const content='75191934dac7aa9c13bba6287872f959b4b3bbcb';
+          const allowedApis=new Set(['/api/review-summary','/api/google-reviews']);
+          const evidence='.spanish-preview-results';
+          fs.mkdirSync(evidence,{recursive:true});
+          assert.equal(execFileSync('git',['diff','--name-only',content,'HEAD','--','.',':!.github/workflows/repair-spanish-form-check.yml'],{encoding:'utf8'}).trim(),'','Pinned preview content changed');
+          const report={preview:origin,contentCommit:content,qaCommit:process.env.GITHUB_SHA,viewports:[],links:0,assets:0,blockedWrites:0,apiSources:{}};
+          (async()=>{
+           const browser=await chromium.launch({headless:true});
+           try{
+            const context=await browser.newContext({reducedMotion:'reduce',serviceWorkers:'block'});
+            await context.route('**/*',route=>{
+             const r=route.request(),u=new URL(r.url());
+             if(!['GET','HEAD'].includes(r.method())){report.blockedWrites++;return route.abort();}
+             if(u.origin!==origin||(u.pathname.startsWith('/api/')&&!allowedApis.has(u.pathname)))return route.abort();
+             return route.continue();
+            });
+            await context.addInitScript(()=>{
+             document.addEventListener('submit',e=>e.preventDefault(),true);
+             HTMLFormElement.prototype.submit=function(){throw Error('QA forbids form submission');};
+             navigator.sendBeacon=()=>false;
+            });
+            const get=async(path,depth=0)=>{
+             const u=new URL(path,origin);assert.equal(u.origin,origin);assert.ok(depth<5);
+             const r=await context.request.get(u.href,{maxRedirects:0,timeout:20000});
+             if([301,302,303,307,308].includes(r.status()))return get(new URL(r.headers().location,u).href,depth+1);
+             assert.equal(r.status(),200,u.pathname);return r;
+            };
+            const main=await get('/es/reparaturanfrage');
+            for(const name of ['strict-transport-security','content-security-policy','x-content-type-options','referrer-policy','permissions-policy'])assert.ok(main.headers()[name],'Missing '+name);
+            assert.equal(main.headers()['x-content-type-options'],'nosniff');
+            report.securityHeaders='passed';
+            for(const file of ['es/reparaturanfrage.html','es/form-i18n.js'])assert.equal(await(await get('/'+file)).text(),fs.readFileSync(file,'utf8'),'Pinned asset bytes: '+file);
+            report.contentBytes='passed';
+            const page=await context.newPage();page.setDefaultTimeout(7000);
+            const links=new Set(),assets=new Set(),errors=[];
+            page.on('pageerror',e=>errors.push(e.message));
+            page.on('response',r=>{if(new URL(r.url()).origin===origin&&r.status()>=400)errors.push('HTTP '+r.status()+' '+new URL(r.url()).pathname);});
+            for(const width of [320,360,390,1280]){
+             await page.setViewportSize({width,height:900});
+             await page.goto(origin+'/es/reparaturanfrage',{waitUntil:'networkidle',timeout:25000});
+             assert.equal(await page.locator('#request-form-title').innerText(),'¿Qué necesita reparar?');
+             assert.equal(await page.locator('[data-form-success]').isVisible(),false);
+             assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Horizontal overflow '+width);
+             await page.selectOption('#device-type','Smartphone');
+             await page.selectOption('#unlock-method','password');
+             assert.doesNotMatch(await page.locator('#unlock-code-label').innerText(),/Passwort|Kennwort/);
+             const toggle=page.locator('.locale-toggle');
+             if(await toggle.isVisible()){await toggle.click();assert.equal(await toggle.getAttribute('aria-expanded'),'true');await toggle.click();}
+             await page.locator('.language-picker summary').click();
+             assert.equal(await page.locator('.language-picker a[lang="es"]').getAttribute('aria-current'),'page');
+             await page.locator('.language-picker summary').click();
+             assert.ok(await page.locator('a[href="tel:+4915254530080"]').count());
+             assert.ok(await page.locator('a[href="https://wa.me/4915254530080"]').count());
+             for(const url of await page.locator('a[href]').evaluateAll(ns=>ns.map(n=>n.href)))if(new URL(url).origin===origin)links.add(new URL(url).pathname);
+             for(const url of await page.locator('script[src],img[src],link[rel="stylesheet"],link[rel="icon"],link[rel="apple-touch-icon"]').evaluateAll(ns=>ns.map(n=>n.src||n.href)))if(new URL(url).origin===origin)assets.add(url);
+             assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'),'https://www.pc-und-handyservice-augsburg.com/es/reparaturanfrage');
+             assert.equal(await page.locator('html').getAttribute('lang'),'es');
+             assert.ok(await page.locator('link[rel="alternate"][hreflang="es"]').count());
+             await page.screenshot({path:evidence+'/es-'+width+'.png',fullPage:true});
+             report.viewports.push({width,passed:true});
+            }
+            assert.deepEqual(errors,[],'Browser or asset failures');
+            for(const path of links){await get(path);report.links++;}
+            for(const path of assets){await get(path);report.assets++;}
+            for(const path of allowedApis){
+             const r=await get(path);assert.match(r.headers()['content-type']||'',/^application\/json/);assert.equal(r.headers()['x-content-type-options'],'nosniff');
+             const b=await r.json();report.apiSources[path]=b.source;
+             if(path.endsWith('review-summary')){assert.ok(['google-business-profile','google-places','verified-fallback'].includes(b.source));assert.ok(Number.isFinite(b.rating)&&b.rating>=0&&b.rating<=5);assert.ok(Number.isInteger(b.reviewCount)&&b.reviewCount>=0);assert.ok(Number.isFinite(Date.parse(b.updatedAt)));}
+             else{assert.ok(['google-business-profile','not-configured','temporarily-unavailable'].includes(b.source));assert.ok(Array.isArray(b.reviews));if(b.source!=='google-business-profile'){assert.equal(b.reviews.length,0);assert.equal(r.headers()['cache-control'],'no-store');}}
+            }
+            const marketing=await(await get('/marketing-preferences.json')).json();assert.equal(marketing.providerReady,false);assert.equal(marketing.marketingSendingEnabled,false);
+            const app=await(await get('/app-offer.json')).json();assert.equal(app.published,false);assert.equal(app.purchaseDownloadUrl,null);assert.equal(app.demo.url,null);
+            assert.equal(report.blockedWrites,0);
+            report.passed=true;
+           }finally{fs.writeFileSync(evidence+'/result.json',JSON.stringify(report,null,2));await browser.close();}
+           console.log(JSON.stringify(report));
+          })().catch(e=>{console.error(e);process.exitCode=1;});
+      - name: Upload actual preview evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spanish-preview-${{ github.sha }}
+          path: .spanish-preview-results/
+          if-no-files-found: warn
+          retention-days: 7
