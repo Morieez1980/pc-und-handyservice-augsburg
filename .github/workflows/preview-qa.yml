@@ -1,0 +1,195 @@
+name: Pinned correction preview QA
+
+on:
+  push:
+    branches: [copilot/restore-homepage-original-20261115]
+    paths:
+      - .github/workflows/preview-qa.yml
+      - tools/test-preview-qa.mjs
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pinned-correction-preview-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production-baseline-readonly:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/copilot/inhaltskonsistenz-20261114-d7c3b226'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      BASELINE: d7c3b22664f23247e6184519d63bfbcda4993e66
+      MONITOR_BASE: https://pc-und-handyservice-augsburg.pages.dev
+    steps:
+      - name: Checkout correction branch without stored credentials
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify and isolate the unchanged production baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse refs/remotes/origin/main)" = "$BASELINE"
+          mkdir .production-baseline
+          git archive --format=tar "$BASELINE" | tar -xf - -C .production-baseline
+      - name: Diagnose existing production endpoint readiness without deployment
+        shell: node {0}
+        run: |
+          const assert = require('node:assert/strict');
+          const {readFileSync, appendFileSync} = require('node:fs');
+          const {spawnSync} = require('node:child_process');
+          const {Script} = require('node:vm');
+          const workflow = readFileSync('.production-baseline/.github/workflows/monitor.yml', 'utf8');
+          const prefix = '      - name: Wait for current deployment and check endpoints\n        shell: node {0}\n        run: |\n';
+          assert.equal(workflow.split(prefix).length, 2, 'Expected exactly one existing readiness step');
+          const block = workflow.split(prefix)[1].split('\n      - name:')[0];
+          const source = block.split('\n').map(line => {
+            assert.ok(!line.trim() || line.startsWith('          '), 'Unexpected monitor indentation');
+            return line.slice(10);
+          }).join('\n');
+          new Script(source, {filename: 'existing-production-readiness.js'});
+          assert.equal(process.env.MONITOR_BASE, 'https://pc-und-handyservice-augsburg.pages.dev');
+          const result = spawnSync(process.execPath, ['-e', source], {
+            cwd: '.production-baseline', env: process.env, encoding: 'utf8', timeout: 190000
+          });
+          process.stdout.write(result.stdout || '');
+          process.stderr.write(result.stderr || '');
+          const details = [result.error?.message, result.stderr, result.stdout].filter(Boolean).join('\n');
+          const message = `Baseline ${process.env.BASELINE}; existing production readiness exit ${result.status}: ${details}`;
+          const escape = value => value.replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A');
+          console.log((result.status === 0 ? '::notice::' : '::error::') + escape(message));
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### Existing production baseline, read-only\nBaseline: ${process.env.BASELINE}\nEndpoint: ${process.env.MONITOR_BASE}\nExit: ${result.status}\nNo deployment, form submission, app release or marketing activation.\n`);
+          assert.equal(result.status, 0, 'Existing production readiness remains a release gate; inspect the diagnostic annotation');
+  preview-qa:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/copilot/restore-homepage-original-20261115'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.preview-qa-browsers
+    steps:
+      - name: Checkout correction branch commit
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify pinned preview content and JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          content=ea1b022aa78c67bfef8b6f8061e9dc7289679622
+          git merge-base --is-ancestor "$content" HEAD
+          unexpected="$(git diff --name-only "$content" HEAD -- . ':!README.md' ':!.github/workflows/preview-qa.yml' ':!tools/test-preview-qa.mjs')"
+          if [[ -n "$unexpected" ]]; then
+            echo 'Pinned preview no longer represents all website changes. Review and repin explicitly.'
+            exit 1
+          fi
+          node --check tools/test-preview-qa.mjs
+      - name: Strict byte-for-byte generator consistency and original-baseline comparison
+        if: always()
+        shell: node {0}
+        run: |
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const {spawnSync, execFileSync} = require('node:child_process');
+          const original = '0dddc1c0b13da719f8001a951d055959cb892d3e';
+          const files = ['locales/repair-plain.mjs','es/form-i18n.js','es/reparaturanfrage.html'];
+          const read = (dir,file) => fs.readFileSync(path.join(dir,file),'utf8');
+          const dictionary = text => JSON.parse(text.slice('window.siteTranslate=(key)=>('.length).split(')[key]||key;')[0]);
+          const sorted = obj => JSON.stringify(Object.fromEntries(Object.entries(obj).sort(([a],[b]) => a.localeCompare(b))));
+          const keys = [
+            'Was darf ich für Sie reparieren?',
+            'Ihre Reparaturanfrage wurde übermittelt. Ich melde mich schnellstmöglich bei Ihnen.',
+            'PIN / Passwort',
+            'Ich bespreche Prüfung, Kosten und Reparatur mit Ihnen. Kostenpflichtige Arbeiten nur nach Ihrer Freigabe.',
+            'Zahlung erst nach Vereinbarung: per SEPA-Echtzeitüberweisung. Ersatzteile bestelle ich nach Zahlungseingang. Abholung nach vollständiger Bezahlung.',
+            'Bitte sichern Sie Ihre Daten vor der Abgabe. Eine erfolgreiche Datenrettung kann ich nicht garantieren.',
+            'Für die Online-Reparaturanfrage ist JavaScript erforderlich. Bitte aktivieren Sie JavaScript oder rufen Sie mich unter',
+            'an. So kann ich die Geräteangaben gemeinsam vollständig erfassen.'
+          ];
+          // Review dates come from premisesReviewLink in tools/build-locales.mjs: 2026-11-05, not the run date.
+          const expected = dictionary(read('.',files[1]));
+          assert.equal(expected[keys[0]], '¿Qué necesita reparar?');
+          const verifyRepair = dir => {
+            const map = dictionary(read(dir,files[1]));
+            const html = read(dir,files[2]);
+            for (const key of keys) {
+              assert.ok(expected[key] && expected[key] !== key, 'Missing committed alias: '+key);
+              assert.equal(map[key],expected[key], 'Generated alias changed: '+key);
+              assert.ok(html.includes(expected[key]), 'HTML translation missing: '+key);
+            }
+            assert.match(html, /<h2 id="request-form-title">¿Qué necesita reparar\?<\/h2>/);
+            assert.match(html, /<div class="form-success" data-form-success hidden/);
+            console.log('Eight repair translations and hidden success state verified: '+dir.split(path.sep).pop());
+          };
+          verifyRepair('.');
+          let failed = false;
+          for (const [label,ref] of [['repair','HEAD'],['original-baseline',original]]) {
+            const dir = path.join(process.cwd(),'.qa-generator',label);
+            fs.mkdirSync(dir,{recursive:true});
+            const archive = execFileSync('git',['archive','--format=tar',ref],{maxBuffer:128*1024*1024});
+            const unpack = spawnSync('tar',['-xf','-','-C',dir],{input:archive});
+            assert.equal(unpack.status,0,'Temporary archive extraction failed');
+            const before = Object.fromEntries(files.map(file => [file,read(dir,file)]));
+            const args = ['unshare','--net','--','env','-i','PATH='+process.env.PATH,process.execPath,'tools/build-locales.mjs'];
+            const build = spawnSync('sudo',args,{cwd:dir,encoding:'utf8',timeout:60000,maxBuffer:4*1024*1024});
+            console.log(label+' generator exit: '+build.status);
+            console.log(build.stdout || '');
+            if (build.status !== 0) { console.log(build.stderr || 'Generator did not complete'); failed=true; continue; }
+            for (const file of files) console.log(label+' byte-identical '+file+': '+(before[file]===read(dir,file)));
+            const oldMap=dictionary(before[files[1]]), newMap=dictionary(read(dir,files[1]));
+            const changedKeys=[...new Set([...Object.keys(oldMap),...Object.keys(newMap)])].filter(key=>oldMap[key]!==newMap[key]);
+            console.log(label+' dictionary semantic changes: '+JSON.stringify(changedKeys));
+            const text = html => html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+            const a=text(before[files[2]]),b=text(read(dir,files[2]));
+            console.log(label+' HTML text-identical: '+(a===b));
+            if(a!==b){let i=0;while(i<Math.min(a.length,b.length)&&a[i]===b[i])i++;console.log(label+' first text drift before: '+a.slice(Math.max(0,i-80),i+500));console.log(label+' first text drift after: '+b.slice(Math.max(0,i-80),i+500));}
+            if(label==='repair'){
+              try {
+                verifyRepair(dir);
+                for(const file of files) assert.equal(read(dir,file),before[file],'Generator byte drift: '+file);
+                assert.equal(sorted(oldMap),sorted(newMap),'Generator dictionary semantic drift');
+                assert.equal(a,b,'Generator HTML text drift remains');
+                console.log('STRICT ES GENERATOR CHECK PASSED: all three files byte-identical');
+              }
+              catch(error){console.log(error.message);failed=true;}
+            } else {
+              const tests=spawnSync('sudo',['unshare','--net','--','env','-i','PATH='+process.env.PATH,process.execPath,'--test','tools/test-locales.mjs','tools/test-content-consistency.mjs'],{cwd:dir,encoding:'utf8',timeout:60000,maxBuffer:4*1024*1024});
+              console.log('Original baseline tests after generator exit: '+tests.status);console.log(tests.stdout||'');console.log(tests.stderr||'');
+            }
+          }
+          console.log('No files copied back, committed, pushed or deployed. No dependencies installed. Full npm test and validate have independent steps above.');
+          if(failed)process.exitCode=1;
+      - name: Install isolated free browser test dependency in CI only
+        run: |
+          npm install --prefix .preview-qa-deps --no-save --package-lock=false --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          node .preview-qa-deps/node_modules/playwright/cli.js install --only-shell chromium
+      - name: Read-only desktop and mobile preview smoke tests
+        run: node tools/test-preview-qa.mjs
+      - name: Record exact content and QA association
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Pinned correction preview QA'
+            echo 'Preview: https://409d5b9a.pc-und-handyservice-augsburg.pages.dev/'
+            echo 'Website content: ea1b022aa78c67bfef8b6f8061e9dc7289679622 (Cloudflare deployment 409d5b9a-e23c-4084-8c38-e7814ff69d8c)'
+            printf 'QA workflow commit: %s\n' "$GITHUB_SHA"
+            echo 'Results/screenshots: preview-qa artifact; only a successful browser step is a passing UI result.'
+            echo 'No production merge or production monitoring changes.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload preview QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-qa-${{ github.sha }}
+          path: preview-qa-results/
+          if-no-files-found: error
+          retention-days: 7

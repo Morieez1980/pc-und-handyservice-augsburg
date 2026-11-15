@@ -21,11 +21,12 @@ test('Closure follows the Berlin calendar and expires without another deployment
   }
 });
 
-test('Every language and route has exactly one closure notice and script', () => {
+test('Expired October closure is absent from every language and route; date gating remains available', () => {
   for (const lang of Object.keys(languages)) for (const route of routes) {
     const file=(lang==='de'?'':lang+'/')+(route||'index')+'.html';
     const html=fs.readFileSync(file,'utf8');
-    assert.equal((html.match(/data-closure-date="2026-10-24"/g)||[]).length,1,file);
+    assert.equal((html.match(/data-closure-date="2026-10-24"/g)||[]).length,0,file);
+    assert.doesNotMatch(html, /class="special-hours-notice"/, file);
     assert.equal((html.match(/src="\/special-hours.js/g)||[]).length,1,file);
   }
 });

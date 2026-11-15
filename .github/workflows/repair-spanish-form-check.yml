@@ -1,0 +1,234 @@
+name: Repair Spanish form checks
+
+on:
+  push:
+    branches: [copilot/fix-spanish-form-heading-20261114]
+
+permissions:
+  contents: read
+
+jobs:
+  local-checks:
+    if: github.event.repository.private == false && github.ref == 'refs/heads/copilot/fix-spanish-form-heading-20261114'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repair branch without stored credentials
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Node 22 without installing project dependencies
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify bounded repair scope and rollback ancestor
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=62b2ff74912479f6542775aa16a28ee49930fd5c
+          git merge-base --is-ancestor "$base" HEAD
+          unexpected="$(git diff --name-only "$base" HEAD | grep -vE '^(es/(form-i18n\.js|reparaturanfrage\.html)|\.github/workflows/repair-spanish-form-check\.yml)$' || true)"
+          test -z "$unexpected"
+      - name: Syntax checks with no network or inherited environment
+        run: |
+          sudo unshare --net -- env -i PATH="$PATH" node --check locales/repair-plain.mjs
+          sudo unshare --net -- env -i PATH="$PATH" node --check es/form-i18n.js
+          sudo unshare --net -- env -i PATH="$PATH" node --check tools/build-locales.mjs
+      - name: Existing local locale and content regression tests offline
+        if: always()
+        run: sudo unshare --net -- env -i PATH="$PATH" node --test tools/test-locales.mjs tools/test-content-consistency.mjs
+      - name: Complete existing npm test suite offline
+        if: always()
+        run: sudo unshare --net -- env -i PATH="$PATH" npm test
+      - name: Complete existing validation offline
+        if: always()
+        run: sudo unshare --net -- env -i PATH="$PATH" npm run validate
+      - name: Strict byte-for-byte generator consistency and original-baseline comparison
+        if: always()
+        shell: node {0}
+        run: |
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const {spawnSync, execFileSync} = require('node:child_process');
+          const original = '0dddc1c0b13da719f8001a951d055959cb892d3e';
+          const files = ['locales/repair-plain.mjs','es/form-i18n.js','es/reparaturanfrage.html'];
+          const read = (dir,file) => fs.readFileSync(path.join(dir,file),'utf8');
+          const dictionary = text => JSON.parse(text.slice('window.siteTranslate=(key)=>('.length).split(')[key]||key;')[0]);
+          const sorted = obj => JSON.stringify(Object.fromEntries(Object.entries(obj).sort(([a],[b]) => a.localeCompare(b))));
+          const keys = [
+            'Was darf ich für Sie reparieren?',
+            'Ihre Reparaturanfrage wurde übermittelt. Ich melde mich schnellstmöglich bei Ihnen.',
+            'PIN / Passwort',
+            'Ich bespreche Prüfung, Kosten und Reparatur mit Ihnen. Kostenpflichtige Arbeiten nur nach Ihrer Freigabe.',
+            'Zahlung erst nach Vereinbarung: per SEPA-Echtzeitüberweisung. Ersatzteile bestelle ich nach Zahlungseingang. Abholung nach vollständiger Bezahlung.',
+            'Bitte sichern Sie Ihre Daten vor der Abgabe. Eine erfolgreiche Datenrettung kann ich nicht garantieren.',
+            'Für die Online-Reparaturanfrage ist JavaScript erforderlich. Bitte aktivieren Sie JavaScript oder rufen Sie mich unter',
+            'an. So kann ich die Geräteangaben gemeinsam vollständig erfassen.'
+          ];
+          // Review dates come from premisesReviewLink in tools/build-locales.mjs: 2026-11-05, not the run date.
+          const expected = dictionary(read('.',files[1]));
+          assert.equal(expected[keys[0]], '¿Qué necesita reparar?');
+          const verifyRepair = dir => {
+            const map = dictionary(read(dir,files[1]));
+            const html = read(dir,files[2]);
+            for (const key of keys) {
+              assert.ok(expected[key] && expected[key] !== key, 'Missing committed alias: '+key);
+              assert.equal(map[key],expected[key], 'Generated alias changed: '+key);
+              assert.ok(html.includes(expected[key]), 'HTML translation missing: '+key);
+            }
+            assert.match(html, /<h2 id="request-form-title">¿Qué necesita reparar\?<\/h2>/);
+            assert.match(html, /<div class="form-success" data-form-success hidden/);
+            console.log('Eight repair translations and hidden success state verified: '+dir.split(path.sep).pop());
+          };
+          verifyRepair('.');
+          let failed = false;
+          for (const [label,ref] of [['repair','HEAD'],['original-baseline',original]]) {
+            const dir = path.join(process.cwd(),'.qa-generator',label);
+            fs.mkdirSync(dir,{recursive:true});
+            const archive = execFileSync('git',['archive','--format=tar',ref],{maxBuffer:128*1024*1024});
+            const unpack = spawnSync('tar',['-xf','-','-C',dir],{input:archive});
+            assert.equal(unpack.status,0,'Temporary archive extraction failed');
+            const before = Object.fromEntries(files.map(file => [file,read(dir,file)]));
+            const args = ['unshare','--net','--','env','-i','PATH='+process.env.PATH,process.execPath,'tools/build-locales.mjs'];
+            const build = spawnSync('sudo',args,{cwd:dir,encoding:'utf8',timeout:60000,maxBuffer:4*1024*1024});
+            console.log(label+' generator exit: '+build.status);
+            console.log(build.stdout || '');
+            if (build.status !== 0) { console.log(build.stderr || 'Generator did not complete'); failed=true; continue; }
+            for (const file of files) console.log(label+' byte-identical '+file+': '+(before[file]===read(dir,file)));
+            const oldMap=dictionary(before[files[1]]), newMap=dictionary(read(dir,files[1]));
+            const changedKeys=[...new Set([...Object.keys(oldMap),...Object.keys(newMap)])].filter(key=>oldMap[key]!==newMap[key]);
+            console.log(label+' dictionary semantic changes: '+JSON.stringify(changedKeys));
+            const text = html => html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+            const a=text(before[files[2]]),b=text(read(dir,files[2]));
+            console.log(label+' HTML text-identical: '+(a===b));
+            if(a!==b){let i=0;while(i<Math.min(a.length,b.length)&&a[i]===b[i])i++;console.log(label+' first text drift before: '+a.slice(Math.max(0,i-80),i+500));console.log(label+' first text drift after: '+b.slice(Math.max(0,i-80),i+500));}
+            if(label==='repair'){
+              try {
+                verifyRepair(dir);
+                for(const file of files) assert.equal(read(dir,file),before[file],'Generator byte drift: '+file);
+                assert.equal(sorted(oldMap),sorted(newMap),'Generator dictionary semantic drift');
+                assert.equal(a,b,'Generator HTML text drift remains');
+                console.log('STRICT ES GENERATOR CHECK PASSED: all three files byte-identical');
+              }
+              catch(error){console.log(error.message);failed=true;}
+            } else {
+              const tests=spawnSync('sudo',['unshare','--net','--','env','-i','PATH='+process.env.PATH,process.execPath,'--test','tools/test-locales.mjs','tools/test-content-consistency.mjs'],{cwd:dir,encoding:'utf8',timeout:60000,maxBuffer:4*1024*1024});
+              console.log('Original baseline tests after generator exit: '+tests.status);console.log(tests.stdout||'');console.log(tests.stderr||'');
+            }
+          }
+          console.log('No files copied back, committed, pushed or deployed. No dependencies installed. Full npm test and validate have independent steps above.');
+          if(failed)process.exitCode=1;
+
+  spanish-preview-readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.spanish-preview-browsers
+      TMPDIR: ${{ github.workspace }}/.spanish-preview-tmp
+    steps:
+      - name: Checkout QA commit without stored credentials
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Prepare isolated preview browser dependency
+        run: |
+          mkdir -p .spanish-preview-tmp
+          node -e "require.resolve('./.spanish-preview-deps/node_modules/playwright')" || npm install --prefix .spanish-preview-deps --no-save --package-lock=false --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          node .spanish-preview-deps/node_modules/playwright/cli.js install --only-shell chromium
+      - name: Actual GET-only ES desktop mobile headers links assets and API checks
+        shell: node {0}
+        run: |
+          const assert=require('node:assert/strict');
+          const fs=require('node:fs');
+          const {execFileSync}=require('node:child_process');
+          const {chromium}=require(process.cwd()+'/.spanish-preview-deps/node_modules/playwright');
+          const origin='https://0bc5bdc9.pc-und-handyservice-augsburg.pages.dev';
+          const content='198430e3e02b690bf3914836b8b1a1e4b63a9974';
+          const allowedApis=new Set(['/api/review-summary','/api/google-reviews']);
+          const evidence='.spanish-preview-results';
+          fs.mkdirSync(evidence,{recursive:true});
+          assert.equal(execFileSync('git',['diff','--name-only',content,'HEAD','--','.',':!.github/workflows/repair-spanish-form-check.yml'],{encoding:'utf8'}).trim(),'','Pinned preview content changed');
+          const report={preview:origin,contentCommit:content,qaCommit:process.env.GITHUB_SHA,viewports:[],links:0,assets:0,blockedWrites:0,apiSources:{}};
+          (async()=>{
+           const browser=await chromium.launch({headless:true});
+           try{
+            const context=await browser.newContext({reducedMotion:'reduce',serviceWorkers:'block'});
+            await context.route('**/*',route=>{
+             const r=route.request(),u=new URL(r.url());
+             if(!['GET','HEAD'].includes(r.method())){report.blockedWrites++;return route.abort();}
+             if(u.origin!==origin||(u.pathname.startsWith('/api/')&&!allowedApis.has(u.pathname)))return route.abort();
+             return route.continue();
+            });
+            await context.addInitScript(()=>{
+             document.addEventListener('submit',e=>e.preventDefault(),true);
+             HTMLFormElement.prototype.submit=function(){throw Error('QA forbids form submission');};
+             navigator.sendBeacon=()=>false;
+            });
+            const get=async(path,depth=0)=>{
+             const u=new URL(path,origin);assert.equal(u.origin,origin);assert.ok(depth<5);
+             const r=await context.request.get(u.href,{maxRedirects:0,timeout:20000});
+             if([301,302,303,307,308].includes(r.status()))return get(new URL(r.headers().location,u).href,depth+1);
+             assert.equal(r.status(),200,u.pathname);return r;
+            };
+            const main=await get('/es/reparaturanfrage');
+            for(const name of ['strict-transport-security','content-security-policy','x-content-type-options','referrer-policy','permissions-policy'])assert.ok(main.headers()[name],'Missing '+name);
+            assert.equal(main.headers()['x-content-type-options'],'nosniff');
+            report.securityHeaders='passed';
+            for(const file of ['es/reparaturanfrage.html','es/form-i18n.js'])assert.equal(await(await get('/'+file)).text(),fs.readFileSync(file,'utf8'),'Pinned asset bytes: '+file);
+            report.contentBytes='passed';
+            const page=await context.newPage();page.setDefaultTimeout(7000);
+            const links=new Set(),assets=new Set(),errors=[];
+            page.on('pageerror',e=>errors.push(e.message));
+            page.on('response',r=>{if(new URL(r.url()).origin===origin&&r.status()>=400)errors.push('HTTP '+r.status()+' '+new URL(r.url()).pathname);});
+            for(const width of [320,360,390,1280]){
+             await page.setViewportSize({width,height:900});
+             await page.goto(origin+'/es/reparaturanfrage',{waitUntil:'networkidle',timeout:25000});
+             assert.equal(await page.locator('#request-form-title').innerText(),'¿Qué necesita reparar?');
+             assert.equal(await page.locator('[data-form-success]').isVisible(),false);
+             assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Horizontal overflow '+width);
+             await page.selectOption('#device-type','Smartphone');
+             await page.selectOption('#unlock-method','password');
+             assert.doesNotMatch(await page.locator('#unlock-code-label').innerText(),/Passwort|Kennwort/);
+             const toggle=page.locator('.locale-toggle');
+             if(await toggle.isVisible()){await toggle.click();assert.equal(await toggle.getAttribute('aria-expanded'),'true');await toggle.click();}
+             await page.locator('.language-picker summary').click();
+             assert.equal(await page.locator('.language-picker a[lang="es"]').getAttribute('aria-current'),'page');
+             await page.locator('.language-picker summary').click();
+             assert.ok(await page.locator('a[href="tel:+4915254530080"]').count());
+             assert.ok(await page.locator('a[href="https://wa.me/4915254530080"]').count());
+             for(const url of await page.locator('a[href]').evaluateAll(ns=>ns.map(n=>n.href)))if(new URL(url).origin===origin)links.add(new URL(url).pathname);
+             for(const url of await page.locator('script[src],img[src],link[rel="stylesheet"],link[rel="icon"],link[rel="apple-touch-icon"]').evaluateAll(ns=>ns.map(n=>n.src||n.href)))if(new URL(url).origin===origin)assets.add(url);
+             assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'),'https://www.pc-und-handyservice-augsburg.com/es/reparaturanfrage');
+             assert.equal(await page.locator('html').getAttribute('lang'),'es');
+             assert.ok(await page.locator('link[rel="alternate"][hreflang="es"]').count());
+             await page.screenshot({path:evidence+'/es-'+width+'.png',fullPage:true});
+             report.viewports.push({width,passed:true});
+            }
+            assert.deepEqual(errors,[],'Browser or asset failures');
+            for(const path of links){await get(path);report.links++;}
+            for(const path of assets){await get(path);report.assets++;}
+            for(const path of allowedApis){
+             const r=await get(path);assert.match(r.headers()['content-type']||'',/^application\/json/);assert.equal(r.headers()['x-content-type-options'],'nosniff');
+             const b=await r.json();report.apiSources[path]=b.source;
+             if(path.endsWith('review-summary')){assert.ok(['google-business-profile','google-places','verified-fallback'].includes(b.source));assert.ok(Number.isFinite(b.rating)&&b.rating>=0&&b.rating<=5);assert.ok(Number.isInteger(b.reviewCount)&&b.reviewCount>=0);assert.ok(Number.isFinite(Date.parse(b.updatedAt)));}
+             else{assert.ok(['google-business-profile','not-configured','temporarily-unavailable'].includes(b.source));assert.ok(Array.isArray(b.reviews));if(b.source!=='google-business-profile'){assert.equal(b.reviews.length,0);assert.equal(r.headers()['cache-control'],'no-store');}}
+            }
+            const marketing=await(await get('/marketing-preferences.json')).json();assert.equal(marketing.providerReady,false);assert.equal(marketing.marketingSendingEnabled,false);
+            const app=await(await get('/app-offer.json')).json();assert.equal(app.published,false);assert.equal(app.purchaseDownloadUrl,null);assert.equal(app.demo.url,null);
+            assert.equal(report.blockedWrites,0);
+            report.passed=true;
+           }finally{fs.writeFileSync(evidence+'/result.json',JSON.stringify(report,null,2));await browser.close();}
+           console.log(JSON.stringify(report));
+          })().catch(e=>{console.error(e);process.exitCode=1;});
+      - name: Upload actual preview evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spanish-preview-${{ github.sha }}
+          path: .spanish-preview-results/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7

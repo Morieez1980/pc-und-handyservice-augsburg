@@ -81,4 +81,20 @@
   <text x="561" y="1313" text-anchor="middle" font-size="24" font-weight="700" fill="#07685b">* Geräteübergabe: ca. 5–15 Minuten, nur soweit zulässig.</text>
   <text x="561" y="1344" text-anchor="middle" font-size="22" fill="#234c48">Zufahrten, Durchgänge und fremde Privatstellplätze freihalten.</text>
   <text x="561" y="1387" text-anchor="middle" font-size="19" fill="#617587">Nur mit bestätigtem Termin · schematisch und nicht maßstabsgetreu</text>
+
+  <g id="entrance-no-parking" aria-label="Links und rechts neben dem Hauseingang nicht parken">
+    <title>Links und rechts neben dem Hauseingang nicht parken</title>
+    <g fill="#fff" stroke="#c51d28" stroke-width="3">
+      <circle cx="770" cy="563" r="12"/><path d="m762 555 16 16"/>
+      <circle cx="859" cy="563" r="12"/><path d="m851 555 16 16"/>
+    </g>
+    <g fill="#fff1f0" stroke="#c51d28" stroke-width="1.5">
+      <rect x="727" y="604" width="68" height="37" rx="5"/>
+      <rect x="837" y="604" width="68" height="37" rx="5"/>
+    </g>
+    <g fill="#c51d28" font-size="13" font-weight="700" text-anchor="middle">
+      <text x="761" y="619">Nicht<tspan x="761" dy="15">parken</tspan></text>
+      <text x="871" y="619">Nicht<tspan x="871" dy="15">parken</tspan></text>
+    </g>
+  </g>
 </svg>
