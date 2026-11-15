@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
-import {mkdir, writeFile} from 'node:fs/promises';
+import {mkdir, writeFile, readFile} from 'node:fs/promises';
 import {languages, routes} from '../locales/content.mjs';
 
-export const PREVIEW = 'https://67c1001a.pc-und-handyservice-augsburg.pages.dev';
-export const CONTENT_COMMIT = '7e3f1f8a4053782be435b6d96931f366bce15730';
-const allowedHost = '67c1001a.pc-und-handyservice-augsburg.pages.dev';
+export const PREVIEW = 'https://409d5b9a.pc-und-handyservice-augsburg.pages.dev';
+export const CONTENT_COMMIT = 'ea1b022aa78c67bfef8b6f8061e9dc7289679622';
+const allowedHost = '409d5b9a.pc-und-handyservice-augsburg.pages.dev';
 const base = new URL(PREVIEW);
 assert.equal(base.protocol, 'https:');
 assert.equal(base.hostname, allowedHost);
@@ -108,6 +108,10 @@ try {
       }
     }
   });
+  for (const file of ['index.html','home-intro.css','repair-helper.js','repair-work-scene.js','anfahrt-hof-plan-20261030-v6.svg','bilder/hauseingang-autohof-20261108.webp','bilder/reparatur-avatar-frei-20261109.webp','bilder/reparatur-avatar-frei-klein-20261109.webp','es/reparaturanfrage.html','es/form-i18n.js']) await record('pinned exact bytes '+file, async () => {
+    const delivered=Buffer.from(await (await request('/'+file)).body());
+    assert.deepEqual(delivered,await readFile(file),'Committed preview bytes differ: '+file);
+  });
   for (const lang of Object.keys(languages)) for (const width of [320, 360, 390, 1280]) {
     await page.setViewportSize({width, height: 900});
     for (const route of routes) {
@@ -148,6 +152,35 @@ try {
             assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
             await toggle.click();
             assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+          }
+          if (lang === 'de') {
+            assert.ok(await page.locator('body.homepage-original-layout').count(),'Restored homepage scope missing');
+            const notice=page.locator('.home-visit-notice');
+            assert.equal(await notice.getAttribute('href'),'#anfahrt');
+            assert.match(await notice.innerText(),/Gewerblicher Reparaturservice an privater Adresse/);
+            assert.match(await notice.innerText(),/Hier klicken: Anfahrt, Eingangsfoto & Besuchshinweise weiter unten/);
+            const noticeBox=await notice.boundingBox();assert.ok(noticeBox.height>=90,'Prominent visit link too small');
+            const helper=page.locator('.repair-helper-toggle');await helper.click();
+            const panel=page.locator('.repair-helper-dialog');assert.equal(await panel.isVisible(),true);
+            assert.ok((await panel.locator('.repair-avatar>img').getAttribute('src')).includes('reparatur-avatar-frei-klein-20261109.webp'));
+            await panel.locator('.repair-helper-motion').waitFor({state:'visible'});
+            assert.equal(await panel.locator('svg.repair-working-scene').count(),1,'Original animated scene missing');
+            assert.equal(await panel.locator('svg').evaluate(s=>s.animationsPaused()),true,'Reduced motion not respected');
+            await panel.locator('.repair-helper-motion').click();
+            await page.waitForTimeout(300);
+            assert.ok(await panel.locator('svg').evaluate(s=>!s.animationsPaused()&&s.getCurrentTime()>0),'Original animation does not run after explicit opt-in');
+            await panel.locator('.repair-helper-motion').click();
+            assert.equal(await panel.locator('svg').evaluate(s=>s.animationsPaused()),true,'Pause does not work');
+            await panel.locator('.repair-helper-close').click();
+            await notice.click();assert.equal(new URL(page.url()).hash,'#anfahrt');
+            const entrance=page.locator('.arrival-entrance img');await entrance.scrollIntoViewIfNeeded();
+            await entrance.evaluate(img=>img.decode());assert.ok(await entrance.evaluate(img=>img.naturalWidth===1280&&img.naturalHeight===960),'Original entrance photo missing');
+            assert.ok(await page.locator('.arrival-photo img').getAttribute('src')==='/'+'anfahrt-hof-plan-20261030-v6.svg');
+            const svg=await (await request('/anfahrt-hof-plan-20261030-v6.svg')).text();
+            assert.match(svg,/id="entrance-no-parking"/);assert.match(svg,/Links und rechts neben dem Hauseingang nicht parken/);
+            assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth+1),'Arrival section overflow');
+            await page.screenshot({path:`${evidence}/arrival-${width}.png`,fullPage:false});
+            await page.goto(permitted('/').href,{waitUntil:'networkidle',timeout:25000});
           }
           if (lang === 'de' || lang === 'es') await page.screenshot({path: `${evidence}/${lang}-${width}.png`, fullPage: true});
         }
