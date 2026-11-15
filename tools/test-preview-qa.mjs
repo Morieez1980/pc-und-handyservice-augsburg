@@ -154,6 +154,11 @@ try {
             assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
           }
           if (lang === 'de') {
+            const consentBanner=page.locator('[data-clarity-banner]');
+            if (await consentBanner.isVisible()) {
+              await page.locator('[data-clarity-choice="denied"]').click();
+              assert.equal(await consentBanner.isVisible(),false,'Normal optional-analysis rejection did not close the banner');
+            }
             assert.ok(await page.locator('body.homepage-original-layout').count(),'Restored homepage scope missing');
             const notice=page.locator('.home-visit-notice');
             assert.equal(await notice.getAttribute('href'),'#anfahrt');
